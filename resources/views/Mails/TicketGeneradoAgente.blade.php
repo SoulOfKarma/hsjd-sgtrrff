@@ -323,7 +323,7 @@ a {
                                 </tr>
                                 <tr>
                                   <td class="content-block">
-                                      <b>Se creado y Asignado el dia: {{$fecha}}</b> 
+                                      <b>creado y Asignado el dia: {{$fecha}}</b> 
                                   </td>
                               </tr>
                                 <tr>

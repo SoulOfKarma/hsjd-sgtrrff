@@ -42,6 +42,7 @@
                                 class="w-full select-large"
                                 label="descripcionEdificio"
                                 :options="listadoEdificios"
+                                @input="filtroSegunEdificio"
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/3 mt-5">
@@ -126,7 +127,7 @@
                         <vs-button
                             color="warning"
                             class="mr-3 mb-2"
-                            @click="probando"
+                            @click="limpiar"
                             >Limpiar</vs-button
                         >
                         <vs-button class="mb-2" @click="guardarSolicitud"
@@ -180,6 +181,8 @@ export default {
         listadoTipoRep: [],
         listadoCorreo: [],
         listadoCategoria: [],
+        listadoServiciosData: [],
+        listadoUnidadEspData: [],
         localVal: "http://127.0.0.1:8000",
         uuidC: "",
 
@@ -235,76 +238,148 @@ export default {
         }
     },
     methods: {
+        limpiar() {
+            (seleccionEdificio = {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            }),
+                (seleccionServicio = {
+                    id: 0,
+                    descripcionServicio: "Seleccione Servicio"
+                }),
+                (seleccionUnidadEsp = {
+                    id: 0,
+                    descripcionUnidadEsp: "Seleccion Unidad Especifica"
+                }),
+                (seleccionReparacion = {
+                    id: 0,
+                    descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+                }),
+                (seleccionCategoria = {
+                    id: 0,
+                    des_categoria: "Seleccione Categoria"
+                });
+            this.solicitud.descripcionP = "";
+            this.solicitud.tituloP = "";
+        },
         cargaSegunUnidadEsp() {
-            var idGeneral = this.seleccionUnidadEsp.id;
+            if (
+                this.seleccionUnidadEsp == null ||
+                this.seleccionUnidadEsp.id == 0
+            ) {
+                //this.listadoServicios = this.listadoServiciosData;
+                this.listadoUnidadEsp = this.listadoUnidadEspData;
+            } else {
+                var idGeneral = this.seleccionUnidadEsp.id;
 
-            let c = this.listadoUnidadEsp;
-            let b = [];
-            var a = 0;
+                let c = this.listadoUnidadEspData;
+                let b = [];
+                var a = 0;
 
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGeneral) {
-                    b.push(value);
-                }
-            });
-            this.seleccionUnidadEsp = b;
-            idGeneral = 0;
-            idGeneral = this.seleccionUnidadEsp[0].id_servicio;
-            b = [];
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        b.push(value);
+                    }
+                });
+                this.seleccionUnidadEsp = b;
+                idGeneral = 0;
+                idGeneral = this.seleccionUnidadEsp[0].id_servicio;
+                b = [];
 
-            c = this.listadoServicios;
+                c = this.listadoServicios;
 
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGeneral) {
-                    b.push(value);
-                }
-            });
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        b.push(value);
+                    }
+                });
 
-            this.seleccionServicio = b;
-            idGeneral = 0;
-            idGeneral = this.seleccionServicio[0].id_edificio;
-            b = [];
-            c = this.listadoEdificios;
+                this.seleccionServicio = b;
+                idGeneral = 0;
+                idGeneral = this.seleccionServicio[0].id_edificio;
+                b = [];
+                c = this.listadoEdificios;
 
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGeneral) {
-                    b.push(value);
-                }
-            });
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        b.push(value);
+                    }
+                });
 
-            this.seleccionEdificio = b;
+                this.seleccionEdificio = b;
+            }
         },
         cargaSegunServicio() {
-            var idGeneral = this.seleccionServicio.id;
+            if (
+                this.seleccionServicio == null ||
+                this.seleccionServicio.id == 0
+            ) {
+                this.listadoServicios = this.listadoServiciosData;
+                this.listadoUnidadEsp = this.listadoUnidadEspData;
+            } else {
+                var idGeneral = this.seleccionServicio.id;
 
-            let c = this.listadoServicios;
-            let b = [];
-            var a = 0;
+                let d = this.listadoUnidadEspData;
+                let e = [];
+                var f = 0;
 
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGeneral) {
-                    b.push(value);
-                }
-            });
-            this.seleccionServicio = b;
-            idGeneral = 0;
-            idGeneral = this.seleccionServicio[0].id_edificio;
-            b = [];
+                d.forEach((value, index) => {
+                    a = value.id_servicio;
+                    if (a == idGeneral) {
+                        e.push(value);
+                    }
+                });
 
-            c = this.listadoEdificios;
+                this.listadoUnidadEsp = e;
 
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGeneral) {
-                    b.push(value);
-                }
-            });
+                let c = this.listadoServiciosData;
+                let b = [];
+                var a = 0;
 
-            this.seleccionEdificio = b;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        b.push(value);
+                    }
+                });
+                this.seleccionServicio = b;
+                idGeneral = 0;
+                idGeneral = this.seleccionServicio[0].id_edificio;
+                b = [];
+
+                c = this.listadoEdificios;
+
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        b.push(value);
+                    }
+                });
+
+                this.seleccionEdificio = b;
+            }
+        },
+        filtroSegunEdificio() {
+            if (this.seleccionEdificio == null || this.seleccionEdificio == 0) {
+                this.listadoServicios = this.listadoServiciosData;
+                this.listadoUnidadEsp = this.listadoUnidadEspData;
+            } else {
+                var idGeneral = this.seleccionEdificio.id;
+                let c = this.listadoServiciosData;
+                let b = [];
+                var a = 0;
+                c.forEach((value, index) => {
+                    a = value.id_edificio;
+                    if (a == idGeneral) {
+                        b.push(value);
+                    }
+                });
+
+                this.listadoServicios = b;
+            }
         },
         cargarEdificios() {
             this.csrf_token;
@@ -318,6 +393,7 @@ export default {
 
             axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
                 this.listadoServicios = res.data;
+                this.listadoServiciosData = res.data;
             });
         },
         cargarCategoria() {
@@ -332,6 +408,7 @@ export default {
 
             axios.get(this.localVal + "/api/Usuario/GetUnidadEsp").then(res => {
                 this.listadoUnidadEsp = res.data;
+                this.listadoUnidadEspData = res.data;
             });
         },
         cargarTipoRep() {
@@ -452,10 +529,7 @@ export default {
                 this.$vs.loading.close();
             }, 2000);
         },
-        probando() {
-            this.solicitud.id_user;
-            console.log(this.seleccionUnidadEsp[0].id);
-        },
+
         verListas() {
             var idGeneral = 4;
 

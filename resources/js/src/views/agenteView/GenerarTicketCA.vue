@@ -472,6 +472,7 @@ export default {
         listadoApoyo1: [],
         listadoApoyo2: [],
         listadoApoyo3: [],
+        listadoTrabajadoresData: [],
         listadoEstado: [],
         listadoCorreo: [],
         listadoCategoria: [],
@@ -492,6 +493,7 @@ export default {
             idApoyo1: 5,
             idApoyo2: 5,
             idApoyo3: 5,
+            idTurno: 0,
             fechaInicio: null,
             fechaTermino: null,
             horaInicio: null,
@@ -542,16 +544,16 @@ export default {
             tra_nombre_apellido: "Seleccione al Trabajador"
         },
         seleccionApoyo1: {
-            id: 4,
-            tra_nombre_apellido: "Sin Asignar"
+            id: 0,
+            tra_nombre_apellido: "Seleccione Apoyo 1"
         },
         seleccionApoyo2: {
-            id: 4,
-            tra_nombre_apellido: "Sin Asignar"
+            id: 0,
+            tra_nombre_apellido: "Seleccione Apoyo 2"
         },
         seleccionApoyo3: {
-            id: 4,
-            tra_nombre_apellido: "Sin Asignar"
+            id: 0,
+            tra_nombre_apellido: "Seleccione Apoyo 3"
         },
         seleccionCategoria: {
             id: 0,
@@ -765,8 +767,15 @@ export default {
             });
             this.seleccionSupervisor = b;
         },
+        cargarCategoria() {
+            this.csrf_token;
+
+            axios.get(this.localVal + "/api/Agente/GetCategoria").then(res => {
+                this.listadoCategoria = res.data;
+            });
+        },
         arrayTrabajadores(id) {
-            let c = this.listadoTrabajadores;
+            let c = this.listadoTrabajadoresData;
             let b = [];
             var a = 0;
 
@@ -777,13 +786,20 @@ export default {
                 }
             });
             this.seleccionTrabajador = b;
-        },
-        cargarCategoria() {
-            this.csrf_token;
 
-            axios.get(this.localVal + "/api/Agente/GetCategoria").then(res => {
-                this.listadoCategoria = res.data;
+            b = [];
+            a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == 999) {
+                    b.push(value);
+                } else if (a != id) {
+                    b.push(value);
+                }
             });
+
+            this.listadoApoyo1 = b;
         },
         arrayApoyo1(id) {
             let c = this.listadoApoyo1;
@@ -797,6 +813,20 @@ export default {
                 }
             });
             this.seleccionApoyo1 = b;
+
+            b = [];
+            a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (id == 999) {
+                    b.push(value);
+                } else if (a != id) {
+                    b.push(value);
+                }
+            });
+
+            this.listadoApoyo2 = b;
         },
 
         arrayApoyo2(id) {
@@ -811,6 +841,20 @@ export default {
                 }
             });
             this.seleccionApoyo2 = b;
+
+            b = [];
+            a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (id == 999) {
+                    b.push(value);
+                } else if (a != id) {
+                    b.push(value);
+                }
+            });
+
+            this.listadoApoyo3 = b;
         },
         arrayApoyo3(id) {
             let c = this.listadoApoyo3;
@@ -889,27 +933,23 @@ export default {
             axios
                 .get(this.localVal + "/api/Agente/GetTrabajadores")
                 .then(res => {
-                    this.listadoTrabajadores = res.data;
-
-                    this.cargarApoyosArray(this.listadoTrabajadores);
+                    this.cargarApoyosArray(res.data);
                 });
         },
         cargarApoyosArray(listadoApoyo) {
+            this.listadoTrabajadoresData = listadoApoyo;
             let c = listadoApoyo;
-            this.listadoApoyo1 = listadoApoyo;
-            this.listadoApoyo2 = listadoApoyo;
-            this.listadoApoyo3 = listadoApoyo;
+
             let b = [];
             var a = 0;
 
             c.forEach((value, index) => {
-                if (999 == value.id) {
+                if (999 != value.id) {
                     b.push(value);
                 }
             });
-            this.seleccionApoyo1 = b;
-            this.seleccionApoyo2 = b;
-            this.seleccionApoyo3 = b;
+
+            this.listadoTrabajadores = b;
         },
         cargarEstado() {
             axios.get(this.localVal + "/api/Agente/GetEstado").then(res => {
@@ -1105,6 +1145,7 @@ export default {
             this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
             this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
             this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
+            this.gestionTicket.idTurno = this.seleccionTurno.id;
             //this.gestionTicket.id_categoria = this.seleccionCategoria[0].id;
             var newElement = document.createElement("div");
             newElement.innerHTML = this.gestionTicket.descripcionP;

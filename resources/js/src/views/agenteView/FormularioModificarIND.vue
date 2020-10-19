@@ -149,6 +149,7 @@
                                 class="w-full select-large"
                                 label="descripcionTurno"
                                 :options="listadoTurno"
+                                @input="arrayTurno(seleccionTurno.id)"
                             ></v-select>
                         </div>
                     </div>
@@ -321,6 +322,7 @@ export default {
         listadoEstado: [],
         listadoCorreo: [],
         listadoServiciosData: [],
+        listadoTrabajadoresData: [],
         listadoUnidadEspData: [],
         gestionTicket: {
             uuid: "",
@@ -335,6 +337,7 @@ export default {
             idApoyo1: 999,
             idApoyo2: 999,
             idApoyo3: 999,
+            idTurno: 0,
             fechaCambiada: null,
             fechaTermino: null,
             horaCambiada: null,
@@ -393,16 +396,16 @@ export default {
             tra_nombre_apellido: "Seleccione al Trabajador"
         },
         seleccionApoyo1: {
-            id: 999,
-            tra_nombre_apellido: "Sin Asignar"
+            id: 0,
+            tra_nombre_apellido: "Seleccione Apoyo 1"
         },
         seleccionApoyo2: {
-            id: 999,
-            tra_nombre_apellido: "Sin Asignar"
+            id: 0,
+            tra_nombre_apellido: "Seleccione Apoyo 2"
         },
         seleccionApoyo3: {
-            id: 999,
-            tra_nombre_apellido: "Sin Asignar"
+            id: 0,
+            tra_nombre_apellido: "Seleccione Apoyo 3"
         },
         variablePrueba: 0,
         mensajeError: "",
@@ -620,7 +623,7 @@ export default {
             this.seleccionSupervisor = b;
         },
         arrayTrabajadores(id) {
-            let c = this.listadoTrabajadores;
+            let c = this.listadoTrabajadoresData;
             let b = [];
             var a = 0;
 
@@ -631,6 +634,20 @@ export default {
                 }
             });
             this.seleccionTrabajador = b;
+
+            b = [];
+            a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == 999) {
+                    b.push(value);
+                } else if (a != id) {
+                    b.push(value);
+                }
+            });
+
+            this.listadoApoyo1 = b;
         },
         arrayApoyo1(id) {
             let c = this.listadoApoyo1;
@@ -644,7 +661,22 @@ export default {
                 }
             });
             this.seleccionApoyo1 = b;
+
+            b = [];
+            a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (id == 999) {
+                    b.push(value);
+                } else if (a != id) {
+                    b.push(value);
+                }
+            });
+
+            this.listadoApoyo2 = b;
         },
+
         arrayApoyo2(id) {
             let c = this.listadoApoyo2;
             let b = [];
@@ -657,6 +689,20 @@ export default {
                 }
             });
             this.seleccionApoyo2 = b;
+
+            b = [];
+            a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (id == 999) {
+                    b.push(value);
+                } else if (a != id) {
+                    b.push(value);
+                }
+            });
+
+            this.listadoApoyo3 = b;
         },
         arrayApoyo3(id) {
             let c = this.listadoApoyo3;
@@ -670,6 +716,19 @@ export default {
                 }
             });
             this.seleccionApoyo3 = b;
+        },
+        arrayTurno(id) {
+            let c = this.listadoTurno;
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == id) {
+                    b.push(value);
+                }
+            });
+            this.seleccionTurno = b;
         },
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
@@ -717,11 +776,26 @@ export default {
             axios
                 .get(this.localVal + "/api/Agente/GetTrabajadores")
                 .then(res => {
-                    this.listadoTrabajadores = res.data;
-                    this.listadoApoyo1 = res.data;
-                    this.listadoApoyo2 = res.data;
-                    this.listadoApoyo3 = res.data;
+                    this.cargarApoyosArray(res.data);
                 });
+        },
+        cargarApoyosArray(listadoApoyo) {
+            this.listadoTrabajadoresData = listadoApoyo;
+            this.listadoApoyo1 = listadoApoyo;
+            this.listadoApoyo2 = listadoApoyo;
+            this.listadoApoyo3 = listadoApoyo;
+            let c = listadoApoyo;
+
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                if (999 != value.id) {
+                    b.push(value);
+                }
+            });
+
+            this.listadoTrabajadores = b;
         },
         cargarEstado() {
             axios.get(this.localVal + "/api/Agente/GetEstado").then(res => {
@@ -943,6 +1017,7 @@ export default {
                 this.gestionTicket.desApoyo1 = this.seleccionApoyo1[0].tra_nombre_apellido;
                 this.gestionTicket.desApoyo2 = this.seleccionApoyo2[0].tra_nombre_apellido;
                 this.gestionTicket.desApoyo3 = this.seleccionApoyo3[0].tra_nombre_apellido;
+                this.gestionTicket.idTurno = this.seleccionTurno[0].id;
                 this.gestionTicket.tituloP = this.datosSolicitud.tituloP;
                 var newElement = document.createElement("div");
                 newElement.innerHTML = this.datosSolicitud.descripcionP;

@@ -221,6 +221,7 @@ export default {
                 .get(this.localVal + "/api/Agente/GetSolicitudTicketsEM")
                 .then(res => {
                     this.solicitudes = res.data;
+                    console.log(this.solicitudes);
                 });
         },
         detalleSolicitud(id, uuid) {
@@ -278,7 +279,7 @@ export default {
             axios
                 .get(this.localVal + `/api/Agente/ValidarTicketAsignado/${id}`)
                 .then(res => {
-                    if (res.data) {
+                    if (res.data == 2) {
                         this.$vs.notify({
                             title: "Ticket ya asignado ",
                             text:
@@ -304,7 +305,7 @@ export default {
                     this.localVal + `/api/Agente/ValidarTicketAsignadoMod/${id}`
                 )
                 .then(res => {
-                    if (res.data) {
+                    if (res.data == 1) {
                         this.$vs.notify({
                             title: "Ticket no ha sido asignado ",
                             text:

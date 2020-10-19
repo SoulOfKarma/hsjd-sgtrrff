@@ -89,16 +89,20 @@ class GestionTicketController extends Controller
     {
         $users = GestionSolicitudes::firstWhere('id_solicitud', $id);
         if ($users === null) {
-            return true;
+            return 1;
         } else {
-            return  false;
+            return 2;
         }
     }
 
     public function ValidarTicketAsignado($id)
     {
         $users = GestionSolicitudes::firstWhere('id_solicitud', $id);
-        return $users;
+        if ($users === null) {
+            return 1;
+        } else {
+            return 2;
+        }
     }
 
     public function GetTicketAsignado($id)
@@ -227,8 +231,8 @@ class GestionTicketController extends Controller
             log::info($th);
         } finally {
             Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Asignacion de ticket');
-                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+                $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Asignacion de ticket');
+                $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
             });
             return $response = "Ok";
         }
@@ -262,8 +266,8 @@ class GestionTicketController extends Controller
             log::info($th);
         } finally {
             Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Asignacion de ticket');
-                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+                $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Asignacion de ticket');
+                $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
             });
             return $response = "Ok";
         }
@@ -298,8 +302,8 @@ class GestionTicketController extends Controller
             log::info($th);
         } finally {
             Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Asignacion de ticket');
-                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+                $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Asignacion de ticket');
+                $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
             });
             return $response = "Ok";
         }
@@ -335,7 +339,7 @@ class GestionTicketController extends Controller
             log::info($th);
         } finally {
             Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Asignacion de ticket');
+                $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Asignacion de ticket');
                 $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
             });
             return $response = "Ok";
@@ -348,7 +352,6 @@ class GestionTicketController extends Controller
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->where('solicitud_tickets.id_categoria', 1)
-
             ->get();
         return  $ticket;
     }
@@ -359,8 +362,9 @@ class GestionTicketController extends Controller
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->where('solicitud_tickets.id_categoria', 2)
-
             ->get();
+
+        log::info($ticket);
         return  $ticket;
     }
 
@@ -370,7 +374,6 @@ class GestionTicketController extends Controller
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->where('solicitud_tickets.id_categoria', 3)
-
             ->get();
         return  $ticket;
     }
@@ -381,7 +384,6 @@ class GestionTicketController extends Controller
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->where('id_categoria', 4)
-
             ->get();
         return  $ticket;
     }
@@ -410,14 +412,14 @@ class GestionTicketController extends Controller
         $trabajador = Trabajadores::where('id', $idTrabajador)->first();
         $supervisor = Supervisores::where('id', $idSupervisor)->first();
 
-        $nombreTrabajador = $trabajador->tra_nombre + " " +$trabajador->tra_apellido;
-        $nombreSupervisor = $supervisor->sup_nombre + " " +$supervisor->sup_nombre;
+        $nombreTrabajador = $trabajador->tra_nombre . " " .$trabajador->tra_apellido;
+        $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_nombre;
 
         SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
         Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Nueva Creacion de ticket');
-            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+            $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Nueva Creacion de ticket');
+            $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
         });
 
         return $response;
@@ -447,14 +449,14 @@ class GestionTicketController extends Controller
         $trabajador = Trabajadores::where('id', $idTrabajador)->first();
         $supervisor = Supervisores::where('id', $idSupervisor)->first();
 
-        $nombreTrabajador = $trabajador->tra_nombre + " " +$trabajador->tra_apellido;
-        $nombreSupervisor = $supervisor->sup_nombre + " " +$supervisor->sup_nombre;
+        $nombreTrabajador = $trabajador->tra_nombre . " " .$trabajador->tra_apellido;
+        $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_nombre;
 
         SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
         Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Nueva Creacion de ticket');
-            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+            $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Nueva Creacion de ticket');
+            $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
         });
 
         return $response;
@@ -484,14 +486,14 @@ class GestionTicketController extends Controller
         $trabajador = Trabajadores::where('id', $idTrabajador)->first();
         $supervisor = Supervisores::where('id', $idSupervisor)->first();
 
-        $nombreTrabajador = $trabajador->tra_nombre + " " +$trabajador->tra_apellido;
-        $nombreSupervisor = $supervisor->sup_nombre + " " +$supervisor->sup_nombre;
+        $nombreTrabajador = $trabajador->tra_nombre . " " . $trabajador->tra_apellido;
+        $nombreSupervisor = $supervisor->sup_nombre . " " . $supervisor->sup_nombre;
 
         SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
         Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Nueva Creacion de ticket');
-            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+            $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Nueva Creacion de ticket');
+            $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
         });
 
         return $response;
@@ -521,14 +523,14 @@ class GestionTicketController extends Controller
         $trabajador = Trabajadores::where('id', $idTrabajador)->first();
         $supervisor = Supervisores::where('id', $idSupervisor)->first();
 
-        $nombreTrabajador = $trabajador->tra_nombre + " " +$trabajador->tra_apellido;
-        $nombreSupervisor = $supervisor->sup_nombre + " " +$supervisor->sup_nombre;
+        $nombreTrabajador = $trabajador->tra_nombre . " " .$trabajador->tra_apellido;
+        $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_nombre;
 
         SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
         Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Nueva Creacion de ticket');
-            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+            $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Nueva Creacion de ticket');
+            $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
         });
 
         return $response;
@@ -638,11 +640,10 @@ class GestionTicketController extends Controller
             log::info($th);
         } finally {
             Mail::send('/Mails/TicketModificadoAgente', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-                $pdf = \PDF::loadView('invoice');
-                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Modificacion de ticket')->attachData($pdf->output(), 'invoice.pdf');
-                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+                $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
+                $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
             });
-            return $response;
+            return "ok";
         }
         //Modificando Ticket
 
@@ -696,8 +697,8 @@ class GestionTicketController extends Controller
             log::info($th);
         } finally {
             Mail::send('/Mails/TicketModificadoAgente', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
-                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+                $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
+                $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
             });
             return $response;
         }
@@ -753,8 +754,8 @@ class GestionTicketController extends Controller
             log::info($th);
         } finally {
             Mail::send('/Mails/TicketModificadoAgente', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
-                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+                $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
+                $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
             });
             return $response;
         }

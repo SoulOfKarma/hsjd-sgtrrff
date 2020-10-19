@@ -85,6 +85,9 @@
                                 class="w-full select-large"
                                 label="sup_nombre_apellido"
                                 :options="listadoSupervisores"
+                                @input="
+                                    arraySupervisores(seleccionSupervisor.id)
+                                "
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -96,6 +99,9 @@
                                 class="w-full select-large"
                                 label="tra_nombre_apellido"
                                 :options="listadoTrabajadores"
+                                @input="
+                                    arrayTrabajadores(seleccionTrabajador.id)
+                                "
                             ></v-select>
                         </div>
                         <div class="vx-col w-full mt-5">
@@ -107,6 +113,7 @@
                                 class="w-full select-large"
                                 label="tra_nombre_apellido"
                                 :options="listadoApoyo1"
+                                @input="arrayApoyo1(seleccionApoyo1.id)"
                             ></v-select>
                         </div>
                         <div class="vx-col w-full mt-5">
@@ -118,6 +125,7 @@
                                 class="w-full select-large"
                                 label="tra_nombre_apellido"
                                 :options="listadoApoyo2"
+                                @input="arrayApoyo2(seleccionApoyo2.id)"
                             ></v-select>
                         </div>
                         <div class="vx-col w-full mt-5">
@@ -129,6 +137,7 @@
                                 class="w-full select-large"
                                 label="tra_nombre_apellido"
                                 :options="listadoApoyo3"
+                                @input="arrayApoyo3(seleccionApoyo3.id)"
                             ></v-select>
                         </div>
                         <div class="vx-col w-full mt-5">
@@ -315,6 +324,7 @@ export default {
         selectEstado: [],
         listadoServiciosData: [],
         listadoUnidadEspData: [],
+        listadoTrabajadoresData: [],
         gestionTicket: {
             uuid: "",
             id_solicitud: 0,
@@ -593,7 +603,114 @@ export default {
             });
             this.seleccionReparacion = b;
         },
+        arraySupervisores(id) {
+            let c = this.listadoSupervisores;
+            let b = [];
+            var a = 0;
 
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == id) {
+                    b.push(value);
+                }
+            });
+            this.seleccionSupervisor = b;
+        },
+        arrayTrabajadores(id) {
+            let c = this.listadoTrabajadoresData;
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == id) {
+                    b.push(value);
+                }
+            });
+            this.seleccionTrabajador = b;
+
+            b = [];
+            a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == 999) {
+                    b.push(value);
+                } else if (a != id) {
+                    b.push(value);
+                }
+            });
+
+            this.listadoApoyo1 = b;
+        },
+        arrayApoyo1(id) {
+            let c = this.listadoApoyo1;
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == id) {
+                    b.push(value);
+                }
+            });
+            this.seleccionApoyo1 = b;
+
+            b = [];
+            a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (id == 999) {
+                    b.push(value);
+                } else if (a != id) {
+                    b.push(value);
+                }
+            });
+
+            this.listadoApoyo2 = b;
+        },
+
+        arrayApoyo2(id) {
+            let c = this.listadoApoyo2;
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == id) {
+                    b.push(value);
+                }
+            });
+            this.seleccionApoyo2 = b;
+
+            b = [];
+            a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (id == 999) {
+                    b.push(value);
+                } else if (a != id) {
+                    b.push(value);
+                }
+            });
+
+            this.listadoApoyo3 = b;
+        },
+        arrayApoyo3(id) {
+            let c = this.listadoApoyo3;
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == id) {
+                    b.push(value);
+                }
+            });
+            this.seleccionApoyo3 = b;
+        },
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
         },
@@ -640,11 +757,23 @@ export default {
             axios
                 .get(this.localVal + "/api/Agente/GetTrabajadores")
                 .then(res => {
-                    this.listadoTrabajadores = res.data;
-                    this.listadoApoyo1 = res.data;
-                    this.listadoApoyo2 = res.data;
-                    this.listadoApoyo3 = res.data;
+                    this.cargarApoyosArray(res.data);
                 });
+        },
+        cargarApoyosArray(listadoApoyo) {
+            this.listadoTrabajadoresData = listadoApoyo;
+            let c = listadoApoyo;
+
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                if (999 != value.id) {
+                    b.push(value);
+                }
+            });
+
+            this.listadoTrabajadores = b;
         },
         cargarEstado() {
             axios.get(this.localVal + "/api/Agente/GetEstado").then(res => {
@@ -874,9 +1003,9 @@ export default {
                 this.gestionTicket.id_estado = this.seleccionEstado[0].id;
                 this.gestionTicket.id_supervisor = this.seleccionSupervisor.id;
                 this.gestionTicket.id_trabajador = this.seleccionTrabajador.id;
-                this.gestionTicket.idApoyo1 = this.seleccionApoyo1.id;
-                this.gestionTicket.idApoyo2 = this.seleccionApoyo2.id;
-                this.gestionTicket.idApoyo3 = this.seleccionApoyo3.id;
+                this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
+                this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
+                this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
                 this.gestionTicket.idTurno = this.seleccionTurno.id;
                 this.gestionTicket.desEdificio = this.seleccionEdificio[0].descripcionEdificio;
                 this.gestionTicket.desServicio = this.seleccionServicio[0].descripcionServicio;
@@ -885,9 +1014,10 @@ export default {
                 this.gestionTicket.desEstado = this.seleccionEstado[0].descripcionEstado;
                 this.gestionTicket.desTrabajador = this.seleccionTrabajador.tra_nombre_apellido;
                 this.gestionTicket.desSupervisor = this.seleccionSupervisor.sup_nombre_apellido;
-                this.gestionTicket.desApoyo1 = this.seleccionApoyo1.tra_nombre_apellido;
-                this.gestionTicket.desApoyo2 = this.seleccionApoyo2.tra_nombre_apellido;
-                this.gestionTicket.desApoyo3 = this.seleccionApoyo3.tra_nombre_apellido;
+                this.gestionTicket.desApoyo1 = this.seleccionApoyo1[0].tra_nombre_apellido;
+                this.gestionTicket.desApoyo2 = this.seleccionApoyo2[0].tra_nombre_apellido;
+                this.gestionTicket.desApoyo3 = this.seleccionApoyo3[0].tra_nombre_apellido;
+                this.gestionTicket.idTurno = this.seleccionTurno.id;
                 this.gestionTicket.tituloP = this.datosSolicitud[0].tituloP;
                 var newElement = document.createElement("div");
                 newElement.innerHTML = this.datosSolicitud[0].descripcionP;
