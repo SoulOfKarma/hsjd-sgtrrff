@@ -1016,8 +1016,8 @@ export default {
                 this.gestionTicket.desUbicacion = this.seleccionUnidadEsp[0].descripcionUnidadEsp;
                 this.gestionTicket.desReparacion = this.seleccionReparacion[0].descripcionTipoReparacion;
                 this.gestionTicket.desEstado = this.seleccionEstado[0].descripcionEstado;
-                this.gestionTicket.desTrabajador = this.seleccionTrabajador.tra_nombre_apellido;
-                this.gestionTicket.desSupervisor = this.seleccionSupervisor.sup_nombre_apellido;
+                this.gestionTicket.desTrabajador = this.seleccionTrabajador[0].tra_nombre_apellido;
+                this.gestionTicket.desSupervisor = this.seleccionSupervisor[0].sup_nombre_apellido;
                 this.gestionTicket.desApoyo1 = this.seleccionApoyo1[0].tra_nombre_apellido;
                 this.gestionTicket.desApoyo2 = this.seleccionApoyo2[0].tra_nombre_apellido;
                 this.gestionTicket.desApoyo3 = this.seleccionApoyo3[0].tra_nombre_apellido;

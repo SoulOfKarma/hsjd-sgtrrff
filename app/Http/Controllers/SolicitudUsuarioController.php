@@ -130,7 +130,7 @@ class SolicitudUsuarioController extends Controller
         $receivers = 'gomez.soto.ricardo@gmail.com';
         Mail::send('/Mails/TicketGenerado', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $titulo], function ($message) {
             $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Nuevo Ticket Generado');
-            $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
+            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
         });
 
         return true;

@@ -1134,7 +1134,6 @@ export default {
         },
         guardarFormulario() {
             this.gestionTicket.id_user = this.seleccionUsuario.id;
-            this.gestionTicket.id_userR = this.seleccionUsuario.id;
             this.gestionTicket.id_edificio = this.seleccionEdificio[0].id;
             this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
             this.gestionTicket.id_ubicacionEx = this.seleccionUnidadEsp[0].id;

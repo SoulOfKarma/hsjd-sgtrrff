@@ -413,7 +413,7 @@ class GestionTicketController extends Controller
         $supervisor = Supervisores::where('id', $idSupervisor)->first();
 
         $nombreTrabajador = $trabajador->tra_nombre . " " .$trabajador->tra_apellido;
-        $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_nombre;
+        $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_apellido;
 
         SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
@@ -450,7 +450,7 @@ class GestionTicketController extends Controller
         $supervisor = Supervisores::where('id', $idSupervisor)->first();
 
         $nombreTrabajador = $trabajador->tra_nombre . " " .$trabajador->tra_apellido;
-        $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_nombre;
+        $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_apellido;
 
         SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
@@ -487,7 +487,7 @@ class GestionTicketController extends Controller
         $supervisor = Supervisores::where('id', $idSupervisor)->first();
 
         $nombreTrabajador = $trabajador->tra_nombre . " " . $trabajador->tra_apellido;
-        $nombreSupervisor = $supervisor->sup_nombre . " " . $supervisor->sup_nombre;
+        $nombreSupervisor = $supervisor->sup_nombre . " " . $supervisor->sup_apellido;
 
         SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
@@ -524,7 +524,7 @@ class GestionTicketController extends Controller
         $supervisor = Supervisores::where('id', $idSupervisor)->first();
 
         $nombreTrabajador = $trabajador->tra_nombre . " " .$trabajador->tra_apellido;
-        $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_nombre;
+        $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_apellido;
 
         SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
@@ -636,10 +636,36 @@ class GestionTicketController extends Controller
                     'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
                     'fechaTermino' => $request->fechaTermino
                 ]);
+
+            $to = [['email' => 'ricardo.soto.g@gmail.com', 'name' => 'Ricardo Soto '], 
+                   ['email' => 'knightwalker.zero5@gmail.com', 'name' => 'Mario Rodriguez']];    
+
+            $to2 = ['ricardo.soto.g@redsalud.gov.cl','knightwalker.zero5@gmail.com'];       
+
+            $userSearch = Users::where('id',$id_user)->first();
+            log::info($userSearch);
+            $ValidarCargo = $userSearch->id_cargo_asociado;
+
+            $userMail = [];
+
+            if($ValidarCargo == null || $ValidarCargo == 0){
+                $userMail = Users::select('users.email')
+            ->where('users.id_cargo_asociado',$id_user)
+            ->orWhere('users.id',$id_user)
+            ->get();
+            }else{
+                $userMail = Users::select('users.email')
+            ->Where('users.id',$id_user)
+            ->get();
+            }
+
+            log::info($userMail);
+
         } catch (\Throwable $th) {
             log::info($th);
         } finally {
-            Mail::send('/Mails/TicketModificadoAgente', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
+            
+            Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($to2){
                 $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
                 $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
             });
@@ -811,8 +837,8 @@ class GestionTicketController extends Controller
             log::info($th);
         } finally {
             Mail::send('/Mails/TicketModificadoAgente', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
-                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+                $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
+                $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
             });
             return $response;
         }
