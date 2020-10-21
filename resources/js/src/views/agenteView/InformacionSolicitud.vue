@@ -53,6 +53,7 @@
                             />
                             <br />
                         </div>
+
                         <div class="vx-col w-full mt-5">
                             <vs-input
                                 label-placeholder="Unidad Especifica"
@@ -60,6 +61,18 @@
                                 disabled="true"
                                 class="w-full"
                             />
+                        </div>
+                        <br />
+                        <div class="vx-col w-full mt-5">
+                            <div slot="footer">
+                                <vs-row vs-justify="flex-end">
+                                    <vs-button
+                                        class="fixedHeight"
+                                        @click="volver"
+                                        >Volver</vs-button
+                                    >
+                                </vs-row>
+                            </div>
                         </div>
                     </div>
                 </vx-card>
@@ -78,11 +91,15 @@
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
                             <br />
-                            <vs-button
-                                type="gradient"
-                                @click="guardarSeguimiento"
-                                >Actualizar</vs-button
-                            >
+                            <div slot="footer">
+                                <vs-row vs-justify="flex-end">
+                                    <vs-button
+                                        type="gradient"
+                                        @click="guardarSeguimiento"
+                                        >Actualizar</vs-button
+                                    >
+                                </vs-row>
+                            </div>
 
                             <br />
                         </div>
@@ -97,8 +114,6 @@
                             <vs-list
                                 :key="indextr"
                                 v-for="(tr, indextr) in seguimiento"
-                                max-items="2"
-                                pagination
                             >
                                 <vx-card
                                     :title="tr.nombre + ' ' + tr.apellido"
@@ -144,8 +159,9 @@ export default {
                 ]
             }
         },
+
         textarea: "",
-        currentx: 1,
+
         localVal: "http://127.0.0.1:8000",
         solicitudes: [],
         seguimiento: [],
@@ -169,6 +185,9 @@ export default {
         colorLoading: "#ff8000"
     }),
     methods: {
+        volver() {
+            router.back();
+        },
         cargaSolicitudEspecifica() {
             let id = this.$route.params.uuid;
             axios
@@ -259,8 +278,35 @@ export default {
 };
 </script>
 
-<style lang="stylus">
-.cardx {
-  margin: 15px;
+<style lang="scss">
+.fill-row-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    .loading-example {
+        width: 120px;
+        float: left;
+        height: 120px;
+        box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        margin: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        &:hover {
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.05);
+            transform: translate(0, 4px);
+        }
+        h4 {
+            z-index: 40000;
+            position: relative;
+            text-align: center;
+            padding: 10px;
+        }
+        &.activeLoading {
+            opacity: 0 !important;
+            transform: scale(0.5);
+        }
+    }
 }
 </style>

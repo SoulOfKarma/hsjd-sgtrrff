@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="http://localhost:8080/proyectov1/public/css/bootstrap.min.css">
 
-        <title>Ticket-CA</title>
+        <title>Ticket-Apoyo-Clinico</title>
         <style>#TADescripcion{
           width: 99%;
         }
@@ -54,7 +54,7 @@
               <div class="col-xs-2"> <img src="http://localhost:8080/proyectov1/resources/assets/images/logo/1.png"></div>
                 <div class="col-xs-10">
                   <h3 id="tituloOrd"><b>Orden de Trabajo</b> </h3>
-                  <h4 id="subOrd"><b>Unidad de Mantenimiento - CA</b> </h4>
+                  <h4 id="subOrd"><b>Unidad de Mantenimiento - Apoyo Clinico</b> </h4>
                   
                 </div>
                 <div class="col-xs-2"></div>

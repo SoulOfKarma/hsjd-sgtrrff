@@ -899,7 +899,7 @@ export default {
             axios
                 .get(this.localVal + "/api/Agente/GetTrabajadores")
                 .then(res => {
-                    this.cargarApoyosArray(this.listadoTrabajadores);
+                    this.cargarApoyosArray(res.data);
                 });
         },
         cargarApoyosArray(listadoApoyo) {

@@ -44,7 +44,10 @@ Route::get('/Usuario/GetTipoRep', ['middleware' => 'cors', 'uses' => 'TipoRepara
 //Route::get('/Usuario/GetEdificios', 'TipoReparacionController@index');
 //Retornar Usuarios Join
 Route::get('/Usuario/GetSolicitudUsuarios/{idservicio}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getSolicitudUsuariosJoin']);
-
+//Traer Usuario Especifico
+Route::get('/Usuario/getUsuarios/{id}', ['middleware' => 'cors', 'uses' => 'UsersController@buscarUsuarioData']);
+//Traer Data especifica
+Route::post('/Usuario/getDataSolicitudes', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getSolicitudUsuariosByID']);
 //Solicitud Usuario
 //Traer Datos para el listado de tickets
 Route::get('/Usuario/GetSolicitud', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@index']);

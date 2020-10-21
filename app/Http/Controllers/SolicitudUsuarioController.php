@@ -33,6 +33,22 @@ class SolicitudUsuarioController extends Controller
         return  $get_all;
     }
 
+    public function getSolicitudUsuariosByID(Request $request)
+    {
+        $estadoEliminado = [7];
+
+        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre','users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
+            ->whereNotIn('solicitud_tickets.id_estado',$estadoEliminado)
+            ->where('solicitud_tickets.id_servicio', $request->idServicio)
+            ->orWhere('solicitud_tickets.id_user',$request->idUser)
+            ->whereNotIn('solicitud_tickets.id_estado',$estadoEliminado)
+            ->get(); 
+        return  $ticket;
+    }
+
+
     public function getSolicitudUsuariosJoin($idServicio)
     {
         $estadoEliminado = 7;
@@ -42,7 +58,7 @@ class SolicitudUsuarioController extends Controller
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->where('solicitud_tickets.id_servicio', $idServicio)
             ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado)
-            ->get();
+            ->get(); 
         return  $ticket;
     }
 
@@ -116,24 +132,50 @@ class SolicitudUsuarioController extends Controller
      */
     public function store(Request $request)
     {
+        try {
         $uuid = Uuid::generate()->string;
         $response = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]));
         SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $response->id, 'descripcionSeguimiento' => 'Ticket creado']));
+        $id = $request->id_user;
+        $userSearch = Users::where('id',$id_user)->first();
+            $ValidarCargo = $userSearch->id_cargo_asociado;     
+            $userMail = [];
 
+            if($ValidarCargo == null || $ValidarCargo == 0){
+                $userMail = Users::select('email')
+                ->Where('id',$id_user)
+                ->orWhere('id_cargo_asociado',$id_user)
+                ->get();
+            }else{
+               
+            $userMail = Users::select('email')
+            ->where('id_cargo_asociado',$ValidarCargo)
+            ->orWhere('id',$ValidarCargo)
+            ->get();
+            }
 
+            $listContactos = [];
+            $i = 0;
 
-        $nombre = $request->nombre;
-        $descripcionP = $request->descripcionCorreo;
-        $id_solicitud = $response->id;
-        $titulo = $request->tituloP;
-        //log::info($descripcionP);
-        $receivers = 'gomez.soto.ricardo@gmail.com';
-        Mail::send('/Mails/TicketGenerado', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $titulo], function ($message) {
-            $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Nuevo Ticket Generado');
-            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
-        });
+            foreach ($userMail as $key) {
+                $listContactos[$i] = $key->email;
+                $i++;
+            }
 
-        return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+        } finally {
+           $nombre = $request->nombre;
+           $descripcionP = $request->descripcionCorreo;
+           $id_solicitud = $response->id;
+           $titulo = $request->tituloP;
+            Mail::send('/Mails/TicketGenerado', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $titulo], function ($message) use($listContactos) {
+              $message->setTo($listContactos)->setSubject('Nuevo Ticket Generado');
+             $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+            });
+
+            return "ok";
+        }
     }
 
 

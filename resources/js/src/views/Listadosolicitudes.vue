@@ -262,7 +262,11 @@ export default {
                 " " +
                 localStorage.getItem("apellido"),
             run: localStorage.getItem("run"),
-            idservicio: localStorage.getItem("idServicio")
+
+            data: {
+                idServicio: localStorage.getItem("idServicio"),
+                idUser: localStorage.getItem("id")
+            }
         };
     },
     methods: {
@@ -273,11 +277,9 @@ export default {
             }, 1000);
         },
         cargarSolicitudes() {
+            const data = this.data;
             axios
-                .get(
-                    this.localVal +
-                        `/api/Usuario/GetSolicitudUsuarios/${this.idservicio}`
-                )
+                .post(this.localVal + "/api/Usuario/getDataSolicitudes", data)
                 .then(res => {
                     this.solicitudes = res.data;
                 });

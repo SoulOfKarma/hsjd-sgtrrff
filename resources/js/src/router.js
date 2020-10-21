@@ -258,7 +258,7 @@ const router = new Router({
                         import ('./views/agenteView/ModificarCategoriaTicket.vue')
                 },
                 {
-                    path: '/agenteView/FormularioAsignar/:id,:uuid',
+                    path: '/agenteView/FormularioAsignar/:id,:uuid,:id_user',
                     name: 'AsignarSolicitudAgente',
                     component: () =>
                         import ('./views/agenteView/FormularioAsignar.vue')
@@ -282,25 +282,25 @@ const router = new Router({
                         import ('./views/agenteView/FormularioAsignarIND.vue')
                 },
                 {
-                    path: '/agenteView/FormularioModificar/:id,:uuid',
+                    path: '/agenteView/FormularioModificar/:id,:uuid,:id_user',
                     name: 'ModificarSolicitudAgente',
                     component: () =>
                         import ('./views/agenteView/FormularioModificar.vue')
                 },
                 {
-                    path: '/agenteView/FormularioModificarEM/:id,:uuid',
+                    path: '/agenteView/FormularioModificarEM/:id,:uuid,:id_user',
                     name: 'ModificarSolicitudAgenteEM',
                     component: () =>
                         import ('./views/agenteView/FormularioModificarEM.vue')
                 },
                 {
-                    path: '/agenteView/FormularioModificarCA/:id,:uuid',
+                    path: '/agenteView/FormularioModificarCA/:id,:uuid,:id_user',
                     name: 'ModificarSolicitudAgenteCA',
                     component: () =>
                         import ('./views/agenteView/FormularioModificarCA.vue')
                 },
                 {
-                    path: '/agenteView/FormularioModificarIND/:id,:uuid',
+                    path: '/agenteView/FormularioModificarIND/:id,:uuid,:id_user',
                     name: 'ModificarSolicitudAgenteIND',
                     component: () =>
                         import ('./views/agenteView/FormularioModificarIND.vue')

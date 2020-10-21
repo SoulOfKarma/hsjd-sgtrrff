@@ -234,6 +234,15 @@
                                 :options="listadoEstado"
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
+                            <br />
+                            <h6>4.3 - Razon de la modificacion</h6>
+                            <br />
+                            <quill-editor
+                                v-model="razoncambio"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
                         </div>
                     </div>
                 </vx-card>
@@ -278,11 +287,29 @@ import router from "@/router";
 
 export default {
     data: () => ({
+        editorOption: {
+            modules: {
+                toolbar: [
+                    ["bold", "italic", "underline", "strike"],
+                    ["blockquote", "code-block"],
+                    [{ header: 1 }, { header: 2 }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ indent: "-1" }, { indent: "+1" }],
+                    [{ direction: "rtl" }],
+                    [{ font: [] }],
+                    [{ align: [] }],
+                    ["clean"]
+                ]
+            }
+        },
         horasCalculadas: 0,
         colorLoading: "#ff8000",
         diaCalculado: 0,
         format: "d MMMM yyyy",
-        nombre: localStorage.getItem("nombre"),
+        nombre:
+            localStorage.getItem("nombre") +
+            " " +
+            localStorage.getItem("apellido"),
         run: localStorage.getItem("run"),
         fecha1: moment()
             .startOf("day")
@@ -324,6 +351,7 @@ export default {
         listadoServiciosData: [],
         listadoUnidadEspData: [],
         listadoTrabajadoresData: [],
+        razoncambio: "",
         gestionTicket: {
             uuid: "",
             id_solicitud: 0,
@@ -360,7 +388,8 @@ export default {
             fechaCreacion: null,
             fechaCambiadaFormateada: null,
             id_user: 0,
-            descripcionSeguimiento: ""
+            descripcionSeguimiento: "",
+            idUsuarioSesion: 0
         },
         listadoTurno: [],
         seleccionTurno: {
@@ -817,16 +846,16 @@ export default {
         },
         errorDrop(mensajeError) {
             this.$vs.notify({
+                time: 3000,
                 title: "Falto seleccionar " + mensajeError,
                 text: "Seleccione " + mensajeError,
                 color: "danger",
-                position: "top-right",
-                fixed: true
+                position: "top-right"
             });
         },
         mensajeGuardado() {
             this.$vs.notify({
-                time: 5000,
+                time: 4000,
                 title: "Ticket Modificado",
                 text:
                     "A sido Modificado correctamente, Retornara a la pagina anterior",
@@ -960,6 +989,14 @@ export default {
             } else if (this.seleccionEstado[0].id == 0) {
                 this.mensajeError = "el estado";
                 this.errorDrop(this.mensajeError);
+            } else if (this.razoncambio.length < 10) {
+                this.$vs.notify({
+                    time: 3000,
+                    title: "Campo Razon del cambio esta vacio",
+                    text: "debe escribir la razon para continuar",
+                    color: "danger",
+                    position: "top-right"
+                });
             } else if (this.seleccionSupervisor[0].id == 0) {
                 this.mensajeError = "el supervisor";
                 this.errorDrop(this.mensajeError);
@@ -1033,11 +1070,16 @@ export default {
                 this.gestionTicket.fechaCambiadaFormateada = fechaCambiadaF;
                 this.gestionTicket.fechaCreacion = fechaCreacionT;
                 this.gestionTicket.id_user = localStorage.getItem("id");
+                this.gestionTicket.idUsuarioSesion = this.$route.params.id_user;
                 this.gestionTicket.descripcionSeguimiento =
                     "El Agente " +
                     this.nombre +
                     " a realizado una modificacion en el Ticket N°" +
-                    id;
+                    id +
+                    " " +
+                    "<br/>" +
+                    "Razon del cambio:" +
+                    this.razoncambio;
 
                 const ticket = this.gestionTicket;
 

@@ -78,7 +78,8 @@
                                     @click="
                                         modificarSolicitud(
                                             data[indextr].id,
-                                            data[indextr].uuid
+                                            data[indextr].uuid,
+                                            data[indextr].id_user
                                         )
                                     "
                                 ></upload-icon>
@@ -248,7 +249,7 @@ export default {
                     this.localVal + `/api/Agente/ValidarTicketAsignadoMod/${id}`
                 )
                 .then(res => {
-                    if (res.data) {
+                    if (res.data == 1) {
                         this.$vs.notify({
                             title: "Ticket no ha sido asignado ",
                             text:
@@ -298,7 +299,7 @@ export default {
                     }
                 });
         },
-        modificarSolicitud(id, uuid) {
+        modificarSolicitud(id, uuid, id_user) {
             //router.push(`/agenteView/FormularioModificar/${id}`);
             axios
                 .get(
@@ -318,7 +319,8 @@ export default {
                             name: "ModificarSolicitudAgenteEM",
                             params: {
                                 id: `${id}`,
-                                uuid: `${uuid}`
+                                uuid: `${uuid}`,
+                                id_user: `${id_user}`
                             }
                         });
                     }

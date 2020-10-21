@@ -326,9 +326,6 @@ class GestionTicketController extends Controller
             $desApoyo2 = $request->desApoyo2;
             $desApoyo3 = $request->desApoyo3;
 
-
-
-
             SeguimientoSolicitudes::create($request->all());
             //Insertando Ticket
             $response2 = SolicitudTickets::where('id', $request->id_solicitud)
@@ -340,7 +337,7 @@ class GestionTicketController extends Controller
         } finally {
             Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
                 $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Asignacion de ticket');
-                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+                $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
             });
             return $response = "Ok";
         }
@@ -611,10 +608,8 @@ class GestionTicketController extends Controller
             $desApoyo2 = $request->desApoyo2;
             $desApoyo3 = $request->desApoyo3;
             $id_user = $request->id_user;
+            $id_busqueda_solicitante = $request->idUsuarioSesion;
             $descripcionSeguimiento = $request->descripcionSeguimiento;
-
-            log::info($id_user);
-            log::info($descripcionSeguimiento);
 
             SeguimientoSolicitudes::create($request->all());
 
@@ -635,39 +630,41 @@ class GestionTicketController extends Controller
                     'horaCambiada' => $request->horaCambiada,
                     'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
                     'fechaTermino' => $request->fechaTermino
-                ]);
+                ]); 
 
-            $to = [['email' => 'ricardo.soto.g@gmail.com', 'name' => 'Ricardo Soto '], 
-                   ['email' => 'knightwalker.zero5@gmail.com', 'name' => 'Mario Rodriguez']];    
-
-            $to2 = ['ricardo.soto.g@redsalud.gov.cl','knightwalker.zero5@gmail.com'];       
-
-            $userSearch = Users::where('id',$id_user)->first();
-            log::info($userSearch);
-            $ValidarCargo = $userSearch->id_cargo_asociado;
-
+            $userSearch = Users::where('id',$id_busqueda_solicitante)->first();
+            $ValidarCargo = $userSearch->id_cargo_asociado;     
             $userMail = [];
 
             if($ValidarCargo == null || $ValidarCargo == 0){
-                $userMail = Users::select('users.email')
-            ->where('users.id_cargo_asociado',$id_user)
-            ->orWhere('users.id',$id_user)
-            ->get();
+                $userMail = Users::select('email')
+                ->Where('id',$id_busqueda_solicitante)
+                ->orWhere('id_cargo_asociado',$id_busqueda_solicitante)
+                ->get();
             }else{
-                $userMail = Users::select('users.email')
-            ->Where('users.id',$id_user)
+               
+            $userMail = Users::select('email')
+            ->where('id_cargo_asociado',$ValidarCargo)
+            ->orWhere('id',$ValidarCargo)
             ->get();
             }
 
-            log::info($userMail);
+            $listContactos = [];
+            $i = 0;
+
+            foreach ($userMail as $key) {
+                $listContactos[$i] = $key->email;
+                $i++;
+            }
+
+            
 
         } catch (\Throwable $th) {
             log::info($th);
         } finally {
-            
-            Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($to2){
-                $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
-                $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
+            Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
+                $message->setTo($listContactos)->setSubject('Modificacion de ticket');
+                $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return "ok";
         }
@@ -694,10 +691,9 @@ class GestionTicketController extends Controller
             $desApoyo2 = $request->desApoyo2;
             $desApoyo3 = $request->desApoyo3;
             $id_user = $request->id_user;
+            $id_busqueda_solicitante = $request->idUsuarioSesion;
             $descripcionSeguimiento = $request->descripcionSeguimiento;
 
-            log::info($id_user);
-            log::info($descripcionSeguimiento);
 
             SeguimientoSolicitudes::create($request->all());
 
@@ -719,12 +715,38 @@ class GestionTicketController extends Controller
                     'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
                     'fechaTermino' => $request->fechaTermino
                 ]);
+
+                $userSearch = Users::where('id',$id_busqueda_solicitante)->first();
+                $ValidarCargo = $userSearch->id_cargo_asociado;     
+                $userMail = [];
+    
+                if($ValidarCargo == null || $ValidarCargo == 0){
+                    $userMail = Users::select('email')
+                    ->Where('id',$id_busqueda_solicitante)
+                    ->orWhere('id_cargo_asociado',$id_busqueda_solicitante)
+                    ->get();
+                }else{
+                   
+                $userMail = Users::select('email')
+                ->where('id_cargo_asociado',$ValidarCargo)
+                ->orWhere('id',$ValidarCargo)
+                ->get();
+                }
+    
+                $listContactos = [];
+                $i = 0;
+    
+                foreach ($userMail as $key) {
+                    $listContactos[$i] = $key->email;
+                    $i++;
+                }
+    
         } catch (\Throwable $th) {
             log::info($th);
         } finally {
-            Mail::send('/Mails/TicketModificadoAgente', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-                $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
-                $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
+            Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
+                $message->setTo($listContactos)->setSubject('Modificacion de ticket');
+                $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return $response;
         }
@@ -751,10 +773,8 @@ class GestionTicketController extends Controller
             $desApoyo2 = $request->desApoyo2;
             $desApoyo3 = $request->desApoyo3;
             $id_user = $request->id_user;
+            $id_busqueda_solicitante = $request->idUsuarioSesion;
             $descripcionSeguimiento = $request->descripcionSeguimiento;
-
-            log::info($id_user);
-            log::info($descripcionSeguimiento);
 
             SeguimientoSolicitudes::create($request->all());
 
@@ -776,12 +796,38 @@ class GestionTicketController extends Controller
                     'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
                     'fechaTermino' => $request->fechaTermino
                 ]);
+
+                $userSearch = Users::where('id',$id_busqueda_solicitante)->first();
+                $ValidarCargo = $userSearch->id_cargo_asociado;     
+                $userMail = [];
+    
+                if($ValidarCargo == null || $ValidarCargo == 0){
+                    $userMail = Users::select('email')
+                    ->Where('id',$id_busqueda_solicitante)
+                    ->orWhere('id_cargo_asociado',$id_busqueda_solicitante)
+                    ->get();
+                }else{
+                   
+                $userMail = Users::select('email')
+                ->where('id_cargo_asociado',$ValidarCargo)
+                ->orWhere('id',$ValidarCargo)
+                ->get();
+                }
+    
+                $listContactos = [];
+                $i = 0;
+    
+                foreach ($userMail as $key) {
+                    $listContactos[$i] = $key->email;
+                    $i++;
+                }
+    
         } catch (\Throwable $th) {
             log::info($th);
         } finally {
-            Mail::send('/Mails/TicketModificadoAgente', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-                $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
-                $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
+            Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
+                $message->setTo($listContactos)->setSubject('Modificacion de ticket');
+                $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return $response;
         }
@@ -808,10 +854,8 @@ class GestionTicketController extends Controller
             $desApoyo2 = $request->desApoyo2;
             $desApoyo3 = $request->desApoyo3;
             $id_user = $request->id_user;
+            $id_busqueda_solicitante = $request->idUsuarioSesion;
             $descripcionSeguimiento = $request->descripcionSeguimiento;
-
-            log::info($id_user);
-            log::info($descripcionSeguimiento);
 
             SeguimientoSolicitudes::create($request->all());
 
@@ -833,12 +877,38 @@ class GestionTicketController extends Controller
                     'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
                     'fechaTermino' => $request->fechaTermino
                 ]);
+
+                $userSearch = Users::where('id',$id_busqueda_solicitante)->first();
+                $ValidarCargo = $userSearch->id_cargo_asociado;     
+                $userMail = [];
+    
+                if($ValidarCargo == null || $ValidarCargo == 0){
+                    $userMail = Users::select('email')
+                    ->Where('id',$id_busqueda_solicitante)
+                    ->orWhere('id_cargo_asociado',$id_busqueda_solicitante)
+                    ->get();
+                }else{
+                   
+                $userMail = Users::select('email')
+                ->where('id_cargo_asociado',$ValidarCargo)
+                ->orWhere('id',$ValidarCargo)
+                ->get();
+                }
+    
+                $listContactos = [];
+                $i = 0;
+    
+                foreach ($userMail as $key) {
+                    $listContactos[$i] = $key->email;
+                    $i++;
+                }
+    
         } catch (\Throwable $th) {
             log::info($th);
         } finally {
-            Mail::send('/Mails/TicketModificadoAgente', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-                $message->to('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
-                $message->from('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
+            Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
+                $message->setTo($listContactos)->setSubject('Modificacion de ticket');
+                $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return $response;
         }

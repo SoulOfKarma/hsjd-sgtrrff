@@ -12,6 +12,12 @@ use DB;
 
 class UsersController extends Controller
 {
+
+    public function buscarUsuarioData($id){
+        $getdata = Users::where('id',$id)->first();
+        return $getdata;
+    }
+
     public function traerTodoUsuarios()
     {
         $get_all = Users::select('id',DB::raw("CONCAT(nombre,' ',apellido) as nombrecompleto"))

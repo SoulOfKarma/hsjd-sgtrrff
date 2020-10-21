@@ -216,6 +216,7 @@ class PdfController extends Controller
             'unidad_esps.descripcionUnidadEsp',
             'estado_solicituds.descripcionEstado',
             'tipo_reparacions.descripcionTipoReparacion',
+            'turnos.descripcionTurno',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
@@ -234,6 +235,7 @@ class PdfController extends Controller
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->join('turnos', 'gestion_solicitudes.idTurno', '=', 'turnos.id')
             ->where('gestion_solicitudes.id_solicitud', $id)
             ->first();
 
@@ -314,6 +316,7 @@ class PdfController extends Controller
             'unidad_esps.descripcionUnidadEsp',
             'estado_solicituds.descripcionEstado',
             'tipo_reparacions.descripcionTipoReparacion',
+            'turnos.descripcionTurno',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
@@ -332,6 +335,7 @@ class PdfController extends Controller
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->join('turnos', 'gestion_solicitudes.idTurno', '=', 'turnos.id')
             ->where('gestion_solicitudes.id_solicitud', $id)
             ->first();
 
@@ -412,6 +416,7 @@ class PdfController extends Controller
             'unidad_esps.descripcionUnidadEsp',
             'estado_solicituds.descripcionEstado',
             'tipo_reparacions.descripcionTipoReparacion',
+            'turnos.descripcionTurno',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
@@ -430,6 +435,7 @@ class PdfController extends Controller
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->join('turnos', 'gestion_solicitudes.idTurno', '=', 'turnos.id')
             ->where('gestion_solicitudes.id_solicitud', $id)
             ->first();
 

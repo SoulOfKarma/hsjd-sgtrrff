@@ -12,23 +12,16 @@
                 </div>
                 <div class="vx-breadcrumb ml-4 md:block hidden">
                     <div
-                        class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
+                        class="content-area__heading pr-6 border-0 md:border-r border-solid border-grey-light"
                     >
-                        <h3 class="mb-1">
+                        <h3 class="mb-6">
                             Agente:
                             <p>{{ nombre }} - {{ run }}</p>
                         </h3>
                     </div>
                 </div>
             </div>
-            <vs-alert
-                color="primary"
-                icon="new_releases"
-                active="true"
-                style="margin-bottom: 10px;"
-            >
-                <p>Recuerda que todos los campos son obligatorios!</p>
-            </vs-alert>
+
             <!-- Informacion General Ticket -->
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card :title="titulo">
@@ -60,6 +53,7 @@
                             />
                             <br />
                         </div>
+
                         <div class="vx-col w-full mt-5">
                             <vs-input
                                 label-placeholder="Unidad Especifica"
@@ -67,6 +61,18 @@
                                 disabled="true"
                                 class="w-full"
                             />
+                        </div>
+                        <br />
+                        <div class="vx-col w-full mt-5">
+                            <div slot="footer">
+                                <vs-row vs-justify="flex-end">
+                                    <vs-button
+                                        class="fixedHeight"
+                                        @click="volver"
+                                        >Volver</vs-button
+                                    >
+                                </vs-row>
+                            </div>
                         </div>
                     </div>
                 </vx-card>
@@ -85,11 +91,15 @@
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
                             <br />
-                            <vs-button
-                                type="gradient"
-                                @click="guardarSeguimiento"
-                                >Actualizar</vs-button
-                            >
+                            <div slot="footer">
+                                <vs-row vs-justify="flex-end">
+                                    <vs-button
+                                        type="gradient"
+                                        @click="guardarSeguimiento"
+                                        >Actualizar</vs-button
+                                    >
+                                </vs-row>
+                            </div>
 
                             <br />
                         </div>
@@ -104,11 +114,9 @@
                             <vs-list
                                 :key="indextr"
                                 v-for="(tr, indextr) in seguimiento"
-                                max-items="2"
-                                pagination
                             >
                                 <vx-card
-                                    :title="tr.nombre"
+                                    :title="tr.nombre + ' ' + tr.apellido"
                                     title-color="primary"
                                 >
                                     <p v-html="tr.descripcionSeguimiento">
@@ -151,8 +159,9 @@ export default {
                 ]
             }
         },
+
         textarea: "",
-        currentx: 1,
+
         localVal: "http://127.0.0.1:8000",
         solicitudes: [],
         seguimiento: [],
@@ -176,15 +185,21 @@ export default {
         colorLoading: "#ff8000"
     }),
     methods: {
+        volver() {
+            router.back();
+        },
         cargaSolicitudEspecifica() {
             let id = this.$route.params.uuid;
             axios
                 .get(this.localVal + `/api/Agente/TraerSolicitud/${id}`)
                 .then(res => {
+                    this.solicitudes = res.data;
                     try {
-                        this.solicitudes = res.data;
-                        this.titulo = "Ticket N°" + this.solicitudes[0].id;
-                        this.infoSeguimiento.nombre = this.solicitudes[0].nombre;
+                        this.titulo = "1. Ticket N°" + this.solicitudes[0].id;
+                        this.infoSeguimiento.nombre =
+                            this.solicitudes[0].nombre +
+                            " " +
+                            this.solicitudes[0].apellido;
                         this.infoSeguimiento.edificio = this.solicitudes[0].descripcionEdificio;
                         this.infoSeguimiento.servicio = this.solicitudes[0].descripcionServicio;
                         this.infoSeguimiento.unidadEsp = this.solicitudes[0].descripcionUnidadEsp;
@@ -192,12 +207,6 @@ export default {
                         router.back();
                     }
                 });
-        },
-        openLoadingColor() {
-            this.$vs.loading({ color: this.colorLoading });
-            setTimeout(() => {
-                this.$vs.loading.close();
-            }, 2000);
         },
         cargaSeguimiento() {
             let uuid = this.$route.params.uuid;
@@ -254,6 +263,12 @@ export default {
                     });
                     this.cargaSeguimiento();
                 });
+        },
+        openLoadingColor() {
+            this.$vs.loading({ color: this.colorLoading });
+            setTimeout(() => {
+                this.$vs.loading.close();
+            }, 2000);
         }
     },
     beforeMount() {
@@ -263,8 +278,35 @@ export default {
 };
 </script>
 
-<style lang="stylus">
-.cardx {
-  margin: 15px;
+<style lang="scss">
+.fill-row-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    .loading-example {
+        width: 120px;
+        float: left;
+        height: 120px;
+        box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        margin: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        &:hover {
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.05);
+            transform: translate(0, 4px);
+        }
+        h4 {
+            z-index: 40000;
+            position: relative;
+            text-align: center;
+            padding: 10px;
+        }
+        &.activeLoading {
+            opacity: 0 !important;
+            transform: scale(0.5);
+        }
+    }
 }
 </style>

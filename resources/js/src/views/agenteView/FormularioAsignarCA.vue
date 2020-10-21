@@ -397,16 +397,16 @@ export default {
             tra_nombre_apellido: "Seleccione al Trabajador"
         },
         seleccionApoyo1: {
-            id: 999,
-            tra_nombre_apellido: "Sin Asignar"
+            id: 0,
+            tra_nombre_apellido: "Seleccione Apoyo 1"
         },
         seleccionApoyo2: {
-            id: 999,
-            tra_nombre_apellido: "Sin Asignar"
+            id: 0,
+            tra_nombre_apellido: "Seleccione Apoyo 2"
         },
         seleccionApoyo3: {
-            id: 999,
-            tra_nombre_apellido: "Sin Asignar"
+            id: 0,
+            tra_nombre_apellido: "Seleccione Apoyo 3"
         },
         variablePrueba: 0,
         mensajeError: "",
@@ -1001,8 +1001,8 @@ export default {
                 this.gestionTicket.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
                 this.gestionTicket.id_tipoReparacion = this.seleccionReparacion[0].id;
                 this.gestionTicket.id_estado = this.seleccionEstado[0].id;
-                this.gestionTicket.id_supervisor = this.seleccionSupervisor.id;
-                this.gestionTicket.id_trabajador = this.seleccionTrabajador.id;
+                this.gestionTicket.id_supervisor = this.seleccionSupervisor[0].id;
+                this.gestionTicket.id_trabajador = this.seleccionTrabajador[0].id;
                 this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
                 this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
                 this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
@@ -1012,8 +1012,8 @@ export default {
                 this.gestionTicket.desUbicacion = this.seleccionUnidadEsp[0].descripcionUnidadEsp;
                 this.gestionTicket.desReparacion = this.seleccionReparacion[0].descripcionTipoReparacion;
                 this.gestionTicket.desEstado = this.seleccionEstado[0].descripcionEstado;
-                this.gestionTicket.desTrabajador = this.seleccionTrabajador.tra_nombre_apellido;
-                this.gestionTicket.desSupervisor = this.seleccionSupervisor.sup_nombre_apellido;
+                this.gestionTicket.desTrabajador = this.seleccionTrabajador[0].tra_nombre_apellido;
+                this.gestionTicket.desSupervisor = this.seleccionSupervisor[0].sup_nombre_apellido;
                 this.gestionTicket.desApoyo1 = this.seleccionApoyo1[0].tra_nombre_apellido;
                 this.gestionTicket.desApoyo2 = this.seleccionApoyo2[0].tra_nombre_apellido;
                 this.gestionTicket.desApoyo3 = this.seleccionApoyo3[0].tra_nombre_apellido;

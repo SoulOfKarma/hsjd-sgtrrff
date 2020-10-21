@@ -183,6 +183,7 @@ export default {
         listadoCategoria: [],
         listadoServiciosData: [],
         listadoUnidadEspData: [],
+        listadoUsuarios: [],
         localVal: "http://127.0.0.1:8000",
         uuidC: "",
 
@@ -261,6 +262,50 @@ export default {
                 });
             this.solicitud.descripcionP = "";
             this.solicitud.tituloP = "";
+        },
+        cargaESU() {
+            var idGeneral = this.seleccionUnidadEsp.id;
+
+            let c = this.listadoUnidadEspData;
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == idGeneral) {
+                    b.push(value);
+                }
+            });
+            this.seleccionUnidadEsp = b;
+
+            idGeneral = 0;
+            idGeneral = this.seleccionUnidadEsp[0].id_servicio;
+            b = [];
+
+            c = this.listadoServicios;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == idGeneral) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionServicio = b;
+
+            idGeneral = 0;
+            idGeneral = this.seleccionServicio[0].id_edificio;
+            b = [];
+            c = this.listadoEdificios;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == idGeneral) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionEdificio = b;
         },
         cargaSegunUnidadEsp() {
             if (
@@ -427,9 +472,15 @@ export default {
             });
         },
         cargarUsuarios() {
-            axios.get(this.localVal + "/api/Agente/getUsuarios").then(res => {
-                this.listadoUsuarios = res.data;
-            });
+            let id = localStorage.getItem("id");
+            axios
+                .get(this.localVal + `/api/Usuario/getUsuarios/${id}`)
+                .then(res => {
+                    this.listadoUsuarios = res.data;
+                    this.seleccionEdificio.id = this.listadoUsuarios.id_edificio;
+                    this.seleccionServicio.id = this.listadoUsuarios.id_servicio;
+                    this.seleccionUnidadEsp.id = this.listadoUsuarios.id_unidadEspecifica;
+                });
         },
         errorTitulo(mensajeError) {
             this.$vs.notify({
@@ -574,15 +625,18 @@ export default {
         }
     },
     created() {
+        this.cargarUsuarios();
         this.cargarEdificios();
         this.cargarServicios();
         this.cargarUnidadEsp();
         this.cargarCategoria();
         this.cargarTipoRep();
-        this.cargarUsuarios();
     },
-    mounted() {},
-
+    beforeMount() {
+        setTimeout(() => {
+            this.cargaESU();
+        }, 2000);
+    },
     components: {
         "v-select": vSelect,
         quillEditor

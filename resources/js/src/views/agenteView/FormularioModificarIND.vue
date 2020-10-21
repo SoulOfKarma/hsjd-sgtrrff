@@ -234,6 +234,15 @@
                                 :options="listadoEstado"
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
+                            <br />
+                            <h6>4.3 - Razon de la modificacion</h6>
+                            <br />
+                            <quill-editor
+                                v-model="razoncambio"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
                         </div>
                     </div>
                 </vx-card>
@@ -278,6 +287,21 @@ import router from "@/router";
 
 export default {
     data: () => ({
+        editorOption: {
+            modules: {
+                toolbar: [
+                    ["bold", "italic", "underline", "strike"],
+                    ["blockquote", "code-block"],
+                    [{ header: 1 }, { header: 2 }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ indent: "-1" }, { indent: "+1" }],
+                    [{ direction: "rtl" }],
+                    [{ font: [] }],
+                    [{ align: [] }],
+                    ["clean"]
+                ]
+            }
+        },
         horasCalculadas: 0,
         colorLoading: "#ff8000",
         diaCalculado: 0,
@@ -324,6 +348,7 @@ export default {
         listadoServiciosData: [],
         listadoTrabajadoresData: [],
         listadoUnidadEspData: [],
+        razoncambio: "",
         gestionTicket: {
             uuid: "",
             id_solicitud: 0,
@@ -360,7 +385,8 @@ export default {
             fechaCreacion: null,
             fechaCambiadaFormateada: null,
             id_user: 0,
-            descripcionSeguimiento: ""
+            descripcionSeguimiento: "",
+            idUsuarioSesion: 0
         },
         listadoTurno: [],
         seleccionTurno: {
@@ -1032,11 +1058,16 @@ export default {
                 this.gestionTicket.fechaCambiadaFormateada = fechaCambiadaF;
                 this.gestionTicket.fechaCreacion = fechaCreacionT;
                 this.gestionTicket.id_user = localStorage.getItem("id");
+                this.gestionTicket.idUsuarioSesion = this.$route.params.id_user;
                 this.gestionTicket.descripcionSeguimiento =
                     "El Agente " +
                     this.nombre +
                     " a realizado una modificacion en el Ticket N°" +
-                    id;
+                    id +
+                    " " +
+                    "<br/>" +
+                    "Razon del cambio:" +
+                    this.razoncambio;
 
                 const ticket = this.gestionTicket;
                 console.log(ticket);
