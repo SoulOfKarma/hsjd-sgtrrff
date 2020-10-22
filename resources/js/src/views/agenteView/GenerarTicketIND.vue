@@ -338,7 +338,10 @@ export default {
         language: lang,
         diaCalculado: 0,
         format: "d MMMM yyyy",
-        nombre: localStorage.getItem("nombre"),
+        nombre:
+            localStorage.getItem("nombre") +
+            " " +
+            localStorage.getItem("apellido"),
         run: localStorage.getItem("run"),
         fecha1: moment()
             .startOf("day")

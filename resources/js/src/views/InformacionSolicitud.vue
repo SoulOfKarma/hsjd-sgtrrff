@@ -31,7 +31,7 @@
                             v-model="seguimientos.descripcionSeguimiento"
                             :options="editorOption"
                             name="Descripcion"
-                            v-validate="'required|max:50|min:15'"
+                            v-validate="'required|max:200|min:10'"
                         >
                             <div id="toolbar" slot="toolbar"></div>
                         </quill-editor>
@@ -119,9 +119,13 @@ export default {
             descripcionSeguimiento: "",
             id_solicitud: 0,
             uuid: "",
-            nombre: localStorage.getItem("nombre"),
+            nombre:
+                localStorage.getItem("nombre") +
+                " " +
+                localStorage.getItem("apellido"),
             id_user: localStorage.getItem("id"),
-            descripcionCorreo: ""
+            descripcionCorreo: "",
+            id_usuarioEspecifico: 0
         }
     }),
     methods: {
@@ -164,7 +168,7 @@ export default {
         },
         guardarSeguimiento() {
             let uuid = this.$route.params.uuid;
-            console.log(uuid);
+
             if (
                 this.seguimientos.descripcionSeguimiento.trim() === "" ||
                 this.seguimientos.descripcionSeguimiento < 15
@@ -180,6 +184,7 @@ export default {
             } else {
                 /* var aux = localStorage.getItem("nombre");
         this.seguimientos.nombre = aux; */
+                this.seguimientos.id_usuarioEspecifico = this.solicitudes[0].id_user;
                 var id = this.solicitudes.id;
                 this.seguimientos.id = id;
                 this.seguimientos.uuid = uuid;

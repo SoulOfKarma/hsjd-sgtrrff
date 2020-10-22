@@ -323,41 +323,6 @@ a {
                                     </td>
                                 </tr>
                                 <tr>
-                                  <td class="content-block">
-                                      <b>Asignado a: {{$tra_nombre}}</b> 
-                                  </td>
-                              </tr>
-                              <tr>
-                                <td class="content-block">
-                                    <b>Supervisor: {{$sup_nombre}}</b> 
-                                </td>
-                            </tr>
-                            <tr>
-                              <td class="content-block">
-                                  <b>Apoyo 1: {{$Apoyo1}}</b> 
-                              </td>
-                          </tr>
-                          <tr>
-                            <td class="content-block">
-                                <b>Apoyo 2: {{$Apoyo2}}</b> 
-                            </td>
-                        </tr>
-                        <tr>
-                          <td class="content-block">
-                              <b>Apoyo 3: {{$Apoyo3}}</b> 
-                          </td>
-                      </tr>
-                            <tr>
-                              <td class="content-block">
-                                  <b>Creado el dia: {{$fechaCreacion}}</b> 
-                              </td>
-                          </tr>
-                                <tr>
-                                  <td class="content-block">
-                                      <b>Fecha cambiada al dia: {{$fecha}}</b> 
-                                  </td>
-                              </tr>
-                                <tr>
                                     <td class="content-block">
                                         <b>Titulo:  {{$titulo}}.</b>
                                     </td>
@@ -374,7 +339,7 @@ a {
                               </tr>
                               <tr>
                                   <td class="content-block">
-                                      <b>Razon: {{$razon}}</b> 
+                                      <b>Razon de la modificacion: {{$razon}}</b> 
                                   </td>
                               </tr>
                                 <tr>

@@ -42,7 +42,7 @@
         }
         
         .panel-body{
-          height: 5em;
+          height: 2em;
             width: 90%;
         }
         </style>
@@ -123,6 +123,14 @@
               <div class="col-xs-3"><label>Turno</label></div>
               <div class="col-xs-2"><label>{{$descripcionTurno}}</label></div>
               <div class="col-xs-2"></div>
+            </div>
+            <div class="row">
+              <div class="col-xs-2"><label>Anexo</label></div>
+              <div class="col-xs-2"><label>{{$anexo}}</label> </div>
+              <div class="col-xs-1"></div>
+              <div class="col-xs-3"></div>
+              <div class="col-xs-2"></div>
+              <div class="col-xs-2"></div>
             </div><br>
             <div class="row">
               <div class="col-xs-12">
@@ -148,6 +156,7 @@
                 </div>
               </div>
             </div>
+            <br>
             <div class="row">
               <div class="col-xs-1"></div>
               <div class="col-xs-5" id="centrarFirmas"><label id="hoverL">Nombre y firma Solicitante</label></div>

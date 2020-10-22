@@ -149,7 +149,8 @@ export default {
                 .get(this.localVal + `/api/Agente/TraerSolicitud/${id}`)
                 .then(res => {
                     this.solicitudes = res.data;
-                    this.titulo = "Ticket N°" + this.solicitudes[0].id;
+                    this.titulo =
+                        "1. Seguimiento Ticket N°" + this.solicitudes[0].id;
                     this.infoSeguimiento.nombre = this.solicitudes[0].nombre;
                     this.infoSeguimiento.edificio = this.solicitudes[0].descripcionEdificio;
                     this.infoSeguimiento.servicio = this.solicitudes[0].descripcionServicio;

@@ -106,6 +106,15 @@
                             >
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
+                            <br />
+                            <h6>2.4 - Razon de la modificacion</h6>
+                            <br />
+                            <quill-editor
+                                v-model="razoncambio"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
                         </div>
                     </div>
                 </vx-card>
@@ -168,6 +177,7 @@ export default {
                 ]
             }
         },
+        razoncambio: "",
         datosSolicitud: [],
         listadoEdificios: [],
         listadoServicios: [],
@@ -193,7 +203,9 @@ export default {
             id_tipoReparacion: 0,
             id_solicitud: 0,
             uuid: "",
-            descripcionSeguimiento: "Ticket Modificado"
+            descripcionSeguimiento: "",
+            razonMail: "",
+            descripcionProblema: ""
         },
         seleccionEdificio: {
             id: 0,
@@ -408,17 +420,43 @@ export default {
                 this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
                 this.solicitud.id_tipoReparacion = this.seleccionReparacion[0].id;
                 this.solicitud.id = this.datosSolicitud.id;
-                this.solicitud.descripcionP = this.descripcionProblema;
                 this.solicitud.tituloP = this.descripcionTitulo;
+                var newElement = document.createElement("div");
+                this.solicitud.descripcionP = this.descripcionProblema;
+                newElement.innerHTML = this.descripcionProblema;
+                this.solicitud.descripcionProblema = newElement.textContent;
                 this.solicitud.id_solicitud = this.datosSolicitud.id;
                 this.solicitud.uuid = this.datosSolicitud.uuid;
-                console.log(this.solicitud);
+                newElement.innerHTML = this.razoncambio;
+                var razonInner = newElement.textContent;
+                this.solicitud.descripcionSeguimiento =
+                    "El Usuario " +
+                    this.solicitud.nombre +
+                    " a realizado una modificacion en el Ticket N°" +
+                    this.datosSolicitud.id +
+                    " " +
+                    "<br/>" +
+                    "Razon del cambio: " +
+                    this.razoncambio;
+
+                newElement.innerHTML =
+                    "El Usuario " +
+                    this.solicitud.nombre +
+                    " a realizado una modificacion en el Ticket N°" +
+                    this.datosSolicitud.id +
+                    " , " +
+                    razonInner;
+                this.solicitud.razonMail = newElement.textContent;
+
                 const solicitudNueva = this.solicitud;
                 this.openLoadingColor();
                 (this.solicitud = {
                     id: 0,
 
-                    nombre: localStorage.getItem("nombre"),
+                    nombre:
+                        localStorage.getItem("nombre") +
+                        " " +
+                        localStorage.getItem("apellido"),
                     descripcionP: "",
                     tituloP: "",
                     id_user: localStorage.getItem("id"),
@@ -429,7 +467,7 @@ export default {
                     id_tipoReparacion: 0,
                     id_solicitud: 0,
                     uuid: "",
-                    descripcionSeguimiento: "Ticket Modificado"
+                    descripcionSeguimiento: ""
                 }),
                     axios
                         .post(

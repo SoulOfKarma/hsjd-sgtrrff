@@ -336,7 +336,10 @@ export default {
         horasCalculadas: 0,
         diaCalculado: 0,
         format: "d MMMM yyyy",
-        nombre: localStorage.getItem("nombre"),
+        nombre:
+            localStorage.getItem("nombre") +
+            " " +
+            localStorage.getItem("apellido"),
         run: localStorage.getItem("run"),
         fecha1: moment()
             .startOf("day")
@@ -897,7 +900,7 @@ export default {
             axios
                 .get(this.localVal + "/api/Agente/GetTrabajadores")
                 .then(res => {
-                    this.cargarApoyosArray(this.listadoTrabajadores);
+                    this.cargarApoyosArray(res.data);
                 });
         },
         cargarApoyosArray(listadoApoyo) {

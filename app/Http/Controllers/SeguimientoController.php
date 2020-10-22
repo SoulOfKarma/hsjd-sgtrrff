@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\SeguimientoSolicitudes;
 use App\Mail\AutoRespuesta;
 use App\SolicitudTickets;
+use App\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use DB;
@@ -45,10 +46,39 @@ class SeguimientoController extends Controller
         $descripcionSeguimiento = $request->descripcionCorreo;
         $id_solicitud = $request->id;
         $nombre = $request->nombre;
+        $id_user = $request->id_user;
+        $id_usuarioEspecifico = $request->id_usuarioEspecifico;
 
-        Mail::send('/Mails/TicketGeneradoUsuario', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) {
-            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
-            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+        $userSearch = Users::where('id',$id_usuarioEspecifico)->first();
+            $ValidarCargo = $userSearch->id_cargo_asociado;     
+            $userMail = [];
+
+            if($ValidarCargo == null || $ValidarCargo == 0){
+                $userMail = Users::select('email')
+                ->Where('id',$id_usuarioEspecifico)
+                ->orWhere('id_cargo_asociado',$id_usuarioEspecifico)
+                ->get();
+            }else{
+               
+            $userMail = Users::select('email')
+            ->where('id_cargo_asociado',$ValidarCargo)
+            ->orWhere('id',$ValidarCargo)
+            ->get();
+            }
+
+            $listContactos = [];
+            $i = 0;
+
+            foreach ($userMail as $key) {
+                $listContactos[$i] = $key->email;
+                $i++;
+            }
+
+
+        Mail::send('/Mails/TicketGeneradoUsuario', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) use($listContactos) {
+            $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
+                $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Mantencion']);
         });
     }
 
@@ -58,14 +88,42 @@ class SeguimientoController extends Controller
         $descripcionSeguimiento = $request->descripcionCorreo;
         $id_solicitud = $request->id;
         $nombre = $request->nombre;
+        $id_user = $request->id_user;
+
+        $userSearch = Users::where('id',$id_user)->first();
+            $ValidarCargo = $userSearch->id_cargo_asociado;     
+            $userMail = [];
+
+            if($ValidarCargo == null || $ValidarCargo == 0){
+                $userMail = Users::select('email')
+                ->Where('id',$id_user)
+                ->orWhere('id_cargo_asociado',$id_user)
+                ->get();
+            }else{
+               
+            $userMail = Users::select('email')
+            ->where('id_cargo_asociado',$ValidarCargo)
+            ->orWhere('id',$ValidarCargo)
+            ->get();
+            }
+
+            $listContactos = [];
+            $i = 0;
+
+            foreach ($userMail as $key) {
+                $listContactos[$i] = $key->email;
+                $i++;
+            }
+
 
         SolicitudTickets::where('id', $id_solicitud)
             ->where('uuid', $uuid)
             ->update(['id_estado' => 5]);
 
-        Mail::send('/Mails/TicketResuelto', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) {
-            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
-            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+        Mail::send('/Mails/TicketResuelto', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) use($listContactos) {
+            $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
+                $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Mantencion']);
         });
     }
 

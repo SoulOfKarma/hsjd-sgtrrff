@@ -386,7 +386,8 @@ export default {
             fechaCambiadaFormateada: null,
             id_user: 0,
             descripcionSeguimiento: "",
-            idUsuarioSesion: 0
+            idUsuarioSesion: 0,
+            razoncambio: ""
         },
         listadoTurno: [],
         seleccionTurno: {
@@ -1059,6 +1060,8 @@ export default {
                 this.gestionTicket.fechaCreacion = fechaCreacionT;
                 this.gestionTicket.id_user = localStorage.getItem("id");
                 this.gestionTicket.idUsuarioSesion = this.$route.params.id_user;
+                newElement.innerHTML = this.razoncambio;
+                this.gestionTicket.razoncambio = newElement.textContent;
                 this.gestionTicket.descripcionSeguimiento =
                     "El Agente " +
                     this.nombre +
@@ -1369,6 +1372,7 @@ export default {
         }
     },
     created() {
+        this.cargarTurnos();
         this.cargarEdificios();
         this.cargarServicios();
         this.cargarUnidadEsp();
@@ -1378,7 +1382,6 @@ export default {
         this.cargarEstado();
         this.cargaSolicitudEspecifica();
         this.cargaTicketAsignado();
-        this.cargarTurnos();
     },
     async beforeMount() {},
     components: {

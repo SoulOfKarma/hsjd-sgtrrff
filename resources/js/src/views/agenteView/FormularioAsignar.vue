@@ -361,7 +361,8 @@ export default {
             fechaInicioFormateada: null,
             fechaCreacion: null,
             id_user: 0,
-            descripcionSeguimiento: ""
+            descripcionSeguimiento: "",
+            id_usuarioSolicitante: 0
         },
         listadoTurno: [],
         seleccionTurno: {
@@ -1038,6 +1039,7 @@ export default {
 
                 this.gestionTicket.fechaInicioFormateada = fechaInicioT;
                 this.gestionTicket.id_user = localStorage.getItem("id");
+                this.gestionTicket.id_usuarioSolicitante = this.datosSolicitud[0].id_user;
                 this.gestionTicket.descripcionSeguimiento =
                     "El Agente " +
                     this.nombre +

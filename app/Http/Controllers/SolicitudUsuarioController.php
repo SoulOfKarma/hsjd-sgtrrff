@@ -6,6 +6,7 @@ use App\Mail\TicketGenerado;
 use App\SolicitudTickets;
 use App\Users;
 use App\SeguimientoSolicitudes;
+use App\EstadoSolicituds;
 use Uuid;
 use DB;
 use Illuminate\Http\Request;
@@ -81,7 +82,8 @@ class SolicitudUsuarioController extends Controller
 
     public function ModificarSolicitud(Request $request)
     {
-        $response2 = SolicitudTickets::where('uuid', $request->uuid)
+       
+            $response2 = SolicitudTickets::where('uuid', $request->uuid)
             ->where('id', $request->id)
             ->update([
                 'id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
@@ -89,10 +91,57 @@ class SolicitudUsuarioController extends Controller
                 'id_estado' => $request->id_estado, 'descripcionP' => $request->descripcionP, 'tituloP' => $request->tituloP
             ]);
 
-        $response = SeguimientoSolicitudes::create($request->all());
+         $response = SeguimientoSolicitudes::create($request->all());
 
+         $nombre = $request->nombre;
+         $id = $request->id_user;
+         $titulo = $request->tituloP;
+         $descripcionTicket = $request->descripcionP;
+         $estado = $request->id_estado;
+         $razon = $request->razonMail;
+         $descripcionProblema = $request->descripcionProblema;
 
-        return $response2;
+            $userSearch = Users::where('id',$id)->first();
+            $ValidarCargo = $userSearch->id_cargo_asociado;     
+            $userMail = [];
+
+            $getEstado = EstadoSolicituds::where('id',$estado)->first();
+            
+
+            $desEstado = $getEstado->descripcionEstado;
+
+            if($ValidarCargo == null || $ValidarCargo == 0){
+                $userMail = Users::select('email')
+                ->Where('id',$id)
+                ->orWhere('id_cargo_asociado',$id)
+                ->get();
+              
+            }else{
+               
+            $userMail = Users::select('email')
+            ->where('id_cargo_asociado',$ValidarCargo)
+            ->orWhere('id',$ValidarCargo)
+            ->get();
+           
+            }
+
+            $listContactos = [];
+            $i = 0;
+
+            foreach ($userMail as $key) {
+                $listContactos[$i] = $key->email;
+                $i++;
+            }
+            
+            Mail::send('/Mails/SolicitudModificadaUsuario',['nombre' => $nombre, 'id' => $id, 'titulo' => $titulo, 'descripcionTicket' => $descripcionProblema, 'estado' => $desEstado, 'razon' => $razon], function ($message) use($listContactos){
+                $message->setTo($listContactos)->setSubject('Modificacion de ticket');
+                $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Mantencion']);
+            });
+            return "ok";
+
+       
+        
     }
 
     public function indexSeguimiento($uuid)
@@ -132,19 +181,18 @@ class SolicitudUsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        try {
         $uuid = Uuid::generate()->string;
         $response = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]));
         SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $response->id, 'descripcionSeguimiento' => 'Ticket creado']));
         $id = $request->id_user;
-        $userSearch = Users::where('id',$id_user)->first();
+        $userSearch = Users::where('id',$id)->first();
             $ValidarCargo = $userSearch->id_cargo_asociado;     
             $userMail = [];
 
             if($ValidarCargo == null || $ValidarCargo == 0){
                 $userMail = Users::select('email')
-                ->Where('id',$id_user)
-                ->orWhere('id_cargo_asociado',$id_user)
+                ->Where('id',$id)
+                ->orWhere('id_cargo_asociado',$id)
                 ->get();
             }else{
                
@@ -161,10 +209,9 @@ class SolicitudUsuarioController extends Controller
                 $listContactos[$i] = $key->email;
                 $i++;
             }
-
-        } catch (\Throwable $th) {
-            log::info($th);
-        } finally {
+            log::info($listContactos);
+        
+           log::info($listContactos);
            $nombre = $request->nombre;
            $descripcionP = $request->descripcionCorreo;
            $id_solicitud = $response->id;
@@ -172,10 +219,11 @@ class SolicitudUsuarioController extends Controller
             Mail::send('/Mails/TicketGenerado', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $titulo], function ($message) use($listContactos) {
               $message->setTo($listContactos)->setSubject('Nuevo Ticket Generado');
              $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+             $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Mantencion']);
             });
 
             return "ok";
-        }
+        
     }
 
 

@@ -118,6 +118,7 @@ class PdfController extends Controller
             'estado_solicituds.descripcionEstado',
             'tipo_reparacions.descripcionTipoReparacion',
             'turnos.descripcionTurno',
+            'users.anexo',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
@@ -173,6 +174,7 @@ class PdfController extends Controller
         $descripcionPro = $data->desFormat;
         $nombreUsuario = $data->nombre;
         $turno = $data->descripcionTurno;
+        $anexo = $data->anexo;
 
 
         $data = [
@@ -196,7 +198,8 @@ class PdfController extends Controller
             'apeApoyo3' => $ape3,
             'descripcionPro' => $descripcionPro,
             'nombreUsuario' => $nombreUsuario,
-            'descripcionTurno' =>$turno
+            'descripcionTurno' =>$turno,
+            'anexo' => $anexo
         ];
 
         $pdf = App::make("dompdf.wrapper");
@@ -217,6 +220,7 @@ class PdfController extends Controller
             'estado_solicituds.descripcionEstado',
             'tipo_reparacions.descripcionTipoReparacion',
             'turnos.descripcionTurno',
+            'users.anexo',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
@@ -273,6 +277,7 @@ class PdfController extends Controller
         $descripcionPro = $data->desFormat;
         $nombreUsuario = $data->nombre;
         $turno = $data->descripcionTurno;
+        $anexo = $data->anexo;
 
 
         $data = [
@@ -296,7 +301,8 @@ class PdfController extends Controller
             'apeApoyo3' => $ape3,
             'descripcionPro' => $descripcionPro,
             'nombreUsuario' => $nombreUsuario,
-            'descripcionTurno' =>$turno
+            'descripcionTurno' =>$turno,
+            'anexo' => $anexo
         ];
 
         $pdf = App::make("dompdf.wrapper");
@@ -317,6 +323,7 @@ class PdfController extends Controller
             'estado_solicituds.descripcionEstado',
             'tipo_reparacions.descripcionTipoReparacion',
             'turnos.descripcionTurno',
+            'users.anexo',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
@@ -373,6 +380,7 @@ class PdfController extends Controller
         $descripcionPro = $data->desFormat;
         $nombreUsuario = $data->nombre;
         $turno = $data->descripcionTurno;
+        $anexo = $data->anexo;
 
 
         $data = [
@@ -396,7 +404,8 @@ class PdfController extends Controller
             'apeApoyo3' => $ape3,
             'descripcionPro' => $descripcionPro,
             'nombreUsuario' => $nombreUsuario,
-            'descripcionTurno' =>$turno
+            'descripcionTurno' =>$turno,
+            'anexo' => $anexo
         ];
 
         $pdf = App::make("dompdf.wrapper");
@@ -417,6 +426,7 @@ class PdfController extends Controller
             'estado_solicituds.descripcionEstado',
             'tipo_reparacions.descripcionTipoReparacion',
             'turnos.descripcionTurno',
+            'users.anexo',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
@@ -473,6 +483,7 @@ class PdfController extends Controller
         $descripcionPro = $data->desFormat;
         $nombreUsuario = $data->nombre;
         $turno = $data->descripcionTurno;
+        $anexo = $data->anexo;
 
 
         $data = [
@@ -496,7 +507,8 @@ class PdfController extends Controller
             'apeApoyo3' => $ape3,
             'descripcionPro' => $descripcionPro,
             'nombreUsuario' => $nombreUsuario,
-            'descripcionTurno' =>$turno
+            'descripcionTurno' =>$turno,
+            'anexo' => $anexo
         ];
 
         $pdf = App::make("dompdf.wrapper");

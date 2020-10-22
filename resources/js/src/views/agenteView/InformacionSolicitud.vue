@@ -180,7 +180,8 @@ export default {
             uuid: "",
             nombre: localStorage.getItem("nombre"),
             id_user: localStorage.getItem("id"),
-            descripcionCorreo: ""
+            descripcionCorreo: "",
+            id_usuarioEspecifico: 0
         },
         colorLoading: "#ff8000"
     }),
@@ -195,7 +196,8 @@ export default {
                 .then(res => {
                     this.solicitudes = res.data;
                     try {
-                        this.titulo = "1. Ticket N°" + this.solicitudes[0].id;
+                        this.titulo =
+                            "1. Seguimiento Ticket N°" + this.solicitudes[0].id;
                         this.infoSeguimiento.nombre =
                             this.solicitudes[0].nombre +
                             " " +
@@ -233,6 +235,8 @@ export default {
                 return;
             }
             var id = this.solicitudes[0].id;
+            this.seguimientos.id_usuarioEspecifico = this.solicitudes[0].id_user;
+
             this.seguimientos.id = id;
             this.seguimientos.uuid = uuid;
             var newElement = document.createElement("div");
