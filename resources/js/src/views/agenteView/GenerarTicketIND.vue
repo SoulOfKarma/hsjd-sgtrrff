@@ -282,10 +282,7 @@
                         <vs-button color="primary" class="mb-2" @click="volver"
                             >Volver</vs-button
                         >
-                        <vs-button
-                            color="warning"
-                            class="mb-2"
-                            @click="probando"
+                        <vs-button color="warning" class="mb-2" @click="limpiar"
                             >Limpiar</vs-button
                         >
                         <vs-button
@@ -597,6 +594,73 @@ export default {
     methods: {
         volver() {
             router.back();
+        },
+        limpiar() {
+            (this.gestionTicket = {
+                uuid: "",
+                id_solicitud: 0,
+                id_edificio: 0,
+                id_servicio: 0,
+                id_ubicacionEx: 0,
+                id_tipoReparacion: 0,
+                id_estado: 1,
+                id_supervisor: 0,
+                id_trabajador: 0,
+                idApoyo1: 999,
+                idApoyo2: 999,
+                idApoyo3: 999,
+                idTurno: 0,
+                fechaCambiada: null,
+                fechaTermino: null,
+                horaCambiada: null,
+                horaTermino: null,
+                horasEjecucion: 0,
+                diasEjecucion: 0
+            }),
+                (this.seleccionTurno = {
+                    id: 0,
+                    descripcionTurno: "Seleccione Turno"
+                }),
+                (this.seleccionEdificio = {
+                    id: 0,
+                    descripcionEdificio: "Seleccione Edificio"
+                }),
+                (this.seleccionServicio = {
+                    id: 0,
+                    descripcionServicio: "Seleccione Servicio"
+                }),
+                (this.seleccionUnidadEsp = {
+                    id: 0,
+                    descripcionUnidadEsp: "Seleccione Unidad Especifica"
+                }),
+                (this.seleccionReparacion = {
+                    id: 0,
+                    descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+                }),
+                (this.seleccionEstado = {
+                    id: 0,
+                    descripcionEstado: "Seleccione Estado"
+                }),
+                (this.seleccionSupervisor = {
+                    id: 0,
+                    sup_nombre_apellido: "Seleccione al Supervisor"
+                }),
+                (this.seleccionTrabajador = {
+                    id: 0,
+                    tra_nombre_apellido: "Seleccione al Trabajador"
+                }),
+                (this.seleccionApoyo1 = {
+                    id: 999,
+                    tra_nombre_apellido: "Sin Asignar"
+                }),
+                (this.seleccionApoyo2 = {
+                    id: 999,
+                    tra_nombre_apellido: "Sin Asignar"
+                }),
+                (this.seleccionApoyo3 = {
+                    id: 999,
+                    tra_nombre_apellido: "Sin Asignar"
+                });
         },
         filtroSegunEdificio() {
             if (this.seleccionEdificio == null || this.seleccionEdificio == 0) {

@@ -63,15 +63,24 @@
                             />
                         </div>
                         <br />
-                        <div class="vx-col w-full mt-5">
-                            <div slot="footer">
-                                <vs-row vs-justify="flex-end">
+                        <div class="vx-col md:w-1/1 w-full mb-base">
+                            <div class="vx-row">
+                                <div class="vx-col sm:w-2/3 w-full ml-auto">
+                                    <br />
                                     <vs-button
                                         class="fixedHeight"
+                                        color="warning"
+                                        @click="abrirPop"
+                                        >Finalizar Ticket</vs-button
+                                    >
+
+                                    <vs-button
+                                        class="fixedHeight"
+                                        color="success"
                                         @click="volver"
                                         >Volver</vs-button
                                     >
-                                </vs-row>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -129,6 +138,34 @@
                 </vx-card>
             </div>
         </vs-row>
+        <vs-popup
+            classContent="popup-example"
+            title="Finalizar Proceso Ticket"
+            :active.sync="popupActive2"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full ">
+                        <h6>Presione Confirmar para finalizar.</h6>
+                        <br />
+                        <vs-button
+                            color="danger"
+                            type="filled"
+                            @click="finalizarSolicitud"
+                            >Confirmar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col sm:w-full w-full ">
+                        <vs-button
+                            @click="popupActive2 = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 
@@ -172,6 +209,8 @@ export default {
             unidadEsp: "",
             nombre: ""
         },
+        validaEliminar: false,
+        popupActive2: false,
         nombre: localStorage.getItem("nombre"),
         run: localStorage.getItem("run"),
         seguimientos: {
@@ -189,6 +228,38 @@ export default {
         volver() {
             router.back();
         },
+        finalizarSolicitud() {
+            let uuid = this.$route.params.uuid;
+            var id = this.solicitudes[0].id;
+            this.seguimientos.id_usuarioEspecifico = this.solicitudes[0].id_user;
+
+            this.seguimientos.id_solicitud = id;
+            this.seguimientos.uuid = uuid;
+            this.seguimientos.descripcionSeguimiento =
+                "El Agente " + this.nombre + " a cerrado el Ticket N°" + id;
+            const seguimientoNuevo = this.seguimientos;
+            axios
+                .post(
+                    this.localVal + "/api/Agente/FinalizarTicket",
+                    seguimientoNuevo
+                )
+                .then(res => {
+                    const seguimientoServer = res.data;
+                    this.popupActive2 = false;
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Solicitud Finalizada",
+                        text: "Se recargara el seguimiento",
+                        color: "success",
+                        position: "top-right"
+                    });
+                    this.cargaSeguimiento();
+                });
+        },
+        abrirPop() {
+            this.validaEliminar = true;
+            this.popupActive2 = true;
+        },
         cargaSolicitudEspecifica() {
             let id = this.$route.params.uuid;
             axios
@@ -197,7 +268,8 @@ export default {
                     this.solicitudes = res.data;
                     try {
                         this.titulo =
-                            "1. Seguimiento Ticket N°" + this.solicitudes[0].id;
+                            "1. Seguimiento Ticket N°" +
+                            this.solicitudes[0].nticket;
                         this.infoSeguimiento.nombre =
                             this.solicitudes[0].nombre +
                             " " +

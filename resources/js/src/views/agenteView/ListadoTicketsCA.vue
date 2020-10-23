@@ -51,6 +51,18 @@
                                     "
                                 ></info-icon>
                             </div>
+                            <div v-else-if="data[indextr].id_estado == 6">
+                                <info-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        detalleSolicitudEliminados(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></info-icon>
+                            </div>
                             <div v-else>
                                 <info-icon
                                     size="1.5x"
@@ -141,6 +153,14 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <div class="vx-row">
                     <div class="vx-col sm:w-full w-full ">
+                        <h6>Razon de la eliminacion</h6>
+                        <br />
+                        <quill-editor
+                            v-model="dataEliminacion.descripcionSeguimiento"
+                            :options="editorOption"
+                        >
+                            <div id="toolbar" slot="toolbar"></div>
+                        </quill-editor>
                         <vs-button
                             @click="
                                 eliminarSolicitud(
@@ -177,6 +197,10 @@ import { Trash2Icon } from "vue-feather-icons";
 import { UploadIcon } from "vue-feather-icons";
 import { CornerDownRightIcon } from "vue-feather-icons";
 import { ArchiveIcon } from "vue-feather-icons";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
 
 export default {
     components: {
@@ -185,10 +209,34 @@ export default {
         PlusCircleIcon,
         Trash2Icon,
         UploadIcon,
-        CornerDownRightIcon
+        CornerDownRightIcon,
+        quillEditor
     },
     data() {
         return {
+            editorOption: {
+                modules: {
+                    toolbar: [
+                        ["bold", "italic", "underline", "strike"],
+                        ["blockquote", "code-block"],
+                        [{ header: 1 }, { header: 2 }],
+                        [{ list: "ordered" }, { list: "bullet" }],
+                        [{ indent: "-1" }, { indent: "+1" }],
+                        [{ direction: "rtl" }],
+                        [{ font: [] }],
+                        [{ align: [] }],
+                        ["clean"]
+                    ]
+                }
+            },
+            dataEliminacion: {
+                id_solicitud: 0,
+                descripcionSeguimiento: "",
+                id_user: 0,
+                uuid: "",
+                nombre: localStorage.getItem("nombre"),
+                razonEliminacion: ""
+            },
             colorLoading: "#ff8000",
             value1: "",
             value2: "",
@@ -326,22 +374,58 @@ export default {
         },
         eliminarSolicitud(id, uuid, eliminar) {
             if (eliminar) {
-                axios
-                    .get(this.localVal + `/api/Agente/destroyTicket/${id}`)
-                    .then(res => {
-                        var eliminado = res.data;
-                        this.popupActive2 = false;
-                        if (eliminado) {
-                            this.$vs.notify({
-                                title: "Ticket Eliminado ",
-                                text: "Se recargara el listado ",
-                                time: 3000,
-                                color: "danger",
-                                position: "top-right"
-                            });
-                            this.cargarSolicitudes();
-                        }
+                if (
+                    this.dataEliminacion.descripcionSeguimiento == null ||
+                    this.dataEliminacion.descripcionSeguimiento.length < 10
+                ) {
+                    this.$vs.notify({
+                        title: "Campo Razon Vacio ",
+                        text:
+                            "Debe Escribir la razon de la eliminacion del ticket ",
+                        time: 3000,
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else {
+                    var iduser = localStorage.getItem("id");
+                    this.dataEliminacion.id_solicitud = id;
+                    this.dataEliminacion.uuid = uuid;
+                    var newElement = document.createElement("div");
+                    newElement.innerHTML = this.dataEliminacion.descripcionSeguimiento;
+                    this.dataEliminacion.razonEliminacion =
+                        newElement.textContent;
+                    this.dataEliminacion.descripcionSeguimiento =
+                        "El Agente " +
+                        this.nombre +
+                        " a eliminado el Ticket N°" +
+                        id +
+                        " " +
+                        "<br/>" +
+                        "Razon de la eliminacion:" +
+                        this.dataEliminacion.descripcionSeguimiento;
+
+                    this.dataEliminacion.id_user = iduser;
+                    const dataEliminacion = this.dataEliminacion;
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/destroyTicket",
+                            dataEliminacion
+                        )
+                        .then(res => {
+                            var eliminado = res.data;
+                            this.popupActive2 = false;
+                            if (eliminado) {
+                                this.$vs.notify({
+                                    title: "Ticket Eliminado ",
+                                    text: "Se recargara el listado ",
+                                    time: 3000,
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                            }
+                        });
+                }
             }
         }
     },

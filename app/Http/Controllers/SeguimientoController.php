@@ -147,7 +147,7 @@ class SeguimientoController extends Controller
             ->join('edificios', 'solicitud_tickets.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_tickets.id_servicio', '=', 'servicios.id')
             ->join('unidad_esps', 'solicitud_tickets.id_ubicacionEx', '=', 'unidad_esps.id')
-            ->select('solicitud_tickets.*', 'users.nombre','users.apellido', 'edificios.descripcionEdificio', 'servicios.descripcionServicio', 'unidad_esps.descripcionUnidadEsp')
+            ->select('solicitud_tickets.*', 'users.nombre','users.apellido', 'edificios.descripcionEdificio', 'servicios.descripcionServicio', 'unidad_esps.descripcionUnidadEsp',DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
             ->where('solicitud_tickets.uuid', '=', $id)
             ->get();
 

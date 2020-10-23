@@ -68,25 +68,39 @@
                                 class="w-full"
                             />
                         </div>
+                        <br />
+                        <div class="vx-col w-full mt-5">
+                            <div slot="footer">
+                                <vs-row vs-justify="flex-end">
+                                    <vs-button
+                                        class="fixedHeight"
+                                        @click="volver"
+                                        >Volver</vs-button
+                                    >
+                                </vs-row>
+                            </div>
+                        </div>
                     </div>
                 </vx-card>
             </div>
 
             <!-- Lista Seguimiento -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="Respuestas Seguimiento" code-toggler>
+                <vx-card title="Respuestas Seguimiento">
                     <div class="vx-row">
                         <div class="vx-col sm:w-full w-full">
                             <vs-list
                                 :key="indextr"
                                 v-for="(tr, indextr) in seguimiento"
-                                max-items="2"
-                                pagination
                             >
-                                <vs-list-item
-                                    :title="tr.nombre"
-                                    :subtitle="tr.descripcionSeguimiento"
-                                ></vs-list-item>
+                                <vx-card
+                                    :title="tr.nombre + ' ' + tr.apellido"
+                                    title-color="primary"
+                                >
+                                    <p v-html="tr.descripcionSeguimiento">
+                                        {{ tr.descripcionSeguimiento }}
+                                    </p>
+                                </vx-card>
                             </vs-list>
                         </div>
                     </div>
@@ -143,6 +157,9 @@ export default {
         }
     }),
     methods: {
+        volver() {
+            router.back();
+        },
         cargaSolicitudEspecifica() {
             let id = this.$route.params.uuid;
             axios
@@ -150,7 +167,8 @@ export default {
                 .then(res => {
                     this.solicitudes = res.data;
                     this.titulo =
-                        "1. Seguimiento Ticket N°" + this.solicitudes[0].id;
+                        "1. Seguimiento Ticket N°" +
+                        this.solicitudes[0].nticket;
                     this.infoSeguimiento.nombre = this.solicitudes[0].nombre;
                     this.infoSeguimiento.edificio = this.solicitudes[0].descripcionEdificio;
                     this.infoSeguimiento.servicio = this.solicitudes[0].descripcionServicio;

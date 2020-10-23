@@ -462,6 +462,7 @@ class GestionTicketController extends Controller
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->where('solicitud_tickets.id_categoria', 1)
+            ->orderBy('solicitud_tickets.id', 'desc')
             ->get();
         return  $ticket;
     }
@@ -472,6 +473,7 @@ class GestionTicketController extends Controller
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->where('solicitud_tickets.id_categoria', 2)
+            ->orderBy('solicitud_tickets.id', 'desc')
             ->get();
 
         log::info($ticket);
@@ -484,6 +486,7 @@ class GestionTicketController extends Controller
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->where('solicitud_tickets.id_categoria', 3)
+            ->orderBy('solicitud_tickets.id', 'desc')
             ->get();
         return  $ticket;
     }
@@ -494,6 +497,7 @@ class GestionTicketController extends Controller
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->where('id_categoria', 4)
+            ->orderBy('solicitud_tickets.id', 'desc')
             ->get();
         return  $ticket;
     }
@@ -1153,15 +1157,99 @@ class GestionTicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         /* GestionSolicitudes::where('id_solicitud', $id)->delete();
         SolicitudTickets::where('id', $id)->delete(); */
+        $id = $request->id_solicitud;
+        $nombre = $request->nombre;
+        $razon = $request->razonEliminacion;
+        $descripcionSeguimiento = $request->descripcionSeguimiento;
+        $seguimientoRazon = SeguimientoSolicitudes::create($request->all());
         $estadoEliminado = 7;
         $ticket = SolicitudTickets::find($id);
+        $idUser = $ticket->id_user;
         $ticket->id_estado = $estadoEliminado;
         $ticket->save();
 
+        $userSearch = Users::where('id',$idUser)->first();
+                $ValidarCargo = $userSearch->id_cargo_asociado;     
+                $userMail = [];
+    
+                if($ValidarCargo == null || $ValidarCargo == 0){
+                    $userMail = Users::select('email')
+                    ->Where('id',$idUser)
+                    ->orWhere('id_cargo_asociado',$idUser)
+                    ->get();
+                }else{
+                   
+                $userMail = Users::select('email')
+                ->where('id_cargo_asociado',$ValidarCargo)
+                ->orWhere('id',$ValidarCargo)
+                ->get();
+                }
+    
+                $listContactos = [];
+                $i = 0;
+    
+                foreach ($userMail as $key) {
+                    $listContactos[$i] = $key->email;
+                    $i++;
+                }
+
+                Mail::send('/Mails/TicketEliminado', ['nombre' => $nombre, 'id_solicitud' => $id, 'descripcionSeguimiento' => $razon], function ($message) use($listContactos) {
+                    $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
+                        $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                        $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Mantencion']);
+                });
+
         return true;
+    }
+
+    public function FinalizarTicket(Request $request){
+
+        $id = $request->id_solicitud;
+        $nombre = $request->nombre;
+        $descripcionSeguimiento = $request->descripcionSeguimiento;
+        $seguimientoRazon = SeguimientoSolicitudes::create($request->all());
+        $estadoFinalizado = 6;
+        $ticket = SolicitudTickets::find($id);
+        $idUser = $ticket->id_user;
+        $ticket->id_estado = $estadoFinalizado;
+        $ticket->save();
+
+        $userSearch = Users::where('id',$idUser)->first();
+                $ValidarCargo = $userSearch->id_cargo_asociado;     
+                $userMail = [];
+    
+                if($ValidarCargo == null || $ValidarCargo == 0){
+                    $userMail = Users::select('email')
+                    ->Where('id',$idUser)
+                    ->orWhere('id_cargo_asociado',$idUser)
+                    ->get();
+                }else{
+                   
+                $userMail = Users::select('email')
+                ->where('id_cargo_asociado',$ValidarCargo)
+                ->orWhere('id',$ValidarCargo)
+                ->get();
+                }
+    
+                $listContactos = [];
+                $i = 0;
+    
+                foreach ($userMail as $key) {
+                    $listContactos[$i] = $key->email;
+                    $i++;
+                }
+
+                Mail::send('/Mails/TicketFinalizado', ['nombre' => $nombre, 'id_solicitud' => $id], function ($message) use($listContactos) {
+                    $message->setTo($listContactos)->setSubject('Finalizacion de ticket');
+                        $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                        $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Mantencion']);
+                });
+
+        return true;
+
     }
 }

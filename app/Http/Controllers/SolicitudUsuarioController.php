@@ -45,6 +45,7 @@ class SolicitudUsuarioController extends Controller
             ->where('solicitud_tickets.id_servicio', $request->idServicio)
             ->orWhere('solicitud_tickets.id_user',$request->idUser)
             ->whereNotIn('solicitud_tickets.id_estado',$estadoEliminado)
+            ->orderBy('solicitud_tickets.id', 'desc')
             ->get(); 
         return  $ticket;
     }
@@ -158,8 +159,11 @@ class SolicitudUsuarioController extends Controller
 
     public function indexEspecifico($id)
     {
+        $get_all = SolicitudTickets::select('solicitud_tickets.*',DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+            ->where('solicitud_tickets.id', '=', $id)
+            ->get();
 
-        $get_all = SolicitudTickets::find($id);
+        log::info($get_all);    
         return  $get_all;
     }
 

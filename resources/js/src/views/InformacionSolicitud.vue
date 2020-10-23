@@ -4,12 +4,9 @@
             <vx-card :title="titulo">
                 <div class="vx-row mb-4">
                     <div class="vx-col w-full ">
-                        <vx-card
-                            :title="solicitudes.tituloP"
-                            title-color="success"
-                        >
-                            <p v-html="solicitudes.descripcionP">
-                                {{ solicitudes.descripcionP }}
+                        <vx-card :title="tituloProblema" title-color="success">
+                            <p v-html="descripcionProblema">
+                                {{ descripcionProblema }}
                             </p> </vx-card
                         ><br />
                         <div slot="footer">
@@ -115,6 +112,8 @@ export default {
         seguimiento: [],
         localVal: "http://127.0.0.1:8000",
         titulo: "",
+        tituloProblema: "",
+        descripcionProblema: "",
         seguimientos: {
             descripcionSeguimiento: "",
             id_solicitud: 0,
@@ -145,7 +144,10 @@ export default {
                 .then(res => {
                     this.solicitudes = res.data;
                     this.titulo =
-                        "1. Seguimiento Ticket N°" + this.solicitudes.id;
+                        "1. Seguimiento Ticket N°" +
+                        this.solicitudes[0].nticket;
+                    this.tituloProblema = this.solicitudes[0].tituloP;
+                    this.descripcionProblema = this.solicitudes[0].descripcionP;
                 });
         },
         cargaSeguimiento() {
@@ -185,7 +187,7 @@ export default {
                 /* var aux = localStorage.getItem("nombre");
         this.seguimientos.nombre = aux; */
                 this.seguimientos.id_usuarioEspecifico = this.solicitudes[0].id_user;
-                var id = this.solicitudes.id;
+                var id = this.solicitudes[0].id;
                 this.seguimientos.id = id;
                 this.seguimientos.uuid = uuid;
                 this.seguimientos.id_solicitud = id;
@@ -195,7 +197,7 @@ export default {
                 /* var iduser = localStorage.getItem("id");
         this.seguimientos.id_user = iduser; */
                 const seguimientoNuevo = this.seguimientos;
-                console.log(seguimientoNuevo);
+
                 this.openLoadingColor();
                 this.seguimientos = {
                     descripcionSeguimiento: "",
@@ -213,7 +215,6 @@ export default {
                     .then(res => {
                         this.mensajeGuardado();
                         const seguimientoServer = res.data;
-                        console.log(seguimientoServer);
                         this.cargaSeguimiento();
                     });
             }

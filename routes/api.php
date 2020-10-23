@@ -147,7 +147,9 @@ Route::get('/Agente/getDatoCalendario', ['middleware' => 'cors', 'uses' => 'Gest
 //Traer Trabajadores EX
 Route::get('/Agente/GetTrabajadoresEX', ['middleware' => 'cors', 'uses' => 'TrabajadorController@GetTrabajadoresEX']);
 //Eliminar Ticket
-Route::get('/Agente/destroyTicket/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@destroy']);
+Route::post('/Agente/destroyTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@destroy']);
+//Eliminar Ticket
+Route::post('/Agente/FinalizarTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@FinalizarTicket']);
 //Traer ticket asignado
 Route::get('/Agente/GetTicketAsignado/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetTicketAsignado']);
 //Validar Existencia de ticket asignado para asignar

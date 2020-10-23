@@ -125,6 +125,12 @@
                 <div class="vx-row">
                     <div class="vx-col sm:w-2/3 w-full ml-auto">
                         <vs-button
+                            color="success"
+                            class="mr-3 mb-2"
+                            @click="volver"
+                            >Volver</vs-button
+                        >
+                        <vs-button
                             color="warning"
                             class="mr-3 mb-2"
                             @click="limpiar"
@@ -239,24 +245,27 @@ export default {
         }
     },
     methods: {
+        volver() {
+            router.back();
+        },
         limpiar() {
-            (seleccionEdificio = {
+            (this.seleccionEdificio = {
                 id: 0,
                 descripcionEdificio: "Seleccione Edificio"
             }),
-                (seleccionServicio = {
+                (this.seleccionServicio = {
                     id: 0,
                     descripcionServicio: "Seleccione Servicio"
                 }),
-                (seleccionUnidadEsp = {
+                (this.seleccionUnidadEsp = {
                     id: 0,
                     descripcionUnidadEsp: "Seleccion Unidad Especifica"
                 }),
-                (seleccionReparacion = {
+                (this.seleccionReparacion = {
                     id: 0,
                     descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
                 }),
-                (seleccionCategoria = {
+                (this.seleccionCategoria = {
                     id: 0,
                     des_categoria: "Seleccione Categoria"
                 });

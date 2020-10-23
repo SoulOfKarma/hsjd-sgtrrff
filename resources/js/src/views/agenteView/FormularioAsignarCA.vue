@@ -296,10 +296,100 @@ export default {
         hora2: moment("12:32", "HH:mm"),
         configFromdateTimePicker: {
             minDate: new Date(),
-            maxDate: null
+            maxDate: null,
+            locale: {
+                firstDayOfWeek: 1,
+                weekdays: {
+                    shorthand: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                    longhand: [
+                        "Domingo",
+                        "Lunes",
+                        "Martes",
+                        "Miércoles",
+                        "Jueves",
+                        "Viernes",
+                        "Sábado"
+                    ]
+                },
+                months: {
+                    shorthand: [
+                        "Ene",
+                        "Feb",
+                        "Mar",
+                        "Abr",
+                        "May",
+                        "Jun",
+                        "Jul",
+                        "Ago",
+                        "Sep",
+                        "Оct",
+                        "Nov",
+                        "Dic"
+                    ],
+                    longhand: [
+                        "Enero",
+                        "Febrero",
+                        "Мarzo",
+                        "Abril",
+                        "Mayo",
+                        "Junio",
+                        "Julio",
+                        "Agosto",
+                        "Septiembre",
+                        "Octubre",
+                        "Noviembre",
+                        "Diciembre"
+                    ]
+                }
+            }
         },
         configTodateTimePicker: {
-            minDate: null
+            minDate: null,
+            locale: {
+                firstDayOfWeek: 1,
+                weekdays: {
+                    shorthand: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                    longhand: [
+                        "Domingo",
+                        "Lunes",
+                        "Martes",
+                        "Miércoles",
+                        "Jueves",
+                        "Viernes",
+                        "Sábado"
+                    ]
+                },
+                months: {
+                    shorthand: [
+                        "Ene",
+                        "Feb",
+                        "Mar",
+                        "Abr",
+                        "May",
+                        "Jun",
+                        "Jul",
+                        "Ago",
+                        "Sep",
+                        "Оct",
+                        "Nov",
+                        "Dic"
+                    ],
+                    longhand: [
+                        "Enero",
+                        "Febrero",
+                        "Мarzo",
+                        "Abril",
+                        "Mayo",
+                        "Junio",
+                        "Julio",
+                        "Agosto",
+                        "Septiembre",
+                        "Octubre",
+                        "Noviembre",
+                        "Diciembre"
+                    ]
+                }
+            }
         },
 
         configdateTimePicker: {
