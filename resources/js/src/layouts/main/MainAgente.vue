@@ -254,13 +254,16 @@ export default {
     },
     methods: {
         async salir() {
-            await axios.post(this.localVal + "/api/Login/Salir", {
-                rut: ""
-            });
-            localStorage.setItem("nombre", "");
-            localStorage.setItem("run", "");
-            localStorage.setItem("permiso_usuario", "");
-            router.push("/pages/login");
+            await axios
+                .post(this.localVal + "/api/Login/Salir", {
+                    rut: ""
+                })
+                .then(res => {
+                    window.localStorage.clear();
+                    console.log("Mensaje");
+
+                    router.push("/pages/login");
+                });
         },
         changeRouteTitle(title) {
             this.routeTitle = title;

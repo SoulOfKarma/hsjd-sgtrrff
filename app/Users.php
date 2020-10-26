@@ -12,4 +12,6 @@ class Users extends Model
         'id_servicio', 'id_unidadEspecifica', 'password',
         'api_token'
     ];
+
+    protected $hidden = ['password', 'remember_token'];
 }

@@ -56,9 +56,7 @@ export default {
             await axios.post(this.localVal + "/api/Login/Salir", {
                 rut: ""
             });
-            localStorage.setItem("nombre", "");
-            localStorage.setItem("run", "");
-            localStorage.setItem("permiso_usuario", "");
+            window.localStorage.clear();
             router.push("/pages/login");
         }
     }

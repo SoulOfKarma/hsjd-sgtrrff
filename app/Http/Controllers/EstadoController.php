@@ -15,7 +15,14 @@ class EstadoController extends Controller
      */
     public function index()
     {
-        $get_all = EstadoSolicituds::all();
+        $dataFiltro1 = [1];
+        $dataFiltro2 = [7];
+        $dataFiltro3 = [6];
+        $get_all = EstadoSolicituds::select('estado_solicituds.*')
+        ->whereNotIn('id',$dataFiltro1)
+        ->whereNotIn('id',$dataFiltro2)
+        ->whereNotIn('id',$dataFiltro3)
+        ->get();
 
         return  $get_all;
         //Traer todo de estados

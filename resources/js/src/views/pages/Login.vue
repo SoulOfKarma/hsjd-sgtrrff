@@ -109,6 +109,120 @@ export default {
         }
     },
     methods: {
+        async autenticarToken() {
+            let token = localStorage.getItem("api_token");
+            let rut = localStorage.getItem("run");
+
+            if (rut.length > 8 && token.length > 0) {
+                var sw = 0;
+                var pr = 0;
+                var permiso_usuario = "";
+
+                await axios
+                    .post(this.localVal + "/api/Login/GetUsersByToken", {
+                        rut,
+                        token
+                    })
+                    .then(function(response) {
+                        if (response.data.length > 0) {
+                            if (response.data != 1) {
+                                localStorage.setItem(
+                                    "nombre",
+                                    response.data[0].nombre
+                                );
+                                localStorage.setItem(
+                                    "apellido",
+                                    response.data[0].apellido
+                                );
+                                localStorage.setItem(
+                                    "idServicio",
+                                    response.data[0].id_servicio
+                                );
+                                localStorage.setItem(
+                                    "run",
+                                    response.data[0].run
+                                );
+                                localStorage.setItem("id", response.data[0].id);
+                                localStorage.setItem(
+                                    "api_token",
+                                    response.data[0].api_token
+                                );
+                                sw = 1;
+                            }
+                        } else {
+                            console.log("Horror");
+                            pr = 1;
+                        }
+                    })
+                    .catch(error => console.log(error));
+                if (sw == 1) {
+                    await axios
+                        .post(this.localVal + "/api/Login/getpr", {
+                            rut,
+                            token
+                        })
+                        .then(function(response2) {
+                            if (response2.data.length > 0) {
+                                if (response2.data[0].estado_login == 1) {
+                                    localStorage.setItem(
+                                        "permiso_usuario",
+                                        response2.data[0].permiso_usuario
+                                    );
+                                    if (
+                                        response2.data[0].permiso_usuario == 1
+                                    ) {
+                                        pr = 3;
+                                    }
+                                    if (
+                                        response2.data[0].permiso_usuario == 2
+                                    ) {
+                                        pr = 4;
+                                    }
+                                    if (
+                                        response2.data[0].permiso_usuario == 3
+                                    ) {
+                                        pr = 5;
+                                    }
+                                    if (
+                                        response2.data[0].permiso_usuario == 4
+                                    ) {
+                                        pr = 6;
+                                    }
+                                    //router.push('/home');
+                                    //pr = 3;
+                                } else {
+                                    pr = 2;
+                                }
+                            }
+                        });
+                }
+                if (pr == 1) {
+                    this.$vs.notify({
+                        color: "danger",
+                        title: "Login",
+                        text: "Usuario y/o Contraseña Incorrectos."
+                    });
+                }
+                if (pr == 2) {
+                    this.$vs.notify({
+                        color: "danger",
+                        title: "Login",
+                        text: "Usted no posee acceso a la plataforma."
+                    });
+                }
+                if (pr == 3) {
+                    //localStorage.setItem('run',response2.data[0].permiso_usuario);
+                    router.push("/agenteView/HomeAgente");
+                }
+                if (pr == 4 || pr == 5 || pr == 6) {
+                    //localStorage.setItem('run',response2.data[0].permiso_usuario);
+                    router.push("/home");
+                } else {
+                    this.val_run = true;
+                }
+            } else {
+            }
+        },
         formatear_run() {
             this.run = format(this.run);
             this.val_run = !validate(this.run);
@@ -159,6 +273,10 @@ export default {
                                     localStorage.setItem(
                                         "id",
                                         response.data[0].id
+                                    );
+                                    localStorage.setItem(
+                                        "api_token",
+                                        response.data[0].api_token
                                     );
                                     sw = 1;
                                 }
@@ -239,6 +357,9 @@ export default {
                 }
             }
         }
+    },
+    mounted() {
+        this.autenticarToken();
     }
 };
 </script>

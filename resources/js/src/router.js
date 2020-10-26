@@ -139,6 +139,60 @@ const router = new Router({
                         import("./views/adminView/AgregarUsuarioJefe.vue")
                 },
                 {
+                    path: "/MenuEdificios",
+                    name: "menuEdificios",
+                    component: () =>
+                        import("./views/adminView/MenuEdificios.vue")
+                },
+                {
+                    path: "/MenuServicios",
+                    name: "menuServicios",
+                    component: () =>
+                        import("./views/adminView/MenuServicios.vue")
+                },
+                {
+                    path: "/MenuUbicacionEspecifica",
+                    name: "menuUbicacionEspecifica",
+                    component: () =>
+                        import("./views/adminView/MenuUbicacionEspecifica.vue")
+                },
+                {
+                    path: "/AgregarTrabajador",
+                    name: "agregarTrabajador",
+                    component: () =>
+                        import("./views/adminView/AgregarTrabajador.vue")
+                },
+                {
+                    path: "/ModificarTrabajador",
+                    name: "modificarTrabajador",
+                    component: () =>
+                        import("./views/adminView/ModificarTrabajador.vue")
+                },
+                {
+                    path: "/AgregarSupervisor",
+                    name: "agregarSupervisor",
+                    component: () =>
+                        import("./views/adminView/AgregarSupervisor.vue")
+                },
+                {
+                    path: "/ModificarSupervisor",
+                    name: "modificarSupervisor",
+                    component: () =>
+                        import("./views/adminView/ModificarSupervisor.vue")
+                },
+                {
+                    path: "/AgregarReparacion",
+                    name: "agregarReparacion",
+                    component: () =>
+                        import("./views/adminView/AgregarReparacion.vue")
+                },
+                {
+                    path: "/ModificarReparacion",
+                    name: "modificarReparacion",
+                    component: () =>
+                        import("./views/adminView/ModificarReparacion.vue")
+                },
+                {
                     path: "/AgregarSubroganteJefe",
                     name: "agregarSubroganteJefe",
                     component: () =>
