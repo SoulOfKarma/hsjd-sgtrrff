@@ -181,16 +181,15 @@ const router = new Router({
                         import("./views/adminView/ModificarSupervisor.vue")
                 },
                 {
-                    path: "/AgregarReparacion",
-                    name: "agregarReparacion",
+                    path: "/MenuReparacion",
+                    name: "menuReparacion",
                     component: () =>
-                        import("./views/adminView/AgregarReparacion.vue")
+                        import("./views/adminView/MenuReparacion.vue")
                 },
                 {
-                    path: "/ModificarReparacion",
-                    name: "modificarReparacion",
-                    component: () =>
-                        import("./views/adminView/ModificarReparacion.vue")
+                    path: "/MenuCargo",
+                    name: "menu Cargo",
+                    component: () => import("./views/adminView/MenuCargo.vue")
                 },
                 {
                     path: "/AgregarSubroganteJefe",

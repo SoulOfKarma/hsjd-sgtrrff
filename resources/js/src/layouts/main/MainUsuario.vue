@@ -303,9 +303,9 @@ export default {
             aux = 0;
         }
         if (aux.length == 0) {
-            router.push("/pages/login");
+            router.push("/pages/login").catch(err => {});
         } else if (aux == 0) {
-            router.push("/pages/login");
+            router.push("/pages/login").catch(err => {});
         }
 
         var aux2 = localStorage.getItem("permiso_usuario");
@@ -317,7 +317,7 @@ export default {
             console.log("Acceso Correcto Trabajador");
             this.navMenuItems = navMenuItemsTrabajador;
         } else {
-            router.push("/pages/login");
+            router.push("/pages/login").catch(err => {});
         }
 
         const color =

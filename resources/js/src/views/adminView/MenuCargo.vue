@@ -9,7 +9,7 @@
                     class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
                 >
                     <h2 class="mb-1">
-                        Menu Edificios
+                        Menu Cargo de Usuarios
                     </h2>
                 </div>
                 <div class="vx-breadcrumb ml-4 md:block hidden">
@@ -28,10 +28,10 @@
                 <vx-card title="">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/2 mt-5">
-                            <vx-card title="Agregar Edificio">
+                            <vx-card title="Agregar Cargo">
                                 <vs-input
                                     class="w-full inputx"
-                                    placeholder="Agregar Edificio"
+                                    placeholder="Agregar Cargo"
                                     v-model="agregar"
                                 />
                                 <br />
@@ -41,18 +41,18 @@
                             </vx-card>
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <vx-card title="Modificar Edificios">
+                            <vx-card title="Modificar Cargo">
                                 <v-select
-                                    v-model="seleccionEdificios"
-                                    placeholder="Edificios"
+                                    v-model="seleccionCargo"
+                                    placeholder="Cargo"
                                     class="w-full select-large"
-                                    label="descripcionEdificio"
-                                    :options="listEdificios"
+                                    label="descripcionCargo"
+                                    :options="listCargos"
                                 ></v-select>
                                 <br />
                                 <vs-input
                                     class="inputx w-full"
-                                    placeholder="Modificar Edificio Seleccionado"
+                                    placeholder="Modificar Cargo Seleccionado"
                                     v-model="modificar"
                                 />
                                 <br />
@@ -86,24 +86,25 @@ export default {
             },
             agregar: "",
             modificar: "",
-            listEdificios: [],
+            eliminar: "",
+            listCargos: [],
             localVal: "http://127.0.0.1:8000",
-            seleccionEdificios: {
+            seleccionCargo: {
                 id: 0,
-                descripcionEdificio: "Seleccione Edificio"
+                descripcionCargo: ""
             }
         };
     },
     computed: {},
     methods: {
-        listadoEdificios() {
-            axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
-                this.listEdificios = res.data;
+        listadoCargos() {
+            axios.get(this.localVal + "/api/Agente/getCargos").then(res => {
+                this.listCargos = res.data;
             });
         }
     },
     created() {
-        this.listadoEdificios();
+        this.listadoCargos();
     }
 };
 </script>

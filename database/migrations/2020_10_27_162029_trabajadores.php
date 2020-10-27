@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSupervisoresTable extends Migration
+class Trabajadores extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateSupervisoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('supervisores', function (Blueprint $table) {
+        Schema::create('trabajadores', function (Blueprint $table) {
             $table->id();
-            $table->text('sup_run');
-            $table->text('sup_nombre');
-            $table->text('sup_apellido');
-            $table->text('especialidad');
+            $table->text('tra_run');
+            $table->text('tra_nombre');
+            $table->text('tra_apellido');
+            $table->bigInteger('id_especialidad1')->unsigned();
+            $table->foreign('id_especialidad1')->references('id')->on('especialidad');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateSupervisoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supervisores');
+        //
     }
 }

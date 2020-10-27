@@ -9,7 +9,7 @@
                     class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
                 >
                     <h2 class="mb-1">
-                        Menu Edificios
+                        Menu Tipo Reparacion
                     </h2>
                 </div>
                 <div class="vx-breadcrumb ml-4 md:block hidden">
@@ -28,10 +28,10 @@
                 <vx-card title="">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/2 mt-5">
-                            <vx-card title="Agregar Edificio">
+                            <vx-card title="Agregar Tipo Reparacion">
                                 <vs-input
                                     class="w-full inputx"
-                                    placeholder="Agregar Edificio"
+                                    placeholder="Agregar Tipo Reparacion"
                                     v-model="agregar"
                                 />
                                 <br />
@@ -41,18 +41,18 @@
                             </vx-card>
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <vx-card title="Modificar Edificios">
+                            <vx-card title="Modificar Tipo Reparacion">
                                 <v-select
-                                    v-model="seleccionEdificios"
-                                    placeholder="Edificios"
+                                    v-model="seleccionReparacion"
+                                    placeholder="Tipo Reparacion"
                                     class="w-full select-large"
-                                    label="descripcionEdificio"
-                                    :options="listEdificios"
+                                    label="descripcionTipoReparacion"
+                                    :options="listReparacion"
                                 ></v-select>
                                 <br />
                                 <vs-input
                                     class="inputx w-full"
-                                    placeholder="Modificar Edificio Seleccionado"
+                                    placeholder="Modificar Tipo Reparacion Seleccionado"
                                     v-model="modificar"
                                 />
                                 <br />
@@ -86,24 +86,24 @@ export default {
             },
             agregar: "",
             modificar: "",
-            listEdificios: [],
+            listReparacion: [],
             localVal: "http://127.0.0.1:8000",
-            seleccionEdificios: {
+            seleccionReparacion: {
                 id: 0,
-                descripcionEdificio: "Seleccione Edificio"
+                descripcionTipoReparacion: ""
             }
         };
     },
     computed: {},
     methods: {
-        listadoEdificios() {
-            axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
-                this.listEdificios = res.data;
+        listadoReparacion() {
+            axios.get(this.localVal + "/api/Usuario/GetTipoRep").then(res => {
+                this.listReparacion = res.data;
             });
         }
     },
     created() {
-        this.listadoEdificios();
+        this.listadoReparacion();
     }
 };
 </script>

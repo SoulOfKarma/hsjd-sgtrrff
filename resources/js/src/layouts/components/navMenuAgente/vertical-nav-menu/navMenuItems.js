@@ -173,6 +173,12 @@ export default [
                         name: "Agregar Subrogante",
                         slug: "AgregarSubroganteJefe",
                         icon: "FileIcon"
+                    },
+                    {
+                        url: "/MenuCargo",
+                        name: "Cargo",
+                        slug: "MenuCargo",
+                        icon: "FileIcon"
                     }
                 ]
             },
@@ -249,15 +255,9 @@ export default [
                 icon: "PlusCircleIcon",
                 submenu: [
                     {
-                        url: "/AgregarReparacion",
-                        name: "Agregar Reparacion",
-                        slug: "AgregarReparacion",
-                        icon: "FileIcon"
-                    },
-                    {
-                        url: "/ModificarReparacion",
-                        name: "Modificar Reparacion",
-                        slug: "ModificarReparacion",
+                        url: "/MenuReparacion",
+                        name: "Menu Reparacion",
+                        slug: "MenuReparacion",
                         icon: "FileIcon"
                     }
                 ]

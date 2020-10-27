@@ -302,20 +302,20 @@ export default {
     created() {
         var aux = localStorage.getItem("run");
 
-        if (aux == null) {
+        if (aux == null || aux.length <= 0) {
             aux = 0;
         }
-        if (aux.length == 0) {
-            router.push("/pages/login");
+        if (aux.length == 0 || aux == null) {
+            router.push("/pages/login").catch(err => {});
         } else if (aux == 0) {
-            router.push("/pages/login");
+            router.push("/pages/login").catch(err => {});
         }
 
         var aux2 = localStorage.getItem("permiso_usuario");
         if (aux2 == 1) {
             console.log("Acceso Correcto");
         } else {
-            router.push("/pages/login");
+            router.push("/pages/login").catch(err => {});
         }
 
         const color =

@@ -113,7 +113,12 @@ export default {
             let token = localStorage.getItem("api_token");
             let rut = localStorage.getItem("run");
 
-            if (rut.length > 8 && token.length > 0) {
+            if (
+                rut != null &&
+                token != null &&
+                rut.length > 8 &&
+                token.length > 0
+            ) {
                 var sw = 0;
                 var pr = 0;
                 var permiso_usuario = "";

@@ -16,22 +16,19 @@ use App\Mail\AutoRespuesta;
 */
 
 Route::middleware('auth:api')->get('/users', function (Request $request) {
-    if(authenticated()){
+
         $data = [
             'run' => $request->user()->run,
             'nombre' => $request->user()->nombre,
             'apellido' => $request->user()->apellido
         ];
         return $data;
-        }
-        else{
-        return Response::json(["content" => "no estas autorizado"], 401);
-        }
+       
         });
         
-        function authenticated(){
-        return true;
-        }
+        // function authenticated(){
+        // return true;
+        // }
 Route::post('/Login/GetUsers', ['middleware' => 'cors', 'uses' => 'LoginController@getUsuarios']);
 Route::post('/Login/GetUsersByToken', ['middleware' => 'cors', 'uses' => 'LoginController@GetUsersByToken']);
 Route::post('/Login/getpr', ['middleware' => 'cors', 'uses' => 'LoginController@adminPr']);
@@ -201,3 +198,5 @@ Route::post('/Trabajador/GuardarSeguimientoT/{uuid}', ['middleware' => 'cors', '
 Route::post('/Agente/GuardarUsuarioJefe', ['middleware' => 'cors', 'uses' => 'UsersController@registrarUsuario']);
 //Guardar Nuevo Usuario Sub
 Route::post('/Agente/GuardarUsuarioSub', ['middleware' => 'cors', 'uses' => 'UsersController@registrarUsuarioSub']);
+//Traer Cargos 
+Route::get('/Agente/getCargos', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@index']);

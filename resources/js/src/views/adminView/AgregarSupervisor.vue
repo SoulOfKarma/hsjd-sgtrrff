@@ -9,7 +9,7 @@
                     class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
                 >
                     <h2 class="mb-1">
-                        Registrar nuevo Usuario Cargo Jefatura
+                        Registrar nuevo Supervisor
                     </h2>
                 </div>
                 <div class="vx-breadcrumb ml-4 md:block hidden">
