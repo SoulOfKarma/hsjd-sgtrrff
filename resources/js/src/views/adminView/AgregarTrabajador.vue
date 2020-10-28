@@ -28,35 +28,41 @@
                 <vx-card title="1. Ingrese Datos del Usuario">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
-                            <h6>1.1 Rut del Usuario</h6>
+                            <h6>1.1 Rut del Trabajador</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
                                 v-model="rutUsuario"
+                                v-on:blur="formatear_run"
                             />
+                            <span
+                                style="font-size: 10px; color: red; margin-left: 10px;"
+                                v-if="val_run"
+                                >Run incorrecto</span
+                            >
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.2 Nombre del Usuario</h6>
+                            <h6>1.2 Nombre del Trabajador</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
                                 v-model="nombreUsuario"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.3 Apellido del Usuario</h6>
+                            <h6>1.3 Apellido del Trabajador</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
                                 v-model="apellidoUsuario"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.4 Anexo del Usuario</h6>
+                            <h6>1.4 Anexo del Trabajador</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
                                 v-model="anexoUsuario"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.5 Correo del Usuario</h6>
+                            <h6>1.5 Correo del Trabajador</h6>
                             <vs-input
                                 type="email"
                                 class="vx-col w-full mt-5"
@@ -64,12 +70,23 @@
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.6 Contraseña del Usuario</h6>
+                            <h6>1.6 Contraseña del Trabajador</h6>
                             <vs-input
                                 type="password"
                                 class="vx-col w-full mt-5"
                                 v-model="passUsuario"
                             />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.7 - Seleccione Supervisor</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionSupervisor"
+                                placeholder="Supervisor"
+                                class="w-full select-large"
+                                label="nombreSupervisor"
+                                :options="listadoSupervisores"
+                            ></v-select>
                         </div>
                     </div>
                 </vx-card>
@@ -149,6 +166,7 @@ import "quill/dist/quill.bubble.css";
 import { Validator } from "vee-validate";
 import router from "@/router";
 import { quillEditor } from "vue-quill-editor";
+import { validate, clean, format } from "rut.js";
 export default {
     data() {
         return {
@@ -159,15 +177,15 @@ export default {
             correoUsuario: "",
             rutUsuario: "",
             passUsuario: "",
-            listadoCargo: [],
+            listadoSupervisores: [],
             listadoEdificios: [],
             listadoServicios: [],
             listadoUnidadEsp: [],
             listadoServiciosData: [],
             listadoUnidadEspData: [],
-            seleccionCargo: {
+            seleccionSupervisor: {
                 id: 0,
-                descripcionCargo: "Seleccione Cargo"
+                nombreSupervisor: "Seleccione Supervisor"
             },
             seleccionEdificio: {
                 id: 0,
@@ -188,6 +206,7 @@ export default {
                     localStorage.getItem("apellido"),
                 id_user: localStorage.getItem("id")
             },
+            val_run: false,
             registroUsuario: {
                 run: "",
                 email: "",
@@ -201,12 +220,16 @@ export default {
                 id_unidadEspecifica: 0,
                 password: "",
                 run_usuario: "",
-                permiso_usuario: 2,
+                permiso_usuario: 3,
                 estado_login: 1
             }
         };
     },
     methods: {
+        formatear_run() {
+            this.rutUsuario = format(this.rutUsuario);
+            this.val_run = !validate(this.rutUsuario);
+        },
         limpiar() {
             this.registroUsuario.run = "";
             this.registroUsuario.email = "";
@@ -249,16 +272,17 @@ export default {
             this.registroUsuario.nombre = this.nombreUsuario;
             this.registroUsuario.apellido = this.apellidoUsuario;
             this.registroUsuario.anexo = this.anexoUsuario;
-            this.registroUsuario.id_cargo = 1;
+            this.registroUsuario.id_cargo = 6;
             this.registroUsuario.id_edificio = this.seleccionEdificio[0].id;
             this.registroUsuario.id_servicio = this.seleccionServicio[0].id;
             this.registroUsuario.id_unidadEspecifica = this.seleccionUnidadEsp[0].id;
             this.registroUsuario.password = this.passUsuario;
             this.registroUsuario.run_usuario = this.rutUsuario;
-
+            this.rutUsuario = format(this.rutUsuario);
             if (
-                (this.registroUsuario.run =
-                    null || this.registroUsuario.run < 10)
+                this.registroUsuario.run == null ||
+                this.registroUsuario.run < 9 ||
+                !validate(this.rutUsuario)
             ) {
                 this.$vs.notify({
                     title: "Error en rut",
@@ -410,12 +434,12 @@ export default {
                 this.seleccionEdificio = b;
             }
         },
-        cargarCargoUsuario() {
-            this.csrf_token;
-
-            axios.get(this.localVal + "/api/Agente/GetCargos").then(res => {
-                this.listadoCargo = res.data;
-            });
+        cargarSupervisores() {
+            axios
+                .get(this.localVal + "/api/Agente/getSupervisores")
+                .then(res => {
+                    this.listadoSupervisores = res.data;
+                });
         },
         cargarEdificios() {
             this.csrf_token;
@@ -446,7 +470,7 @@ export default {
         this.cargarEdificios();
         this.cargarServicios();
         this.cargarUnidadEsp();
-        this.cargarCargoUsuario();
+        this.cargarSupervisores();
     },
     components: {
         "v-select": vSelect,

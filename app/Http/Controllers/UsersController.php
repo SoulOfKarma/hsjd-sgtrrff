@@ -29,9 +29,18 @@ class UsersController extends Controller
     }
 
     public function registrarUsuario(Request $request){
-        $respuesta = tblPermisoUsuarios::create($request->all());
+        $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
+
+        tblPermisoUsuarios::create([
+            'run_usuario' => $run,
+            'permiso_usuario' => $request->permiso_usuario,
+            'estado_login' =>  $request->estado_login
+        ]);
+
         Users::create([
-            'run' => $request->run,
+            'run' => $run,
             'email' => $request->email,
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
@@ -51,9 +60,18 @@ class UsersController extends Controller
     }
 
     public function registrarUsuarioSub(Request $request){
-        $respuesta = tblPermisoUsuarios::create($request->all());
+        $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
+
+        tblPermisoUsuarios::create([
+            'run_usuario' => $run,
+            'permiso_usuario' => $request->permiso_usuario,
+            'estado_login' =>  $request->estado_login
+        ]);
+
         Users::create([
-            'run' => $request->run,
+            'run' => $run,
             'email' => $request->email,
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
@@ -70,5 +88,13 @@ class UsersController extends Controller
         return "Ok";
 
         
+    }
+
+    public function getSoloSupervisoresRRFF()
+    {
+        $getall = Users::select('Users.*',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreSupervisor"))
+        ->where('id',[5])
+        ->get();
+        return $getall;
     }
 }

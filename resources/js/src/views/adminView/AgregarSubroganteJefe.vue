@@ -31,8 +31,13 @@
                             <h6>1.1 Rut del Usuario</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
-                                v-model="rutUsuario"
+                                v-on:blur="formatear_run"
                             />
+                            <span
+                                style="font-size: 10px; color: red; margin-left: 10px;"
+                                v-if="val_run"
+                                >Run incorrecto</span
+                            >
                         </div>
                         <div class="vx-col w-1/2 mt-5">
                             <h6>1.2 Nombre del Usuario</h6>
@@ -170,6 +175,7 @@ import "quill/dist/quill.bubble.css";
 import { Validator } from "vee-validate";
 import router from "@/router";
 import { quillEditor } from "vue-quill-editor";
+import { validate, clean, format } from "rut.js";
 export default {
     data() {
         return {
@@ -187,6 +193,7 @@ export default {
             listadoUsuariosCargo: [],
             listadoServiciosData: [],
             listadoUnidadEspData: [],
+            val_run: false,
             seleccionCargo: {
                 id: 0,
                 descripcionCargo: "Seleccione Cargo"
@@ -234,6 +241,10 @@ export default {
         };
     },
     methods: {
+        formatear_run() {
+            this.rutUsuario = format(this.rutUsuario);
+            this.val_run = !validate(this.rutUsuario);
+        },
         limpiar() {
             this.registroUsuario.run = "";
             this.registroUsuario.email = "";
@@ -284,11 +295,12 @@ export default {
             this.registroUsuario.id_unidadEspecifica = this.seleccionUnidadEsp[0].id;
             this.registroUsuario.password = this.passUsuario;
             this.registroUsuario.run_usuario = this.rutUsuario;
+            this.rutUsuario = format(this.rutUsuario);
 
             if (
                 this.registroUsuario.run == null ||
                 this.registroUsuario.run < 9 ||
-                this.registroUsuario.run == 0
+                !validate(this.rutUsuario)
             ) {
                 this.$vs.notify({
                     title: "Error en rut",

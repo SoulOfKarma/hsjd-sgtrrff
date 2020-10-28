@@ -1245,9 +1245,9 @@ export default {
             router.back();
         },
         cargarUSE() {
-            var datoidServicio = this.datosSolicitud.id_servicio;
-            var datoidEdificio = this.datosSolicitud.id_edificio;
-            var datoidUbicacion = this.datosSolicitud.id_ubicacionEx;
+            var datoidServicio = this.datosSolicitud[0].id_servicio;
+            var datoidEdificio = this.datosSolicitud[0].id_edificio;
+            var datoidUbicacion = this.datosSolicitud[0].id_ubicacionEx;
             let c = this.listadoUnidadEsp;
             let b = [];
             var a = 0;

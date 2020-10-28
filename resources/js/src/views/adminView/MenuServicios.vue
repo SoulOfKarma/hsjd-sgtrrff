@@ -43,7 +43,10 @@
                                     v-model="agregar"
                                 />
                                 <br />
-                                <vs-button color="success" type="filled"
+                                <vs-button
+                                    color="success"
+                                    type="filled"
+                                    @click="agregarServicio"
                                     >Agregar</vs-button
                                 >
                             </vx-card>
@@ -74,7 +77,10 @@
                                     v-model="modificar"
                                 />
                                 <br />
-                                <vs-button color="warning" type="filled"
+                                <vs-button
+                                    color="warning"
+                                    type="filled"
+                                    @click="PutServicio"
                                     >Modificar</vs-button
                                 >
                             </vx-card>
@@ -120,11 +126,113 @@ export default {
             seleccionEdificiosA: {
                 id: 0,
                 descripcionEdificio: "Seleccione Edificio"
+            },
+            nuevoServicio: {
+                id_edificio: 0,
+                descripcionServicio: ""
+            },
+            modificarServicio: {
+                id: 0,
+                id_edificio: 0,
+                descripcionServicio: ""
             }
         };
     },
     computed: {},
     methods: {
+        agregarServicio() {
+            if (
+                this.agregar == null ||
+                this.agregar == "" ||
+                this.seleccionEdificiosA.id == 0
+            ) {
+                this.$vs.notify({
+                    time: 3000,
+                    title: "Error",
+                    text: "Campo Servicio Vacio o Edificio no Seleccionado",
+                    color: "danger",
+                    position: "top-right"
+                });
+            } else {
+                this.nuevoServicio.descripcionServicio = this.agregar;
+                this.nuevoServicio.id_edificio = this.seleccionEdificiosA.id;
+                const servicio = this.nuevoServicio;
+                axios
+                    .post(this.localVal + "/api/Agente/PostServicios", servicio)
+                    .then(res => {
+                        if (res.data == true) {
+                            this.listadoEdificios();
+                            this.listadoServicios();
+                            this.agregar = "";
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Servicio Agregado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "Hubo una falla al agregar el nuevo servicio",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            }
+        },
+        PutServicio() {
+            if (
+                this.modificar == null ||
+                this.modificar == "" ||
+                this.seleccionEdificios.id == 0
+            ) {
+                this.$vs.notify({
+                    time: 3000,
+                    title: "Error",
+                    text:
+                        "Campo Servicio Vacio o Edificio o servicio no Seleccionado",
+                    color: "danger",
+                    position: "top-right"
+                });
+            } else {
+                this.modificarServicio.id = this.seleccionServicios[0].id;
+                this.modificarServicio.descripcionServicio = this.modificar;
+                this.modificarServicio.id_edificio = this.seleccionEdificios[0].id;
+
+                const servicio = this.modificarServicio;
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PutModificarServicio",
+                        servicio
+                    )
+                    .then(res => {
+                        if (res.data == true) {
+                            this.listadoEdificios();
+                            this.listadoServicios();
+                            this.modificar = "";
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Servicio Modificado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text: "Hubo una falla al modificar el servicio",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            }
+        },
         listadoServicios() {
             axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
                 this.listServicios = res.data;

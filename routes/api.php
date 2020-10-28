@@ -200,3 +200,23 @@ Route::post('/Agente/GuardarUsuarioJefe', ['middleware' => 'cors', 'uses' => 'Us
 Route::post('/Agente/GuardarUsuarioSub', ['middleware' => 'cors', 'uses' => 'UsersController@registrarUsuarioSub']);
 //Traer Cargos 
 Route::get('/Agente/getCargos', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@index']);
+//Traer Cargos No Jefatura,Supervisor RRFF y trabajador RRFF
+Route::get('/Agente/getCargoNoJefatura', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@getCargoNoJefatura']);
+//Traer Usuarios Supervisores RRFF
+Route::get('/Agente/getSupervisores', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloSupervisoresRRFF']);
+//Guardar Nuevo Edificio
+Route::post('/Agente/PostEdificios', ['middleware' => 'cors', 'uses' => 'EdificioController@create']);
+//Guardar Nuevo Servicio
+Route::post('/Agente/PostServicios', ['middleware' => 'cors', 'uses' => 'ServicioController@create']);
+//Guardar Nuevo Unidad Especifica
+Route::post('/Agente/PostUnidadEspecifica', ['middleware' => 'cors', 'uses' => 'UnidadExController@create']);
+//Modificar Edificio
+Route::post('/Agente/PutModificarEdificio', ['middleware' => 'cors', 'uses' => 'EdificioController@modificarEdificio']);
+//Modificar Servicio
+Route::post('/Agente/PutModificarServicio', ['middleware' => 'cors', 'uses' => 'ServicioController@modificarServicio']);
+//Modificar Unidad Especifica
+Route::post('/Agente/PutModificarUnidadEsp', ['middleware' => 'cors', 'uses' => 'UnidadExController@modificarUnidadEspecifica']);
+//Guardar Nuevo Cargo
+Route::post('/Agente/PostCargo', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@create']);
+//Modificar Cargo Cargo Existente
+Route::post('/Agente/PutCargo', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@modificarCargo']);

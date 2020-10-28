@@ -9,7 +9,7 @@
                     class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
                 >
                     <h2 class="mb-1">
-                        Menu Servicios
+                        Menu Ubicacion Especifica
                     </h2>
                 </div>
                 <div class="vx-breadcrumb ml-4 md:block hidden">
@@ -53,7 +53,10 @@
                                     v-model="agregar"
                                 />
                                 <br />
-                                <vs-button color="success" type="filled"
+                                <vs-button
+                                    color="success"
+                                    type="filled"
+                                    @click="agregarUnidadEspecifica"
                                     >Agregar</vs-button
                                 >
                             </vx-card>
@@ -93,7 +96,10 @@
                                     v-model="modificar"
                                 />
                                 <br />
-                                <vs-button color="warning" type="filled"
+                                <vs-button
+                                    color="warning"
+                                    type="filled"
+                                    @click="modificarUnidadEspecifica"
                                     >Modificar</vs-button
                                 >
                             </vx-card>
@@ -151,11 +157,122 @@ export default {
             seleccionEdificiosA: {
                 id: 0,
                 descripcionEdificio: "Seleccione Edificio"
+            },
+            nuevaUnidadEsp: {
+                id_servicio: 0,
+                descripcionUnidadEsp: ""
+            },
+            modificarUnidadEsp: {
+                id_servicio: 0,
+                id: 0,
+                descripcionUnidadEsp: ""
             }
         };
     },
     computed: {},
     methods: {
+        agregarUnidadEspecifica() {
+            if (
+                this.agregar == "" ||
+                this.agregar == null ||
+                this.seleccionServiciosA.id == 0 ||
+                this.seleccionEdificiosA.id == 0
+            ) {
+                this.$vs.notify({
+                    time: 3000,
+                    title: "Error",
+                    text:
+                        "Campo Unidad Especifica Vacio o Edificio,Servicio no Seleccionado",
+                    color: "danger",
+                    position: "top-right"
+                });
+            } else {
+                this.nuevaUnidadEsp.id_servicio = this.seleccionServiciosA[0].id;
+                this.nuevaUnidadEsp.descripcionUnidadEsp = this.agregar;
+                const unidadEsp = this.nuevaUnidadEsp;
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PostUnidadEspecifica",
+                        unidadEsp
+                    )
+                    .then(res => {
+                        if (res.data == true) {
+                            this.listadoEdificios();
+                            this.listadoServicios();
+                            this.listadoUnidadEspecifica();
+                            this.agregar = "";
+                            this.$vs.notify({
+                                time: 3000,
+                                title:
+                                    "Unidad Especifica Agregada Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text: "Hubo una falla al agregar la unidad",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            }
+        },
+        modificarUnidadEspecifica() {
+            if (
+                this.modificar == "" ||
+                this.modificar == null ||
+                this.seleccionServicios[0].id == 0 ||
+                this.seleccionEdificios[0].id == 0 ||
+                this.seleccionUnidadEsp[0].id == 0
+            ) {
+                this.$vs.notify({
+                    time: 3000,
+                    title: "Error",
+                    text:
+                        "Campo Unidad Especifica Vacio o Edificio,Servicio o Unidad Especifica no Seleccionado",
+                    color: "danger",
+                    position: "top-right"
+                });
+            } else {
+                this.modificarUnidadEsp.id_servicio = this.seleccionServicios[0].id;
+                this.modificarUnidadEsp.id = this.seleccionUnidadEsp[0].id;
+                this.modificarUnidadEsp.descripcionUnidadEsp = this.modificar;
+                const unidadEsp = this.modificarUnidadEsp;
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PutModificarUnidadEsp",
+                        unidadEsp
+                    )
+                    .then(res => {
+                        if (res.data == true) {
+                            this.listadoEdificios();
+                            this.listadoServicios();
+                            this.listadoUnidadEspecifica();
+                            this.modificar = "";
+                            this.$vs.notify({
+                                time: 3000,
+                                title:
+                                    "Unidad Especifica Agregada Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text: "Hubo una falla al agregar la unidad",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            }
+        },
         listadoUnidadEspecifica() {
             axios.get(this.localVal + "/api/Usuario/GetUnidadEsp").then(res => {
                 this.listUnidadEsp = res.data;

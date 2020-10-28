@@ -35,7 +35,10 @@
                                     v-model="agregar"
                                 />
                                 <br />
-                                <vs-button color="success" type="filled"
+                                <vs-button
+                                    color="success"
+                                    type="filled"
+                                    @click="agregarNuevoCargo"
                                     >Agregar</vs-button
                                 >
                             </vx-card>
@@ -56,7 +59,10 @@
                                     v-model="modificar"
                                 />
                                 <br />
-                                <vs-button color="warning" type="filled"
+                                <vs-button
+                                    color="warning"
+                                    type="filled"
+                                    @click="modificarCargoExistente"
                                     >Modificar</vs-button
                                 >
                             </vx-card>
@@ -92,15 +98,101 @@ export default {
             seleccionCargo: {
                 id: 0,
                 descripcionCargo: ""
+            },
+            nuevoCargo: {
+                descripcionCargo: ""
+            },
+            modificarCargo: {
+                id: 0,
+                descripcionCargo: ""
             }
         };
     },
     computed: {},
     methods: {
+        agregarNuevoCargo() {
+            if (this.agregar == "" || this.agregar == null) {
+                this.$vs.notify({
+                    time: 3000,
+                    title: "Error",
+                    text: "Campo Cargo Vacio",
+                    color: "danger",
+                    position: "top-right"
+                });
+            } else {
+                this.nuevoCargo.descripcionCargo = this.agregar;
+                const cargo = this.nuevoCargo;
+                axios
+                    .post(this.localVal + "/api/Agente/PostCargo", cargo)
+                    .then(res => {
+                        if (res.data == true) {
+                            this.listadoCargos();
+                            this.agregar = "";
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Cargo Agregado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "Hubo una falla al agregar el nuevo Cargo",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            }
+        },
+        modificarCargoExistente() {
+            if (this.modificar == "" || this.modificar == null) {
+                this.$vs.notify({
+                    time: 3000,
+                    title: "Error",
+                    text: "Campo Cargo Vacio o Cargo no seleccionado",
+                    color: "danger",
+                    position: "top-right"
+                });
+            } else {
+                this.modificarCargo.descripcionCargo = this.modificar;
+                this.modificarCargo.id = this.seleccionCargo.id;
+                const cargo = this.modificarCargo;
+                axios
+                    .post(this.localVal + "/api/Agente/PutCargo", cargo)
+                    .then(res => {
+                        if (res.data == true) {
+                            this.listadoCargos();
+                            this.modificar = "";
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Cargo Agregado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "Hubo una falla al modificar el nuevo Cargo",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            }
+        },
         listadoCargos() {
-            axios.get(this.localVal + "/api/Agente/getCargos").then(res => {
-                this.listCargos = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Agente/getCargoNoJefatura")
+                .then(res => {
+                    this.listCargos = res.data;
+                });
         }
     },
     created() {

@@ -16,7 +16,7 @@ class TrabajadorController extends Controller
     public function index()
     {
         //Traer todo de trabajadores
-        $get_all = Trabajadores::select('trabajadores.id',DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),'trabajadores.especialidad')
+        $get_all = Trabajadores::select('trabajadores.id',DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),'trabajadores.id_especialidad1')
         ->get();
 
         return  $get_all;

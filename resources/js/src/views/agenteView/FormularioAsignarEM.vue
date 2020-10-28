@@ -1251,7 +1251,7 @@ export default {
             console.log(this.seleccionEdificio);
         }
     },
-    created: function() {
+    created() {
         this.cargarInicial();
         this.cargaTicketAsignado();
     },

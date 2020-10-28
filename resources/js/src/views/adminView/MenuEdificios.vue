@@ -35,7 +35,10 @@
                                     v-model="agregar"
                                 />
                                 <br />
-                                <vs-button color="success" type="filled"
+                                <vs-button
+                                    color="success"
+                                    type="filled"
+                                    @click="agregarEdificio"
                                     >Agregar</vs-button
                                 >
                             </vx-card>
@@ -56,7 +59,10 @@
                                     v-model="modificar"
                                 />
                                 <br />
-                                <vs-button color="warning" type="filled"
+                                <vs-button
+                                    color="warning"
+                                    type="filled"
+                                    @click="PutEdificio"
                                     >Modificar</vs-button
                                 >
                             </vx-card>
@@ -91,11 +97,101 @@ export default {
             seleccionEdificios: {
                 id: 0,
                 descripcionEdificio: "Seleccione Edificio"
+            },
+            nuevoEdificio: {
+                descripcionEdificio: ""
+            },
+            modificarEdificio: {
+                id: 0,
+                descripcionEdificio: ""
             }
         };
     },
     computed: {},
     methods: {
+        agregarEdificio() {
+            if (this.agregar == "" || this.agregar == null) {
+                this.$vs.notify({
+                    time: 3000,
+                    title: "Error",
+                    text: "Campo Edificio Vacio",
+                    color: "danger",
+                    position: "top-right"
+                });
+            } else {
+                this.nuevoEdificio.descripcionEdificio = this.agregar;
+                const edificio = this.nuevoEdificio;
+                axios
+                    .post(this.localVal + "/api/Agente/PostEdificios", edificio)
+                    .then(res => {
+                        if (res.data == true) {
+                            this.listadoEdificios();
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Edificio Agregado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "Hubo una falla al agregar el nuevo edificio",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            }
+        },
+        PutEdificio() {
+            if (
+                this.modificar == "" ||
+                this.modificar == null ||
+                this.seleccionEdificios.id == 0
+            ) {
+                this.$vs.notify({
+                    time: 3000,
+                    title: "Error",
+                    text:
+                        "Campo Edificio Vacio o Item del Listado sin seleccionar",
+                    color: "danger",
+                    position: "top-right"
+                });
+            } else {
+                this.modificarEdificio.id = this.seleccionEdificios.id;
+                this.modificarEdificio.descripcionEdificio = this.modificar;
+
+                const edificio = this.modificarEdificio;
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PutModificarEdificio",
+                        edificio
+                    )
+                    .then(res => {
+                        if (res.data == true) {
+                            this.listadoEdificios();
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Edificio Modificado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text: "Hubo una falla al modificar el edificio",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            }
+        },
         listadoEdificios() {
             axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
                 this.listEdificios = res.data;

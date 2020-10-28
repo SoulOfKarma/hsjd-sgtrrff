@@ -16,12 +16,13 @@ class SupervisorController extends Controller
     public function index()
     {
         //Traer todo de supervisores
-        $get_all = Supervisores::select('supervisores.id',DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),'supervisores.especialidad')
+        $get_all = Supervisores::select('supervisores.id',DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),'supervisores.id_especialidad1')
         ->get();
 
         return  $get_all;
         
     }
+    
 
     /**
      * Show the form for creating a new resource.
