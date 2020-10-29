@@ -13,7 +13,7 @@ class Especialidad extends Migration
      */
     public function up()
     {
-        Schema::create('especialidad', function (Blueprint $table) {
+        Schema::create('especialidades', function (Blueprint $table) {
             $table->id();
             $table->text('descripcionEspecialidad');
             $table->timestamps();

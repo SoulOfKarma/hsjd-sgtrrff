@@ -27,7 +27,7 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="1. Ingrese Datos del Usuario">
                     <div class="vx-row mb-12">
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-1/2 mt-5">
                             <h6>1.1 Rut del Trabajador</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
@@ -86,6 +86,17 @@
                                 class="w-full select-large"
                                 label="nombreSupervisor"
                                 :options="listadoSupervisores"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.8 - Seleccione Especialidad</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionEspecialidad"
+                                placeholder="Especialidad"
+                                class="w-full select-large"
+                                label="descripcionEspecialidad"
+                                :options="listadoEspecialidad"
                             ></v-select>
                         </div>
                     </div>
@@ -183,6 +194,11 @@ export default {
             listadoUnidadEsp: [],
             listadoServiciosData: [],
             listadoUnidadEspData: [],
+            listadoEspecialidad: [],
+            seleccionEspecialidad: {
+                id: 0,
+                descripcionEspecialidad: ""
+            },
             seleccionSupervisor: {
                 id: 0,
                 nombreSupervisor: "Seleccione Supervisor"
@@ -221,7 +237,11 @@ export default {
                 password: "",
                 run_usuario: "",
                 permiso_usuario: 3,
-                estado_login: 1
+                estado_login: 1,
+                tra_run: "",
+                tra_nombre: "",
+                tra_apellido: "",
+                id_especialidad1: 0
             }
         };
     },
@@ -242,6 +262,10 @@ export default {
             this.registroUsuario.id_unidadEspecifica = 0;
             this.registroUsuario.password = "";
             this.registroUsuario.run_usuario = "";
+            this.registroUsuario.tra_run = "";
+            this.registroUsuario.tra_nombre = "";
+            this.registroUsuario.tra_apellido = "";
+            this.registroUsuario.id_especialidad1 = 0;
 
             (this.seleccionCargo = {
                 id: 0,
@@ -259,6 +283,10 @@ export default {
                     id: 0,
                     descripcionUnidadEsp: "Seleccion Unidad Especifica"
                 }),
+                (this.seleccionEspecialidad = {
+                    id: 0,
+                    descripcionEspecialidad: ""
+                }),
                 (this.nombreUsuario = ""),
                 (this.apellidoUsuario = ""),
                 (this.anexoUsuario = 0),
@@ -273,11 +301,16 @@ export default {
             this.registroUsuario.apellido = this.apellidoUsuario;
             this.registroUsuario.anexo = this.anexoUsuario;
             this.registroUsuario.id_cargo = 6;
+            this.registroUsuario.id_cargo_asociado = this.seleccionSupervisor.id;
             this.registroUsuario.id_edificio = this.seleccionEdificio[0].id;
             this.registroUsuario.id_servicio = this.seleccionServicio[0].id;
             this.registroUsuario.id_unidadEspecifica = this.seleccionUnidadEsp[0].id;
             this.registroUsuario.password = this.passUsuario;
             this.registroUsuario.run_usuario = this.rutUsuario;
+            this.registroUsuario.tra_run = this.rutUsuario;
+            this.registroUsuario.tra_nombre = this.nombreUsuario;
+            this.registroUsuario.tra_apellido = this.apellidoUsuario;
+            this.registroUsuario.id_especialidad1 = this.seleccionEspecialidad.id;
             this.rutUsuario = format(this.rutUsuario);
             if (
                 this.registroUsuario.run == null ||
@@ -289,7 +322,8 @@ export default {
                     text:
                         "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
                     color: "danger",
-                    position: "top-right"
+                    position: "top-right",
+                    time: 3000
                 });
             } else if (
                 this.registroUsuario.email == null ||
@@ -300,18 +334,27 @@ export default {
                     text:
                         "Debe Escribir un correo valido y que no este el campo vacio",
                     color: "danger",
-                    position: "top-right"
+                    position: "top-right",
+                    time: 3000
                 });
             } else {
                 const registro = this.registroUsuario;
 
                 axios
                     .post(
-                        this.localVal + "/api/Agente/GuardarUsuarioJefe",
+                        this.localVal + "/api/Agente/GuardarTrabajador",
                         registro
                     )
                     .then(res => {
+                        this.limpiar();
                         const ticketServer = res.data;
+                        this.$vs.notify({
+                            title: "Trabajador Agregado Correctamente",
+                            text: "Se recargaran los campos",
+                            color: "success",
+                            position: "top-right",
+                            time: 3000
+                        });
                     });
             }
         },
@@ -441,6 +484,13 @@ export default {
                     this.listadoSupervisores = res.data;
                 });
         },
+        cargarEspecialidad() {
+            axios
+                .get(this.localVal + "/api/Agente/getEspecialidad")
+                .then(res => {
+                    this.listadoEspecialidad = res.data;
+                });
+        },
         cargarEdificios() {
             this.csrf_token;
 
@@ -470,6 +520,7 @@ export default {
         this.cargarEdificios();
         this.cargarServicios();
         this.cargarUnidadEsp();
+        this.cargarEspecialidad();
         this.cargarSupervisores();
     },
     components: {

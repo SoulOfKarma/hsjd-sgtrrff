@@ -187,6 +187,12 @@ const router = new Router({
                         import("./views/adminView/MenuReparacion.vue")
                 },
                 {
+                    path: "/MenuEspecialidad",
+                    name: "menuEspecialidad",
+                    component: () =>
+                        import("./views/adminView/MenuEspecialidad.vue")
+                },
+                {
                     path: "/MenuCargo",
                     name: "menu Cargo",
                     component: () => import("./views/adminView/MenuCargo.vue")

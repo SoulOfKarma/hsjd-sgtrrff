@@ -261,6 +261,20 @@ export default [
                         icon: "FileIcon"
                     }
                 ]
+            },
+            {
+                url: null,
+                name: "Especialidad",
+                slug: "home",
+                icon: "PlusCircleIcon",
+                submenu: [
+                    {
+                        url: "/MenuEspecialidad",
+                        name: "Menu Especialidad",
+                        slug: "MenuEspecialidad",
+                        icon: "FileIcon"
+                    }
+                ]
             }
         ]
     }

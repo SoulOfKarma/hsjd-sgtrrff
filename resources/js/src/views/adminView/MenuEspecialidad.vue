@@ -9,7 +9,7 @@
                     class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
                 >
                     <h2 class="mb-1">
-                        Menu Tipo Reparacion
+                        Menu Especialidad
                     </h2>
                 </div>
                 <div class="vx-breadcrumb ml-4 md:block hidden">
@@ -28,42 +28,42 @@
                 <vx-card title="">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/2 mt-5">
-                            <vx-card title="Agregar Tipo Reparacion">
+                            <vx-card title="Agregar Especialidad">
                                 <vs-input
                                     class="w-full inputx"
-                                    placeholder="Agregar Tipo Reparacion"
+                                    placeholder="Agregar Especialidad"
                                     v-model="agregar"
                                 />
                                 <br />
                                 <vs-button
                                     color="success"
                                     type="filled"
-                                    @click="agregarNuevoTipoReparacion"
+                                    @click="agregarEspecialidad"
                                     >Agregar</vs-button
                                 >
                             </vx-card>
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <vx-card title="Modificar Tipo Reparacion">
+                            <vx-card title="Modificar Especialidad">
                                 <v-select
-                                    v-model="seleccionReparacion"
-                                    placeholder="Tipo Reparacion"
+                                    v-model="seleccionEspecialidad"
+                                    placeholder="Especialidad"
                                     class="w-full select-large"
-                                    label="descripcionTipoReparacion"
-                                    :options="listReparacion"
-                                    @input="cargarSeleccionado"
+                                    label="descripcionEspecialidad"
+                                    :options="listEspecialidad"
+                                    @input="asignarCampoSeleccionado"
                                 ></v-select>
                                 <br />
                                 <vs-input
                                     class="inputx w-full"
-                                    placeholder="Modificar Tipo Reparacion Seleccionado"
+                                    placeholder="Modificar Especialidad Seleccionada"
                                     v-model="modificar"
                                 />
                                 <br />
                                 <vs-button
                                     color="warning"
                                     type="filled"
-                                    @click="modificarTipoReparacionExistente"
+                                    @click="modificarEspecialidadExistente"
                                     >Modificar</vs-button
                                 >
                             </vx-card>
@@ -93,52 +93,49 @@ export default {
             },
             agregar: "",
             modificar: "",
-            listReparacion: [],
+            listEspecialidad: [],
             localVal: "http://127.0.0.1:8000",
-            seleccionReparacion: {
+            seleccionEspecialidad: {
                 id: 0,
-                descripcionTipoReparacion: ""
+                descripcionEspecialidad: "Seleccione Especialidad"
             },
-            nuevoTipoReparacion: {
-                descripcionTipoReparacion: ""
+            nuevaEspecialidad: {
+                descripcionEspecialidad: ""
             },
-            modificarTipoReparacion: {
+            modificarEspecialidad: {
                 id: 0,
-                descripcionTipoReparacion: ""
+                descripcionEspecialidad: ""
             }
         };
     },
     computed: {},
     methods: {
-        cargarSeleccionado() {
-            this.modificar = this.seleccionReparacion.descripcionTipoReparacion;
+        asignarCampoSeleccionado() {
+            this.modificar = this.seleccionEspecialidad.descripcionEspecialidad;
         },
-        agregarNuevoTipoReparacion() {
+        agregarEspecialidad() {
             if (this.agregar == "" || this.agregar == null) {
                 this.$vs.notify({
                     time: 3000,
                     title: "Error",
-                    text: "Campo Tipo de Reparacion Vacio",
+                    text: "Campo Especialidad Vacio",
                     color: "danger",
                     position: "top-right"
                 });
             } else {
-                this.nuevoTipoReparacion.descripcionTipoReparacion = this.agregar;
-                const tipoReparacion = this.nuevoTipoReparacion;
-
+                this.nuevaEspecialidad.descripcionEspecialidad = this.agregar;
+                const especialidad = this.nuevaEspecialidad;
                 axios
                     .post(
-                        this.localVal + "/api/Agente/PostTipoReparacion",
-                        tipoReparacion
+                        this.localVal + "/api/Agente/PostEspecialidad",
+                        especialidad
                     )
                     .then(res => {
                         if (res.data == true) {
-                            this.listadoReparacion();
-                            this.agregar = "";
+                            this.listadoEspecialidad();
                             this.$vs.notify({
                                 time: 3000,
-                                title:
-                                    "Tipo de Reparacion Agregado Correctamente",
+                                title: "Especialidad Agregada Correctamente",
                                 text: "Se Recargara Listado",
                                 color: "success",
                                 position: "top-right"
@@ -148,7 +145,7 @@ export default {
                                 time: 3000,
                                 title: "Error",
                                 text:
-                                    "Hubo una falla al agregar el nuevo Tipo de Reparacion",
+                                    "Hubo una falla al agregar la nueva Especialidad",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -156,37 +153,36 @@ export default {
                     });
             }
         },
-        modificarTipoReparacionExistente() {
+        modificarEspecialidadExistente() {
             if (
                 this.modificar == "" ||
                 this.modificar == null ||
-                this.seleccionReparacion.id == 0
+                this.seleccionEspecialidad.id == 0
             ) {
                 this.$vs.notify({
                     time: 3000,
                     title: "Error",
                     text:
-                        "Campo Tipo de Reparacion Vacio o Sin seleccionar del listado",
+                        "Campo Especialidad Vacio o Item del Listado sin seleccionar",
                     color: "danger",
                     position: "top-right"
                 });
             } else {
-                this.modificarTipoReparacion.id = this.seleccionReparacion.id;
-                this.modificarTipoReparacion.descripcionTipoReparacion = this.modificar;
-                const tipoReparacion = this.modificarTipoReparacion;
+                this.modificarEspecialidad.id = this.seleccionEspecialidad.id;
+                this.modificarEspecialidad.descripcionEspecialidad = this.modificar;
+
+                const especialidad = this.modificarEspecialidad;
                 axios
                     .post(
-                        this.localVal + "/api/Agente/PutTipoReparacion",
-                        tipoReparacion
+                        this.localVal + "/api/Agente/PutEspecialidad",
+                        especialidad
                     )
                     .then(res => {
                         if (res.data == true) {
-                            this.listadoReparacion();
-                            this.modificar = "";
+                            this.listadoEspecialidad();
                             this.$vs.notify({
                                 time: 3000,
-                                title:
-                                    "Tipo de Reparacion modificado Correctamente",
+                                title: "Especialidad Modificado Correctamente",
                                 text: "Se Recargara Listado",
                                 color: "success",
                                 position: "top-right"
@@ -196,7 +192,7 @@ export default {
                                 time: 3000,
                                 title: "Error",
                                 text:
-                                    "Hubo una falla al modificar el Tipo de Reparacion",
+                                    "Hubo una falla al modificar el Especialidad",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -204,14 +200,16 @@ export default {
                     });
             }
         },
-        listadoReparacion() {
-            axios.get(this.localVal + "/api/Usuario/GetTipoRep").then(res => {
-                this.listReparacion = res.data;
-            });
+        listadoEspecialidad() {
+            axios
+                .get(this.localVal + "/api/Agente/getEspecialidad")
+                .then(res => {
+                    this.listEspecialidad = res.data;
+                });
         }
     },
     created() {
-        this.listadoReparacion();
+        this.listadoEspecialidad();
     }
 };
 </script>

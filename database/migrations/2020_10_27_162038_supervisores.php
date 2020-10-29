@@ -19,9 +19,9 @@ class Supervisores extends Migration
             $table->text('sup_nombre');
             $table->text('sup_apellido');
             $table->bigInteger('id_especialidad1')->unsigned();
-            $table->foreign('id_especialidad1')->references('id')->on('especialidad');
+            $table->foreign('id_especialidad1')->references('id')->on('especialidades');
             $table->bigInteger('id_especialidad2')->unsigned();
-            $table->foreign('id_especialidad2')->references('id')->on('especialidad');
+            $table->foreign('id_especialidad2')->references('id')->on('especialidades');
             $table->timestamps();
         });
     }

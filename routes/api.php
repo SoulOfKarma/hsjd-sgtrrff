@@ -204,6 +204,10 @@ Route::get('/Agente/getCargos', ['middleware' => 'cors', 'uses' => 'CargoUsuario
 Route::get('/Agente/getCargoNoJefatura', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@getCargoNoJefatura']);
 //Traer Usuarios Supervisores RRFF
 Route::get('/Agente/getSupervisores', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloSupervisoresRRFF']);
+//Traer Usuarios Trabajadores RRFF
+Route::get('/Agente/getTrabajadores', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloTrabajadoresRRFF']);
+//Traer Especialidades
+Route::get('/Agente/getEspecialidad', ['middleware' => 'cors', 'uses' => 'EspecialidadController@index']);
 //Guardar Nuevo Edificio
 Route::post('/Agente/PostEdificios', ['middleware' => 'cors', 'uses' => 'EdificioController@create']);
 //Guardar Nuevo Servicio
@@ -218,5 +222,21 @@ Route::post('/Agente/PutModificarServicio', ['middleware' => 'cors', 'uses' => '
 Route::post('/Agente/PutModificarUnidadEsp', ['middleware' => 'cors', 'uses' => 'UnidadExController@modificarUnidadEspecifica']);
 //Guardar Nuevo Cargo
 Route::post('/Agente/PostCargo', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@create']);
-//Modificar Cargo Cargo Existente
+//Modificar Cargo Existente
 Route::post('/Agente/PutCargo', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@modificarCargo']);
+//Guardar Nuevo Tipo Reparacion
+Route::post('/Agente/PostTipoReparacion', ['middleware' => 'cors', 'uses' => 'TipoReparacionController@create']);
+//Modificar Tipo Reparacion Existente
+Route::post('/Agente/PutTipoReparacion', ['middleware' => 'cors', 'uses' => 'TipoReparacionController@modificarTipoReparacion']);
+//Guardar Nuevo Supervisor
+Route::post('/Agente/GuardarSupervisor', ['middleware' => 'cors', 'uses' => 'UsersController@registrarSupervisor']);
+//Guardar Nuevo Trabajador
+Route::post('/Agente/GuardarTrabajador', ['middleware' => 'cors', 'uses' => 'UsersController@registrarTrabajador']);
+//Guardar Nueva Especialidad
+Route::post('/Agente/PostEspecialidad', ['middleware' => 'cors', 'uses' => 'EspecialidadController@agregarEspecialidad']);
+//Modificar Especialidad Existente
+Route::post('/Agente/PutEspecialidad', ['middleware' => 'cors', 'uses' => 'EspecialidadController@modificarEspecialidad']);
+//Modificar Trabajador Existente
+Route::post('/Agente/PutTrabajador', ['middleware' => 'cors', 'uses' => 'UsersController@modificarTrabajador']);
+//Modificar Supervisor Existente
+Route::post('/Agente/PutSupervisor', ['middleware' => 'cors', 'uses' => 'UsersController@modificarSupervisor']);

@@ -8,6 +8,8 @@ use App\tblPermisoUsuarios;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use App\Supervisores;
+use App\Trabajadores;
 use DB;
 
 class UsersController extends Controller
@@ -54,6 +56,7 @@ class UsersController extends Controller
             'api_token' => Str::random(60),
         ]);
 
+
         return "Ok";
 
         
@@ -90,11 +93,178 @@ class UsersController extends Controller
         
     }
 
+    public function registrarSupervisor(Request $request){
+        $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
+
+        tblPermisoUsuarios::create([
+            'run_usuario' => $run,
+            'permiso_usuario' => $request->permiso_usuario,
+            'estado_login' =>  $request->estado_login
+        ]);
+
+        Users::create([
+            'run' => $run,
+            'email' => $request->email,
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'anexo' => $request->anexo,
+            'id_cargo' => $request->id_cargo,
+            'id_cargo_asociado' => $request->id_cargo_asociado,
+            'id_edificio' => $request->id_edificio,
+            'id_servicio' => $request->id_servicio,
+            'id_unidadEspecifica' => $request->id_unidadEspecifica,
+            'password' => Hash::make($request->password),
+            'api_token' => Str::random(60),
+        ]);
+
+        Supervisores::create([
+            'sup_run' => $run,
+            'sup_nombre' => $request->nombre,
+            'sup_apellido' => $request->apellido,
+            'id_especialidad1' =>$request->id_especialidad1,
+            'id_especialidad2' =>$request->id_especialidad2,
+        ]);
+
+        return "Ok";
+
+        
+    }
+
+    public function modificarSupervisor(Request $request){
+        $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
+
+        tblPermisoUsuarios::where('run_usuario',$run)
+        ->update([
+            'run_usuario' => $run,
+            'permiso_usuario' => $request->permiso_usuario,
+            'estado_login' =>  $request->estado_login
+        ]);
+
+        Users::where('id',$request->id)
+        ->update([
+            'email' => $request->email,
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'anexo' => $request->anexo,
+            'id_cargo' => $request->id_cargo,
+            'id_cargo_asociado' => $request->id_cargo_asociado,
+            'id_edificio' => $request->id_edificio,
+            'id_servicio' => $request->id_servicio,
+            'id_unidadEspecifica' => $request->id_unidadEspecifica,
+            'password' => Hash::make($request->password),
+            'api_token' => Str::random(60),
+        ]);
+
+        Supervisores::where('sup_run',$run)
+        ->update([
+            'sup_run' => $run,
+            'sup_nombre' => $request->nombre,
+            'sup_apellido' => $request->apellido,
+            'id_especialidad1' =>$request->id_especialidad1,
+            'id_especialidad2' =>$request->id_especialidad2,
+        ]);
+
+        return "Ok";
+
+        
+    }
+
+    public function registrarTrabajador(Request $request){
+        $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
+
+        tblPermisoUsuarios::create([
+            'run_usuario' => $run,
+            'permiso_usuario' => $request->permiso_usuario,
+            'estado_login' =>  $request->estado_login
+        ]);
+
+        Users::create([
+            'run' => $run,
+            'email' => $request->email,
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'anexo' => $request->anexo,
+            'id_cargo' => $request->id_cargo,
+            'id_cargo_asociado' => $request->id_cargo_asociado,
+            'id_edificio' => $request->id_edificio,
+            'id_servicio' => $request->id_servicio,
+            'id_unidadEspecifica' => $request->id_unidadEspecifica,
+            'password' => Hash::make($request->password),
+            'api_token' => Str::random(60),
+        ]);
+
+        Trabajadores::create([
+            'tra_run' => $run,
+            'tra_nombre' => $request->nombre,
+            'tra_apellido' => $request->apellido,
+            'id_especialidad1' => $request->id_especialidad1,
+        ]);
+
+        return "Ok";
+
+        
+    }
+
+    public function modificarTrabajador(Request $request){
+        $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
+
+        tblPermisoUsuarios::where('run_usuario',$run)
+        ->update([
+            'run_usuario' => $run,
+            'permiso_usuario' => $request->permiso_usuario,
+            'estado_login' =>  $request->estado_login
+        ]);
+
+        Users::where('id',$request->id)
+        ->update([
+            'email' => $request->email,
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'anexo' => $request->anexo,
+            'id_cargo' => $request->id_cargo,
+            'id_cargo_asociado' => $request->id_cargo_asociado,
+            'id_edificio' => $request->id_edificio,
+            'id_servicio' => $request->id_servicio,
+            'id_unidadEspecifica' => $request->id_unidadEspecifica,
+            'password' => Hash::make($request->password),
+            'api_token' => Str::random(60),
+        ]);
+
+        Trabajadores::where('tra_run',$run)
+        ->update([
+            'tra_run' => $run,
+            'tra_nombre' => $request->nombre,
+            'tra_apellido' => $request->apellido,
+            'id_especialidad1' => $request->id_especialidad1,
+        ]);
+
+        return "Ok";
+
+        
+    }
+
     public function getSoloSupervisoresRRFF()
     {
-        $getall = Users::select('Users.*',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreSupervisor"))
-        ->where('id',[5])
+        $getall = Users::select('Users.*','supervisores.*',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreSupervisor"))
+        ->join('supervisores','users.run','=','supervisores.sup_run')
+        ->where('id_cargo',[5])
         ->get();
         return $getall;
+    }
+
+    public function getSoloTrabajadoresRRFF(){
+        $get_all = Users::select('Users.*','trabajadores.*',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreTrabajador"))
+        ->join('trabajadores','users.run','=','trabajadores.tra_run')
+        ->where('id_cargo',[6])
+        ->get();
+        return $get_all;
     }
 }
