@@ -27,7 +27,7 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="1. Ingrese Datos del Usuario">
                     <div class="vx-row mb-12">
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-1/2 mt-5">
                             <h6>1.1 Rut del Usuario</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
@@ -57,6 +57,7 @@
                         <div class="vx-col w-1/2 mt-5">
                             <h6>1.4 Anexo del Usuario</h6>
                             <vs-input
+                                type="number"
                                 class="vx-col w-full mt-5"
                                 v-model="anexoUsuario"
                             />
@@ -173,22 +174,30 @@ export default {
             listadoServiciosData: [],
             listadoUnidadEspData: [],
             val_run: false,
-            seleccionCargo: {
-                id: 0,
-                descripcionCargo: "Seleccione Cargo"
-            },
-            seleccionEdificio: {
-                id: 0,
-                descripcionEdificio: "Seleccione Edificio"
-            },
-            seleccionServicio: {
-                id: 0,
-                descripcionServicio: "Seleccione Servicio"
-            },
-            seleccionUnidadEsp: {
-                id: 0,
-                descripcionUnidadEsp: "Seleccion Unidad Especifica"
-            },
+            seleccionCargo: [
+                {
+                    id: 0,
+                    descripcionCargo: "Seleccione Cargo"
+                }
+            ],
+            seleccionEdificio: [
+                {
+                    id: 0,
+                    descripcionEdificio: "Seleccione Edificio"
+                }
+            ],
+            seleccionServicio: [
+                {
+                    id: 0,
+                    descripcionServicio: "Seleccione Servicio"
+                }
+            ],
+            seleccionUnidadEsp: [
+                {
+                    id: 0,
+                    descripcionUnidadEsp: "Seleccion Unidad Especifica"
+                }
+            ],
             dataUsuarioCreador: {
                 nombre:
                     localStorage.getItem("nombre") +
@@ -232,84 +241,128 @@ export default {
             this.registroUsuario.password = "";
             this.registroUsuario.run_usuario = "";
 
-            (this.seleccionCargo = {
-                id: 0,
-                descripcionCargo: "Seleccione Cargo"
-            }),
-                (this.seleccionEdificio = {
+            this.seleccionCargo = [
+                {
+                    id: 0,
+                    descripcionCargo: "Seleccione Cargo"
+                }
+            ];
+            this.seleccionEdificio = [
+                {
                     id: 0,
                     descripcionEdificio: "Seleccione Edificio"
-                }),
-                (this.seleccionServicio = {
+                }
+            ];
+            this.seleccionServicio = [
+                {
                     id: 0,
                     descripcionServicio: "Seleccione Servicio"
-                }),
-                (this.seleccionUnidadEsp = {
+                }
+            ];
+            this.seleccionUnidadEsp = [
+                {
                     id: 0,
                     descripcionUnidadEsp: "Seleccion Unidad Especifica"
-                }),
-                (this.nombreUsuario = ""),
-                (this.apellidoUsuario = ""),
-                (this.anexoUsuario = 0),
-                (this.correoUsuario = ""),
-                (this.rutUsuario = ""),
-                (this.passUsuario = "");
+                }
+            ];
+            this.nombreUsuario = "";
+            this.apellidoUsuario = "";
+            this.anexoUsuario = 0;
+            this.correoUsuario = "";
+            this.rutUsuario = "";
+            this.passUsuario = "";
         },
         guardar() {
-            this.registroUsuario.run = this.rutUsuario;
-            this.registroUsuario.email = this.correoUsuario;
-            this.registroUsuario.nombre = this.nombreUsuario;
-            this.registroUsuario.apellido = this.apellidoUsuario;
-            this.registroUsuario.anexo = this.anexoUsuario;
-            this.registroUsuario.id_cargo = 1;
-            this.registroUsuario.id_edificio = this.seleccionEdificio[0].id;
-            this.registroUsuario.id_servicio = this.seleccionServicio[0].id;
-            this.registroUsuario.id_unidadEspecifica = this.seleccionUnidadEsp[0].id;
-            this.registroUsuario.password = this.passUsuario;
-            this.registroUsuario.run_usuario = this.rutUsuario;
-            this.rutUsuario = format(this.rutUsuario);
             if (
-                this.registroUsuario.run == null ||
-                this.registroUsuario.run < 9 ||
-                !validate(this.rutUsuario)
+                this.seleccionEdificio[0] == null ||
+                this.seleccionEdificio[0].id == 0 ||
+                this.seleccionEdificio[0].id == null
             ) {
                 this.$vs.notify({
-                    title: "Error en rut",
-                    text:
-                        "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
+                    title: "Error al seleccionar el edificio",
+                    text: "Debe seleccionar un edificio para continuar",
                     color: "danger",
                     position: "top-right"
                 });
             } else if (
-                this.registroUsuario.email == null ||
-                this.registroUsuario.email < 10
+                this.seleccionServicio[0] == null ||
+                this.seleccionServicio[0].id == 0 ||
+                this.seleccionServicio[0].id == null
             ) {
                 this.$vs.notify({
-                    title: "Error en correo",
+                    title: "Error al seleccionar el servicio",
+                    text: "Debe seleccionar un servicio para continuar",
+                    color: "danger",
+                    position: "top-right"
+                });
+            } else if (
+                this.seleccionUnidadEsp[0] == null ||
+                this.seleccionUnidadEsp[0].id == 0 ||
+                this.seleccionUnidadEsp[0].id == null
+            ) {
+                this.$vs.notify({
+                    title: "Error al seleccionar el Unidad Especifica",
                     text:
-                        "Debe Escribir un correo valido y que no este el campo vacio",
+                        "Debe seleccionar una Unidad Especifica para continuar",
                     color: "danger",
                     position: "top-right"
                 });
             } else {
-                const registro = this.registroUsuario;
-                console.log(registro);
-                axios
-                    .post(
-                        this.localVal + "/api/Agente/GuardarUsuarioJefe",
-                        registro
-                    )
-                    .then(res => {
-                        const ticketServer = res.data;
-                        this.$vs.notify({
-                            time: 3000,
-                            title: "Registro Realizado Correctamente",
-                            text: "Se vaciaran los campos",
-                            color: "success",
-                            position: "top-right"
-                        });
-                        this.limpiar();
+                this.registroUsuario.run = this.rutUsuario;
+                this.registroUsuario.email = this.correoUsuario;
+                this.registroUsuario.nombre = this.nombreUsuario;
+                this.registroUsuario.apellido = this.apellidoUsuario;
+                this.registroUsuario.anexo = this.anexoUsuario;
+                this.registroUsuario.id_cargo = 1;
+                this.registroUsuario.id_edificio = this.seleccionEdificio[0].id;
+                this.registroUsuario.id_servicio = this.seleccionServicio[0].id;
+                this.registroUsuario.id_unidadEspecifica = this.seleccionUnidadEsp[0].id;
+                this.registroUsuario.password = this.passUsuario;
+                this.registroUsuario.run_usuario = this.rutUsuario;
+                this.rutUsuario = format(this.rutUsuario);
+                if (
+                    this.registroUsuario.run == null ||
+                    this.registroUsuario.run < 9 ||
+                    !validate(this.rutUsuario)
+                ) {
+                    this.$vs.notify({
+                        title: "Error en rut",
+                        text:
+                            "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (
+                    this.registroUsuario.email == null ||
+                    this.registroUsuario.email < 10
+                ) {
+                    this.$vs.notify({
+                        title: "Error en correo",
+                        text:
+                            "Debe Escribir un correo valido y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    const registro = this.registroUsuario;
+                    console.log(registro);
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/GuardarUsuarioJefe",
+                            registro
+                        )
+                        .then(res => {
+                            const ticketServer = res.data;
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Registro Realizado Correctamente",
+                                text: "Se vaciaran los campos",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.limpiar();
+                        });
+                }
             }
         },
         filtroSegunEdificio() {
@@ -329,6 +382,18 @@ export default {
                 });
 
                 this.listadoServicios = b;
+
+                //Dejando como Array la seleccion de edificio
+                c = this.listadoEdificios;
+                b = [];
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        b.push(value);
+                    }
+                });
+
+                this.seleccionEdificio = b;
             }
         },
         cargaSegunUnidadEsp() {
@@ -432,34 +497,50 @@ export default {
             }
         },
         cargarCargoUsuario() {
-            this.csrf_token;
-
             axios.get(this.localVal + "/api/Agente/GetCargos").then(res => {
                 this.listadoCargo = res.data;
+                let b = [];
+                let c = this.listadoCargo;
+                c.forEach((value, index) => {
+                    b.push(value);
+                });
+                this.listadoCargo = b;
             });
         },
         cargarEdificios() {
-            this.csrf_token;
-
             axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
                 this.listadoEdificios = res.data;
+                let b = [];
+                let c = this.listadoEdificios;
+                c.forEach((value, index) => {
+                    b.push(value);
+                });
+                this.listadoEdificios = b;
             });
         },
 
         cargarServicios() {
-            this.csrf_token;
-
             axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
                 this.listadoServicios = res.data;
                 this.listadoServiciosData = res.data;
+                let b = [];
+                let c = this.listadoServicios;
+                c.forEach((value, index) => {
+                    b.push(value);
+                });
+                this.listadoServicios = b;
             });
         },
         cargarUnidadEsp() {
-            this.csrf_token;
-
             axios.get(this.localVal + "/api/Usuario/GetUnidadEsp").then(res => {
                 this.listadoUnidadEsp = res.data;
                 this.listadoUnidadEspData = res.data;
+                let b = [];
+                let c = this.listadoUnidadEsp;
+                c.forEach((value, index) => {
+                    b.push(value);
+                });
+                this.listadoUnidadEsp = b;
             });
         }
     },

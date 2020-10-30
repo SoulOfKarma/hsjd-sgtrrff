@@ -198,6 +198,18 @@ const router = new Router({
                     component: () => import("./views/adminView/MenuCargo.vue")
                 },
                 {
+                    path: "/ModificarUsuarioJefe",
+                    name: "modificar Usuario Jefe",
+                    component: () =>
+                        import("./views/adminView/ModificarUsuarioJefe.vue")
+                },
+                {
+                    path: "/ModificarSubroganteJefe",
+                    name: "modificar Subrogrante Jefe",
+                    component: () =>
+                        import("./views/adminView/ModificarSubroganteJefe.vue")
+                },
+                {
                     path: "/AgregarSubroganteJefe",
                     name: "agregarSubroganteJefe",
                     component: () =>

@@ -231,15 +231,15 @@ export default {
             listadoSupervisor: [],
             seleccionSupervisor: {
                 id: 0,
-                nombreSupervisor: ""
+                nombreSupervisor: "Seleccione Supervisor"
             },
             seleccionEspecialidad1: {
                 id: 0,
-                descripcionEspecialidad: ""
+                descripcionEspecialidad: "Seleccione Especialidad 1"
             },
             seleccionEspecialidad2: {
                 id: 0,
-                descripcionEspecialidad: ""
+                descripcionEspecialidad: "Seleccione Especialidad 2"
             },
             seleccionUsuariosCargo: {
                 id: 0,
@@ -301,6 +301,8 @@ export default {
                     b.push(value);
                 }
             });
+
+            this.seleccionSupervisor = b;
 
             this.nombreUsuario = b[0].nombre;
             this.rutUsuario = b[0].run;
@@ -441,42 +443,58 @@ export default {
             this.modificarSupervisor.id_especialidad1 = 0;
             this.modificarSupervisor.id_especialidad2 = 0;
 
-            (this.seleccionCargo = {
-                id: 0,
-                descripcionCargo: "Seleccione Cargo"
-            }),
-                (this.seleccionEdificio = {
+            this.seleccionCargo = [
+                {
+                    id: 0,
+                    descripcionCargo: "Seleccione Cargo"
+                }
+            ];
+            this.seleccionEdificio = [
+                {
                     id: 0,
                     descripcionEdificio: "Seleccione Edificio"
-                }),
-                (this.seleccionServicio = {
-                    id: 0,
-                    descripcionServicio: "Seleccione Servicio"
-                }),
-                (this.seleccionUnidadEsp = {
+                }
+            ];
+            this.seleccionServicio = {
+                id: 0,
+                descripcionServicio: "Seleccione Servicio"
+            };
+            this.seleccionUnidadEsp = [
+                {
                     id: 0,
                     descripcionUnidadEsp: "Seleccion Unidad Especifica"
-                }),
-                (this.seleccionEspecialidad1 = {
+                }
+            ];
+            this.seleccionEspecialidad1 = [
+                {
                     id: 0,
-                    descripcionEspecialidad: ""
-                }),
-                (this.seleccionEspecialidad2 = {
+                    descripcionEspecialidad: "Seleccione Especialidad 1"
+                }
+            ];
+            this.seleccionEspecialidad2 = [
+                {
                     id: 0,
-                    descripcionEspecialidad: ""
-                }),
-                (this.nombreUsuario = ""),
-                (this.apellidoUsuario = ""),
-                (this.anexoUsuario = 0),
-                (this.correoUsuario = ""),
-                (this.rutUsuario = ""),
-                (this.passUsuario = "");
+                    descripcionEspecialidad: "Seleccione Especialidad 2"
+                }
+            ];
+            this.seleccionSupervisor = [
+                {
+                    id: 0,
+                    nombreSupervisor: "Seleccione Supervisor"
+                }
+            ];
+            this.nombreUsuario = "";
+            this.apellidoUsuario = "";
+            this.anexoUsuario = 0;
+            this.correoUsuario = "";
+            this.rutUsuario = "";
+            this.passUsuario = "";
         },
         modificar() {
             if (
-                this.seleccionSupervisor == null ||
-                this.seleccionSupervisor.id == null ||
-                this.seleccionSupervisor.id == 0
+                this.seleccionSupervisor[0] == null ||
+                this.seleccionSupervisor[0].id == null ||
+                this.seleccionSupervisor[0].id == 0
             ) {
                 this.$vs.notify({
                     title: "Error en Seleccionar el supervisor a modificar",
@@ -505,7 +523,7 @@ export default {
                 this.modificarSupervisor.id_especialidad1 = this.seleccionEspecialidad1[0].id;
                 this.modificarSupervisor.id_especialidad2 = this.seleccionEspecialidad2[0].id;
 
-                this.modificarSupervisor.id = this.seleccionSupervisor.id;
+                this.modificarSupervisor.id = this.seleccionSupervisor[0].id;
                 this.rutUsuario = format(this.rutUsuario);
 
                 if (
@@ -685,6 +703,18 @@ export default {
                 });
 
                 this.listadoServicios = b;
+
+                //Dejando como Array la seleccion de edificio
+                c = this.listadoEdificios;
+                b = [];
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        b.push(value);
+                    }
+                });
+
+                this.seleccionEdificio = b;
             }
         },
         cargaSegunUnidadEsp() {
@@ -792,6 +822,12 @@ export default {
                 .get(this.localVal + "/api/Agente/getSupervisores")
                 .then(res => {
                     this.listadoSupervisor = res.data;
+                    let b = [];
+                    let c = this.listadoSupervisor;
+                    c.forEach((value, index) => {
+                        b.push(value);
+                    });
+                    this.listadoSupervisor = b;
                 });
         },
         cargarListadoUsuarios() {
@@ -799,13 +835,23 @@ export default {
                 .get(this.localVal + "/api/Agente/GetUsuariosCargo")
                 .then(res => {
                     this.listadoUsuariosCargo = res.data;
+                    let b = [];
+                    let c = this.listadoUsuariosCargo;
+                    c.forEach((value, index) => {
+                        b.push(value);
+                    });
+                    this.listadoUsuariosCargo = b;
                 });
         },
         cargarEdificios() {
-            this.csrf_token;
-
             axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
                 this.listadoEdificios = res.data;
+                let b = [];
+                let c = this.listadoEdificios;
+                c.forEach((value, index) => {
+                    b.push(value);
+                });
+                this.listadoEdificios = b;
             });
         },
         cargarEspecialidad() {
@@ -813,14 +859,24 @@ export default {
                 .get(this.localVal + "/api/Agente/getEspecialidad")
                 .then(res => {
                     this.listadoEspecialidad = res.data;
+                    let b = [];
+                    let c = this.listadoEspecialidad;
+                    c.forEach((value, index) => {
+                        b.push(value);
+                    });
+                    this.listadoEspecialidad = b;
                 });
         },
         cargarServicios() {
-            this.csrf_token;
-
             axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
                 this.listadoServicios = res.data;
                 this.listadoServiciosData = res.data;
+                let b = [];
+                let c = this.listadoServicios;
+                c.forEach((value, index) => {
+                    b.push(value);
+                });
+                this.listadoServicios = b;
             });
         },
         cargarUnidadEsp() {
@@ -829,6 +885,12 @@ export default {
             axios.get(this.localVal + "/api/Usuario/GetUnidadEsp").then(res => {
                 this.listadoUnidadEsp = res.data;
                 this.listadoUnidadEspData = res.data;
+                let b = [];
+                let c = this.listadoUnidadEsp;
+                c.forEach((value, index) => {
+                    b.push(value);
+                });
+                this.listadoUnidadEsp = b;
             });
         }
     },

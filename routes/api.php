@@ -113,7 +113,7 @@ Route::get('/Agente/GetTurnos', ['middleware' => 'cors', 'uses' => 'TurnoControl
 Route::get('/Agente/GetCargos', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@index']);
 //Traer Cargos sin Jefatura
 Route::get('/Agente/GetCargoNoJefatura', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@getCargoNoJefatura']);
-//Traer Toda Cuenta de Usuarios
+//Traer Jefatura Usuarios
 Route::get('/Agente/GetUsuariosCargo', ['middleware' => 'cors', 'uses' => 'UsersController@traerTodoUsuarios']);
 
 //Traer seguimiento de tickets
@@ -240,3 +240,7 @@ Route::post('/Agente/PutEspecialidad', ['middleware' => 'cors', 'uses' => 'Espec
 Route::post('/Agente/PutTrabajador', ['middleware' => 'cors', 'uses' => 'UsersController@modificarTrabajador']);
 //Modificar Supervisor Existente
 Route::post('/Agente/PutSupervisor', ['middleware' => 'cors', 'uses' => 'UsersController@modificarSupervisor']);
+//Traer Jefatura Usuarios
+Route::get('/Agente/getUsuariosJefatura', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloJefatura']);
+//Traer Jefatura Usuarios
+Route::get('/Agente/getUsuariosSubrogantes', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloSubrogantes']);

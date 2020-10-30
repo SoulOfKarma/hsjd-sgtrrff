@@ -175,6 +175,18 @@ export default [
                         icon: "FileIcon"
                     },
                     {
+                        url: "/ModificarUsuarioJefe",
+                        name: "Modificar Jefatura",
+                        slug: "ModificarUsuarioJefe",
+                        icon: "FileIcon"
+                    },
+                    {
+                        url: "/ModificarSubroganteJefe",
+                        name: "Modificar Subrogante",
+                        slug: "ModificarSubroganteJefe",
+                        icon: "FileIcon"
+                    },
+                    {
                         url: "/MenuCargo",
                         name: "Cargo",
                         slug: "MenuCargo",

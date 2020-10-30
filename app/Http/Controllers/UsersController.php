@@ -62,6 +62,39 @@ class UsersController extends Controller
         
     }
 
+    public function modificarUsuario(Request $request){
+        $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
+
+        tblPermisoUsuarios::where('run',$run)
+        ->update([
+            'run_usuario' => $run,
+            'permiso_usuario' => $request->permiso_usuario,
+            'estado_login' =>  $request->estado_login
+        ]);
+
+        Users::where('id',$request->id)
+        ->update([
+            'email' => $request->email,
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'anexo' => $request->anexo,
+            'id_cargo' => $request->id_cargo,
+            'id_cargo_asociado' => $request->id_cargo_asociado,
+            'id_edificio' => $request->id_edificio,
+            'id_servicio' => $request->id_servicio,
+            'id_unidadEspecifica' => $request->id_unidadEspecifica,
+            'password' => Hash::make($request->password),
+            'api_token' => Str::random(60),
+        ]);
+
+
+        return "Ok";
+
+        
+    }
+
     public function registrarUsuarioSub(Request $request){
         $run = $request->run_usuario;
         $run = str_replace('.', '', $run);
@@ -75,6 +108,38 @@ class UsersController extends Controller
 
         Users::create([
             'run' => $run,
+            'email' => $request->email,
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'anexo' => $request->anexo,
+            'id_cargo' => $request->id_cargo,
+            'id_cargo_asociado' => $request->id_cargo_asociado,
+            'id_edificio' => $request->id_edificio,
+            'id_servicio' => $request->id_servicio,
+            'id_unidadEspecifica' => $request->id_unidadEspecifica,
+            'password' => Hash::make($request->password),
+            'api_token' => Str::random(60),
+        ]);
+
+        return "Ok";
+
+        
+    }
+
+    public function modificarUsuarioSub(Request $request){
+        $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
+
+        tblPermisoUsuarios::where('run_usuario',$run)
+        ->update([
+            'run_usuario' => $run,
+            'permiso_usuario' => $request->permiso_usuario,
+            'estado_login' =>  $request->estado_login
+        ]);
+
+        Users::where('id',$request->id)
+        ->update([
             'email' => $request->email,
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
@@ -253,7 +318,7 @@ class UsersController extends Controller
 
     public function getSoloSupervisoresRRFF()
     {
-        $getall = Users::select('Users.*','supervisores.*',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreSupervisor"))
+        $getall = Users::select('Users.*','users.id as id_user','supervisores.*',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreSupervisor"))
         ->join('supervisores','users.run','=','supervisores.sup_run')
         ->where('id_cargo',[5])
         ->get();
@@ -264,6 +329,22 @@ class UsersController extends Controller
         $get_all = Users::select('Users.*','trabajadores.*',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreTrabajador"))
         ->join('trabajadores','users.run','=','trabajadores.tra_run')
         ->where('id_cargo',[6])
+        ->get();
+        return $get_all;
+    }
+
+    public function getSoloJefatura(){
+        $get_all = Users::select('Users.*',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreUsuario"))
+        ->where('id_cargo',[1])
+        ->get();
+        return $get_all;
+    }
+
+    public function getSoloSubrogantes(){
+        $get_all = Users::select('Users.*',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreUsuario"))
+        ->whereNotIn('id_cargo',[1])
+        ->whereNotIn('id_cargo',[5])
+        ->whereNotIn('id_cargo',[6])
         ->get();
         return $get_all;
     }

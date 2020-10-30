@@ -31,6 +31,7 @@
                             <h6>1.1 Rut del Usuario</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
+                                v-model="rutUsuario"
                                 v-on:blur="formatear_run"
                             />
                             <span
@@ -56,6 +57,7 @@
                         <div class="vx-col w-1/2 mt-5">
                             <h6>1.4 Anexo del Usuario</h6>
                             <vs-input
+                                type="number"
                                 class="vx-col w-full mt-5"
                                 v-model="anexoUsuario"
                             />
@@ -63,6 +65,7 @@
                         <div class="vx-col w-1/2 mt-5">
                             <h6>1.5 Correo del Usuario</h6>
                             <vs-input
+                                type="email"
                                 class="vx-col w-full mt-5"
                                 v-model="correoUsuario"
                             />
@@ -76,6 +79,7 @@
                                 class="w-full select-large"
                                 label="descripcionCargo"
                                 :options="listadoCargo"
+                                @input="arrayCargo"
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -95,6 +99,7 @@
                                 class="w-full select-large"
                                 label="nombrecompleto"
                                 :options="listadoUsuariosCargo"
+                                @input="arrayJefatura"
                             ></v-select>
                         </div>
                     </div>
@@ -194,27 +199,37 @@ export default {
             listadoServiciosData: [],
             listadoUnidadEspData: [],
             val_run: false,
-            seleccionCargo: {
-                id: 0,
-                descripcionCargo: "Seleccione Cargo"
-            },
-            seleccionUsuariosCargo: {
-                id: 0,
-                nombrecompleto: "Seleccione Usuario Jefe"
-            },
-            seleccionEdificio: {
-                id: 0,
-                descripcionEdificio: "Seleccione Edificio"
-            },
+            seleccionCargo: [
+                {
+                    id: 0,
+                    descripcionCargo: "Seleccione Cargo"
+                }
+            ],
+            seleccionUsuariosCargo: [
+                {
+                    id: 0,
+                    nombrecompleto: "Seleccione Usuario Jefe"
+                }
+            ],
+            seleccionEdificio: [
+                {
+                    id: 0,
+                    descripcionEdificio: "Seleccione Edificio"
+                }
+            ],
 
-            seleccionServicio: {
-                id: 0,
-                descripcionServicio: "Seleccione Servicio"
-            },
-            seleccionUnidadEsp: {
-                id: 0,
-                descripcionUnidadEsp: "Seleccion Unidad Especifica"
-            },
+            seleccionServicio: [
+                {
+                    id: 0,
+                    descripcionServicio: "Seleccione Servicio"
+                }
+            ],
+            seleccionUnidadEsp: [
+                {
+                    id: 0,
+                    descripcionUnidadEsp: "Seleccion Unidad Especifica"
+                }
+            ],
             dataUsuarioCreador: {
                 nombre:
                     localStorage.getItem("nombre") +
@@ -245,6 +260,34 @@ export default {
             this.rutUsuario = format(this.rutUsuario);
             this.val_run = !validate(this.rutUsuario);
         },
+        arrayCargo() {
+            let id = this.seleccionCargo.id;
+            let b = [];
+            let c = this.listadoCargo;
+            let a = 0;
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == id) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionCargo = b;
+        },
+        arrayJefatura() {
+            let id = this.seleccionUsuariosCargo.id;
+            let b = [];
+            let c = this.listadoUsuariosCargo;
+            let a = 0;
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == id) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionUsuariosCargo = b;
+        },
         limpiar() {
             this.registroUsuario.run = "";
             this.registroUsuario.email = "";
@@ -259,78 +302,146 @@ export default {
             this.registroUsuario.password = "";
             this.registroUsuario.run_usuario = "";
 
-            (seleccionCargo = {
-                id: 0,
-                descripcionCargo: "Seleccione Cargo"
-            }),
-                (seleccionEdificio = {
+            this.seleccionCargo = [
+                {
+                    id: 0,
+                    descripcionCargo: "Seleccione Cargo"
+                }
+            ];
+
+            this.seleccionEdificio = [
+                {
                     id: 0,
                     descripcionEdificio: "Seleccione Edificio"
-                }),
-                (seleccionServicio = {
+                }
+            ];
+            this.seleccionServicio = [
+                {
                     id: 0,
                     descripcionServicio: "Seleccione Servicio"
-                }),
-                (seleccionUnidadEsp = {
+                }
+            ];
+            this.seleccionUnidadEsp = [
+                {
                     id: 0,
                     descripcionUnidadEsp: "Seleccion Unidad Especifica"
-                }),
-                (nombreUsuario = ""),
-                (apellidoUsuario = ""),
-                (anexoUsuario = 0),
-                (correoUsuario = ""),
-                (rutUsuario = ""),
-                (passUsuario = "");
+                }
+            ];
+            this.nombreUsuario = "";
+            this.apellidoUsuario = "";
+            this.anexoUsuario = 0;
+            this.correoUsuario = "";
+            this.rutUsuario = "";
+            this.passUsuario = "";
         },
         guardar() {
-            this.registroUsuario.run = this.rutUsuario;
-            this.registroUsuario.email = this.correoUsuario;
-            this.registroUsuario.nombre = this.nombreUsuario;
-            this.registroUsuario.apellido = this.apellidoUsuario;
-            this.registroUsuario.anexo = this.anexoUsuario;
-            this.registroUsuario.id_cargo = this.seleccionCargo.id;
-            this.registroUsuario.id_cargo_asociado = this.seleccionUsuariosCargo.id;
-            this.registroUsuario.id_edificio = this.seleccionEdificio[0].id;
-            this.registroUsuario.id_servicio = this.seleccionServicio[0].id;
-            this.registroUsuario.id_unidadEspecifica = this.seleccionUnidadEsp[0].id;
-            this.registroUsuario.password = this.passUsuario;
-            this.registroUsuario.run_usuario = this.rutUsuario;
-            this.rutUsuario = format(this.rutUsuario);
-
             if (
-                this.registroUsuario.run == null ||
-                this.registroUsuario.run < 9 ||
-                !validate(this.rutUsuario)
+                this.seleccionEdificio[0] == null ||
+                this.seleccionEdificio[0].id == 0 ||
+                this.seleccionEdificio[0].id == null
             ) {
                 this.$vs.notify({
-                    title: "Error en rut",
-                    text:
-                        "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
+                    title: "Error al seleccionar el edificio",
+                    text: "Debe seleccionar un edificio para continuar",
                     color: "danger",
                     position: "top-right"
                 });
             } else if (
-                this.registroUsuario.email == null ||
-                this.registroUsuario.email < 10
+                this.seleccionServicio[0] == null ||
+                this.seleccionServicio[0].id == 0 ||
+                this.seleccionServicio[0].id == null
             ) {
                 this.$vs.notify({
-                    title: "Error en correo",
+                    title: "Error al seleccionar el servicio",
+                    text: "Debe seleccionar un servicio para continuar",
+                    color: "danger",
+                    position: "top-right"
+                });
+            } else if (
+                this.seleccionUnidadEsp[0] == null ||
+                this.seleccionUnidadEsp[0].id == 0 ||
+                this.seleccionUnidadEsp[0].id == null
+            ) {
+                this.$vs.notify({
+                    title: "Error al seleccionar la Unidad Especifica",
                     text:
-                        "Debe Escribir un correo valido y que no este el campo vacio",
+                        "Debe seleccionar una Unidad Especifica para continuar",
+                    color: "danger",
+                    position: "top-right"
+                });
+            } else if (
+                this.seleccionCargo[0] == null ||
+                this.seleccionCargo[0].id == 0 ||
+                this.seleccionCargo[0].id == null
+            ) {
+                this.$vs.notify({
+                    title: "Error al seleccionar el cargo",
+                    text: "Debe seleccionar un cargo para continuar",
+                    color: "danger",
+                    position: "top-right"
+                });
+            } else if (
+                this.seleccionUsuariosCargo[0] == null ||
+                this.seleccionUsuariosCargo[0].id == 0 ||
+                this.seleccionUsuariosCargo[0].id == null
+            ) {
+                this.$vs.notify({
+                    title: "Error al seleccionar la jefatura",
+                    text:
+                        "Debe seleccionar una jefatura a cargo para continuar",
                     color: "danger",
                     position: "top-right"
                 });
             } else {
-                const registro = this.registroUsuario;
+                this.registroUsuario.run = this.rutUsuario;
+                this.registroUsuario.email = this.correoUsuario;
+                this.registroUsuario.nombre = this.nombreUsuario;
+                this.registroUsuario.apellido = this.apellidoUsuario;
+                this.registroUsuario.anexo = this.anexoUsuario;
+                this.registroUsuario.id_cargo = this.seleccionCargo[0].id;
+                this.registroUsuario.id_cargo_asociado = this.seleccionUsuariosCargo[0].id;
+                this.registroUsuario.id_edificio = this.seleccionEdificio[0].id;
+                this.registroUsuario.id_servicio = this.seleccionServicio[0].id;
+                this.registroUsuario.id_unidadEspecifica = this.seleccionUnidadEsp[0].id;
+                this.registroUsuario.password = this.passUsuario;
+                this.registroUsuario.run_usuario = this.rutUsuario;
+                this.rutUsuario = format(this.rutUsuario);
 
-                axios
-                    .post(
-                        this.localVal + "/api/Agente/GuardarUsuarioSub",
-                        registro
-                    )
-                    .then(res => {
-                        const ticketServer = res.data;
+                if (
+                    this.registroUsuario.run == null ||
+                    this.registroUsuario.run < 9 ||
+                    !validate(this.rutUsuario)
+                ) {
+                    this.$vs.notify({
+                        title: "Error en rut",
+                        text:
+                            "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (
+                    this.registroUsuario.email == null ||
+                    this.registroUsuario.email < 10
+                ) {
+                    this.$vs.notify({
+                        title: "Error en correo",
+                        text:
+                            "Debe Escribir un correo valido y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    const registro = this.registroUsuario;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/GuardarUsuarioSub",
+                            registro
+                        )
+                        .then(res => {
+                            const ticketServer = res.data;
+                        });
+                }
             }
         },
         filtroSegunEdificio() {
@@ -350,6 +461,18 @@ export default {
                 });
 
                 this.listadoServicios = b;
+
+                //Dejando como Array la seleccion de edificio
+                c = this.listadoEdificios;
+                b = [];
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        b.push(value);
+                    }
+                });
+
+                this.seleccionEdificio = b;
             }
         },
         cargaSegunUnidadEsp() {
