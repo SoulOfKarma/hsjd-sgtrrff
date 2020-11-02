@@ -284,8 +284,8 @@ export default {
         colorLoading: "#ff8000",
         diaCalculado: 0,
         format: "d MMMM yyyy",
-        nombre: localStorage.getItem("nombre"),
-        run: localStorage.getItem("run"),
+        nombre: sessionStorage.getItem("nombre"),
+        run: sessionStorage.getItem("run"),
         fecha1: moment()
             .startOf("day")
             .fromNow(),
@@ -1124,7 +1124,7 @@ export default {
 
                 this.gestionTicket.fechaInicioFormateada = fechaInicioT;
                 this.gestionTicket.id_usuarioSolicitante = this.datosSolicitud[0].id_user;
-                this.gestionTicket.id_user = localStorage.getItem("id");
+                this.gestionTicket.id_user = sessionStorage.getItem("id");
                 this.gestionTicket.descripcionSeguimiento =
                     "El Agente " +
                     this.nombre +

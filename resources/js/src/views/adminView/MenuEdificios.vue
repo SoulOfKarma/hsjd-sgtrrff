@@ -85,10 +85,10 @@ export default {
         return {
             dataUsuarioCreador: {
                 nombre:
-                    localStorage.getItem("nombre") +
+                    sessionStorage.getItem("nombre") +
                     " " +
-                    localStorage.getItem("apellido"),
-                id_user: localStorage.getItem("id")
+                    sessionStorage.getItem("apellido"),
+                id_user: sessionStorage.getItem("id")
             },
             agregar: "",
             modificar: "",
@@ -109,6 +109,21 @@ export default {
     },
     computed: {},
     methods: {
+        limpiar() {
+            this.agregar = "";
+            this.modificar = "";
+            this.seleccionEdificios = {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            };
+            this.nuevoEdificio = {
+                descripcionEdificio: ""
+            };
+            this.modificarEdificio = {
+                id: 0,
+                descripcionEdificio: ""
+            };
+        },
         agregarEdificio() {
             if (this.agregar == "" || this.agregar == null) {
                 this.$vs.notify({
@@ -133,6 +148,7 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.limpiar();
                         } else {
                             this.$vs.notify({
                                 time: 3000,
@@ -180,6 +196,7 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.limpiar();
                         } else {
                             this.$vs.notify({
                                 time: 3000,

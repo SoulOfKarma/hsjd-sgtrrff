@@ -259,27 +259,27 @@ export default {
                         .then(function(response) {
                             if (response.data.length > 0) {
                                 if (response.data != 1) {
-                                    localStorage.setItem(
+                                    sessionStorage.setItem(
                                         "nombre",
                                         response.data[0].nombre
                                     );
-                                    localStorage.setItem(
+                                    sessionStorage.setItem(
                                         "apellido",
                                         response.data[0].apellido
                                     );
-                                    localStorage.setItem(
+                                    sessionStorage.setItem(
                                         "idServicio",
                                         response.data[0].id_servicio
                                     );
-                                    localStorage.setItem(
+                                    sessionStorage.setItem(
                                         "run",
                                         response.data[0].run
                                     );
-                                    localStorage.setItem(
+                                    sessionStorage.setItem(
                                         "id",
                                         response.data[0].id
                                     );
-                                    localStorage.setItem(
+                                    sessionStorage.setItem(
                                         "api_token",
                                         response.data[0].api_token
                                     );
@@ -299,7 +299,7 @@ export default {
                             .then(function(response2) {
                                 if (response2.data.length > 0) {
                                     if (response2.data[0].estado_login == 1) {
-                                        localStorage.setItem(
+                                        sessionStorage.setItem(
                                             "permiso_usuario",
                                             response2.data[0].permiso_usuario
                                         );

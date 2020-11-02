@@ -103,10 +103,10 @@ export default {
         return {
             dataUsuarioCreador: {
                 nombre:
-                    localStorage.getItem("nombre") +
+                    sessionStorage.getItem("nombre") +
                     " " +
-                    localStorage.getItem("apellido"),
-                id_user: localStorage.getItem("id")
+                    sessionStorage.getItem("apellido"),
+                id_user: sessionStorage.getItem("id")
             },
             agregar: "",
             modificar: "",
@@ -140,6 +140,31 @@ export default {
     },
     computed: {},
     methods: {
+        limpiar() {
+            this.agregar = "";
+            this.modificar = "";
+            this.seleccionServicio = {
+                id: 0,
+                descripcionServicio: "Seleccione Servicio"
+            };
+            this.seleccionEdificios = {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            };
+            this.seleccionEdificiosA = {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            };
+            this.nuevoServicio = {
+                id_edificio: 0,
+                descripcionServicio: ""
+            };
+            this.modificarServicio = {
+                id: 0,
+                id_edificio: 0,
+                descripcionServicio: ""
+            };
+        },
         agregarServicio() {
             if (
                 this.agregar == null ||
@@ -171,6 +196,7 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.limpiar();
                         } else {
                             this.$vs.notify({
                                 time: 3000,
@@ -221,6 +247,7 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.limpiar();
                         } else {
                             this.$vs.notify({
                                 time: 3000,

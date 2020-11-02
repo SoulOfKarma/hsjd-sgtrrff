@@ -200,10 +200,10 @@ export default {
             ],
             dataUsuarioCreador: {
                 nombre:
-                    localStorage.getItem("nombre") +
+                    sessionStorage.getItem("nombre") +
                     " " +
-                    localStorage.getItem("apellido"),
-                id_user: localStorage.getItem("id")
+                    sessionStorage.getItem("apellido"),
+                id_user: sessionStorage.getItem("id")
             },
             registroUsuario: {
                 run: "",
@@ -343,6 +343,50 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (
+                    this.registroUsuario.nombre == null ||
+                    this.registroUsuario.nombre < 3
+                ) {
+                    this.$vs.notify({
+                        title: "Error en Nombre",
+                        text:
+                            "Debe Escribir un Nombre valido y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.registroUsuario.apellido == null ||
+                    this.registroUsuario.apellido < 3
+                ) {
+                    this.$vs.notify({
+                        title: "Error en Apellido",
+                        text:
+                            "Debe Escribir un Apellido valido y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.registroUsuario.anexo == null ||
+                    this.registroUsuario.anexo < 6
+                ) {
+                    this.$vs.notify({
+                        title: "Error en Anexo",
+                        text:
+                            "Debe Escribir un Anexo valido y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.registroUsuario.password == null ||
+                    this.registroUsuario.password < 4
+                ) {
+                    this.$vs.notify({
+                        title: "Error en la Contraseña",
+                        text:
+                            "Debe Escribir una contraseña valida y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
                     const registro = this.registroUsuario;
                     console.log(registro);
@@ -352,15 +396,26 @@ export default {
                             registro
                         )
                         .then(res => {
-                            const ticketServer = res.data;
-                            this.$vs.notify({
-                                time: 3000,
-                                title: "Registro Realizado Correctamente",
-                                text: "Se vaciaran los campos",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.limpiar();
+                            if (res.data == false) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error al registrar usuario",
+                                    text:
+                                        "Usuario ya existente, debe registrar uno nuevo o modificar el existente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else {
+                                const ticketServer = res.data;
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Registro Realizado Correctamente",
+                                    text: "Se vaciaran los campos",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.limpiar();
+                            }
                         });
                 }
             }

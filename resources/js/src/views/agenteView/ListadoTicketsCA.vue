@@ -234,7 +234,7 @@ export default {
                 descripcionSeguimiento: "",
                 id_user: 0,
                 uuid: "",
-                nombre: localStorage.getItem("nombre"),
+                nombre: sessionStorage.getItem("nombre"),
                 razonEliminacion: ""
             },
             colorLoading: "#ff8000",
@@ -245,10 +245,10 @@ export default {
             solicitudes: [],
             localVal: "http://127.0.0.1:8000",
             nombre:
-                localStorage.getItem("nombre") +
+                sessionStorage.getItem("nombre") +
                 " " +
-                localStorage.getItem("apellido"),
-            run: localStorage.getItem("run")
+                sessionStorage.getItem("apellido"),
+            run: sessionStorage.getItem("run")
         };
     },
     methods: {
@@ -387,7 +387,7 @@ export default {
                         position: "top-right"
                     });
                 } else {
-                    var iduser = localStorage.getItem("id");
+                    var iduser = sessionStorage.getItem("id");
                     this.dataEliminacion.id_solicitud = id;
                     this.dataEliminacion.uuid = uuid;
                     var newElement = document.createElement("div");

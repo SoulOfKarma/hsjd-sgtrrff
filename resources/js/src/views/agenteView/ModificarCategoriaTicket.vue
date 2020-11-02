@@ -78,8 +78,8 @@ import router from "@/router";
 
 export default {
     data: () => ({
-        nombre: localStorage.getItem("nombre"),
-        run: localStorage.getItem("run"),
+        nombre: sessionStorage.getItem("nombre"),
+        run: sessionStorage.getItem("run"),
         colorLoading: "#ff8000",
 
         listadoCategoria: [],
@@ -112,7 +112,7 @@ export default {
             this.categoria.idCategoria = this.seleccionCategoria.id;
             this.categoria.nombre = this.nombre;
             this.categoria.desCategoria = this.seleccionCategoria.des_categoria;
-            this.categoria.id_user = localStorage.getItem("id");
+            this.categoria.id_user = sessionStorage.getItem("id");
 
             const cat = this.categoria;
             axios

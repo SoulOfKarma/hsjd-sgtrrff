@@ -331,10 +331,10 @@ export default {
         diaCalculado: 0,
         format: "d MMMM yyyy",
         nombre:
-            localStorage.getItem("nombre") +
+            sessionStorage.getItem("nombre") +
             " " +
-            localStorage.getItem("apellido"),
-        run: localStorage.getItem("run"),
+            sessionStorage.getItem("apellido"),
+        run: sessionStorage.getItem("run"),
         fecha1: moment()
             .startOf("day")
             .fromNow(),

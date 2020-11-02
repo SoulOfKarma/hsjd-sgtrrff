@@ -258,14 +258,14 @@ export default {
             popupActive3: false,
             localVal: "http://127.0.0.1:8000",
             nombre:
-                localStorage.getItem("nombre") +
+                sessionStorage.getItem("nombre") +
                 " " +
-                localStorage.getItem("apellido"),
-            run: localStorage.getItem("run"),
+                sessionStorage.getItem("apellido"),
+            run: sessionStorage.getItem("run"),
 
             data: {
-                idServicio: localStorage.getItem("idServicio"),
-                idUser: localStorage.getItem("id")
+                idServicio: sessionStorage.getItem("idServicio"),
+                idUser: sessionStorage.getItem("id")
             }
         };
     },

@@ -10,8 +10,10 @@ class EspecialidadController extends Controller
 {
     public function index()
     {
-        $get_all = especialidades::all();
-
+        $dataFiltro = [999];
+        $get_all = especialidades::select('especialidades.*')
+        ->whereNotIn('id',$dataFiltro)
+        ->get();
         return  $get_all;
     }
 

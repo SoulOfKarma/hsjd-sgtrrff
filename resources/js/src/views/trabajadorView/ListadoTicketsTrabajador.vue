@@ -103,16 +103,30 @@ export default {
     data() {
         return {
             solicitudes: [],
+            listadoTrabajadores: [],
             localVal: "http://127.0.0.1:8000",
-            nombre: localStorage.getItem("nombre"),
-            run: localStorage.getItem("run")
+            nombre: sessionStorage.getItem("nombre"),
+            run: sessionStorage.getItem("run"),
+            idTra: 0
         };
     },
     methods: {
-        cargarSolicitudes() {
-            let id = localStorage.getItem("id");
+        buscarTrabajadorByRun() {
             axios
-                .get(this.localVal + `/api/Trabajador/TraerTickets/${id}`)
+                .get(
+                    this.localVal +
+                        `/api/Trabajador/getTrabajadoresByRun/${this.run}`
+                )
+                .then(res => {
+                    this.listadoTrabajadores = res.data;
+                    this.idTra = this.listadoTrabajadores[0].id;
+                });
+        },
+        cargarSolicitudes() {
+            axios
+                .get(
+                    this.localVal + `/api/Trabajador/TraerTickets/${this.idTra}`
+                )
                 .then(res => {
                     this.solicitudes = res.data;
                 });
@@ -164,7 +178,10 @@ export default {
         }
     },
     created() {
-        this.cargarSolicitudes();
+        this.buscarTrabajadorByRun();
+        setTimeout(() => {
+            this.cargarSolicitudes();
+        }, 1000);
     }
 };
 </script>

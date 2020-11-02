@@ -259,10 +259,10 @@ export default {
             },
             dataUsuarioCreador: {
                 nombre:
-                    localStorage.getItem("nombre") +
+                    sessionStorage.getItem("nombre") +
                     " " +
-                    localStorage.getItem("apellido"),
-                id_user: localStorage.getItem("id")
+                    sessionStorage.getItem("apellido"),
+                id_user: sessionStorage.getItem("id")
             },
             val_run: false,
             modificarSupervisor: {
@@ -673,15 +673,28 @@ export default {
                             registro
                         )
                         .then(res => {
-                            this.limpiar();
-                            const ticketServer = res.data;
-                            this.$vs.notify({
-                                title: "Supervisor Modificado Correctamente",
-                                text: "Se recargaran los campos",
-                                color: "success",
-                                position: "top-right",
-                                time: 3000
-                            });
+                            if (res.data == false) {
+                                this.$vs.notify({
+                                    title:
+                                        "Error al modificar datos del supervisor",
+                                    text:
+                                        "Chequee los campos e intente nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            } else {
+                                this.limpiar();
+                                const ticketServer = res.data;
+                                this.$vs.notify({
+                                    title:
+                                        "Supervisor Modificado Correctamente",
+                                    text: "Se recargaran los campos",
+                                    color: "success",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
                         });
                 }
             }

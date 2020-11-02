@@ -43,7 +43,7 @@ export default {
     data() {
         return {
             localVal: "http://127.0.0.1:8000",
-            nombre: localStorage.getItem("nombre")
+            nombre: sessionStorage.getItem("nombre")
         };
     },
     computed: {
@@ -56,7 +56,7 @@ export default {
             await axios.post(this.localVal + "/api/Login/Salir", {
                 rut: ""
             });
-            window.localStorage.clear();
+            window.sessionStorage.clear();
             router.push("/pages/login");
         }
     }

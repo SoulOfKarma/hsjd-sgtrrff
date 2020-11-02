@@ -195,12 +195,12 @@ export default {
 
         solicitud: {
             nombre:
-                localStorage.getItem("nombre") +
+                sessionStorage.getItem("nombre") +
                 " " +
-                localStorage.getItem("apellido"),
+                sessionStorage.getItem("apellido"),
             descripcionP: "",
             tituloP: "",
-            id_user: localStorage.getItem("id"),
+            id_user: sessionStorage.getItem("id"),
             id_estado: 1,
             id_edificio: 0,
             id_servicio: 0,
@@ -481,7 +481,7 @@ export default {
             });
         },
         cargarUsuarios() {
-            let id = localStorage.getItem("id");
+            let id = sessionStorage.getItem("id");
             axios
                 .get(this.localVal + `/api/Usuario/getUsuarios/${id}`)
                 .then(res => {
@@ -560,7 +560,7 @@ export default {
                 (this.solicitud = {
                     descripcionP: "",
                     tituloP: "",
-                    id_user: localStorage.getItem("id"),
+                    id_user: sessionStorage.getItem("id"),
                     id_estado: 1,
                     id_edificio: 0,
                     id_servicio: 0,

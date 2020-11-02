@@ -258,10 +258,10 @@ export default {
             ],
             dataUsuarioCreador: {
                 nombre:
-                    localStorage.getItem("nombre") +
+                    sessionStorage.getItem("nombre") +
                     " " +
-                    localStorage.getItem("apellido"),
-                id_user: localStorage.getItem("id")
+                    sessionStorage.getItem("apellido"),
+                id_user: sessionStorage.getItem("id")
             },
             modificarUsuario: {
                 run: "",
@@ -277,7 +277,8 @@ export default {
                 password: "",
                 run_usuario: "",
                 permiso_usuario: 2,
-                estado_login: 1
+                estado_login: 1,
+                id: 0
             }
         };
     },
@@ -441,6 +442,17 @@ export default {
         },
         modificar() {
             if (
+                this.seleccionSubrogante[0] == null ||
+                this.seleccionSubrogante[0].id == 0 ||
+                this.seleccionSubrogante[0].id == null
+            ) {
+                this.$vs.notify({
+                    title: "Error al seleccionar el usuario a modificar",
+                    text: "Debe seleccionar un usuario para continuar",
+                    color: "danger",
+                    position: "top-right"
+                });
+            } else if (
                 this.seleccionEdificio[0] == null ||
                 this.seleccionEdificio[0].id == 0 ||
                 this.seleccionEdificio[0].id == null
@@ -510,6 +522,7 @@ export default {
                 this.modificarUsuario.id_unidadEspecifica = this.seleccionUnidadEsp[0].id;
                 this.modificarUsuario.password = this.passUsuario;
                 this.modificarUsuario.run_usuario = this.rutUsuario;
+                this.modificarUsuario.id = this.seleccionSubrogante[0].id;
                 this.rutUsuario = format(this.rutUsuario);
 
                 if (
@@ -535,16 +548,79 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (
+                    this.modificarUsuario.nombre == null ||
+                    this.modificarUsuario.nombre < 3
+                ) {
+                    this.$vs.notify({
+                        title: "Error en Nombre",
+                        text:
+                            "Debe Escribir un Nombre valido y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.modificarUsuario.apellido == null ||
+                    this.modificarUsuario.apellido < 3
+                ) {
+                    this.$vs.notify({
+                        title: "Error en Apellido",
+                        text:
+                            "Debe Escribir un Apellido valido y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.modificarUsuario.anexo == null ||
+                    this.modificarUsuario.anexo < 6
+                ) {
+                    this.$vs.notify({
+                        title: "Error en Anexo",
+                        text:
+                            "Debe Escribir un Anexo valido y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.modificarUsuario.password == null ||
+                    this.modificarUsuario.password < 4
+                ) {
+                    this.$vs.notify({
+                        title: "Error en la Contraseña",
+                        text:
+                            "Debe Escribir una contraseña valida y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
                     const registro = this.modificarUsuario;
-
                     axios
                         .post(
-                            this.localVal + "/api/Agente/GuardarUsuarioSub",
+                            this.localVal + "/api/Agente/ModificarUsuarioSub",
                             registro
                         )
                         .then(res => {
-                            const ticketServer = res.data;
+                            if (res.data == false) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error al modificar al usuario",
+                                    text:
+                                        "Chequee los campos e intente nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else {
+                                const ticketServer = res.data;
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title:
+                                        "Modificacion Realizada Correctamente",
+                                    text: "Se vaciaran los campos",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.limpiar();
+                            }
                         });
                 }
             }

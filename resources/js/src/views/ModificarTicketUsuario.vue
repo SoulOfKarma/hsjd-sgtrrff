@@ -190,12 +190,12 @@ export default {
         solicitud: {
             id: 0,
             nombre:
-                localStorage.getItem("nombre") +
+                sessionStorage.getItem("nombre") +
                 " " +
-                localStorage.getItem("apellido"),
+                sessionStorage.getItem("apellido"),
             descripcionP: "",
             tituloP: "",
-            id_user: localStorage.getItem("id"),
+            id_user: sessionStorage.getItem("id"),
             id_estado: 1,
             id_edificio: 0,
             id_servicio: 0,
@@ -454,12 +454,12 @@ export default {
                     id: 0,
 
                     nombre:
-                        localStorage.getItem("nombre") +
+                        sessionStorage.getItem("nombre") +
                         " " +
-                        localStorage.getItem("apellido"),
+                        sessionStorage.getItem("apellido"),
                     descripcionP: "",
                     tituloP: "",
-                    id_user: localStorage.getItem("id"),
+                    id_user: sessionStorage.getItem("id"),
                     id_estado: 1,
                     id_edificio: 0,
                     id_servicio: 0,

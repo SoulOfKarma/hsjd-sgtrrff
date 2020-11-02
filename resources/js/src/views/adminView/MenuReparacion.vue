@@ -86,10 +86,10 @@ export default {
         return {
             dataUsuarioCreador: {
                 nombre:
-                    localStorage.getItem("nombre") +
+                    sessionStorage.getItem("nombre") +
                     " " +
-                    localStorage.getItem("apellido"),
-                id_user: localStorage.getItem("id")
+                    sessionStorage.getItem("apellido"),
+                id_user: sessionStorage.getItem("id")
             },
             agregar: "",
             modificar: "",
@@ -110,6 +110,21 @@ export default {
     },
     computed: {},
     methods: {
+        limpiar() {
+            this.seleccionReparacion = {
+                id: 0,
+                descripcionTipoReparacion: ""
+            };
+            this.nuevoTipoReparacion = {
+                descripcionTipoReparacion: ""
+            };
+            this.modificarTipoReparacion = {
+                id: 0,
+                descripcionTipoReparacion: ""
+            };
+            this.agregar = "";
+            this.modificar = "";
+        },
         cargarSeleccionado() {
             this.modificar = this.seleccionReparacion.descripcionTipoReparacion;
         },
@@ -143,6 +158,7 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.limpiar();
                         } else {
                             this.$vs.notify({
                                 time: 3000,
@@ -191,6 +207,7 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.limpiar();
                         } else {
                             this.$vs.notify({
                                 time: 3000,

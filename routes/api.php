@@ -196,8 +196,12 @@ Route::post('/Trabajador/GuardarSeguimientoT/{uuid}', ['middleware' => 'cors', '
 
 //Guardar Nuevo Usuario
 Route::post('/Agente/GuardarUsuarioJefe', ['middleware' => 'cors', 'uses' => 'UsersController@registrarUsuario']);
+//Modificar Usuario Jefatura
+Route::post('/Agente/ModificarUsuarioJefe', ['middleware' => 'cors', 'uses' => 'UsersController@modificarUsuarioJefe']);
 //Guardar Nuevo Usuario Sub
 Route::post('/Agente/GuardarUsuarioSub', ['middleware' => 'cors', 'uses' => 'UsersController@registrarUsuarioSub']);
+//Modificar Usuario Subrogante
+Route::post('/Agente/ModificarUsuarioSub', ['middleware' => 'cors', 'uses' => 'UsersController@modificarUsuarioSub']);
 //Traer Cargos 
 Route::get('/Agente/getCargos', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@index']);
 //Traer Cargos No Jefatura,Supervisor RRFF y trabajador RRFF
@@ -244,3 +248,5 @@ Route::post('/Agente/PutSupervisor', ['middleware' => 'cors', 'uses' => 'UsersCo
 Route::get('/Agente/getUsuariosJefatura', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloJefatura']);
 //Traer Jefatura Usuarios
 Route::get('/Agente/getUsuariosSubrogantes', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloSubrogantes']);
+//Traer Trabajadores
+Route::get('/Trabajador/getTrabajadoresByRun/{run}', ['middleware' => 'cors', 'uses' => 'TrabajadorController@getTrabajadoresByRun']);

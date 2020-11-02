@@ -67,7 +67,7 @@ class SolicitudUsuarioController extends Controller
     public function getTicketsAsignadosJoin($id)
     {
 
-        $ticket = SolicitudTickets::select('solicitud_tickets.*', DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as fechaCreacion"), DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as fechaAsignacion"), 'gestion_solicitudes.*', 'supervisores.sup_nombre_apellido', 'trabajadores.tra_nombre_apellido', 'users.nombre', 'estado_solicituds.descripcionEstado', DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+        $ticket = SolicitudTickets::select('solicitud_tickets.*', DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as fechaCreacion"), DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as fechaAsignacion"), 'gestion_solicitudes.*', DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"), 'users.nombre', 'estado_solicituds.descripcionEstado', DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('gestion_solicitudes', 'solicitud_tickets.id', '=', 'gestion_solicitudes.id_solicitud')

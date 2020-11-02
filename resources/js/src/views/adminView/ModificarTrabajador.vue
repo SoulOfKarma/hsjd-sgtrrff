@@ -243,10 +243,10 @@ export default {
             },
             dataUsuarioCreador: {
                 nombre:
-                    localStorage.getItem("nombre") +
+                    sessionStorage.getItem("nombre") +
                     " " +
-                    localStorage.getItem("apellido"),
-                id_user: localStorage.getItem("id")
+                    sessionStorage.getItem("apellido"),
+                id_user: sessionStorage.getItem("id")
             },
             val_run: false,
             modificarUsuario: {
@@ -582,15 +582,28 @@ export default {
                             registro
                         )
                         .then(res => {
-                            this.limpiar();
-                            const ticketServer = res.data;
-                            this.$vs.notify({
-                                title: "Trabajador Modificado Correctamente",
-                                text: "Se recargaran los campos",
-                                color: "success",
-                                position: "top-right",
-                                time: 3000
-                            });
+                            if (res.data == false) {
+                                this.$vs.notify({
+                                    title:
+                                        "Error al tratar de modificar datos del trabajador",
+                                    text:
+                                        "Verifique los campos e intente nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            } else {
+                                this.limpiar();
+                                const ticketServer = res.data;
+                                this.$vs.notify({
+                                    title:
+                                        "Trabajador Modificado Correctamente",
+                                    text: "Se recargaran los campos",
+                                    color: "success",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
                         });
                 }
             }

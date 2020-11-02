@@ -119,10 +119,10 @@ export default {
             id_solicitud: 0,
             uuid: "",
             nombre:
-                localStorage.getItem("nombre") +
+                sessionStorage.getItem("nombre") +
                 " " +
-                localStorage.getItem("apellido"),
-            id_user: localStorage.getItem("id"),
+                sessionStorage.getItem("apellido"),
+            id_user: sessionStorage.getItem("id"),
             descripcionCorreo: "",
             id_usuarioEspecifico: 0
         }
@@ -203,8 +203,8 @@ export default {
                     descripcionSeguimiento: "",
                     id_solicitud: 0,
                     uuid: this.$route.params.uuid,
-                    nombre: localStorage.getItem("nombre"),
-                    id_user: localStorage.getItem("id")
+                    nombre: sessionStorage.getItem("nombre"),
+                    id_user: sessionStorage.getItem("id")
                 };
                 axios
                     .post(

@@ -211,14 +211,14 @@ export default {
         },
         validaEliminar: false,
         popupActive2: false,
-        nombre: localStorage.getItem("nombre"),
-        run: localStorage.getItem("run"),
+        nombre: sessionStorage.getItem("nombre"),
+        run: sessionStorage.getItem("run"),
         seguimientos: {
             descripcionSeguimiento: "",
             id_solicitud: 0,
             uuid: "",
-            nombre: localStorage.getItem("nombre"),
-            id_user: localStorage.getItem("id"),
+            nombre: sessionStorage.getItem("nombre"),
+            id_user: sessionStorage.getItem("id"),
             descripcionCorreo: "",
             id_usuarioEspecifico: 0
         },
@@ -319,8 +319,8 @@ export default {
                 descripcionSeguimiento: "",
                 id_solicitud: this.$route.params.id,
                 uuid: this.$route.params.uuid,
-                nombre: localStorage.getItem("nombre"),
-                id_user: localStorage.getItem("id")
+                nombre: sessionStorage.getItem("nombre"),
+                id_user: sessionStorage.getItem("id")
             };
             this.openLoadingColor();
             axios

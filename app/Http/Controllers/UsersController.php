@@ -31,17 +31,13 @@ class UsersController extends Controller
     }
 
     public function registrarUsuario(Request $request){
-        $run = $request->run_usuario;
-        $run = str_replace('.', '', $run);
-        $run = strtoupper($run);
+        try
+        {       
+         $run = $request->run_usuario;
+         $run = str_replace('.', '', $run);
+         $run = strtoupper($run);
 
-        tblPermisoUsuarios::create([
-            'run_usuario' => $run,
-            'permiso_usuario' => $request->permiso_usuario,
-            'estado_login' =>  $request->estado_login
-        ]);
-
-        Users::create([
+         Users::create([
             'run' => $run,
             'email' => $request->email,
             'nombre' => $request->nombre,
@@ -54,25 +50,28 @@ class UsersController extends Controller
             'id_unidadEspecifica' => $request->id_unidadEspecifica,
             'password' => Hash::make($request->password),
             'api_token' => Str::random(60),
-        ]);
+         ]);
 
-
-        return "Ok";
-
-        
-    }
-
-    public function modificarUsuario(Request $request){
-        $run = $request->run_usuario;
-        $run = str_replace('.', '', $run);
-        $run = strtoupper($run);
-
-        tblPermisoUsuarios::where('run',$run)
-        ->update([
+         tblPermisoUsuarios::create([
             'run_usuario' => $run,
             'permiso_usuario' => $request->permiso_usuario,
             'estado_login' =>  $request->estado_login
-        ]);
+         ]);
+
+
+         return true;
+        }
+        catch(\Throwable $th){
+          return false;
+        }
+        
+    }
+
+    public function modificarUsuarioJefe(Request $request){
+        try {
+        $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
 
         Users::where('id',$request->id)
         ->update([
@@ -88,48 +87,6 @@ class UsersController extends Controller
             'password' => Hash::make($request->password),
             'api_token' => Str::random(60),
         ]);
-
-
-        return "Ok";
-
-        
-    }
-
-    public function registrarUsuarioSub(Request $request){
-        $run = $request->run_usuario;
-        $run = str_replace('.', '', $run);
-        $run = strtoupper($run);
-
-        tblPermisoUsuarios::create([
-            'run_usuario' => $run,
-            'permiso_usuario' => $request->permiso_usuario,
-            'estado_login' =>  $request->estado_login
-        ]);
-
-        Users::create([
-            'run' => $run,
-            'email' => $request->email,
-            'nombre' => $request->nombre,
-            'apellido' => $request->apellido,
-            'anexo' => $request->anexo,
-            'id_cargo' => $request->id_cargo,
-            'id_cargo_asociado' => $request->id_cargo_asociado,
-            'id_edificio' => $request->id_edificio,
-            'id_servicio' => $request->id_servicio,
-            'id_unidadEspecifica' => $request->id_unidadEspecifica,
-            'password' => Hash::make($request->password),
-            'api_token' => Str::random(60),
-        ]);
-
-        return "Ok";
-
-        
-    }
-
-    public function modificarUsuarioSub(Request $request){
-        $run = $request->run_usuario;
-        $run = str_replace('.', '', $run);
-        $run = strtoupper($run);
 
         tblPermisoUsuarios::where('run_usuario',$run)
         ->update([
@@ -138,6 +95,56 @@ class UsersController extends Controller
             'estado_login' =>  $request->estado_login
         ]);
 
+        
+        return true;
+    } catch (\Throwable $th) {
+        return false;
+    }
+
+    }
+
+    public function registrarUsuarioSub(Request $request){
+        try {
+            $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
+
+        Users::create([
+            'run' => $run,
+            'email' => $request->email,
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'anexo' => $request->anexo,
+            'id_cargo' => $request->id_cargo,
+            'id_cargo_asociado' => $request->id_cargo_asociado,
+            'id_edificio' => $request->id_edificio,
+            'id_servicio' => $request->id_servicio,
+            'id_unidadEspecifica' => $request->id_unidadEspecifica,
+            'password' => Hash::make($request->password),
+            'api_token' => Str::random(60),
+        ]);
+
+        tblPermisoUsuarios::create([
+            'run_usuario' => $run,
+            'permiso_usuario' => $request->permiso_usuario,
+            'estado_login' =>  $request->estado_login
+        ]);
+
+        return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+        
+
+        
+    }
+
+    public function modificarUsuarioSub(Request $request){
+        try {
+        $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
+
         Users::where('id',$request->id)
         ->update([
             'email' => $request->email,
@@ -153,21 +160,25 @@ class UsersController extends Controller
             'api_token' => Str::random(60),
         ]);
 
-        return "Ok";
-
-        
-    }
-
-    public function registrarSupervisor(Request $request){
-        $run = $request->run_usuario;
-        $run = str_replace('.', '', $run);
-        $run = strtoupper($run);
-
-        tblPermisoUsuarios::create([
+        tblPermisoUsuarios::where('run_usuario',$run)
+        ->update([
             'run_usuario' => $run,
             'permiso_usuario' => $request->permiso_usuario,
             'estado_login' =>  $request->estado_login
         ]);
+       
+        return true;
+
+    } catch (\Throwable $th) {
+        return false;
+    }
+    }
+
+    public function registrarSupervisor(Request $request){
+        try {
+            $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
 
         Users::create([
             'run' => $run,
@@ -192,22 +203,30 @@ class UsersController extends Controller
             'id_especialidad2' =>$request->id_especialidad2,
         ]);
 
-        return "Ok";
-
-        
-    }
-
-    public function modificarSupervisor(Request $request){
-        $run = $request->run_usuario;
-        $run = str_replace('.', '', $run);
-        $run = strtoupper($run);
-
-        tblPermisoUsuarios::where('run_usuario',$run)
-        ->update([
+        tblPermisoUsuarios::create([
             'run_usuario' => $run,
             'permiso_usuario' => $request->permiso_usuario,
             'estado_login' =>  $request->estado_login
         ]);
+
+        return true;
+
+        } catch (\Throwable $th) {
+            return false;
+        }
+        
+        
+    }
+
+    public function modificarSupervisor(Request $request){
+        try {
+            
+        
+        $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
+
+        
 
         Users::where('id',$request->id)
         ->update([
@@ -233,21 +252,25 @@ class UsersController extends Controller
             'id_especialidad2' =>$request->id_especialidad2,
         ]);
 
-        return "Ok";
-
-        
-    }
-
-    public function registrarTrabajador(Request $request){
-        $run = $request->run_usuario;
-        $run = str_replace('.', '', $run);
-        $run = strtoupper($run);
-
-        tblPermisoUsuarios::create([
+        tblPermisoUsuarios::where('run_usuario',$run)
+        ->update([
             'run_usuario' => $run,
             'permiso_usuario' => $request->permiso_usuario,
             'estado_login' =>  $request->estado_login
         ]);
+
+        return true;
+    } catch (\Throwable $th) {
+       return false;
+    }
+        
+    }
+
+    public function registrarTrabajador(Request $request){
+        try {
+            $run = $request->run_usuario;
+        $run = str_replace('.', '', $run);
+        $run = strtoupper($run);
 
         Users::create([
             'run' => $run,
@@ -271,22 +294,26 @@ class UsersController extends Controller
             'id_especialidad1' => $request->id_especialidad1,
         ]);
 
-        return "Ok";
+        tblPermisoUsuarios::create([
+            'run_usuario' => $run,
+            'permiso_usuario' => $request->permiso_usuario,
+            'estado_login' =>  $request->estado_login
+        ]);
+
+        return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+        
 
         
     }
 
     public function modificarTrabajador(Request $request){
+        try {
         $run = $request->run_usuario;
         $run = str_replace('.', '', $run);
         $run = strtoupper($run);
-
-        tblPermisoUsuarios::where('run_usuario',$run)
-        ->update([
-            'run_usuario' => $run,
-            'permiso_usuario' => $request->permiso_usuario,
-            'estado_login' =>  $request->estado_login
-        ]);
 
         Users::where('id',$request->id)
         ->update([
@@ -311,8 +338,18 @@ class UsersController extends Controller
             'id_especialidad1' => $request->id_especialidad1,
         ]);
 
-        return "Ok";
+        tblPermisoUsuarios::where('run_usuario',$run)
+        ->update([
+            'run_usuario' => $run,
+            'permiso_usuario' => $request->permiso_usuario,
+            'estado_login' =>  $request->estado_login
+        ]);
 
+
+        return true;
+    } catch (\Throwable $th) {
+        return false;
+    }
         
     }
 

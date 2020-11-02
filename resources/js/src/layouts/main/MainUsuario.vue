@@ -259,6 +259,7 @@ export default {
             await axios.post(this.localVal + "/api/Login/Salir", {
                 rut: ""
             });
+            window.sessionStorage.clear();
             window.localStorage.clear();
             router.push("/pages/login");
         },
@@ -297,7 +298,7 @@ export default {
         }
     },
     created() {
-        var aux = localStorage.getItem("run");
+        var aux = sessionStorage.getItem("run");
 
         if (aux == null) {
             aux = 0;
@@ -308,7 +309,7 @@ export default {
             router.push("/pages/login").catch(err => {});
         }
 
-        var aux2 = localStorage.getItem("permiso_usuario");
+        var aux2 = sessionStorage.getItem("permiso_usuario");
 
         if (aux2 == 2) {
             console.log("Acceso Correcto Usuario");

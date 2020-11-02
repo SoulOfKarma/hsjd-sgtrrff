@@ -259,6 +259,7 @@ export default {
                     rut: ""
                 })
                 .then(res => {
+                    window.sessionStorage.clear();
                     window.localStorage.clear();
                     console.log("Mensaje");
 
@@ -300,7 +301,7 @@ export default {
         }
     },
     created() {
-        var aux = localStorage.getItem("run");
+        var aux = sessionStorage.getItem("run");
 
         if (aux == null || aux.length <= 0) {
             aux = 0;
@@ -311,7 +312,7 @@ export default {
             router.push("/pages/login").catch(err => {});
         }
 
-        var aux2 = localStorage.getItem("permiso_usuario");
+        var aux2 = sessionStorage.getItem("permiso_usuario");
         if (aux2 == 1) {
             console.log("Acceso Correcto");
         } else {

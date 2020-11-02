@@ -18,13 +18,13 @@ export default [
         url: null,
         name: "Supervisor",
         slug: "supervisor",
-        icon: "HomeIcon",
+        icon: "UserCheckIcon",
         submenu: [
             {
                 url: null,
                 name: "Infraestructura",
                 slug: "home",
-                icon: "PlusCircleIcon",
+                icon: "SendIcon",
                 submenu: [
                     {
                         url: "/agenteView/CalendarioSolicitudes",
@@ -56,7 +56,7 @@ export default [
                 url: null,
                 name: "Equipos Medicos",
                 slug: "home",
-                icon: "PlusCircleIcon",
+                icon: "SendIcon",
                 submenu: [
                     {
                         url: "/agenteView/CalendarioSolicitudesEM",
@@ -88,7 +88,7 @@ export default [
                 url: null,
                 name: "Industrial",
                 slug: "home",
-                icon: "PlusCircleIcon",
+                icon: "SendIcon",
                 submenu: [
                     {
                         url: "/agenteView/CalendarioSolicitudesIND",
@@ -120,7 +120,7 @@ export default [
                 url: null,
                 name: "Apoyo Clinico",
                 slug: "home",
-                icon: "PlusCircleIcon",
+                icon: "SendIcon",
                 submenu: [
                     {
                         url: "/agenteView/CalendarioSolicitudesCA",
@@ -154,7 +154,7 @@ export default [
         url: null,
         name: "Administrador",
         slug: "administrador",
-        icon: "HomeIcon",
+        icon: "UserPlusIcon",
         submenu: [
             {
                 url: null,

@@ -113,8 +113,8 @@ export default {
     data() {
         return {
             language: "es",
-            nombre: localStorage.getItem("nombre"),
-            run: localStorage.getItem("run"),
+            nombre: sessionStorage.getItem("nombre"),
+            run: sessionStorage.getItem("run"),
             format: "d MMMM yyyy",
             fecha1: moment()
                 .startOf("day")

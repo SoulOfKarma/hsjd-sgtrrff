@@ -86,10 +86,10 @@ export default {
         return {
             dataUsuarioCreador: {
                 nombre:
-                    localStorage.getItem("nombre") +
+                    sessionStorage.getItem("nombre") +
                     " " +
-                    localStorage.getItem("apellido"),
-                id_user: localStorage.getItem("id")
+                    sessionStorage.getItem("apellido"),
+                id_user: sessionStorage.getItem("id")
             },
             agregar: "",
             modificar: "",
@@ -110,6 +110,21 @@ export default {
     },
     computed: {},
     methods: {
+        limpiar() {
+            this.seleccionEspecialidad = {
+                id: 0,
+                descripcionEspecialidad: "Seleccione Especialidad"
+            };
+            this.nuevaEspecialidad = {
+                descripcionEspecialidad: ""
+            };
+            this.modificarEspecialidad = {
+                id: 0,
+                descripcionEspecialidad: ""
+            };
+            this.modificar = "";
+            this.agregar = "";
+        },
         asignarCampoSeleccionado() {
             this.modificar = this.seleccionEspecialidad.descripcionEspecialidad;
         },
@@ -140,6 +155,7 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.limpiar();
                         } else {
                             this.$vs.notify({
                                 time: 3000,
@@ -187,6 +203,7 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.limpiar();
                         } else {
                             this.$vs.notify({
                                 time: 3000,

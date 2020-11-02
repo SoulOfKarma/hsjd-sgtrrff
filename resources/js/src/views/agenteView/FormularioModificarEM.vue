@@ -306,8 +306,8 @@ export default {
         colorLoading: "#ff8000",
         diaCalculado: 0,
         format: "d MMMM yyyy",
-        nombre: localStorage.getItem("nombre"),
-        run: localStorage.getItem("run"),
+        nombre: sessionStorage.getItem("nombre"),
+        run: sessionStorage.getItem("run"),
         fecha1: moment()
             .startOf("day")
             .fromNow(),
