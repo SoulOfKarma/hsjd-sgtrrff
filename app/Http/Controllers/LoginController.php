@@ -22,6 +22,7 @@ class LoginController extends Controller
     $rut = str_replace('.', '', $request->input('rut'));
     $rut = strtoupper($rut);
     $token = Str::random(60);
+
         Users::where('run',$rut)
         ->update(['api_token' => $token]);
     $get_all = DB::table('users')

@@ -67,12 +67,6 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/ResolucionSolicitud/:id,:uuid",
-                    name: "ResolucionSolicitud",
-                    component: () =>
-                        import("./views/trabajadorView/ResolucionSolicitud.vue")
-                },
-                {
                     path: "/InformacionSolicitud/:id,:uuid",
                     name: "InformacionSolicitud",
                     component: () => import("./views/InformacionSolicitud.vue")
@@ -84,7 +78,7 @@ const router = new Router({
                         import("./views/ModificarTicketUsuario.vue")
                 },
                 {
-                    path: "/InformacionSolicitud/:id,:uuid",
+                    path: "/trabajadorView/InformacionSolicitud/:id,:uuid",
                     name: "InformacionSolicitudTrabajador",
                     component: () =>
                         import(

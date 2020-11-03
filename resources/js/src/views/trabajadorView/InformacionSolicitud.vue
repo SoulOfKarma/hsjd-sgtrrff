@@ -68,6 +68,24 @@
                                 class="w-full"
                             />
                         </div>
+                        <div class="vx-col md:w-1/1 w-full mb-base ">
+                            <div class="vx-row">
+                                <div class="vx-col w-1/5 ml-auto"></div>
+                                <div class="vx-col w-1/5 ml-auto"></div>
+                                <div class="vx-col w-1/5 ml-auto">
+                                    <br />
+                                    <vs-button
+                                        align="center"
+                                        color="success"
+                                        @click="volver"
+                                        class="w-full"
+                                        >Volver</vs-button
+                                    >
+                                </div>
+                                <div class="vx-col w-1/5 ml-auto"></div>
+                                <div class="vx-col w-1/5 ml-auto"></div>
+                            </div>
+                        </div>
                     </div>
                 </vx-card>
             </div>
@@ -78,20 +96,45 @@
                         <div class="vx-col w-full mt-5">
                             <h6>2.1 - Descripcion del problema</h6>
                             <br />
-                            <quill-editor
-                                v-model="seguimientos.descripcionSeguimiento"
-                                :options="editorOption"
-                            >
-                                <div id="toolbar" slot="toolbar"></div>
-                            </quill-editor>
-                            <br />
-                            <vs-button
-                                type="gradient"
-                                @click="guardarSeguimiento"
-                                >Actualizar</vs-button
-                            >
-
-                            <br />
+                            <div class="vx-col md:w-1/1 w-full mb-base">
+                                <div class="vx-row">
+                                    <div
+                                        class="vx-col sm:w-full w-full ml-auto"
+                                    >
+                                        <br />
+                                        <quill-editor
+                                            v-model="
+                                                seguimientos.descripcionSeguimiento
+                                            "
+                                            :options="editorOption"
+                                        >
+                                            <div
+                                                id="toolbar"
+                                                slot="toolbar"
+                                            ></div>
+                                        </quill-editor>
+                                        <br />
+                                    </div>
+                                    <div
+                                        class="vx-col w-full ml-auto"
+                                        align="center"
+                                    >
+                                        <br />
+                                        <vs-button
+                                            class="mb-2 w-1/4"
+                                            color="warning"
+                                            @click="abrirPop"
+                                            >Cerrar Solicitud</vs-button
+                                        >
+                                        <vs-button
+                                            class="mb-2 w-1/4"
+                                            type="gradient"
+                                            @click="guardarSeguimiento"
+                                            >Actualizar</vs-button
+                                        >
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </vx-card>
@@ -121,6 +164,35 @@
                 </vx-card>
             </div>
         </vs-row>
+        <vs-popup
+            classContent="popup-example"
+            title="Realmente desea finalizar los cambios?"
+            :active.sync="popupActive2"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            class="w-full"
+                            @click="resolucionSolicitud"
+                            color="danger"
+                            type="filled"
+                            >Guardar Cambios</vs-button
+                        >
+                    </div>
+
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            class="w-full"
+                            @click="popupActive2 = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 
@@ -151,6 +223,7 @@ export default {
                 ]
             }
         },
+        popupActive2: false,
         textarea: "",
         currentx: 1,
         localVal: "http://127.0.0.1:8000",
@@ -176,6 +249,12 @@ export default {
         colorLoading: "#ff8000"
     }),
     methods: {
+        volver() {
+            router.back();
+        },
+        abrirPop() {
+            this.popupActive2 = true;
+        },
         cargaSolicitudEspecifica() {
             let id = this.$route.params.uuid;
             axios
@@ -201,7 +280,64 @@ export default {
                     this.seguimiento = res.data;
                 });
         },
+        resolucionSolicitud() {
+            let uuid = this.$route.params.uuid;
+            let id = this.$route.params.id;
+
+            this.seguimientos.id = id;
+            this.seguimientos.uuid = uuid;
+            this.seguimientos.id_solicitud = id;
+            let texto =
+                "El trabajador " +
+                sessionStorage.getItem("nombre") +
+                " " +
+                sessionStorage.getItem("apellido") +
+                " a resuelto la solicitud N°" +
+                this.titulo +
+                ", esto sera verificado por su supervisor para finalizar la solicitud";
+            this.seguimientos.descripcionCorreo = texto;
+            this.seguimientos.descripcionSeguimiento = texto;
+
+            const seguimientoNuevo = this.seguimientos;
+            this.seguimientos = {
+                descripcionSeguimiento: "",
+                id_solicitud: this.$route.params.id,
+                uuid: this.$route.params.uuid,
+                nombre: sessionStorage.getItem("nombre"),
+                id_user: sessionStorage.getItem("id")
+            };
+            this.openLoadingColor();
+            axios
+                .post(
+                    this.localVal +
+                        `/api/Trabajador/GuardarSeguimientoT/${uuid}`,
+                    seguimientoNuevo
+                )
+                .then(res => {
+                    if (res.data == false) {
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Error al Tratar de guardar cambios",
+                            text: "Verifique los campos e intente nuevamente",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    } else {
+                        const seguimientoServer = res.data;
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Actualizacion realizada",
+                            text:
+                                "Se volvera a la pagina anterior en unos segundos",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        router.back();
+                    }
+                });
+        },
         guardarSeguimiento() {
+            let id = this.$route.params.id;
             let uuid = this.$route.params.uuid;
 
             if (
@@ -217,9 +353,9 @@ export default {
                 });
                 return;
             }
-            var id = this.solicitudes[0].id;
             this.seguimientos.id = id;
             this.seguimientos.uuid = uuid;
+            this.seguimientos.id_solicitud = id;
             var newElement = document.createElement("div");
             newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
             this.seguimientos.descripcionCorreo = newElement.textContent;
@@ -267,5 +403,37 @@ export default {
 <style lang="stylus">
 .cardx {
   margin: 15px;
+}
+</style>
+<style lang="scss">
+.fill-row-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    .loading-example {
+        width: 120px;
+        float: left;
+        height: 120px;
+        box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        margin: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        &:hover {
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.05);
+            transform: translate(0, 4px);
+        }
+        h4 {
+            z-index: 40000;
+            position: relative;
+            text-align: center;
+            padding: 10px;
+        }
+        &.activeLoading {
+            opacity: 0 !important;
+            transform: scale(0.5);
+        }
+    }
 }
 </style>

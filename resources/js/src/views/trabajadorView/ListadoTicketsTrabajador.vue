@@ -24,7 +24,7 @@
                         }}</vs-td>
 
                         <vs-td :data="data[indextr].id_user">{{
-                            data[indextr].nombre
+                            data[indextr].nombre_solicitante
                         }}</vs-td>
 
                         <vs-td :data="data[indextr].tituloP">{{
@@ -51,27 +51,17 @@
                                 class="custom-class"
                                 @click="
                                     detalleSolicitud(
-                                        data[indextr].id,
+                                        data[indextr].id_solicitud,
                                         data[indextr].uuid
                                     )
                                 "
                             ></info-icon>
-                            <plus-circle-icon
-                                size="1.5x"
-                                class="custom-class"
-                                @click="
-                                    resolucionSolicitud(
-                                        data[indextr].id,
-                                        data[indextr].uuid
-                                    )
-                                "
-                            ></plus-circle-icon>
                             <archive-icon
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
                                     generarTicket(
-                                        data[indextr].id,
+                                        data[indextr].id_solicitud,
                                         data[indextr].uuid,
                                         data[indextr].id_categoria
                                     )

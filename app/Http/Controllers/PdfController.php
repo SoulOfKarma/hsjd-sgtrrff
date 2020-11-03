@@ -140,7 +140,8 @@ class PdfController extends Controller
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->where('gestion_solicitudes.id_solicitud', $id)
             ->first();
-
+            log::info($id);
+        log::info($data);
         $idApoyo1 = $data->idApoyo1;
         $idApoyo2 = $data->idApoyo2;
         $idApoyo3 = $data->idApoyo3;
