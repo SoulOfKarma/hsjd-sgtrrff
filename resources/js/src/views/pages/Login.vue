@@ -110,8 +110,8 @@ export default {
     },
     methods: {
         async autenticarToken() {
-            let token = localStorage.getItem("api_token");
-            let rut = localStorage.getItem("run");
+            let token = sessionStorage.getItem("api_token");
+            let rut = sessionStorage.getItem("run");
 
             if (
                 rut != null &&

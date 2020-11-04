@@ -29,6 +29,10 @@ class LoginController extends Controller
       ->where('run', '=', $rut)
       ->get();
       $hashedPassword = "";
+
+      Users::where('run',$rut)
+        ->update(['api_token' => Hash::make($token)]);
+
       foreach ($get_all as $p) {
         $hashedPassword = $p->password;
         if(Hash::check($request->input('pasword'), $hashedPassword)){
@@ -48,10 +52,14 @@ class LoginController extends Controller
     $get_all = DB::table('users')
       ->where('run', '=', $rut)
       ->get();
+
+      Users::where('run',$rut)
+        ->update(['api_token' => Hash::make($request->input('token'))]);
       $tokenBD = "";
       foreach ($get_all as $p) {
         $tokenBD = $p->api_token;
-        if($request->input('token') == $tokenBD){
+       // if($request->input('token') == $tokenBD){
+        if(Hash::check($request->input('token'), $tokenBD)){
         return $get_all;
         }  
         else{

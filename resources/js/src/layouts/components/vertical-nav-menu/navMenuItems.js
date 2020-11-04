@@ -33,25 +33,5 @@ export default [
                 icon: "FileIcon"
             }
         ]
-    },
-    {
-        url: null,
-        name: "Informatica",
-        slug: "home",
-        icon: "HomeIcon",
-        submenu: [
-            {
-                url: "/informaticaView/GenerarTicketsInf",
-                name: "Generar Solicitudes Informatica",
-                slug: "GenerarTicketsInf",
-                icon: "FileIcon"
-            },
-            {
-                url: "/informaticaView/ListadoTicketsInf",
-                name: "Listado Solicitudes Informatica",
-                slug: "ListadoTicketsInf",
-                icon: "FileIcon"
-            }
-        ]
     }
 ];

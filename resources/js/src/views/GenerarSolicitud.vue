@@ -159,6 +159,7 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { Validator } from "vee-validate";
 import router from "@/router";
+import moment from "moment";
 
 import { quillEditor } from "vue-quill-editor";
 
@@ -191,6 +192,7 @@ export default {
         listadoUnidadEspData: [],
         listadoUsuarios: [],
         localVal: "http://127.0.0.1:8000",
+        apiInformatica: "http://10.4.237.33/ticket",
         uuidC: "",
 
         solicitud: {
@@ -211,6 +213,25 @@ export default {
             uuid: "",
             descripcionSeguimiento: "Solicitud creada",
             descripcionCorreo: ""
+        },
+        solicitudInformatica: {
+            api_key: "PZe1Mv3VhuLnTXNSEE1si1R0e53DRp8C",
+            user_id: sessionStorage.getItem("id"),
+            subject: "",
+            body: "",
+            helptopic: 1,
+            sla: 1,
+            dept: "",
+            token: "",
+            first_name: "",
+            last_name: "",
+            phone: 0,
+            code: 0,
+            mobile: 0,
+            duedate: moment()
+                .startOf("day")
+                .fromNow(),
+            email: ""
         },
         datosCorreo: {
             nombre: "",
@@ -547,27 +568,48 @@ export default {
                 this.mensajeError = "el tipo de categoria";
                 this.errorDrop(this.mensajeError);
             } else {
-                this.solicitud.id_edificio = this.seleccionEdificio[0].id;
-                this.solicitud.id_servicio = this.seleccionServicio[0].id;
-                this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
-                this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
-                this.solicitud.id_categoria = this.seleccionCategoria.id;
-                var newElement = document.createElement("div");
-                newElement.innerHTML = this.solicitud.descripcionP;
-                this.solicitud.descripcionCorreo = newElement.textContent;
-                const solicitudNueva = this.solicitud;
-                this.openLoadingColor();
-                (this.solicitud = {
-                    descripcionP: "",
-                    tituloP: "",
-                    id_user: sessionStorage.getItem("id"),
-                    id_estado: 1,
-                    id_edificio: 0,
-                    id_servicio: 0,
-                    id_ubicacionEx: 0,
-                    id_tipoReparacion: 0,
-                    id_categoria: 0
-                }),
+                if (this.seleccionCategoria.id == 5) {
+                    this.solicitudInformatica.first_name = sessionStorage.getItem(
+                        "nombre"
+                    );
+                    this.solicitudInformatica.last_name = sessionStorage.getItem(
+                        "apellido"
+                    );
+                    this.solicitudInformatica.subject = this.solicitud.tituloP;
+                    this.solicitudInformatica.body = this.solicitud.descripcionP;
+                    console.log(this.solicitudInformatica);
+                    const solicitudNueva = this.solicitudInformatica;
+                    /* axios
+                        .post(this.apiInformatica, solicitudNueva)
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            this.mensajeGuardado();
+                            setTimeout(() => {
+                                router.back();
+                            }, 5000);
+                        }); */
+                } else {
+                    this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                    this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                    this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
+                    this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                    this.solicitud.id_categoria = this.seleccionCategoria.id;
+                    var newElement = document.createElement("div");
+                    newElement.innerHTML = this.solicitud.descripcionP;
+                    this.solicitud.descripcionCorreo = newElement.textContent;
+                    const solicitudNueva = this.solicitud;
+                    this.openLoadingColor();
+                    this.solicitud = {
+                        descripcionP: "",
+                        tituloP: "",
+                        id_user: sessionStorage.getItem("id"),
+                        id_estado: 1,
+                        id_edificio: 0,
+                        id_servicio: 0,
+                        id_ubicacionEx: 0,
+                        id_tipoReparacion: 0,
+                        id_categoria: 0
+                    };
                     axios
                         .post(
                             this.localVal + "/api/Usuario/PostSolicitud",
@@ -581,6 +623,7 @@ export default {
                             }, 5000);
                             //console.log(res.data);
                         });
+                }
             }
         },
         openLoadingColor() {
