@@ -546,7 +546,7 @@ export default {
         variablePrueba: 0,
         mensajeError: "",
         colorLoading: "#ff8000",
-        localVal: "http://127.0.0.1:8000"
+        localVal: "http://10.66.248.51:8000"
     }),
     computed: {
         calcularHorasTrabajo() {
@@ -594,7 +594,7 @@ export default {
             router.back();
         },
         limpiar() {
-            (this.gestionTicket = {
+            this.gestionTicket = {
                 uuid: "",
                 id_solicitud: 0,
                 id_edificio: 0,
@@ -604,9 +604,9 @@ export default {
                 id_estado: 1,
                 id_supervisor: 0,
                 id_trabajador: 0,
-                idApoyo1: 999,
-                idApoyo2: 999,
-                idApoyo3: 999,
+                idApoyo1: 1,
+                idApoyo2: 1,
+                idApoyo3: 1,
                 idTurno: 0,
                 fechaCambiada: null,
                 fechaTermino: null,
@@ -614,51 +614,51 @@ export default {
                 horaTermino: null,
                 horasEjecucion: 0,
                 diasEjecucion: 0
-            }),
-                (this.seleccionTurno = {
-                    id: 0,
-                    descripcionTurno: "Seleccione Turno"
-                }),
-                (this.seleccionEdificio = {
-                    id: 0,
-                    descripcionEdificio: "Seleccione Edificio"
-                }),
-                (this.seleccionServicio = {
-                    id: 0,
-                    descripcionServicio: "Seleccione Servicio"
-                }),
-                (this.seleccionUnidadEsp = {
-                    id: 0,
-                    descripcionUnidadEsp: "Seleccione Unidad Especifica"
-                }),
-                (this.seleccionReparacion = {
-                    id: 0,
-                    descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
-                }),
-                (this.seleccionEstado = {
-                    id: 0,
-                    descripcionEstado: "Seleccione Estado"
-                }),
-                (this.seleccionSupervisor = {
-                    id: 0,
-                    sup_nombre_apellido: "Seleccione al Supervisor"
-                }),
-                (this.seleccionTrabajador = {
-                    id: 0,
-                    tra_nombre_apellido: "Seleccione al Trabajador"
-                }),
-                (this.seleccionApoyo1 = {
-                    id: 999,
-                    tra_nombre_apellido: "Sin Asignar"
-                }),
-                (this.seleccionApoyo2 = {
-                    id: 999,
-                    tra_nombre_apellido: "Sin Asignar"
-                }),
-                (this.seleccionApoyo3 = {
-                    id: 999,
-                    tra_nombre_apellido: "Sin Asignar"
-                });
+            };
+            this.seleccionTurno = {
+                id: 0,
+                descripcionTurno: "Seleccione Turno"
+            };
+            this.seleccionEdificio = {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            };
+            this.seleccionServicio = {
+                id: 0,
+                descripcionServicio: "Seleccione Servicio"
+            };
+            this.seleccionUnidadEsp = {
+                id: 0,
+                descripcionUnidadEsp: "Seleccione Unidad Especifica"
+            };
+            this.seleccionReparacion = {
+                id: 0,
+                descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+            };
+            this.seleccionEstado = {
+                id: 0,
+                descripcionEstado: "Seleccione Estado"
+            };
+            this.seleccionSupervisor = {
+                id: 0,
+                sup_nombre_apellido: "Seleccione al Supervisor"
+            };
+            this.seleccionTrabajador = {
+                id: 0,
+                tra_nombre_apellido: "Seleccione al Trabajador"
+            };
+            this.seleccionApoyo1 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo2 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo3 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
         },
         filtroSegunEdificio() {
             if (this.seleccionEdificio == null || this.seleccionEdificio == 0) {
@@ -836,7 +836,7 @@ export default {
 
             c.forEach((value, index) => {
                 a = value.id;
-                if (a == 999) {
+                if (a == 1) {
                     b.push(value);
                 } else if (a != id) {
                     b.push(value);
@@ -863,7 +863,7 @@ export default {
 
             c.forEach((value, index) => {
                 a = value.id;
-                if (id == 999) {
+                if (id == 1) {
                     b.push(value);
                 } else if (a != id) {
                     b.push(value);
@@ -891,7 +891,7 @@ export default {
 
             c.forEach((value, index) => {
                 a = value.id;
-                if (id == 999) {
+                if (id == 1) {
                     b.push(value);
                 } else if (a != id) {
                     b.push(value);
@@ -975,7 +975,7 @@ export default {
             var a = 0;
 
             c.forEach((value, index) => {
-                if (999 != value.id) {
+                if (1 != value.id) {
                     b.push(value);
                 }
             });

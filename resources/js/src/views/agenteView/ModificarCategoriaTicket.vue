@@ -92,7 +92,7 @@ export default {
             id_user: 0
         },
 
-        localVal: "http://127.0.0.1:8000",
+        localVal: "http://10.66.248.51:8000",
         seleccionCategoria: {
             id: 0,
             des_categoria: "Seleccione Categoria"

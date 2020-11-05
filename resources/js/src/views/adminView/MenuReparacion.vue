@@ -94,10 +94,10 @@ export default {
             agregar: "",
             modificar: "",
             listReparacion: [],
-            localVal: "http://127.0.0.1:8000",
+            localVal: "http://10.66.248.51:8000",
             seleccionReparacion: {
                 id: 0,
-                descripcionTipoReparacion: ""
+                descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
             },
             nuevoTipoReparacion: {
                 descripcionTipoReparacion: ""
@@ -113,7 +113,7 @@ export default {
         limpiar() {
             this.seleccionReparacion = {
                 id: 0,
-                descripcionTipoReparacion: ""
+                descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
             };
             this.nuevoTipoReparacion = {
                 descripcionTipoReparacion: ""

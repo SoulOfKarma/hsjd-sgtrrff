@@ -202,7 +202,7 @@ import { validate, clean, format } from "rut.js";
 export default {
     data() {
         return {
-            localVal: "http://127.0.0.1:8000",
+            localVal: "http://10.66.248.51:8000",
             nombreUsuario: "",
             apellidoUsuario: "",
             anexoUsuario: 0,
@@ -767,7 +767,7 @@ export default {
         },
         cargarSupervisores() {
             axios
-                .get(this.localVal + "/api/Agente/getSupervisores")
+                .get(this.localVal + "/api/Agente/getSupervisoresRRFF")
                 .then(res => {
                     this.listadoSupervisores = res.data;
                     let b = [];
@@ -780,7 +780,7 @@ export default {
         },
         cargarTrabajadores() {
             axios
-                .get(this.localVal + "/api/Agente/getTrabajadores")
+                .get(this.localVal + "/api/Agente/getTrabajadoresRRFF")
                 .then(res => {
                     this.listadoTrabajadores = res.data;
                     let b = [];

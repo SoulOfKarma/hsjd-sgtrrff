@@ -151,7 +151,7 @@
                                 pagination
                             >
                                 <vx-card
-                                    :title="tr.nombre"
+                                    :title="tr.nombre + ' ' + tr.apellido"
                                     title-color="primary"
                                 >
                                     <p v-html="tr.descripcionSeguimiento">
@@ -226,7 +226,7 @@ export default {
         popupActive2: false,
         textarea: "",
         currentx: 1,
-        localVal: "http://127.0.0.1:8000",
+        localVal: "http://10.66.248.51:8000",
         solicitudes: [],
         seguimiento: [],
         titulo: "",
@@ -236,13 +236,19 @@ export default {
             unidadEsp: "",
             nombre: ""
         },
-        nombre: sessionStorage.getItem("nombre"),
+        nombre:
+            sessionStorage.getItem("nombre") +
+            " " +
+            sessionStorage.getItem("apellido"),
         run: sessionStorage.getItem("run"),
         seguimientos: {
             descripcionSeguimiento: "",
             id_solicitud: 0,
             uuid: "",
-            nombre: sessionStorage.getItem("nombre"),
+            nombre:
+                sessionStorage.getItem("nombre") +
+                " " +
+                sessionStorage.getItem("apellido"),
             id_user: sessionStorage.getItem("id"),
             descripcionCorreo: ""
         },
@@ -263,7 +269,10 @@ export default {
                     this.solicitudes = res.data;
                     try {
                         this.titulo = "Ticket N°" + this.solicitudes[0].nticket;
-                        this.infoSeguimiento.nombre = this.solicitudes[0].nombre;
+                        this.infoSeguimiento.nombre =
+                            this.solicitudes[0].nombre +
+                            " " +
+                            this.solicitudes[0].apellido;
                         this.infoSeguimiento.edificio = this.solicitudes[0].descripcionEdificio;
                         this.infoSeguimiento.servicio = this.solicitudes[0].descripcionServicio;
                         this.infoSeguimiento.unidadEsp = this.solicitudes[0].descripcionUnidadEsp;

@@ -90,7 +90,6 @@ class UsersController extends Controller
 
         tblPermisoUsuarios::where('run_usuario',$run)
         ->update([
-            'run_usuario' => $run,
             'permiso_usuario' => $request->permiso_usuario,
             'estado_login' =>  $request->estado_login
         ]);
@@ -162,7 +161,6 @@ class UsersController extends Controller
 
         tblPermisoUsuarios::where('run_usuario',$run)
         ->update([
-            'run_usuario' => $run,
             'permiso_usuario' => $request->permiso_usuario,
             'estado_login' =>  $request->estado_login
         ]);
@@ -245,7 +243,6 @@ class UsersController extends Controller
 
         Supervisores::where('sup_run',$run)
         ->update([
-            'sup_run' => $run,
             'sup_nombre' => $request->nombre,
             'sup_apellido' => $request->apellido,
             'id_especialidad1' =>$request->id_especialidad1,
@@ -254,7 +251,6 @@ class UsersController extends Controller
 
         tblPermisoUsuarios::where('run_usuario',$run)
         ->update([
-            'run_usuario' => $run,
             'permiso_usuario' => $request->permiso_usuario,
             'estado_login' =>  $request->estado_login
         ]);
@@ -332,7 +328,6 @@ class UsersController extends Controller
 
         Trabajadores::where('tra_run',$run)
         ->update([
-            'tra_run' => $run,
             'tra_nombre' => $request->nombre,
             'tra_apellido' => $request->apellido,
             'id_especialidad1' => $request->id_especialidad1,
@@ -340,7 +335,6 @@ class UsersController extends Controller
 
         tblPermisoUsuarios::where('run_usuario',$run)
         ->update([
-            'run_usuario' => $run,
             'permiso_usuario' => $request->permiso_usuario,
             'estado_login' =>  $request->estado_login
         ]);
@@ -359,7 +353,7 @@ class UsersController extends Controller
         ->join('supervisores','users.run','=','supervisores.sup_run')
         ->where('id_cargo',[5])
         ->get();
-        return $getall;
+         return $getall;
     }
 
     public function getSoloTrabajadoresRRFF(){

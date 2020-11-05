@@ -15,23 +15,15 @@ export default [
         icon: "HomeIcon"
     },
     {
-        url: null,
-        name: "Mantencion",
-        slug: "home",
-        icon: "HomeIcon",
-        submenu: [
-            {
-                url: "/GenerarSolicitud",
-                name: "Generar Solicitud",
-                slug: "GenerarSolicitud",
-                icon: "FileIcon"
-            },
-            {
-                url: "/Listadosolicitudes",
-                name: "Listado Solicitudes",
-                slug: "Listadosolicitudes",
-                icon: "FileIcon"
-            }
-        ]
+        url: "/GenerarSolicitud",
+        name: "Generar Solicitud",
+        slug: "GenerarSolicitud",
+        icon: "FileIcon"
+    },
+    {
+        url: "/Listadosolicitudes",
+        name: "Listado Solicitudes",
+        slug: "Listadosolicitudes",
+        icon: "FileIcon"
     }
 ];

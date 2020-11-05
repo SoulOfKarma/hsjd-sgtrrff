@@ -199,7 +199,7 @@ export default {
 
         textarea: "",
 
-        localVal: "http://127.0.0.1:8000",
+        localVal: "http://10.66.248.51:8000",
         solicitudes: [],
         seguimiento: [],
         titulo: "",
@@ -254,6 +254,9 @@ export default {
                         position: "top-right"
                     });
                     this.cargaSeguimiento();
+                    setTimeout(() => {
+                        router.back();
+                    }, 2000);
                 });
         },
         abrirPop() {

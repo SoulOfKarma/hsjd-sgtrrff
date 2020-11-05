@@ -37,7 +37,7 @@ class TrabajadorController extends Controller
     {
         //Traer todo de trabajadores
         $get_all = Trabajadores::select('trabajadores.*')
-            ->where('id', '!=', 999)
+            ->where('id', '!=', 1)
             ->get();
 
         return  $get_all;

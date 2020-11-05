@@ -94,10 +94,10 @@ export default {
             modificar: "",
             eliminar: "",
             listCargos: [],
-            localVal: "http://127.0.0.1:8000",
+            localVal: "http://10.66.248.51:8000",
             seleccionCargo: {
                 id: 0,
-                descripcionCargo: ""
+                descripcionCargo: "Seleccione Cargo"
             },
             nuevoCargo: {
                 descripcionCargo: ""
@@ -110,6 +110,22 @@ export default {
     },
     computed: {},
     methods: {
+        limpiar() {
+            this.seleccionCargo = {
+                id: 0,
+                descripcionCargo: "Seleccione Cargo"
+            };
+            this.nuevoCargo = {
+                descripcionCargo: ""
+            };
+            this.modificarCargo = {
+                id: 0,
+                descripcionCargo: ""
+            };
+            this.agregar = "";
+            this.modificar = "";
+            this.eliminar = "";
+        },
         agregarNuevoCargo() {
             if (this.agregar == "" || this.agregar == null) {
                 this.$vs.notify({
@@ -135,6 +151,7 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.limpiar();
                         } else {
                             this.$vs.notify({
                                 time: 3000,
@@ -174,6 +191,7 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.limpiar();
                         } else {
                             this.$vs.notify({
                                 time: 3000,

@@ -137,7 +137,7 @@ export default {
                 fechaInicio: null,
                 fechaTermino: null
             },
-            localVal: "http://127.0.0.1:8000"
+            localVal: "http://10.66.248.51:8000"
         };
     },
     methods: {

@@ -196,7 +196,7 @@ import { validate, clean, format } from "rut.js";
 export default {
     data() {
         return {
-            localVal: "http://127.0.0.1:8000",
+            localVal: "http://10.66.248.51:8000",
             nombreUsuario: "",
             apellidoUsuario: "",
             anexoUsuario: 0,
@@ -344,6 +344,10 @@ export default {
             this.seleccionUnidadEsp = {
                 id: 0,
                 descripcionUnidadEsp: "Seleccion Unidad Especifica"
+            };
+            this.seleccionUsuariosCargo = {
+                id: 0,
+                nombrecompleto: "Seleccione Usuario Jefe"
             };
             this.seleccionEspecialidad1 = {
                 id: 0,

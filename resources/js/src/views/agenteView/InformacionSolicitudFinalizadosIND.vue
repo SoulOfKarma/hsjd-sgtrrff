@@ -12,19 +12,26 @@
                 </div>
                 <div class="vx-breadcrumb ml-4 md:block hidden">
                     <div
-                        class="content-area__heading pr-6 border-0 md:border-r border-solid border-grey-light"
+                        class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
                     >
-                        <h3 class="mb-6">
+                        <h3 class="mb-1">
                             Agente:
                             <p>{{ nombre }} - {{ run }}</p>
                         </h3>
                     </div>
                 </div>
             </div>
-
+            <vs-alert
+                color="primary"
+                icon="new_releases"
+                active="true"
+                style="margin-bottom: 10px;"
+            >
+                <p>Informacion General de la Solicitud</p>
+            </vs-alert>
             <!-- Informacion General Ticket -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card :title="titulo">
+                <vx-card :title="titulo" code-toggler>
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
                             <vs-input
@@ -53,7 +60,6 @@
                             />
                             <br />
                         </div>
-
                         <div class="vx-col w-full mt-5">
                             <vs-input
                                 label-placeholder="Unidad Especifica"
@@ -63,58 +69,21 @@
                             />
                         </div>
                         <br />
-                        <div class="vx-col md:w-1/1 w-full mb-base">
-                            <div class="vx-row">
-                                <div class="vx-col sm:w-2/3 w-full ml-auto">
-                                    <br />
-                                    <vs-button
-                                        class="fixedHeight"
-                                        color="warning"
-                                        @click="abrirPop"
-                                        >Finalizar Ticket</vs-button
-                                    >
-
-                                    <vs-button
-                                        class="fixedHeight"
-                                        color="success"
-                                        @click="volver"
-                                        >Volver</vs-button
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </vx-card>
-            </div>
-            <!-- Actualizar Seguimiento -->
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="2. Actualizar Seguimiento">
-                    <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
-                            <h6>2.1 - Descripcion del problema</h6>
-                            <br />
-                            <quill-editor
-                                v-model="seguimientos.descripcionSeguimiento"
-                                :options="editorOption"
-                            >
-                                <div id="toolbar" slot="toolbar"></div>
-                            </quill-editor>
-                            <br />
                             <div slot="footer">
                                 <vs-row vs-justify="flex-end">
                                     <vs-button
-                                        type="gradient"
-                                        @click="guardarSeguimiento"
-                                        >Actualizar</vs-button
+                                        class="fixedHeight"
+                                        @click="volver"
+                                        >Volver</vs-button
                                     >
                                 </vs-row>
                             </div>
-
-                            <br />
                         </div>
                     </div>
                 </vx-card>
             </div>
+
             <!-- Lista Seguimiento -->
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="Respuestas Seguimiento">
@@ -138,34 +107,6 @@
                 </vx-card>
             </div>
         </vs-row>
-        <vs-popup
-            classContent="popup-example"
-            title="Finalizar Proceso Ticket"
-            :active.sync="popupActive2"
-        >
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <div class="vx-row">
-                    <div class="vx-col sm:w-full w-full ">
-                        <h6>Presione Confirmar para finalizar.</h6>
-                        <br />
-                        <vs-button
-                            color="danger"
-                            type="filled"
-                            @click="finalizarSolicitud"
-                            >Confirmar</vs-button
-                        >
-                    </div>
-                    <div class="vx-col sm:w-full w-full ">
-                        <vs-button
-                            @click="popupActive2 = false"
-                            color="primary"
-                            type="filled"
-                            >Volver</vs-button
-                        >
-                    </div>
-                </div>
-            </div>
-        </vs-popup>
     </div>
 </template>
 
@@ -177,9 +118,6 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 export default {
-    components: {
-        quillEditor
-    },
     data: () => ({
         editorOption: {
             modules: {
@@ -196,9 +134,8 @@ export default {
                 ]
             }
         },
-
         textarea: "",
-
+        currentx: 1,
         localVal: "http://10.66.248.51:8000",
         solicitudes: [],
         seguimiento: [],
@@ -209,8 +146,6 @@ export default {
             unidadEsp: "",
             nombre: ""
         },
-        validaEliminar: false,
-        popupActive2: false,
         nombre: sessionStorage.getItem("nombre"),
         run: sessionStorage.getItem("run"),
         seguimientos: {
@@ -218,50 +153,12 @@ export default {
             id_solicitud: 0,
             uuid: "",
             nombre: sessionStorage.getItem("nombre"),
-            id_user: sessionStorage.getItem("id"),
-            descripcionCorreo: "",
-            id_usuarioEspecifico: 0
-        },
-        colorLoading: "#ff8000"
+            id_user: sessionStorage.getItem("id")
+        }
     }),
     methods: {
         volver() {
             router.back();
-        },
-        finalizarSolicitud() {
-            let uuid = this.$route.params.uuid;
-            var id = this.solicitudes[0].id;
-            this.seguimientos.id_usuarioEspecifico = this.solicitudes[0].id_user;
-
-            this.seguimientos.id_solicitud = id;
-            this.seguimientos.uuid = uuid;
-            this.seguimientos.descripcionSeguimiento =
-                "El Agente " + this.nombre + " a cerrado el Ticket N°" + id;
-            const seguimientoNuevo = this.seguimientos;
-            axios
-                .post(
-                    this.localVal + "/api/Agente/FinalizarTicket",
-                    seguimientoNuevo
-                )
-                .then(res => {
-                    const seguimientoServer = res.data;
-                    this.popupActive2 = false;
-                    this.$vs.notify({
-                        time: 3000,
-                        title: "Solicitud Finalizada",
-                        text: "Se recargara el seguimiento",
-                        color: "success",
-                        position: "top-right"
-                    });
-                    this.cargaSeguimiento();
-                    setTimeout(() => {
-                        router.back();
-                    }, 2000);
-                });
-        },
-        abrirPop() {
-            this.validaEliminar = true;
-            this.popupActive2 = true;
         },
         cargaSolicitudEspecifica() {
             let id = this.$route.params.uuid;
@@ -269,20 +166,13 @@ export default {
                 .get(this.localVal + `/api/Agente/TraerSolicitud/${id}`)
                 .then(res => {
                     this.solicitudes = res.data;
-                    try {
-                        this.titulo =
-                            "1. Seguimiento Ticket N°" +
-                            this.solicitudes[0].nticket;
-                        this.infoSeguimiento.nombre =
-                            this.solicitudes[0].nombre +
-                            " " +
-                            this.solicitudes[0].apellido;
-                        this.infoSeguimiento.edificio = this.solicitudes[0].descripcionEdificio;
-                        this.infoSeguimiento.servicio = this.solicitudes[0].descripcionServicio;
-                        this.infoSeguimiento.unidadEsp = this.solicitudes[0].descripcionUnidadEsp;
-                    } catch (error) {
-                        router.back();
-                    }
+                    this.titulo =
+                        "1. Seguimiento Ticket N°" +
+                        this.solicitudes[0].nticket;
+                    this.infoSeguimiento.nombre = this.solicitudes[0].nombre;
+                    this.infoSeguimiento.edificio = this.solicitudes[0].descripcionEdificio;
+                    this.infoSeguimiento.servicio = this.solicitudes[0].descripcionServicio;
+                    this.infoSeguimiento.unidadEsp = this.solicitudes[0].descripcionUnidadEsp;
                 });
         },
         cargaSeguimiento() {
@@ -309,13 +199,9 @@ export default {
                 });
                 return;
             }
-            this.seguimientos.id_usuarioEspecifico = this.solicitudes[0].id_user;
-            var id = this.solicitudes[0].id;
+            var id = this.solicitudes.id;
             this.seguimientos.id = id;
             this.seguimientos.uuid = uuid;
-            var newElement = document.createElement("div");
-            newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
-            this.seguimientos.descripcionCorreo = newElement.textContent;
             const seguimientoNuevo = this.seguimientos;
             this.seguimientos = {
                 descripcionSeguimiento: "",
@@ -324,7 +210,6 @@ export default {
                 nombre: sessionStorage.getItem("nombre"),
                 id_user: sessionStorage.getItem("id")
             };
-            this.openLoadingColor();
             axios
                 .post(
                     this.localVal + `/api/Agente/GuardarSeguimiento/${uuid}`,
@@ -332,21 +217,8 @@ export default {
                 )
                 .then(res => {
                     const seguimientoServer = res.data;
-                    this.$vs.notify({
-                        time: 3000,
-                        title: "Actualizacion realizada",
-                        text: "Se cargara listado automaticamente",
-                        color: "success",
-                        position: "top-right"
-                    });
                     this.cargaSeguimiento();
                 });
-        },
-        openLoadingColor() {
-            this.$vs.loading({ color: this.colorLoading });
-            setTimeout(() => {
-                this.$vs.loading.close();
-            }, 2000);
         }
     },
     beforeMount() {
@@ -356,35 +228,8 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.fill-row-loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    .loading-example {
-        width: 120px;
-        float: left;
-        height: 120px;
-        box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.05);
-        border-radius: 10px;
-        margin: 8px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        &:hover {
-            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.05);
-            transform: translate(0, 4px);
-        }
-        h4 {
-            z-index: 40000;
-            position: relative;
-            text-align: center;
-            padding: 10px;
-        }
-        &.activeLoading {
-            opacity: 0 !important;
-            transform: scale(0.5);
-        }
-    }
+<style lang="stylus">
+.cardx {
+  margin: 15px;
 }
 </style>

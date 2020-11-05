@@ -15,9 +15,9 @@ class Trabajadores extends Migration
     {
         Schema::create('trabajadores', function (Blueprint $table) {
             $table->id();
-            $table->text('tra_run');
-            $table->text('tra_nombre');
-            $table->text('tra_apellido');
+            $table->string('tra_run')->unique();
+            $table->string('tra_nombre');
+            $table->string('tra_apellido');
             $table->bigInteger('id_especialidad1')->unsigned();
             $table->foreign('id_especialidad1')->references('id')->on('especialidades');
             $table->timestamps();

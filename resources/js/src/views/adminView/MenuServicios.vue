@@ -114,7 +114,7 @@ export default {
             listEdificios: [],
             listEdificiosA: [],
             listadoServiciosData: [],
-            localVal: "http://127.0.0.1:8000",
+            localVal: "http://10.66.248.51:8000",
             seleccionServicios: {
                 id: 0,
                 descripcionServicio: "Seleccione Servicio"

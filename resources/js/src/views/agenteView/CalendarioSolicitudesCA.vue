@@ -98,7 +98,7 @@ export default {
             listadoTrabajadores: [],
             listadoHoraFecha: [],
             listadoTickets: [],
-            localVal: "http://127.0.0.1:8000",
+            localVal: "http://10.66.248.51:8000",
             horaSeleccionada: {
                 id: 2,
                 hora: "day",

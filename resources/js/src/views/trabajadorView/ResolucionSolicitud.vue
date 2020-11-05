@@ -120,7 +120,7 @@ export default {
             },
             nombre: sessionStorage.getItem("nombre"),
             run: sessionStorage.getItem("run"),
-            localVal: "http://127.0.0.1:8000",
+            localVal: "http://10.66.248.51:8000",
             seguimientos: {
                 descripcionSeguimiento: "",
                 id_solicitud: 0,

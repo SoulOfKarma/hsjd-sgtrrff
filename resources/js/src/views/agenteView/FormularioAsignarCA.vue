@@ -425,9 +425,9 @@ export default {
             id_estado: 1,
             id_supervisor: 4,
             id_trabajador: 5,
-            idApoyo1: 999,
-            idApoyo2: 999,
-            idApoyo3: 999,
+            idApoyo1: 1,
+            idApoyo2: 1,
+            idApoyo3: 1,
             idTurno: 0,
             fechaInicio: null,
             fechaTermino: null,
@@ -502,7 +502,7 @@ export default {
         variablePrueba: 0,
         mensajeError: "",
 
-        localVal: "http://127.0.0.1:8000"
+        localVal: "http://10.66.248.51:8000"
     }),
     computed: {
         calcularHorasTrabajo() {
@@ -725,7 +725,7 @@ export default {
 
             c.forEach((value, index) => {
                 a = value.id;
-                if (a == 999) {
+                if (a == 1) {
                     b.push(value);
                 } else if (a != id) {
                     b.push(value);
@@ -752,7 +752,7 @@ export default {
 
             c.forEach((value, index) => {
                 a = value.id;
-                if (id == 999) {
+                if (id == 1) {
                     b.push(value);
                 } else if (a != id) {
                     b.push(value);
@@ -780,7 +780,7 @@ export default {
 
             c.forEach((value, index) => {
                 a = value.id;
-                if (id == 999) {
+                if (id == 1) {
                     b.push(value);
                 } else if (a != id) {
                     b.push(value);
@@ -859,7 +859,7 @@ export default {
             var a = 0;
 
             c.forEach((value, index) => {
-                if (999 != value.id) {
+                if (1 != value.id) {
                     b.push(value);
                 }
             });

@@ -278,6 +278,38 @@ const router = new Router({
                         )
                 },
                 {
+                    path: "/agenteView/InformacionSolicitudFinalizadosCA",
+                    name: "InformacionSolicitudFinalizadosCA",
+                    component: () =>
+                        import(
+                            "./views/agenteView/InformacionSolicitudFinalizadosCA.vue"
+                        )
+                },
+                {
+                    path: "/agenteView/InformacionSolicitudFinalizadosEM",
+                    name: "InformacionSolicitudFinalizadosEM",
+                    component: () =>
+                        import(
+                            "./views/agenteView/InformacionSolicitudFinalizadosEM.vue"
+                        )
+                },
+                {
+                    path: "/agenteView/InformacionSolicitudFinalizadosIND",
+                    name: "InformacionSolicitudFinalizadosIND",
+                    component: () =>
+                        import(
+                            "./views/agenteView/InformacionSolicitudFinalizadosIND.vue"
+                        )
+                },
+                {
+                    path: "/agenteView/InformacionSolicitudFinalizadosINF",
+                    name: "InformacionSolicitudFinalizadosINF",
+                    component: () =>
+                        import(
+                            "./views/agenteView/InformacionSolicitudFinalizadosINF.vue"
+                        )
+                },
+                {
                     path: "/agenteView/DetalleTicket",
                     name: "DetalleTicketImp",
                     component: () =>

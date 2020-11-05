@@ -209,9 +209,9 @@ Route::get('/Agente/getCargos', ['middleware' => 'cors', 'uses' => 'CargoUsuario
 //Traer Cargos No Jefatura,Supervisor RRFF y trabajador RRFF
 Route::get('/Agente/getCargoNoJefatura', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@getCargoNoJefatura']);
 //Traer Usuarios Supervisores RRFF
-Route::get('/Agente/getSupervisores', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloSupervisoresRRFF']);
+Route::get('/Agente/getSupervisoresRRFF', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloSupervisoresRRFF']);
 //Traer Usuarios Trabajadores RRFF
-Route::get('/Agente/getTrabajadores', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloTrabajadoresRRFF']);
+Route::get('/Agente/getTrabajadoresRRFF', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloTrabajadoresRRFF']);
 //Traer Especialidades
 Route::get('/Agente/getEspecialidad', ['middleware' => 'cors', 'uses' => 'EspecialidadController@index']);
 //Guardar Nuevo Edificio

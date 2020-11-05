@@ -56,7 +56,7 @@
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
-                                        detalleSolicitudEliminados(
+                                        detalleSolicitudFinalizados(
                                             data[indextr].id,
                                             data[indextr].uuid
                                         )
@@ -246,7 +246,7 @@ export default {
                 nombre: sessionStorage.getItem("nombre"),
                 razonEliminacion: ""
             },
-            localVal: "http://127.0.0.1:8000",
+            localVal: "http://10.66.248.51:8000",
             nombre:
                 sessionStorage.getItem("nombre") +
                 " " +
@@ -319,6 +319,15 @@ export default {
         detalleSolicitudEliminados(id, uuid) {
             this.$router.push({
                 name: "InformacionSolicitudEliminadosEM",
+                params: {
+                    id: `${id}`,
+                    uuid: `${uuid}`
+                }
+            });
+        },
+        detalleSolicitudFinalizados(id, uuid) {
+            this.$router.push({
+                name: "InformacionSolicitudFinalizadosEM",
                 params: {
                     id: `${id}`,
                     uuid: `${uuid}`

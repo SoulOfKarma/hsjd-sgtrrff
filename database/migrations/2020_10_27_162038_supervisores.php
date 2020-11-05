@@ -15,9 +15,9 @@ class Supervisores extends Migration
     {
         Schema::create('supervisores', function (Blueprint $table) {
             $table->id();
-            $table->text('sup_run');
-            $table->text('sup_nombre');
-            $table->text('sup_apellido');
+            $table->string('sup_run')->unique();
+            $table->string('sup_nombre');
+            $table->string('sup_apellido');
             $table->bigInteger('id_especialidad1')->unsigned();
             $table->foreign('id_especialidad1')->references('id')->on('especialidades');
             $table->bigInteger('id_especialidad2')->unsigned();

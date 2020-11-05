@@ -160,7 +160,7 @@ import { validate, clean, format } from "rut.js";
 export default {
     data() {
         return {
-            localVal: "http://127.0.0.1:8000",
+            localVal: "http://10.66.248.51:8000",
             nombreUsuario: "",
             apellidoUsuario: "",
             anexoUsuario: 0,
@@ -389,7 +389,6 @@ export default {
                     });
                 } else {
                     const registro = this.registroUsuario;
-                    console.log(registro);
                     axios
                         .post(
                             this.localVal + "/api/Agente/GuardarUsuarioJefe",

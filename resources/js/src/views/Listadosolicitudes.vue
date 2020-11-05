@@ -256,7 +256,7 @@ export default {
             validaEliminar: false,
             popupActive2: false,
             popupActive3: false,
-            localVal: "http://127.0.0.1:8000",
+            localVal: "http://10.66.248.51:8000",
             nombre:
                 sessionStorage.getItem("nombre") +
                 " " +

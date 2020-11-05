@@ -191,7 +191,7 @@ export default {
         listadoServiciosData: [],
         listadoUnidadEspData: [],
         listadoUsuarios: [],
-        localVal: "http://127.0.0.1:8000",
+        localVal: "http://10.66.248.51:8000",
         apiInformatica: "http://10.4.237.33/ticket",
         uuidC: "",
 
@@ -270,26 +270,14 @@ export default {
             router.back();
         },
         limpiar() {
-            (this.seleccionEdificio = {
+            this.seleccionReparacion = {
                 id: 0,
-                descripcionEdificio: "Seleccione Edificio"
-            }),
-                (this.seleccionServicio = {
-                    id: 0,
-                    descripcionServicio: "Seleccione Servicio"
-                }),
-                (this.seleccionUnidadEsp = {
-                    id: 0,
-                    descripcionUnidadEsp: "Seleccion Unidad Especifica"
-                }),
-                (this.seleccionReparacion = {
-                    id: 0,
-                    descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
-                }),
-                (this.seleccionCategoria = {
-                    id: 0,
-                    des_categoria: "Seleccione Categoria"
-                });
+                descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+            };
+            this.seleccionCategoria = {
+                id: 0,
+                des_categoria: "Seleccione Categoria"
+            };
             this.solicitud.descripcionP = "";
             this.solicitud.tituloP = "";
         },
@@ -532,8 +520,7 @@ export default {
             this.$vs.notify({
                 time: 5000,
                 title: "Ticket Creado",
-                text:
-                    "Ticket creado correctamente, Retornara a la pagina anterior",
+                text: "Ticket creado correctamente, Se limpiaran los campos",
                 color: "success",
                 position: "top-right"
             });
@@ -577,16 +564,19 @@ export default {
                     );
                     this.solicitudInformatica.subject = this.solicitud.tituloP;
                     this.solicitudInformatica.body = this.solicitud.descripcionP;
-                    console.log(this.solicitudInformatica);
+                    this.solicitudInformatica.email = this.listadoUsuarios.email;
+                    this.solicitudInformatica.phone = this.listadoUsuarios.anexo;
+                    this.solicitudInformatica.token = this.listadoUsuarios.api_token;
                     const solicitudNueva = this.solicitudInformatica;
-                    /* axios
+                    /*  axios
                         .post(this.apiInformatica, solicitudNueva)
                         .then(res => {
                             const solicitudServer = res.data;
                             this.mensajeGuardado();
-                            setTimeout(() => {
-                                router.back();
-                            }, 5000);
+                            //setTimeout(() => {
+                           //     router.back();
+                         //   }, 5000);
+                            this.limpiar();
                         }); */
                 } else {
                     this.solicitud.id_edificio = this.seleccionEdificio[0].id;
@@ -618,10 +608,8 @@ export default {
                         .then(res => {
                             const solicitudServer = res.data;
                             this.mensajeGuardado();
-                            setTimeout(() => {
-                                router.back();
-                            }, 5000);
-                            //console.log(res.data);
+
+                            this.limpiar();
                         });
                 }
             }

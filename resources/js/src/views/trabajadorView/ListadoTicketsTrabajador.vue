@@ -94,7 +94,7 @@ export default {
         return {
             solicitudes: [],
             listadoTrabajadores: [],
-            localVal: "http://127.0.0.1:8000",
+            localVal: "http://10.66.248.51:8000",
             nombre: sessionStorage.getItem("nombre"),
             run: sessionStorage.getItem("run"),
             idTra: 0

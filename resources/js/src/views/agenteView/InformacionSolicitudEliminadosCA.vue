@@ -136,7 +136,7 @@ export default {
         },
         textarea: "",
         currentx: 1,
-        localVal: "http://127.0.0.1:8000",
+        localVal: "http://10.66.248.51:8000",
         solicitudes: [],
         seguimiento: [],
         titulo: "",
