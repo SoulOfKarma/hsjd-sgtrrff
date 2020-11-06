@@ -44,14 +44,13 @@
                                             v-model="turnoSeleccionado"
                                             label="descripcionTurno"
                                             :options="listadoTurnos"
-                                            @input="
-                                                cambioByTurno(turnoSeleccionado)
-                                            "
+                                            @input="cambioByTurno()"
                                         />
                                     </div>
                                 </div>
 
                                 <GSTC
+                                    :key="componentKey"
                                     :config="config"
                                     @state="onState"
                                     :v-text="config.chart.items.label"
@@ -91,6 +90,11 @@ import router from "@/router";
 import moment from "moment";
 import vSelect from "vue-select";
 import { html, render } from "lit-html";
+import { Plugin as Selection } from "gantt-schedule-timeline-calendar/dist/plugins/selection.esm.min.js";
+import { Plugin as CalendarScroll } from "gantt-schedule-timeline-calendar/dist/plugins/calendar-scroll.esm.min.js";
+import { Plugin as ItemResizing } from "gantt-schedule-timeline-calendar/dist/plugins/item-resizing.esm.min.js";
+import { Plugin as TimelinePointer } from "gantt-schedule-timeline-calendar/dist/plugins/timeline-pointer.esm.min.js";
+import { Plugin as ItemMovement } from "gantt-schedule-timeline-calendar/dist/plugins/item-movement.esm.min.js";
 
 let subs = [];
 
@@ -102,6 +106,7 @@ export default {
     },
     data() {
         return {
+            componentKey: 0,
             colorLoading: "#ff8000",
             infoGeneral: {
                 titulo: "",
@@ -167,6 +172,7 @@ export default {
             ],
             config: {
                 height: 0,
+                innerHeight: 100,
                 plugins: [],
                 locale: {
                     name: "es-Cl",
@@ -510,6 +516,14 @@ export default {
         };
     },
     methods: {
+        forceRerender() {
+            this.componentKey += 1;
+            let action = {
+                "chart-timeline-items-row-item": [this.mensaje]
+            };
+
+            this.config.actions = action;
+        },
         recenter() {
             GSTC.api.scrollToTime(GSTC.api.time.date().valueOf());
         },
@@ -583,6 +597,7 @@ export default {
                 id_solicitud: 0
             };
             listadoRow.push(objeto);
+
             let contadorEsp = 3;
 
             c.forEach((value, index) => {
@@ -602,6 +617,7 @@ export default {
                 objeto.id_solicitud = value.id_solicitud;
                 listadoRow.push(objeto);
             });
+
             var cont = listadoRow.length;
 
             this.config.height = 45 * contadorEsp;
@@ -641,6 +657,7 @@ export default {
 
             let a = 0;
             b.push(f);
+
             c.forEach((value, index) => {
                 listadoRow.forEach((element, indexv2) => {
                     if (
@@ -711,9 +728,181 @@ export default {
             this.config.chart.items = b;
 
             this.valc = true;
+            this.forceRerender();
         },
-        cambioByTurno(turnoSeleccionado) {
-            console.log(this.turnoSeleccionado);
+        cambioByTurno() {
+            let c = this.listadoTrabajadores;
+
+            let arregloTra = [];
+            let listadoFiltrado = [];
+            var va = {};
+            arregloTra.push(va);
+            // console.log(c);
+            arregloTra.push(va);
+            c.forEach((value, index) => {
+                if (value.id != 1) {
+                    let objeto = {
+                        id: 0,
+                        label: "",
+                        expanded: true
+                    };
+
+                    objeto.id = value.id;
+                    objeto.label = value.tra_nombre + " " + value.tra_apellido;
+                    arregloTra.push(objeto);
+                    listadoFiltrado.push(value);
+                }
+            });
+            this.listadoTrabajadoresFiltrado = listadoFiltrado;
+
+            this.config.list.rows = arregloTra;
+            this.recargaListadoTicketsByTurno();
+        },
+        recargaListadoTicketsByTurno() {
+            let listadoRow = this.config.list.rows;
+            let c = this.listadoTickets;
+            let contador = listadoRow.length;
+            let objeto = {
+                id: 0,
+                label: "",
+                parentId: 0,
+                expanded: false,
+                id_solicitud: 0
+            };
+            listadoRow.push(objeto);
+
+            let contadorEsp = 3;
+
+            c.forEach((value, index) => {
+                if (this.turnoSeleccionado.id == value.idTurno) {
+                    objeto = {
+                        id: 0,
+                        label: "",
+                        parentId: 0,
+                        expanded: false,
+                        id_solicitud: 0
+                    };
+                    contador = contador + 1;
+                    objeto.id = contador;
+
+                    objeto.label = value.tra_nombre + " " + value.tra_apellido;
+                    objeto.parentId = value.id_trabajador;
+                    objeto.id_solicitud = value.id_solicitud;
+                    listadoRow.push(objeto);
+                }
+            });
+
+            var cont = listadoRow.length;
+
+            this.config.height = 45 * cont;
+            this.config.list.rows = listadoRow;
+            this.recargarHoraFechaCalendarioByTurno();
+        },
+        recargarHoraFechaCalendarioByTurno() {
+            let c = this.listadoHoraFecha;
+            let listadoRow = this.config.list.rows;
+
+            var f = {
+                id: "",
+                rowId: "",
+                nticket: "",
+                label: "",
+                titulo: "",
+                descripcion: "",
+                usuario: "",
+                edificio: "",
+                servicio: "",
+                unidadEsp: "",
+                fechaCreacion: moment(),
+                time: {
+                    start: new Date().getTime(),
+                    end: new Date().getTime() + 24 * 60 * 60 * 1000
+                },
+                style: {
+                    background: "#30B2F6",
+                    "border-radius": "1px"
+                }
+            };
+            var fecha = {
+                start: moment(),
+                end: moment()
+            };
+            let b = [];
+
+            let a = 0;
+            b.push(f);
+
+            c.forEach((value, index) => {
+                listadoRow.forEach((element, indexv2) => {
+                    if (
+                        element.parentId == value.id_trabajador &&
+                        element.id_solicitud == value.id
+                    ) {
+                        f = {
+                            id: "",
+                            rowId: "",
+                            nticket: "",
+                            label: "",
+                            titulo: "",
+                            descripcion: "",
+                            usuario: "",
+                            edificio: "",
+                            servicio: "",
+                            unidadEsp: "",
+                            fechaCreacion: moment(),
+
+                            time: {
+                                start: new Date().getTime(),
+                                end: new Date().getTime() + 24 * 60 * 60 * 1000
+                            },
+                            style: {
+                                background:
+                                    "#" +
+                                    ((Math.random() * 0xffffff) << 0).toString(
+                                        16
+                                    )
+                            }
+                        };
+                        fecha = {
+                            start: moment(),
+                            end: moment()
+                        };
+
+                        f.id = value.id;
+                        f.rowId = element.id;
+                        f.titulo = value.tituloP;
+                        f.nticket = value.nticket;
+                        f.label = "N°Ticket " + value.nticket;
+                        f.fechaCreacion = new Date(value.created_at).getTime();
+
+                        //f.label = value.descripcionP;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = value.descripcionP;
+                        f.descripcion = newElement.textContent;
+                        f.usuario = value.nombrecompleto;
+                        f.edificio = value.descripcionEdificio;
+                        f.servicio = value.descripcionServicio;
+                        f.unidadEsp = value.descripcionUnidadEsp;
+                        fecha.start = new Date(
+                            value.fechaInicio + " " + value.horaInicio
+                        ).getTime();
+                        fecha.end =
+                            new Date(
+                                value.fechaTermino + " " + value.horaTermino
+                            ).getTime() +
+                            24 * 60 * 60 * 1000;
+
+                        f.time = fecha;
+
+                        b.push(f);
+                    }
+                });
+            });
+
+            this.config.chart.items = b;
+
+            this.valc = true;
+            this.forceRerender();
         },
         cargarTrabajadores() {
             axios

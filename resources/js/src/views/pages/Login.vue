@@ -56,6 +56,7 @@
                                         icon-pack="feather"
                                         label-placeholder="Contraseña"
                                         v-model="password"
+                                        @keyup.native.enter="validarSesion"
                                         class="w-full mt-6 no-icon-border"
                                     />
                                     <br />

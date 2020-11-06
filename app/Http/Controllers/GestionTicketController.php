@@ -26,7 +26,7 @@ class GestionTicketController extends Controller
     public function ticketsCategoriaInfra()
     {
         $estadoEliminado = 7;
-        $users = GestionSolicitudes::select('gestion_solicitudes.id', 'gestion_solicitudes.id_trabajador', 'trabajadores.tra_nombre','trabajadores.tra_apellido', 'gestion_solicitudes.id_solicitud')
+        $users = GestionSolicitudes::select('gestion_solicitudes.id', 'gestion_solicitudes.id_trabajador', 'trabajadores.tra_nombre','trabajadores.tra_apellido', 'gestion_solicitudes.id_solicitud','gestion_solicitudes.idTurno')
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->join('solicitud_tickets', 'gestion_solicitudes.id_solicitud', '=', 'solicitud_tickets.id')
             ->where('solicitud_tickets.id_categoria', 1)
