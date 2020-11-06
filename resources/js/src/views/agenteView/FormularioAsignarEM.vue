@@ -487,18 +487,24 @@ export default {
             id: 0,
             tra_nombre_apellido: "Seleccione al Trabajador"
         },
-        seleccionApoyo1: {
-            id: 0,
-            tra_nombre_apellido: "Seleccione Apoyo 1"
-        },
-        seleccionApoyo2: {
-            id: 0,
-            tra_nombre_apellido: "Seleccione Apoyo 2"
-        },
-        seleccionApoyo3: {
-            id: 0,
-            tra_nombre_apellido: "Seleccione Apoyo 3"
-        },
+        seleccionApoyo1: [
+            {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            }
+        ],
+        seleccionApoyo2: [
+            {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            }
+        ],
+        seleccionApoyo3: [
+            {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            }
+        ],
         variablePrueba: 0,
         mensajeError: "",
 

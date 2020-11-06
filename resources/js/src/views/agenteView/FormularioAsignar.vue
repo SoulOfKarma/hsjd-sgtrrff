@@ -488,18 +488,24 @@ export default {
             id: 0,
             tra_nombre_apellido: "Seleccione al Trabajador"
         },
-        seleccionApoyo1: {
-            id: 0,
-            tra_nombre_apellido: "Seleccione Apoyo 1"
-        },
-        seleccionApoyo2: {
-            id: 0,
-            tra_nombre_apellido: "Seleccione Apoyo 2"
-        },
-        seleccionApoyo3: {
-            id: 0,
-            tra_nombre_apellido: "Seleccione Apoyo 3"
-        },
+        seleccionApoyo1: [
+            {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            }
+        ],
+        seleccionApoyo2: [
+            {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            }
+        ],
+        seleccionApoyo3: [
+            {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            }
+        ],
         variablePrueba: 0,
         mensajeError: "",
 
@@ -547,9 +553,11 @@ export default {
         }
     },
     methods: {
+        //Volver a la pagina anterior
         volver() {
             router.back();
         },
+        //Carga Especifica de Servicios segun el edificio seleccionado
         filtroSegunEdificio() {
             if (this.seleccionEdificio == null || this.seleccionEdificio == 0) {
                 this.listadoServicios = this.listadoServiciosData;
@@ -569,6 +577,7 @@ export default {
                 this.listadoServicios = b;
             }
         },
+        //Carga automatica de Edificio y Servicio segun la unidad especifica seleccionada
         cargaSegunUnidadEsp() {
             if (
                 this.seleccionUnidadEsp == null ||
@@ -619,6 +628,7 @@ export default {
                 this.seleccionEdificio = b;
             }
         },
+        //Carga de Unidad Especifica segun el servicio
         cargaSegunServicio() {
             if (
                 this.seleccionServicio == null ||
@@ -669,6 +679,7 @@ export default {
                 this.seleccionEdificio = b;
             }
         },
+        //Cambiar de Objeto a Array
         arrayEstado(id) {
             let c = this.listadoEstado;
             let b = [];
@@ -682,6 +693,7 @@ export default {
             });
             this.seleccionEstado = b;
         },
+        //Cambiar de Objeto a Array
         arrayTipoReparacion(id) {
             let c = this.listadoTipoRep;
             let b = [];
@@ -695,6 +707,7 @@ export default {
             });
             this.seleccionReparacion = b;
         },
+        //Cambiar de Objeto a Array
         arraySupervisores(id) {
             let c = this.listadoSupervisores;
             let b = [];
@@ -708,6 +721,7 @@ export default {
             });
             this.seleccionSupervisor = b;
         },
+        //Cambiar de Objeto a Array
         arrayTrabajadores(id) {
             let c = this.listadoTrabajadoresData;
             let b = [];
@@ -735,6 +749,7 @@ export default {
 
             this.listadoApoyo1 = b;
         },
+        //Cambiar de Objeto a Array
         arrayApoyo1(id) {
             let c = this.listadoApoyo1;
             let b = [];
@@ -762,7 +777,7 @@ export default {
 
             this.listadoApoyo2 = b;
         },
-
+        //Cambiar de Objeto a Array
         arrayApoyo2(id) {
             let c = this.listadoApoyo2;
             let b = [];
@@ -790,6 +805,7 @@ export default {
 
             this.listadoApoyo3 = b;
         },
+        //Cambiar de Objeto a Array
         arrayApoyo3(id) {
             let c = this.listadoApoyo3;
             let b = [];
@@ -803,17 +819,21 @@ export default {
             });
             this.seleccionApoyo3 = b;
         },
+        //Seleccion de fechas
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
         },
+        //Seleccion de fechas
         onToChange(selectedDates, dateStr, instance) {
             this.$set(this.configFromdateTimePicker, "maxDate", dateStr);
         },
+        //Carga de los edificios
         cargarEdificios() {
             axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
                 this.listadoEdificios = res.data;
             });
         },
+        //Carga de los servicios
         cargarServicios() {
             axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
                 this.listadoServicios = res.data;
@@ -821,6 +841,7 @@ export default {
                 this.listadoServiciosData = res.data;
             });
         },
+        //Carga de la unidad Especifica
         cargarUnidadEsp() {
             axios.get(this.localVal + "/api/Usuario/GetUnidadEsp").then(res => {
                 this.listadoUnidadEsp = res.data;
@@ -828,11 +849,13 @@ export default {
                 this.listadoUnidadEspData = res.data;
             });
         },
+        //Carga de Tipo de Reparacion
         cargarTipoRep() {
             axios.get(this.localVal + "/api/Usuario/GetTipoRep").then(res => {
                 this.listadoTipoRep = res.data;
             });
         },
+        //Carga de supervisores
         cargarSupervisores() {
             axios
                 .get(this.localVal + "/api/Agente/GetSupervisores")
@@ -840,11 +863,13 @@ export default {
                     this.listadoSupervisores = res.data;
                 });
         },
+        //Carga de turnos
         cargarTurnos() {
             axios.get(this.localVal + "/api/Agente/GetTurnos").then(res => {
                 this.listadoTurno = res.data;
             });
         },
+        //Carga de trabajadores
         cargarTrabajadores() {
             axios
                 .get(this.localVal + "/api/Agente/GetTrabajadores")
@@ -1232,9 +1257,6 @@ export default {
             this.cargarSupervisores();
             this.cargarTrabajadores();
             this.cargarTurnos();
-        },
-        probando() {
-            console.log(this.seleccionEdificio);
         }
     },
     created: function() {

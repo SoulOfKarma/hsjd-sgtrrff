@@ -36,8 +36,8 @@ class TrabajadorController extends Controller
     public function GetTrabajadoresEX()
     {
         //Traer todo de trabajadores
-        $get_all = Trabajadores::select('trabajadores.*')
-            ->where('id', '!=', 1)
+        $get_all = Trabajadores::select('trabajadores.*',DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"))
+            //->where('id', '!=', 1)
             ->get();
 
         return  $get_all;

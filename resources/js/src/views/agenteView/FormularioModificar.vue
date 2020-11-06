@@ -515,18 +515,24 @@ export default {
             id: 0,
             tra_nombre_apellido: "Seleccione al Trabajador"
         },
-        seleccionApoyo1: {
-            id: 1,
-            tra_nombre_apellido: "Sin Asignar"
-        },
-        seleccionApoyo2: {
-            id: 1,
-            tra_nombre_apellido: "Sin Asignar"
-        },
-        seleccionApoyo3: {
-            id: 1,
-            tra_nombre_apellido: "Sin Asignar"
-        },
+        seleccionApoyo1: [
+            {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            }
+        ],
+        seleccionApoyo2: [
+            {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            }
+        ],
+        seleccionApoyo3: [
+            {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            }
+        ],
         variablePrueba: 0,
         mensajeError: "",
 
@@ -1409,7 +1415,7 @@ export default {
             this.cargarUSE();
         },
         limpiar() {
-            (this.gestionTicket = {
+            this.gestionTicket = {
                 uuid: "",
                 id_solicitud: 0,
                 id_edificio: 0,
@@ -1429,51 +1435,51 @@ export default {
                 horaTermino: null,
                 horasEjecucion: 0,
                 diasEjecucion: 0
-            }),
-                (this.seleccionTurno = {
-                    id: 0,
-                    descripcionTurno: "Seleccione Turno"
-                }),
-                (this.seleccionEdificio = {
-                    id: 0,
-                    descripcionEdificio: "Seleccione Edificio"
-                }),
-                (this.seleccionServicio = {
-                    id: 0,
-                    descripcionServicio: "Seleccione Servicio"
-                }),
-                (this.seleccionUnidadEsp = {
-                    id: 0,
-                    descripcionUnidadEsp: "Seleccione Unidad Especifica"
-                }),
-                (this.seleccionReparacion = {
-                    id: 0,
-                    descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
-                }),
-                (this.seleccionEstado = {
-                    id: 0,
-                    descripcionEstado: "Seleccione Estado"
-                }),
-                (this.seleccionSupervisor = {
-                    id: 0,
-                    sup_nombre_apellido: "Seleccione al Supervisor"
-                }),
-                (this.seleccionTrabajador = {
-                    id: 0,
-                    tra_nombre_apellido: "Seleccione al Trabajador"
-                }),
-                (this.seleccionApoyo1 = {
-                    id: 1,
-                    tra_nombre_apellido: "Sin Asignar"
-                }),
-                (this.seleccionApoyo2 = {
-                    id: 1,
-                    tra_nombre_apellido: "Sin Asignar"
-                }),
-                (this.seleccionApoyo3 = {
-                    id: 1,
-                    tra_nombre_apellido: "Sin Asignar"
-                });
+            };
+            this.seleccionTurno = {
+                id: 0,
+                descripcionTurno: "Seleccione Turno"
+            };
+            this.seleccionEdificio = {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            };
+            this.seleccionServicio = {
+                id: 0,
+                descripcionServicio: "Seleccione Servicio"
+            };
+            this.seleccionUnidadEsp = {
+                id: 0,
+                descripcionUnidadEsp: "Seleccione Unidad Especifica"
+            };
+            this.seleccionReparacion = {
+                id: 0,
+                descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+            };
+            this.seleccionEstado = {
+                id: 0,
+                descripcionEstado: "Seleccione Estado"
+            };
+            this.seleccionSupervisor = {
+                id: 0,
+                sup_nombre_apellido: "Seleccione al Supervisor"
+            };
+            this.seleccionTrabajador = {
+                id: 0,
+                tra_nombre_apellido: "Seleccione al Trabajador"
+            };
+            this.seleccionApoyo1 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo2 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo3 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
         }
     },
     created() {

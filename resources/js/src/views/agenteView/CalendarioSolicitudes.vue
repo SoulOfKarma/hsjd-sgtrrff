@@ -8,9 +8,21 @@
                             <div v-if="valc">
                                 <div class="flex mb-4">
                                     <div
-                                        class="w-1/3 bg-grid-color-secondary h-12"
+                                        class="w-1/5 bg-grid-color-secondary h-12"
+                                    >
+                                        <v-select
+                                            v-model="trabajadorSeleccionado"
+                                            label="tra_nombre_apellido"
+                                            :options="
+                                                listadoTrabajadoresFiltrado
+                                            "
+                                            @input="cambioByTrabajador()"
+                                        />
+                                    </div>
+                                    <div
+                                        class="w-1/5 bg-grid-color-secondary h-12"
                                     ></div>
-                                    <div class="w-1/3 bg-grid-color h-12">
+                                    <div class="w-1/5 bg-grid-color h-12">
                                         <v-select
                                             v-model="horaSeleccionada"
                                             label="descripcionHora"
@@ -23,8 +35,20 @@
                                         />
                                     </div>
                                     <div
-                                        class="w-1/3 bg-grid-color-secondary h-12"
+                                        class="w-1/5 bg-grid-color-secondary h-12"
                                     ></div>
+                                    <div
+                                        class="w-1/5 bg-grid-color-secondary h-12"
+                                    >
+                                        <v-select
+                                            v-model="turnoSeleccionado"
+                                            label="descripcionTurno"
+                                            :options="listadoTurnos"
+                                            @input="
+                                                cambioByTurno(turnoSeleccionado)
+                                            "
+                                        />
+                                    </div>
                                 </div>
 
                                 <GSTC
@@ -96,13 +120,23 @@ export default {
             valc: false,
             popupActive: false,
             listadoTrabajadores: [],
+            listadoTrabajadoresFiltrado: [],
             listadoHoraFecha: [],
             listadoTickets: [],
+            listadoTurnos: [],
             localVal: "http://10.66.248.51:8000",
             horaSeleccionada: {
                 id: 2,
                 hora: "day",
                 descripcionHora: "Dias"
+            },
+            turnoSeleccionado: {
+                id: 0,
+                descripcionTurno: "Seleccione Turno"
+            },
+            trabajadorSeleccionado: {
+                id: 0,
+                tra_nombre_apellido: "Seleccione Trabajador"
             },
             horas: [
                 {
@@ -509,8 +543,177 @@ export default {
             let GSTCState = GSTC;
         },
         cambioCalendario(tipoHora) {
-            console.log(tipoHora);
             this.config.chart.time.period = tipoHora;
+        },
+        cambioByTrabajador() {
+            let arregloTra = [];
+
+            var va = {};
+
+            let objeto = {
+                id: 0,
+                label: "",
+                expanded: true
+            };
+            let count = 0;
+            for (count = 0; count < this.trabajadorSeleccionado.id; count++) {
+                arregloTra.push(va);
+            }
+
+            objeto.id = this.trabajadorSeleccionado.id;
+            objeto.label =
+                this.trabajadorSeleccionado.tra_nombre +
+                " " +
+                this.trabajadorSeleccionado.tra_apellido;
+            arregloTra.push(objeto);
+
+            this.config.list.rows = arregloTra;
+
+            this.recargaListadoTicketsByTrabajador();
+        },
+        recargaListadoTicketsByTrabajador() {
+            let listadoRow = this.config.list.rows;
+            let c = this.listadoTickets;
+            let contador = listadoRow.length;
+            let objeto = {
+                id: 0,
+                label: "",
+                parentId: 0,
+                expanded: false,
+                id_solicitud: 0
+            };
+            listadoRow.push(objeto);
+            let contadorEsp = 3;
+
+            c.forEach((value, index) => {
+                objeto = {
+                    id: 0,
+                    label: "",
+                    parentId: 0,
+                    expanded: false,
+                    id_solicitud: 0
+                };
+                contador = contador + 1;
+                objeto.id = contador;
+                contadorEsp = contadorEsp + 1;
+
+                objeto.label = value.tra_nombre + " " + value.tra_apellido;
+                objeto.parentId = value.id_trabajador;
+                objeto.id_solicitud = value.id_solicitud;
+                listadoRow.push(objeto);
+            });
+            var cont = listadoRow.length;
+
+            this.config.height = 45 * contadorEsp;
+            this.config.list.rows = listadoRow;
+            this.recargarHoraFechaCalendarioByTrabajador();
+        },
+        recargarHoraFechaCalendarioByTrabajador() {
+            let c = this.listadoHoraFecha;
+            let listadoRow = this.config.list.rows;
+
+            var f = {
+                id: "",
+                rowId: "",
+                nticket: "",
+                label: "",
+                titulo: "",
+                descripcion: "",
+                usuario: "",
+                edificio: "",
+                servicio: "",
+                unidadEsp: "",
+                fechaCreacion: moment(),
+                time: {
+                    start: new Date().getTime(),
+                    end: new Date().getTime() + 24 * 60 * 60 * 1000
+                },
+                style: {
+                    background: "#30B2F6",
+                    "border-radius": "1px"
+                }
+            };
+            var fecha = {
+                start: moment(),
+                end: moment()
+            };
+            let b = [];
+
+            let a = 0;
+            b.push(f);
+            c.forEach((value, index) => {
+                listadoRow.forEach((element, indexv2) => {
+                    if (
+                        element.parentId == value.id_trabajador &&
+                        element.id_solicitud == value.id
+                    ) {
+                        f = {
+                            id: "",
+                            rowId: "",
+                            nticket: "",
+                            label: "",
+                            titulo: "",
+                            descripcion: "",
+                            usuario: "",
+                            edificio: "",
+                            servicio: "",
+                            unidadEsp: "",
+                            fechaCreacion: moment(),
+
+                            time: {
+                                start: new Date().getTime(),
+                                end: new Date().getTime() + 24 * 60 * 60 * 1000
+                            },
+                            style: {
+                                background:
+                                    "#" +
+                                    ((Math.random() * 0xffffff) << 0).toString(
+                                        16
+                                    )
+                            }
+                        };
+                        fecha = {
+                            start: moment(),
+                            end: moment()
+                        };
+
+                        f.id = value.id;
+                        f.rowId = element.id;
+                        f.titulo = value.tituloP;
+                        f.nticket = value.nticket;
+                        f.label = "N°Ticket " + value.nticket;
+                        f.fechaCreacion = new Date(value.created_at).getTime();
+
+                        //f.label = value.descripcionP;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = value.descripcionP;
+                        f.descripcion = newElement.textContent;
+                        f.usuario = value.nombrecompleto;
+                        f.edificio = value.descripcionEdificio;
+                        f.servicio = value.descripcionServicio;
+                        f.unidadEsp = value.descripcionUnidadEsp;
+                        fecha.start = new Date(
+                            value.fechaInicio + " " + value.horaInicio
+                        ).getTime();
+                        fecha.end =
+                            new Date(
+                                value.fechaTermino + " " + value.horaTermino
+                            ).getTime() +
+                            24 * 60 * 60 * 1000;
+
+                        f.time = fecha;
+
+                        b.push(f);
+                    }
+                });
+            });
+
+            this.config.chart.items = b;
+
+            this.valc = true;
+        },
+        cambioByTurno(turnoSeleccionado) {
+            console.log(this.turnoSeleccionado);
         },
         cargarTrabajadores() {
             axios
@@ -520,25 +723,33 @@ export default {
                     let c = this.listadoTrabajadores;
 
                     let arregloTra = [];
+                    let listadoFiltrado = [];
                     var va = {};
                     arregloTra.push(va);
+                    // console.log(c);
+                    arregloTra.push(va);
                     c.forEach((value, index) => {
-                        let objeto = {
-                            id: 0,
-                            label: "",
-                            expanded: true
-                        };
+                        if (value.id != 1) {
+                            let objeto = {
+                                id: 0,
+                                label: "",
+                                expanded: true
+                            };
 
-                        objeto.id = value.id;
-                        objeto.label =
-                            value.tra_nombre + " " + value.tra_apellido;
-                        arregloTra.push(objeto);
+                            objeto.id = value.id;
+                            objeto.label =
+                                value.tra_nombre + " " + value.tra_apellido;
+                            arregloTra.push(objeto);
+                            listadoFiltrado.push(value);
+                        }
                     });
+                    this.listadoTrabajadoresFiltrado = listadoFiltrado;
 
                     this.config.list.rows = arregloTra;
                     // this.cargaListadoTickets(this.listadoTrabajadores);
                 });
         },
+
         cargaListadoTickets() {
             axios
                 .get(this.localVal + "/api/Agente/GetTicketAsignadosInfra")
@@ -696,7 +907,12 @@ export default {
                     this.valc = true;
                 });
         },
-
+        //Carga de turnos
+        cargarTurnos() {
+            axios.get(this.localVal + "/api/Agente/GetTurnos").then(res => {
+                this.listadoTurnos = res.data;
+            });
+        },
         mensaje2(dato) {
             this.infoGeneral.titulo = "Numero de ticket: " + dato.id;
             this.infoGeneral.nticket = dato.nticket;
@@ -724,7 +940,7 @@ export default {
     },
     created() {
         this.cargarTrabajadores();
-
+        this.cargarTurnos();
         this.cargaListadoTickets();
     },
     beforeMount() {
