@@ -121,3 +121,6 @@ export default {
     }
 };
 </script>
+<style lang="scss">
+@import "@sass/vuexy/components/vxTimeline.scss";
+</style>

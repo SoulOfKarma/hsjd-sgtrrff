@@ -343,6 +343,7 @@ export default {
                 }
             }
         },
+
         configTodateTimePicker: {
             minDate: null,
             locale: {

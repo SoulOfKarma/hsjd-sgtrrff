@@ -41,6 +41,7 @@
                                     class="w-full inputx"
                                     placeholder="Agregar Servicio"
                                     v-model="agregar"
+                                    @keyup.native.enter="agregarServicio"
                                 />
                                 <br />
                                 <vs-button
@@ -75,6 +76,7 @@
                                     class="inputx w-full"
                                     placeholder="Modificar Servicio Seleccionado"
                                     v-model="modificar"
+                                    @keyup.native.enter="PutServicio"
                                 />
                                 <br />
                                 <vs-button
@@ -316,6 +318,7 @@ export default {
                 this.seleccionServicios = b;
                 idGeneral = 0;
                 idGeneral = this.seleccionServicios[0].id_edificio;
+                this.modificar = this.seleccionServicios[0].descripcionServicio;
                 b = [];
                 c = this.listEdificios;
 
