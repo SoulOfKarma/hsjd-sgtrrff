@@ -59,10 +59,11 @@ export default {
                 .then(response => {
                     // Convert Date String to Date Object
                     const event = response.data;
-                    event.startDate = new Date(event.startDate);
-                    event.endDate = new Date(event.endDate);
+                    //event.startDate = new Date(event.startDate);
+                    //event.endDate = new Date(event.endDate);
 
                     commit("UPDATE_EVENT", event);
+
                     resolve(response);
                 })
                 .catch(error => {

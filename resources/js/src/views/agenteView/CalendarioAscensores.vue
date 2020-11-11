@@ -119,7 +119,7 @@
                                     <div
                                         class="h-3 w-3 inline-block rounded-full mr-2 bg-primary"
                                     ></div>
-                                    <span>None</span>
+                                    <span>Ninguno</span>
                                 </div>
                             </div>
                         </div>
@@ -129,11 +129,10 @@
         </div>
 
         <!-- ADD EVENT -->
-        <vs-prompt
+
+        <vs-popup
             class="calendar-event-dialog"
             title="Agregar Nuevo Evento"
-            accept-text="Agregar Evento"
-            @accept="addEvent"
             :is-valid="validForm"
             :active.sync="activePromptAddEvent"
         >
@@ -174,89 +173,143 @@
                             <div
                                 class="h-3 w-3 mr-1 inline-block rounded-full mr-2 bg-primary"
                             ></div>
-                            <span>None</span>
+                            <span>Ninguno</span>
                         </vs-dropdown-item>
                     </vs-dropdown-menu>
                 </vs-dropdown>
             </div>
-            <div class="my-6">
-                <vs-input
-                    name="event-name"
-                    v-validate="'required'"
-                    class="w-full"
-                    label-placeholder="Titulo"
-                    v-model="title"
-                ></vs-input>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <vs-input
+                        name="event-name"
+                        v-validate="'required'"
+                        class="w-full"
+                        label-placeholder="Titulo"
+                        v-model="title"
+                    ></vs-input>
+                </div>
             </div>
-            <div class="my-6">
-                <vs-input
-                    name="event-name"
-                    v-validate="'required'"
-                    class="w-full"
-                    label-placeholder="Descripcion"
-                    v-model="descripcion"
-                ></vs-input>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <vs-input
+                        name="event-name"
+                        v-validate="'required'"
+                        class="w-full"
+                        label-placeholder="Descripcion"
+                        v-model="descripcion"
+                    ></vs-input>
+                </div>
             </div>
-            <div class="my-4">
-                <v-select
-                    placeholder="Trabajador"
-                    class="w-full select-large"
-                    label="descripcionUnidadEsp"
-                ></v-select>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <v-select
+                        placeholder="Trabajador"
+                        class="w-full select-large"
+                        label="tra_nombre_apellido"
+                        :options="listadoTrabajadores"
+                        v-model="seleccionTrabajador"
+                    ></v-select>
+                </div>
             </div>
-            <div class="my-4">
-                <v-select
-                    placeholder="Turno"
-                    class="w-full select-large"
-                    label="descripcionUnidadEsp"
-                ></v-select>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <v-select
+                        placeholder="Turno"
+                        class="w-full select-large"
+                        label="descripcionTurno"
+                        :options="listadoTurno"
+                        v-model="seleccionTurno"
+                    ></v-select>
+                </div>
             </div>
-            <div class="my-4">
-                <v-select
-                    placeholder="Edificio"
-                    class="w-full select-large"
-                    label="descripcionUnidadEsp"
-                ></v-select>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <v-select
+                        placeholder="Edificio"
+                        class="w-full select-large"
+                        label="descripcionEdificio"
+                        :options="listadoEdificios"
+                        v-model="seleccionEdificio"
+                    ></v-select>
+                </div>
             </div>
 
-            <div class="my-6">
-                <vs-input
-                    name="event-name"
-                    v-validate="'required'"
-                    class="w-full"
-                    label-placeholder="Ascensor o Ascensores Asignados"
-                    v-model="descripcionAscensor"
-                ></vs-input>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <vs-input
+                        name="event-name"
+                        v-validate="'required'"
+                        class="w-full"
+                        label-placeholder="Ascensor o Ascensores Asignados"
+                        v-model="descripcionAscensor"
+                    ></vs-input>
+                </div>
             </div>
-            <div class="my-4">
-                <small class="date-label">Fecha Inicio</small>
-                <datepicker
-                    :language="langEs"
-                    name="start-date"
-                    v-model="startDate"
-                    :disabled="disabledFrom"
-                ></datepicker>
+            <div class="flex mb-4">
+                <div class="w-1/2 m-2">
+                    <small class="date-label">Seleccione Fecha Inicio</small>
+                    <flat-pickr
+                        class="w-full"
+                        :config="configFromdateTimePicker"
+                        v-model="startDate"
+                        placeholder="Fecha Inicio"
+                        @on-change="onFromChange"
+                    />
+                </div>
+
+                <div class="w-1/2 m-2">
+                    <small class="date-label">Seleccione Hora Inicio</small>
+                    <flat-pickr
+                        class="w-full"
+                        :config="configdateTimePicker"
+                        v-model="horaInicio"
+                        placeholder="Seleccione Hora"
+                    />
+                </div>
             </div>
-            <div class="my-4">
-                <small class="date-label">Fecha Termino</small>
-                <datepicker
-                    :language="langEs"
-                    :disabledDates="disabledDatesTo"
-                    name="end-date"
-                    v-model="endDate"
-                ></datepicker>
+            <div class="flex mb-4">
+                <div class="w-1/2 m-2">
+                    <small class="date-label">Seleccione Fecha Termino</small>
+                    <flat-pickr
+                        class="w-full"
+                        :config="configTodateTimePicker"
+                        v-model="endDate"
+                        placeholder="Fecha Termino"
+                    />
+                </div>
+                <div class="w-1/2 m-2">
+                    <small class="date-label">Seleccione Hora Termino</small>
+                    <flat-pickr
+                        class="w-full"
+                        :config="configdateTimePicker"
+                        v-model="horaTermino"
+                        placeholder="Seleccione Hora"
+                    />
+                </div>
             </div>
-        </vs-prompt>
+            <div class="flex mb-4">
+                <div class="w-1/2 m-2 ">
+                    <vs-button
+                        @click="addEvent"
+                        class="w-full"
+                        color="warning"
+                        type="filled"
+                        >Agregar</vs-button
+                    >
+                </div>
+
+                <div class="w-1/2 m-2">
+                    <vs-button class="w-full" color="danger" type="filled"
+                        >Cerrar</vs-button
+                    >
+                </div>
+            </div>
+        </vs-popup>
 
         <!-- EDIT EVENT -->
-        <vs-prompt
+        <vs-popup
             class="calendar-event-dialog"
             title="Modificar Evento"
-            accept-text="Submit"
-            cancel-text="Remove"
-            button-cancel="border"
-            @cancel="removeEvent"
-            @accept="editEvent"
             :is-valid="validForm"
             :active.sync="activePromptEditEvent"
         >
@@ -295,143 +348,315 @@
                             <div
                                 class="h-3 w-3 mr-1 inline-block rounded-full mr-2 bg-primary"
                             ></div>
-                            <span>None</span>
+                            <span>Ninguno</span>
                         </vs-dropdown-item>
                     </vs-dropdown-menu>
                 </vs-dropdown>
             </div>
-            <div class="my-4">
-                <vs-input
-                    name="event-name"
-                    v-validate="'required'"
-                    class="w-full"
-                    label-placeholder="Titulo"
-                    v-model="title"
-                ></vs-input>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <small class="date-label">Titulo</small>
+                    <vs-input
+                        name="event-name"
+                        v-validate="'required'"
+                        class="w-full"
+                        v-model="title"
+                    ></vs-input>
+                </div>
             </div>
-            <div class="my-4">
-                <vs-input
-                    name="event-name"
-                    v-validate="'required'"
-                    class="w-full"
-                    label-placeholder="Descripcion"
-                    v-model="descripcion"
-                ></vs-input>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <small class="date-label">Descripcion</small>
+                    <vs-input
+                        name="event-name"
+                        v-validate="'required'"
+                        class="w-full"
+                        v-model="descripcion"
+                    ></vs-input>
+                </div>
             </div>
-            <div class="my-4">
-                <v-select
-                    placeholder="Trabajador"
-                    class="w-full select-large"
-                    label="descripcionUnidadEsp"
-                ></v-select>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <small class="date-label"
+                        >Seleccione Al Trabajador Encargado</small
+                    >
+                    <v-select
+                        placeholder="Trabajador"
+                        class="w-full select-large"
+                        label="tra_nombre_apellido"
+                        :options="listadoTrabajadores"
+                        v-model="seleccionTrabajador"
+                    ></v-select>
+                </div>
             </div>
-            <div class="my-4">
-                <v-select
-                    placeholder="Turno"
-                    class="w-full select-large"
-                    label="descripcionUnidadEsp"
-                ></v-select>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <small class="date-label">Seleccione Turno</small>
+                    <v-select
+                        placeholder="Turno"
+                        class="w-full select-large"
+                        label="descripcionTurno"
+                        :options="listadoTurno"
+                        v-model="seleccionTurno"
+                    ></v-select>
+                </div>
             </div>
-            <div class="my-4">
-                <v-select
-                    placeholder="Edificio"
-                    class="w-full select-large"
-                    label="descripcionUnidadEsp"
-                ></v-select>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <small class="date-label">Seleccione Edificio</small>
+                    <v-select
+                        placeholder="Edificio"
+                        class="w-full select-large"
+                        label="descripcionEdificio"
+                        :options="listadoEdificios"
+                        v-model="seleccionEdificio"
+                    ></v-select>
+                </div>
             </div>
-            <div class="my-6">
-                <vs-input
-                    name="event-name"
-                    v-validate="'required'"
-                    class="w-full"
-                    label-placeholder="Ascensor o Ascensores Asignados"
-                    v-model="descripcionAscensor"
-                ></vs-input>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <small class="date-label"
+                        >Describa Ascensor o Ascensores Asignados del
+                        turno</small
+                    >
+                    <vs-input
+                        name="event-name"
+                        v-validate="'required'"
+                        class="w-full"
+                        v-model="descripcionAscensor"
+                    ></vs-input>
+                </div>
+            </div>
+            <div class="flex mb-4">
+                <div class="w-1/2 m-2">
+                    <small class="date-label">Seleccione Fecha Inicio</small>
+                    <flat-pickr
+                        class="w-full"
+                        :config="configFromdateTimePicker"
+                        v-model="startDate"
+                        placeholder="Fecha Inicio"
+                        @on-change="onFromChange"
+                    />
+                </div>
+
+                <div class="w-1/2 m-2">
+                    <small class="date-label">Seleccione Hora Inicio</small>
+                    <flat-pickr
+                        class="w-full"
+                        :config="configdateTimePicker"
+                        v-model="horaInicio"
+                        placeholder="Seleccione Hora"
+                    />
+                </div>
+            </div>
+            <div class="flex mb-4">
+                <div class="w-1/2 m-2">
+                    <small class="date-label">Seleccione Fecha Termino</small>
+                    <flat-pickr
+                        class="w-full"
+                        :config="configTodateTimePicker"
+                        v-model="endDate"
+                        placeholder="Fecha Termino"
+                    />
+                </div>
+                <div class="w-1/2 m-2">
+                    <small class="date-label">Seleccione Hora Termino</small>
+                    <flat-pickr
+                        class="w-full"
+                        :config="configdateTimePicker"
+                        v-model="horaTermino"
+                        placeholder="Seleccione Hora"
+                    />
+                </div>
+            </div>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <small class="date-label"
+                        >Solicito Dia Administrativo?</small
+                    >
+                    <v-select
+                        placeholder="Dia Administrativo"
+                        class="w-full select-large"
+                        label="descripcionValDAdministrativo"
+                        :options="listadoValDAdministrativo"
+                        v-model="seleccionValDAdministrativo"
+                    ></v-select>
+                </div>
+            </div>
+            <div v-if="seleccionValDAdministrativo.idValDAdministrativo == 1">
+                <div class="flex mb-4">
+                    <div class="w-full m-2">
+                        <small class="date-label"
+                            >Seleccione dia administrativo si fue
+                            solicitado.</small
+                        >
+                        <v-select
+                            placeholder="Dia Administrativo"
+                            class="w-full select-large"
+                            label="descripcionDAdministrativo"
+                            :options="listadoDAdministrativo"
+                            v-model="seleccionDAdministrativo"
+                        ></v-select>
+                    </div>
+                </div>
             </div>
 
-            <div class="my-4">
-                <v-select
-                    placeholder="Dia Administrativo"
-                    class="w-full select-large"
-                    label="descripcionUnidadEsp"
-                ></v-select>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <small class="date-label"
+                        >Seleccione vacaciones si fue solicitado</small
+                    >
+                    <v-select
+                        placeholder="Vacaciones?"
+                        class="w-full select-large"
+                        label="descripcionVacaciones"
+                        :options="listadoVacaciones"
+                        v-model="seleccionVacaciones"
+                    ></v-select>
+                </div>
             </div>
-            <div class="my-4">
-                <v-select
-                    placeholder="Vacaciones?"
-                    class="w-full select-large"
-                    label="descripcionUnidadEsp"
-                ></v-select>
+            <div v-if="seleccionVacaciones.idVacaciones == 1">
+                <div class="flex mb-4">
+                    <div class="w-full m-2">
+                        <small class="date-label"
+                            >Fecha Inicio Vacaciones</small
+                        >
+                        <flat-pickr
+                            class="w-full"
+                            :config="configFromdateTimePicker"
+                            v-model="fechaInicioVacaciones"
+                            placeholder="Fecha Inicio"
+                        />
+                    </div>
+                </div>
+                <div class="flex mb-4">
+                    <div class="w-full m-2">
+                        <small class="date-label"
+                            >Fecha Termino Vacaciones</small
+                        >
+                        <flat-pickr
+                            class="w-full"
+                            :config="configTodateTimePicker"
+                            v-model="fechaTerminoVacaciones"
+                            placeholder="Fecha Termino"
+                        />
+                    </div>
+                </div>
             </div>
-            <div class="my-4">
-                <v-select
-                    placeholder="Turno Extra?"
-                    class="w-full select-large"
-                    label="descripcionTurnoExtra"
-                    :options="listadoTurnoExtra"
-                    v-model="seleccionTurnoExtra"
-                ></v-select>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <small class="date-label"
+                        >Seleccione Reemplazo del trabajador si se
+                        requiere.</small
+                    >
+                    <v-select
+                        placeholder="Reemplazo"
+                        class="w-full select-large"
+                        label="descripcionReemplazo"
+                        :options="listadoReemplazo"
+                        v-model="seleccionReemplazo"
+                    ></v-select>
+                </div>
+            </div>
+            <div v-if="seleccionReemplazo.idReemplazo == 1">
+                <div class="flex mb-4">
+                    <div class="w-full m-2">
+                        <small class="date-label">Seleccione Trabajador</small>
+                        <v-select
+                            placeholder="Trabajador"
+                            class="w-full select-large"
+                            label="tra_nombre_apellido"
+                            :options="listadoTrabajadores"
+                            v-model="seleccionTrabajador"
+                        ></v-select>
+                    </div>
+                </div>
+            </div>
+            <div class="flex mb-4">
+                <div class="w-full m-2">
+                    <small class="date-label">Tiene Turno Extra?</small>
+                    <v-select
+                        placeholder="Turno Extra"
+                        class="w-full select-large"
+                        label="descripcionTurnoExtra"
+                        :options="listadoTurnoExtra"
+                        v-model="seleccionTurnoExtra"
+                    ></v-select>
+                </div>
             </div>
             <div v-if="seleccionTurnoExtra.idTurnoExtra == 1">
-                <div class="my-4">
-                    <small class="date-label">Fecha Inicio</small>
-                    <datepicker
-                        :language="langEs"
-                        :disabledDates="disabledDatesFrom"
-                        name="start-date"
-                        v-model="startDate"
-                    ></datepicker>
+                <div class="flex mb-4">
+                    <div class="w-1/2 m-2">
+                        <small class="date-label"
+                            >Fecha Inicio Turno Extra</small
+                        >
+                        <flat-pickr
+                            class="w-full"
+                            :config="configFromdateTimePicker"
+                            v-model="fechaInicioTurno"
+                            placeholder="Fecha Inicio"
+                        />
+                    </div>
+                    <div class="w-1/2 m-2">
+                        <small class="date-label"
+                            >Hora Inicio Turno Extra</small
+                        >
+                        <flat-pickr
+                            class="w-full"
+                            :config="configdateTimePicker"
+                            v-model="horaInicioTurno"
+                            placeholder="Seleccione Hora"
+                        />
+                    </div>
                 </div>
-                <div class="my-4">
-                    <small class="date-label">Fecha Termino</small>
-                    <datepicker
-                        :language="langEs"
-                        :disabledDates="disabledDatesTo"
-                        name="end-date"
-                        v-model="endDate"
-                    ></datepicker>
+                <div class="flex mb-4">
+                    <div class="w-1/2 m-2">
+                        <small class="date-label"
+                            >Fecha Termino Turno Extra</small
+                        >
+                        <flat-pickr
+                            class="w-full"
+                            :config="configTodateTimePicker"
+                            v-model="fechaTerminoTurno"
+                            placeholder="Fecha Termino"
+                        />
+                    </div>
+                    <div class="w-1/2 m-2">
+                        <small class="date-label"
+                            >Hora Termino Turno Extra</small
+                        >
+                        <flat-pickr
+                            class="w-full"
+                            :config="configdateTimePicker"
+                            v-model="horaTerminoTurno"
+                            placeholder="Seleccione Hora"
+                        />
+                    </div>
                 </div>
             </div>
-            <div class="my-4">
-                <!-- <datepicker
-                    class="w-1/2"
-                    :language="langEs"
-                    :disabledDates="disabledDatesFrom"
-                    name="start-date"
-                    v-model="startDate"
-                ></datepicker> -->
-                <flat-pickr
-                    class="vx-col w-1/2 mt-5"
-                    vs-align="center"
-                    :config="configFromdateTimePicker"
-                    v-model="fechaInicio"
-                    placeholder="Fecha Inicio"
-                    @on-change="onFromChange"
-                />
-                <flat-pickr
-                    class="vx-col w-1/2 mt-5"
-                    vs-align="center"
-                    :config="configdateTimePicker"
-                    v-model="horaInicio"
-                    placeholder="Seleccione Hora"
-                />
+
+            <div class="flex mb-4">
+                <div class="w-1/2 m-2 ">
+                    <vs-button
+                        @click="editEvent"
+                        class="w-full"
+                        color="warning"
+                        type="filled"
+                        >Editar</vs-button
+                    >
+                </div>
+
+                <div class="w-1/2 m-2">
+                    <vs-button
+                        @click="removeEvent"
+                        class="w-full"
+                        color="danger"
+                        type="filled"
+                        >Remover</vs-button
+                    >
+                </div>
             </div>
-            <div class="my-4">
-                <flat-pickr
-                    class="w-1/2"
-                    :config="configTodateTimePicker"
-                    v-model="fechaTermino"
-                    placeholder="Fecha Termino"
-                    @on-change="onToChange"
-                />
-                <flat-pickr
-                    class="w-1/2"
-                    :config="configdateTimePicker"
-                    v-model="horaTermino"
-                    placeholder="Seleccione Hora"
-                />
-            </div>
-        </vs-prompt>
+        </vs-popup>
     </div>
 </template>
 
@@ -446,6 +671,7 @@ require("moment/locale/es");
 import vSelect from "vue-select";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
+import axios from "axios";
 
 export default {
     components: {
@@ -457,8 +683,10 @@ export default {
     },
     data() {
         return {
+            localVal: "http://10.66.248.51:8000",
+
             configFromdateTimePicker: {
-                minDate: new Date(),
+                minDate: null,
                 maxDate: null,
                 locale: {
                     firstDayOfWeek: 1,
@@ -562,10 +790,18 @@ export default {
                 noCalendar: true
             },
 
+            listadoTrabajadores: [],
+
             fechaInicio: null,
             fechaTermino: null,
+            fechaInicioVacaciones: null,
+            fechaTerminoVacaciones: null,
             horaInicio: null,
             horaTermino: null,
+            fechaInicioTurno: null,
+            fechaTerminoTurno: null,
+            horaInicioTurno: null,
+            horaTerminoTurno: null,
 
             listadoTurnoExtra: [
                 {
@@ -574,17 +810,91 @@ export default {
                 },
                 { idTurnoExtra: 2, descripcionTurnoExtra: "No" }
             ],
-            seleccionTurnoExtra: {
-                idTurnoExtra: 0,
-                descripcionTurnoExtra: ""
+
+            listadoReemplazo: [
+                {
+                    idReemplazo: 1,
+                    descripcionReemplazo: "Si"
+                },
+                { idReemplazo: 2, descripcionReemplazo: "No" }
+            ],
+
+            listadoVacaciones: [
+                {
+                    idVacaciones: 1,
+                    descripcionVacaciones: "Si"
+                },
+                { idVacaciones: 2, descripcionVacaciones: "No" }
+            ],
+
+            listadoValDAdministrativo: [
+                {
+                    idValDAdministrativo: 1,
+                    descripcionValDAdministrativo: "Si"
+                },
+                { idValDAdministrativo: 2, descripcionValDAdministrativo: "No" }
+            ],
+
+            listadoDAdministrativo: [
+                {
+                    idDAdministrativo: 1,
+                    descripcionDAdministrativo: "Mañana"
+                },
+                { idDAdministrativo: 2, descripcionDAdministrativo: "Tarde" },
+                {
+                    idDAdministrativo: 3,
+                    descripcionDAdministrativo: "Dia Completo"
+                }
+            ],
+
+            seleccionDAdministrativo: {
+                idDAdministrativo: 1,
+                descripcionDAdministrativo: "Mañana"
             },
+
+            seleccionValDAdministrativo: {
+                idValDAdministrativo: 2,
+                descripcionValDAdministrativo: "No"
+            },
+
+            seleccionReemplazo: {
+                idReemplazo: 4,
+                descripcionReemplazo: "No"
+            },
+
+            seleccionVacaciones: {
+                idVacaciones: 2,
+                descripcionVacaciones: "No"
+            },
+
+            seleccionTurnoExtra: {
+                idTurnoExtra: 2,
+                descripcionTurnoExtra: "No"
+            },
+
+            listadoTurno: [],
+            seleccionTurno: {
+                id: 0,
+                descripcionTurno: "Seleccione Turno"
+            },
+            listadoEdificios: [],
+            seleccionEdificio: {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            },
+
+            seleccionTrabajador: {
+                id: 0,
+                tra_nombre_apellido: "Seleccione al Trabajador"
+            },
+
             showDate: new Date(),
             disabledFrom: false,
             id: 0,
             title: "",
             descripcion: "",
-            startDate: "",
-            endDate: "",
+            startDate: null,
+            endDate: null,
             labelLocal: "none",
             descripcionAscensor: "",
 
@@ -614,8 +924,6 @@ export default {
     },
     computed: {
         simpleCalendarEvents() {
-            console.log(this.showDate);
-
             return this.$store.state.calendar.events;
         },
         validForm() {
@@ -637,10 +945,12 @@ export default {
             return this.$store.state.calendar.eventLabels;
         },
         labelColor() {
+            let color = "";
             return label => {
-                if (label === "business") return "success";
-                else if (label === "work") return "warning";
-                else if (label === "personal") return "danger";
+                if (label === "vacaciones") return "success";
+                else if (label === "dadministrativo") return "warning";
+                else if (label === "turnoextra") return "danger";
+                else if (label === "reemplazo") return "bg-white text-dark";
                 else if (label === "none") return "primary";
             };
         },
@@ -649,6 +959,41 @@ export default {
         }
     },
     methods: {
+        //Carga de los edificios
+        cargarEdificios() {
+            axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
+                this.listadoEdificios = res.data;
+            });
+        },
+        //Carga de turnos
+        cargarTurnos() {
+            axios.get(this.localVal + "/api/Agente/GetTurnos").then(res => {
+                this.listadoTurno = res.data;
+            });
+        },
+        //Carga de trabajadores
+        cargarTrabajadores() {
+            axios
+                .get(this.localVal + "/api/Agente/GetTrabajadores")
+                .then(res => {
+                    this.cargarApoyosArray(res.data);
+                });
+        },
+        cargarApoyosArray(listadoApoyo) {
+            this.listadoTrabajadoresData = listadoApoyo;
+            let c = listadoApoyo;
+
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                if (1 != value.id) {
+                    b.push(value);
+                }
+            });
+
+            this.listadoTrabajadores = b;
+        },
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
         },
@@ -666,6 +1011,7 @@ export default {
             };
             obj.classes = `event-${this.labelColor(this.labelLocal)}`;
             this.$store.dispatch("calendar/addEvent", obj);
+            this.activePromptAddEvent = false;
         },
         updateMonth(val) {
             this.showDate = this.$refs.calendar.getIncrementedPeriod(val);
@@ -708,11 +1054,14 @@ export default {
                 label: this.labelLocal,
                 url: this.url
             };
+
             obj.classes = `event-${this.labelColor(this.labelLocal)}`;
             this.$store.dispatch("calendar/editEvent", obj);
+            this.activePromptEditEvent = false;
         },
         removeEvent() {
             this.$store.dispatch("calendar/removeEvent", this.id);
+            this.activePromptEditEvent = false;
         },
         eventDragged(event, date) {
             this.$store.dispatch("calendar/eventDragged", { event, date });
@@ -722,6 +1071,9 @@ export default {
         this.$store.registerModule("calendar", moduleCalendar);
         this.$store.dispatch("calendar/fetchEvents");
         this.$store.dispatch("calendar/fetchEventLabels");
+        this.cargarTrabajadores();
+        this.cargarTurnos();
+        this.cargarEdificios();
     },
     beforeDestroy() {
         this.$store.unregisterModule("calendar");
