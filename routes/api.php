@@ -252,3 +252,8 @@ Route::get('/Agente/getUsuariosJefatura', ['middleware' => 'cors', 'uses' => 'Us
 Route::get('/Agente/getUsuariosSubrogantes', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloSubrogantes']);
 //Traer Trabajadores
 Route::get('/Trabajador/getTrabajadoresByRun/{run}', ['middleware' => 'cors', 'uses' => 'TrabajadorController@getTrabajadoresByRun']);
+
+//Agregar Nuevo Calendario Ascensores
+Route::post('/Agente/PostCalendarioAsc', ['middleware' => 'cors', 'uses' => 'CalendarioAscensoresController@postNuevoTCalendario']);
+//Traer Todo Calendario Ascensores
+Route::get('/Agente/GetCalendarioAsc', ['middleware' => 'cors', 'uses' => 'CalendarioAscensoresController@getTodoCalendario']);

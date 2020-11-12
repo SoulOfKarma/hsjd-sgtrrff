@@ -11,35 +11,26 @@ class CalendarioAscensores extends Migration
      *
      * @return void
      */
+
+     //Val es un id para validar si se activo algun campo de vacaciones,turnos, etc.
     public function up()
     {
         Schema::create('calendario_ascensores', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo_ascensores');
+            $table->string('title');
             $table->string('descripcion_ascensores');
-            $table->bigInteger('id_cambio_turno');
-            $table->bigInteger('id_dia_administrativo');
-            $table->bigInteger('id_vacaciones');
-            $table->bigInteger('id_turno_extra');
+            $table->bigInteger('id_turno');
             $table->bigInteger('id_trabajador');
             $table->bigInteger('id_edificio');
-            $table->string('descripcion_ubicacion_ascensor');
-            $table->string('label_Local');
-            $table->bigInteger('id_turnoextra');
-            $table->time('hora_inicio_turno_extra')->nullable();
-            $table->time('hora_termino_turno_extra'->nullable());
-            $table->date('fecha_inicio_turno_extra'->nullable());
-            $table->date('fecha_termino_turno_extra'->nullable());
-            $table->bigInteger('dias_ejecucion_turno_extra'->nullable());
-            $table->bigInteger('horas_ejecucion_turno_extra'->nullable());
-            $table->bigInteger('id_vacaciones');
-            $table->date('fecha_inicio_vacaciones'->nullable());
-            $table->date('fecha_termino_vacaciones'->nullable());
-            $table->bigInteger('dias_ejecucion_vacaciones'->nullable());
+            $table->string('label');
+            $table->bigInteger('id_val_dia_administrativo');
+            $table->bigInteger('id_val_vacaciones');
+            $table->bigInteger('id_val_reemplazo');
+            $table->bigInteger('id_val_turno_extra');           
             $table->time('hora_inicio')->nullable();
             $table->time('hora_termino')->nullable();
-            $table->date('fecha_inicio');
-            $table->date('fecha_termino');
+            $table->date('startDate');
+            $table->date('endDate');
             $table->bigInteger('dias_ejecucion');
             $table->bigInteger('horas_ejecucion')->nullable();
             $table->timestamps();

@@ -5,7 +5,7 @@
                 ref="calendar"
                 :displayPeriodUom="calendarView"
                 :show-date="showDate"
-                :events="simpleCalendarEvents"
+                :events="listadoCalendarioAsc"
                 enableDragDrop
                 :eventTop="windowWidth <= 400 ? '2rem' : '3rem'"
                 eventBorderHeight="0px"
@@ -196,7 +196,7 @@
                         v-validate="'required'"
                         class="w-full"
                         label-placeholder="Descripcion"
-                        v-model="descripcion"
+                        v-model="descripcion_ascensores"
                     ></vs-input>
                 </div>
             </div>
@@ -233,18 +233,6 @@
                     ></v-select>
                 </div>
             </div>
-
-            <div class="flex mb-4">
-                <div class="w-full m-2">
-                    <vs-input
-                        name="event-name"
-                        v-validate="'required'"
-                        class="w-full"
-                        label-placeholder="Ascensor o Ascensores Asignados"
-                        v-model="descripcionAscensor"
-                    ></vs-input>
-                </div>
-            </div>
             <div class="flex mb-4">
                 <div class="w-1/2 m-2">
                     <small class="date-label">Seleccione Fecha Inicio</small>
@@ -262,7 +250,7 @@
                     <flat-pickr
                         class="w-full"
                         :config="configdateTimePicker"
-                        v-model="horaInicio"
+                        v-model="hora_inicio"
                         placeholder="Seleccione Hora"
                     />
                 </div>
@@ -282,7 +270,7 @@
                     <flat-pickr
                         class="w-full"
                         :config="configdateTimePicker"
-                        v-model="horaTermino"
+                        v-model="hora_termino"
                         placeholder="Seleccione Hora"
                     />
                 </div>
@@ -371,7 +359,7 @@
                         name="event-name"
                         v-validate="'required'"
                         class="w-full"
-                        v-model="descripcion"
+                        v-model="descripcion_ascensores"
                     ></vs-input>
                 </div>
             </div>
@@ -413,20 +401,7 @@
                     ></v-select>
                 </div>
             </div>
-            <div class="flex mb-4">
-                <div class="w-full m-2">
-                    <small class="date-label"
-                        >Describa Ascensor o Ascensores Asignados del
-                        turno</small
-                    >
-                    <vs-input
-                        name="event-name"
-                        v-validate="'required'"
-                        class="w-full"
-                        v-model="descripcionAscensor"
-                    ></vs-input>
-                </div>
-            </div>
+
             <div class="flex mb-4">
                 <div class="w-1/2 m-2">
                     <small class="date-label">Seleccione Fecha Inicio</small>
@@ -444,7 +419,7 @@
                     <flat-pickr
                         class="w-full"
                         :config="configdateTimePicker"
-                        v-model="horaInicio"
+                        v-model="hora_inicio"
                         placeholder="Seleccione Hora"
                     />
                 </div>
@@ -464,7 +439,7 @@
                     <flat-pickr
                         class="w-full"
                         :config="configdateTimePicker"
-                        v-model="horaTermino"
+                        v-model="hora_termino"
                         placeholder="Seleccione Hora"
                     />
                 </div>
@@ -487,8 +462,7 @@
                 <div class="flex mb-4">
                     <div class="w-full m-2">
                         <small class="date-label"
-                            >Seleccione dia administrativo si fue
-                            solicitado.</small
+                            >Solicito Dia Administrativo?</small
                         >
                         <v-select
                             placeholder="Dia Administrativo"
@@ -499,13 +473,24 @@
                         ></v-select>
                     </div>
                 </div>
+                <div class="flex mb-4">
+                    <div class="w-full m-2">
+                        <small class="date-label"
+                            >Fecha Dia Administrativo</small
+                        >
+                        <flat-pickr
+                            class="w-full"
+                            :config="configFromdateTimePicker"
+                            v-model="fecha_dia_administrativo"
+                            placeholder="Fecha Inicio"
+                        />
+                    </div>
+                </div>
             </div>
 
             <div class="flex mb-4">
                 <div class="w-full m-2">
-                    <small class="date-label"
-                        >Seleccione vacaciones si fue solicitado</small
-                    >
+                    <small class="date-label">Solicito Vacaciones?</small>
                     <v-select
                         placeholder="Vacaciones?"
                         class="w-full select-large"
@@ -524,7 +509,7 @@
                         <flat-pickr
                             class="w-full"
                             :config="configFromdateTimePicker"
-                            v-model="fechaInicioVacaciones"
+                            v-model="fecha_inicio_vacaciones"
                             placeholder="Fecha Inicio"
                         />
                     </div>
@@ -537,7 +522,7 @@
                         <flat-pickr
                             class="w-full"
                             :config="configTodateTimePicker"
-                            v-model="fechaTerminoVacaciones"
+                            v-model="fecha_termino_vacaciones"
                             placeholder="Fecha Termino"
                         />
                     </div>
@@ -545,10 +530,7 @@
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-2">
-                    <small class="date-label"
-                        >Seleccione Reemplazo del trabajador si se
-                        requiere.</small
-                    >
+                    <small class="date-label">Se requiere reemplazo?</small>
                     <v-select
                         placeholder="Reemplazo"
                         class="w-full select-large"
@@ -569,6 +551,30 @@
                             :options="listadoTrabajadores"
                             v-model="seleccionTrabajador"
                         ></v-select>
+                    </div>
+                </div>
+                <div class="flex mb-4">
+                    <div class="w-full m-2">
+                        <small class="date-label">Fecha Inicio Reemplazo</small>
+                        <flat-pickr
+                            class="w-full"
+                            :config="configFromdateTimePicker"
+                            v-model="fecha_inicio_reemplazo"
+                            placeholder="Fecha Inicio"
+                        />
+                    </div>
+                </div>
+                <div class="flex mb-4">
+                    <div class="w-full m-2">
+                        <small class="date-label"
+                            >Fecha Termino Reemplazo</small
+                        >
+                        <flat-pickr
+                            class="w-full"
+                            :config="configTodateTimePicker"
+                            v-model="fecha_termino_reemplazo"
+                            placeholder="Fecha Termino"
+                        />
                     </div>
                 </div>
             </div>
@@ -593,7 +599,7 @@
                         <flat-pickr
                             class="w-full"
                             :config="configFromdateTimePicker"
-                            v-model="fechaInicioTurno"
+                            v-model="fecha_inicio_turno_extra"
                             placeholder="Fecha Inicio"
                         />
                     </div>
@@ -604,7 +610,7 @@
                         <flat-pickr
                             class="w-full"
                             :config="configdateTimePicker"
-                            v-model="horaInicioTurno"
+                            v-model="hora_inicio_turno_extra"
                             placeholder="Seleccione Hora"
                         />
                     </div>
@@ -617,7 +623,7 @@
                         <flat-pickr
                             class="w-full"
                             :config="configTodateTimePicker"
-                            v-model="fechaTerminoTurno"
+                            v-model="fecha_termino_reemplazo"
                             placeholder="Fecha Termino"
                         />
                     </div>
@@ -628,7 +634,7 @@
                         <flat-pickr
                             class="w-full"
                             :config="configdateTimePicker"
-                            v-model="horaTerminoTurno"
+                            v-model="hora_termino_turno_extra"
                             placeholder="Seleccione Hora"
                         />
                     </div>
@@ -791,18 +797,74 @@ export default {
             },
 
             listadoTrabajadores: [],
+            labelLocal: "none",
 
-            fechaInicio: null,
-            fechaTermino: null,
-            fechaInicioVacaciones: null,
-            fechaTerminoVacaciones: null,
-            horaInicio: null,
-            horaTermino: null,
-            fechaInicioTurno: null,
-            fechaTerminoTurno: null,
-            horaInicioTurno: null,
-            horaTerminoTurno: null,
+            title: "",
+            startDate: null,
+            endDate: null,
+            label: "none",
+            descripcion_ascensores: "",
+            id_trabajador: 0,
+            id_turno: 0,
+            id_edificio: 0,
+            id_val_dia_administrativo: 0,
+            id_val_vacaciones: 0,
+            id_val_reemplazo: 0,
+            id_val_turno_extra: 0,
+            id_tipo_dia_administrativo: 0,
+            fecha_dia_administrativo: null,
+            fecha_inicio_vacaciones: null,
+            fecha_termino_vacaciones: null,
+            dias_vacaciones: 0,
+            id_trabajador_reemplazo: 0,
+            fecha_inicio_reemplazo: null,
+            fecha_termino_reemplazo: null,
+            dias_reemplazo: 0,
+            fecha_inicio_turno_extra: null,
+            fecha_termino_turno_extra: null,
+            dias_ejecucion_turno_extra: null,
+            horas_ejecucion_turno_extra: null,
+            hora_termino_turno_extra: null,
+            hora_inicio_turno_extra: null,
+            hora_inicio: null,
+            hora_termino: null,
+            dias_ejecucion: 0,
+            horas_ejecucion: 0,
 
+            events: {
+                title: "",
+                startDate: null,
+                endDate: null,
+                label: "none",
+                descripcion_ascensores: "",
+                id_trabajador: 0,
+                id_turno: 0,
+                id_edificio: 0,
+                label: "",
+                id_val_dia_administrativo: 0,
+                id_val_vacaciones: 0,
+                id_val_reemplazo: 0,
+                id_val_turno_extra: 0,
+                id_tipo_dia_administrativo: 0,
+                fecha_dia_administrativo: null,
+                fecha_inicio_vacaciones: null,
+                fecha_termino_vacaciones: null,
+                dias_vacaciones: 0,
+                id_trabajador_reemplazo: 0,
+                fecha_inicio_reemplazo: null,
+                fecha_termino_reemplazo: null,
+                dias_reemplazo: 0,
+                fecha_inicio_turno_extra: null,
+                fecha_termino_turno_extra: null,
+                dias_ejecucion_turno_extra: null,
+                horas_ejecucion_turno_extra: null,
+                hora_termino_turno_extra: null,
+                hora_inicio_turno_extra: null,
+                hora_inicio: null,
+                hora_termino: null,
+                dias_ejecucion: 0,
+                horas_ejecucion: 0
+            },
             listadoTurnoExtra: [
                 {
                     idTurnoExtra: 1,
@@ -888,19 +950,10 @@ export default {
                 tra_nombre_apellido: "Seleccione al Trabajador"
             },
 
+            listadoCalendarioAsc: [],
+
             showDate: new Date(),
-            disabledFrom: false,
-            id: 0,
-            title: "",
-            descripcion: "",
-            startDate: null,
-            endDate: null,
-            labelLocal: "none",
-            descripcionAscensor: "",
 
-            langEs: es,
-
-            url: "",
             calendarView: "month",
 
             activePromptAddEvent: false,
@@ -923,9 +976,11 @@ export default {
         };
     },
     computed: {
-        simpleCalendarEvents() {
-            return this.$store.state.calendar.events;
-        },
+        /* simpleCalendarEvents() {
+            let list = this.$store.state.calendar.events;
+
+            return list;
+        }, */
         validForm() {
             return (
                 this.title !== "" &&
@@ -945,12 +1000,10 @@ export default {
             return this.$store.state.calendar.eventLabels;
         },
         labelColor() {
-            let color = "";
             return label => {
                 if (label === "vacaciones") return "success";
                 else if (label === "dadministrativo") return "warning";
                 else if (label === "turnoextra") return "danger";
-                else if (label === "reemplazo") return "bg-white text-dark";
                 else if (label === "none") return "primary";
             };
         },
@@ -959,6 +1012,15 @@ export default {
         }
     },
     methods: {
+        //Carga Calendario
+        simpleCalendarEvents() {
+            axios
+                .get(this.localVal + "/api/Agente/GetCalendarioAsc")
+                .then(res => {
+                    this.listadoCalendarioAsc = res.data;
+                    console.log(this.listadoCalendarioAsc);
+                });
+        },
         //Carga de los edificios
         cargarEdificios() {
             axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
@@ -1002,15 +1064,30 @@ export default {
             this.$set(this.configFromdateTimePicker, "maxDate", dateStr);
         },
         addEvent() {
-            const obj = {
-                title: this.title,
-                startDate: this.startDate,
-                endDate: this.endDate,
-                label: this.labelLocal,
-                url: this.url
-            };
-            obj.classes = `event-${this.labelColor(this.labelLocal)}`;
-            this.$store.dispatch("calendar/addEvent", obj);
+            this.events.title = this.title;
+            this.events.descripcion_ascensores = this.descripcion_ascensores;
+            this.events.startDate = this.startDate;
+            this.events.endDate = this.endDate;
+            this.events.id_turno = this.seleccionTurno.id;
+            this.events.id_trabajador = this.seleccionTrabajador.id;
+            this.events.id_edificio = this.seleccionEdificio.id;
+            this.events.hora_inicio = this.hora_inicio;
+            this.events.hora_termino = this.hora_termino;
+            this.events.label = this.labelLocal;
+
+            const newevent = this.events;
+            axios
+                .post(this.localVal + "/api/Agente/PostCalendarioAsc", newevent)
+                .then(res => {
+                    if (res.data == true) {
+                        console.log("Yey");
+                    } else {
+                        console.log("Orrror");
+                    }
+                });
+
+            //obj.classes = `event-${this.labelColor(this.labelLocal)}`;
+            //this.$store.dispatch("calendar/addEvent", newevent);
             this.activePromptAddEvent = false;
         },
         updateMonth(val) {
@@ -1036,13 +1113,38 @@ export default {
             this.addNewEventDialog(date);
         },
         openEditEvent(event) {
-            const e = this.$store.getters["calendar/getEvent"](event.id);
-            this.id = e.id;
-            this.title = e.title;
-            this.startDate = e.startDate;
-            this.endDate = e.endDate;
-            this.url = e.url;
-            this.labelLocal = e.label;
+            let calen = this.listadoCalendarioAsc;
+            let b = [];
+            let a = 0;
+
+            calen.forEach((value, index) => {
+                a = value.id;
+                if (a == event.id) {
+                    b.push(value);
+                }
+            });
+
+            const e = b;
+            this.id = e[0].id;
+            this.title = e[0].title;
+            this.startDate = e[0].startDate;
+            this.endDate = e[0].endDate;
+            this.descripcion_ascensores = e[0].descripcion_ascensores;
+            this.labelLocal = e[0].label;
+
+            let turno = this.listadoTurno;
+            let d = [];
+            let f = 0;
+
+            turno.forEach((value, index) => {
+                f = value.id;
+                if (f == e[0].id_turno) {
+                    d.push(value);
+                }
+            });
+
+            this.seleccionTurno = d;
+
             this.activePromptEditEvent = true;
         },
         editEvent() {
@@ -1074,6 +1176,7 @@ export default {
         this.cargarTrabajadores();
         this.cargarTurnos();
         this.cargarEdificios();
+        this.simpleCalendarEvents();
     },
     beforeDestroy() {
         this.$store.unregisterModule("calendar");

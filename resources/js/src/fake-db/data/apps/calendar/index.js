@@ -2,17 +2,7 @@ import mock from "@/fake-db/mock.js";
 
 // Contact
 const data = {
-    events: [
-        {
-            id: 1,
-            title: "Prueba",
-            startDate: new Date(new Date() - 1000 * 60 * 60 * 24 * 3),
-            endDate: new Date(new Date() - 1000 * 60 * 60 * 24 * 2),
-            url: "",
-            classes: "event-success",
-            label: "vacaciones"
-        }
-    ],
+    events: [],
     labels: [
         {
             text: "Vacaciones",
@@ -28,11 +18,6 @@ const data = {
             text: "Turno Extra",
             value: "turnoextra",
             color: "danger"
-        },
-        {
-            text: "Reemplazo",
-            value: "reemplazo",
-            color: "bg-white text-dark"
         }
     ]
 };

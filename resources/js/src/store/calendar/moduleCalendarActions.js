@@ -19,6 +19,8 @@ export default {
                         "ADD_EVENT",
                         Object.assign(event, { id: response.data.id })
                     );
+
+                    console.log(response);
                     resolve(response);
                 })
                 .catch(error => {
