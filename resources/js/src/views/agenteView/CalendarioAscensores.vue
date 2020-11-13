@@ -462,7 +462,7 @@
                 <div class="flex mb-4">
                     <div class="w-full m-2">
                         <small class="date-label"
-                            >Solicito Dia Administrativo?</small
+                            >Seleccione Tipo de Dia Administrativo</small
                         >
                         <v-select
                             placeholder="Dia Administrativo"
@@ -484,6 +484,22 @@
                             v-model="fecha_dia_administrativo"
                             placeholder="Fecha Inicio"
                         />
+                    </div>
+                </div>
+                <div class="flex mb-4">
+                    <div class="w-full m-2">
+                        <ul class="centerx">
+                            <li>
+                                <vs-radio v-model="rDAdmin" vs-value="1"
+                                    >Nuevo Dia Administrativo</vs-radio
+                                >
+                            </li>
+                            <li>
+                                <vs-radio v-model="rDAdmin" vs-value="2"
+                                    >Modificar Dia Administrativo</vs-radio
+                                >
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -527,6 +543,22 @@
                         />
                     </div>
                 </div>
+                <div class="flex mb-4">
+                    <div class="w-full m-2">
+                        <ul class="centerx">
+                            <li>
+                                <vs-radio v-model="rVacaciones" vs-value="1"
+                                    >Nuevo Dia Administrativo</vs-radio
+                                >
+                            </li>
+                            <li>
+                                <vs-radio v-model="rVacaciones" vs-value="2"
+                                    >Modificar Dia Administrativo</vs-radio
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-2">
@@ -549,7 +581,7 @@
                             class="w-full select-large"
                             label="tra_nombre_apellido"
                             :options="listadoTrabajadores"
-                            v-model="seleccionTrabajador"
+                            v-model="seleccionTrabajadorReemplazo"
                         ></v-select>
                     </div>
                 </div>
@@ -575,6 +607,22 @@
                             v-model="fecha_termino_reemplazo"
                             placeholder="Fecha Termino"
                         />
+                    </div>
+                </div>
+                <div class="flex mb-4">
+                    <div class="w-full m-2">
+                        <ul class="centerx">
+                            <li>
+                                <vs-radio v-model="rReemplazo" vs-value="1"
+                                    >Nuevo Dia Administrativo</vs-radio
+                                >
+                            </li>
+                            <li>
+                                <vs-radio v-model="rReemplazo" vs-value="2"
+                                    >Modificar Dia Administrativo</vs-radio
+                                >
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -639,10 +687,26 @@
                         />
                     </div>
                 </div>
+                <div class="flex mb-4">
+                    <div class="w-full m-2">
+                        <ul class="centerx">
+                            <li>
+                                <vs-radio v-model="rTurnoExtra" vs-value="1"
+                                    >Nuevo Dia Administrativo</vs-radio
+                                >
+                            </li>
+                            <li>
+                                <vs-radio v-model="rTurnoExtra" vs-value="2"
+                                    >Modificar Dia Administrativo</vs-radio
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <div class="flex mb-4">
-                <div class="w-1/2 m-2 ">
+                <div class="w-1/3 m-2 ">
                     <vs-button
                         @click="editEvent"
                         class="w-full"
@@ -652,7 +716,7 @@
                     >
                 </div>
 
-                <div class="w-1/2 m-2">
+                <div class="w-1/3 m-2">
                     <vs-button
                         @click="removeEvent"
                         class="w-full"
@@ -799,6 +863,11 @@ export default {
             listadoTrabajadores: [],
             labelLocal: "none",
 
+            rDAdmin: "2",
+            rVacaciones: "2",
+            rReemplazo: "2",
+            rTurnoExtra: "2",
+
             title: "",
             startDate: null,
             endDate: null,
@@ -807,10 +876,10 @@ export default {
             id_trabajador: 0,
             id_turno: 0,
             id_edificio: 0,
-            id_val_dia_administrativo: 0,
-            id_val_vacaciones: 0,
-            id_val_reemplazo: 0,
-            id_val_turno_extra: 0,
+            id_val_dia_administrativo: 2,
+            id_val_vacaciones: 2,
+            id_val_reemplazo: 2,
+            id_val_turno_extra: 2,
             id_tipo_dia_administrativo: 0,
             fecha_dia_administrativo: null,
             fecha_inicio_vacaciones: null,
@@ -830,6 +899,11 @@ export default {
             hora_termino: null,
             dias_ejecucion: 0,
             horas_ejecucion: 0,
+            id_dia_administrativo: null,
+            id_vacaciones: null,
+            id_reemplazo: null,
+            id_turno_extra: null,
+            id_calendario: 0,
 
             events: {
                 title: "",
@@ -840,11 +914,10 @@ export default {
                 id_trabajador: 0,
                 id_turno: 0,
                 id_edificio: 0,
-                label: "",
-                id_val_dia_administrativo: 0,
-                id_val_vacaciones: 0,
-                id_val_reemplazo: 0,
-                id_val_turno_extra: 0,
+                id_val_dia_administrativo: 2,
+                id_val_vacaciones: 2,
+                id_val_reemplazo: 2,
+                id_val_turno_extra: 2,
                 id_tipo_dia_administrativo: 0,
                 fecha_dia_administrativo: null,
                 fecha_inicio_vacaciones: null,
@@ -863,7 +936,16 @@ export default {
                 hora_inicio: null,
                 hora_termino: null,
                 dias_ejecucion: 0,
-                horas_ejecucion: 0
+                horas_ejecucion: 0,
+                rDAdmin: "2",
+                rVacaciones: "2",
+                rReemplazo: "2",
+                rTurnoExtra: "2",
+                id_dia_administrativo: null,
+                id_vacaciones: null,
+                id_reemplazo: null,
+                id_turno_extra: null,
+                id_calendario: null
             },
             listadoTurnoExtra: [
                 {
@@ -920,7 +1002,7 @@ export default {
             },
 
             seleccionReemplazo: {
-                idReemplazo: 4,
+                idReemplazo: 2,
                 descripcionReemplazo: "No"
             },
 
@@ -950,7 +1032,17 @@ export default {
                 tra_nombre_apellido: "Seleccione al Trabajador"
             },
 
+            seleccionTrabajadorReemplazo: {
+                id: 0,
+                tra_nombre_apellido: "Seleccione al Trabajador"
+            },
+
             listadoCalendarioAsc: [],
+
+            listadoDataDAdministrativo: [],
+            listadoDataVacaciones: [],
+            listadoDataReemplazo: [],
+            listadoDataTurnoExtra: [],
 
             showDate: new Date(),
 
@@ -1079,7 +1171,7 @@ export default {
             axios
                 .post(this.localVal + "/api/Agente/PostCalendarioAsc", newevent)
                 .then(res => {
-                    if (res.data == true) {
+                    if (res.data) {
                         console.log("Yey");
                     } else {
                         console.log("Orrror");
@@ -1095,7 +1187,7 @@ export default {
         },
         clearFields() {
             this.title = this.endDate = this.url = "";
-            this.id = 0;
+            this.id_calendario = 0;
             this.labelLocal = "none";
         },
         promptAddNewEvent(date) {
@@ -1125,13 +1217,14 @@ export default {
             });
 
             const e = b;
-            this.id = e[0].id;
+            this.id_calendario = e[0].id;
             this.title = e[0].title;
             this.startDate = e[0].startDate;
             this.endDate = e[0].endDate;
             this.descripcion_ascensores = e[0].descripcion_ascensores;
             this.labelLocal = e[0].label;
-
+            this.hora_inicio = e[0].hora_inicio;
+            this.hora_termino = e[0].hora_termino;
             let turno = this.listadoTurno;
             let d = [];
             let f = 0;
@@ -1145,20 +1238,242 @@ export default {
 
             this.seleccionTurno = d;
 
+            let trabajador = this.listadoTrabajadores;
+            let g = [];
+            let h = 0;
+
+            trabajador.forEach((value, index) => {
+                h = value.id;
+                if (h == e[0].id_trabajador) {
+                    g.push(value);
+                }
+            });
+
+            this.seleccionTrabajador = g;
+
+            let edificio = this.listadoEdificios;
+            let i = [];
+            let j = 0;
+
+            edificio.forEach((value, index) => {
+                j = value.id;
+                if (j == e[0].id_edificio) {
+                    i.push(value);
+                }
+            });
+
+            this.seleccionEdificio = i;
+
+            let valDAdministrativo = this.listadoValDAdministrativo;
+            let k = [];
+            let l = 0;
+
+            valDAdministrativo.forEach((value, index) => {
+                l = value.idValDAdministrativo;
+                if (l == e[0].id_val_dia_administrativo) {
+                    k.push(value);
+                }
+            });
+
+            this.seleccionValDAdministrativo = k;
+
+            let reemplazo = this.listadoReemplazo;
+            let m = [];
+            let n = 0;
+
+            reemplazo.forEach((value, index) => {
+                n = value.idReemplazo;
+                if (n == e[0].id_val_reemplazo) {
+                    m.push(value);
+                }
+            });
+
+            this.seleccionReemplazo = m;
+
+            let vacaciones = this.listadoVacaciones;
+            let o = [];
+            let p = 0;
+
+            vacaciones.forEach((value, index) => {
+                p = value.idVacaciones;
+                if (p == e[0].id_val_vacaciones) {
+                    o.push(value);
+                }
+            });
+
+            this.seleccionVacaciones = o;
+
+            let turnoExtra = this.listadoTurnoExtra;
+            let q = [];
+            let r = 0;
+
+            turnoExtra.forEach((value, index) => {
+                r = value.idTurnoExtra;
+                if (r == e[0].id_val_turno_extra) {
+                    q.push(value);
+                }
+            });
+
+            this.seleccionTurnoExtra = q;
+
+            if (e[0].id_val_dia_administrativo == 1) {
+                let dataDiaAdm = this.listadoDataDAdministrativo;
+                let aa = [];
+                let bb = 0;
+
+                dataDiaAdm.forEach((value, index) => {
+                    bb = value.id_calendario_ascensores;
+                    if (bb == e[0].id) {
+                        aa.push(value);
+                    }
+                });
+
+                this.fecha_dia_administrativo = aa[0].fecha_dia_administrativo;
+                this.id_dia_administrativo = aa[0].id;
+
+                let listSDAdministrativo = this.listadoDAdministrativo;
+                let cc = [];
+                let dd = 0;
+
+                listSDAdministrativo.forEach((value, index) => {
+                    dd = value.idDAdministrativo;
+                    if (dd == aa[0].id_tipo_dia_administrativo) {
+                        cc.push(value);
+                    }
+                });
+
+                this.seleccionDAdministrativo = cc;
+            }
+
+            if (e[0].id_val_vacaciones == 1) {
+                let dataVacaciones = this.listadoDataVacaciones;
+                let a = [];
+                let b = 0;
+                dataVacaciones.forEach((value, index) => {
+                    b = value.id_calendario_ascensores;
+                    if (b == e[0].id) {
+                        a.push(value);
+                    }
+                });
+
+                this.fecha_inicio_vacaciones = a[0].fecha_inicio_vacaciones;
+                this.fecha_termino_vacaciones = a[0].fecha_termino_vacaciones;
+                this.id_vacaciones = a[0].id_vacaciones;
+            }
+
+            if (e[0].id_val_reemplazo == 1) {
+                let dataReemplazo = this.listadoDataReemplazo;
+                let a = [];
+                let b = 0;
+                dataReemplazo.forEach((value, index) => {
+                    b = value.id_calendario_ascensores;
+                    if (b == e[0].id) {
+                        a.push(value);
+                    }
+                });
+
+                this.fecha_inicio_reemplazo = a[0].fecha_inicio_reemplazo;
+                this.fecha_termino_reemplazo = a[0].fecha_termino_reemplazo;
+                this.id_reemplazo = a[0].id;
+
+                let dataTrabajador = this.listadoTrabajadores;
+                let c = [];
+                let d = 0;
+                dataTrabajador.forEach((value, index) => {
+                    d = value.id;
+                    if (d == a[0].id_trabajador_reemplazo) {
+                        c.push(value);
+                    }
+                });
+
+                this.seleccionTrabajadorReemplazo = c;
+            }
+
+            if (e[0].id_val_turno_extra == 1) {
+                let dataTurnoExtra = this.listadoDataTurnoExtra;
+                let a = [];
+                let b = 0;
+                dataTurnoExtra.forEach((value, index) => {
+                    b = value.id_calendario_ascensores;
+                    if (b == e[0].id) {
+                        a.push(value);
+                    }
+                });
+                this.fecha_inicio_turno_extra = a[0].fecha_inicio_turno_extra;
+                this.fecha_termino_turno_extra = a[0].fecha_termino_turno_extra;
+                this.id_turno_extra = a[0].id;
+            }
+
             this.activePromptEditEvent = true;
         },
         editEvent() {
-            const obj = {
+            /*  const obj = {
                 id: this.id,
                 title: this.title,
                 startDate: this.startDate,
                 endDate: this.endDate,
                 label: this.labelLocal,
                 url: this.url
+            }; */
+
+            const events = {
+                title: this.title,
+                startDate: this.startDate,
+                endDate: this.endDate,
+                label: this.labelLocal,
+                descripcion_ascensores: this.descripcion_ascensores,
+                id_trabajador: this.seleccionTrabajador[0].id,
+                id_turno: this.seleccionTurno[0].id,
+                id_edificio: this.seleccionEdificio[0].id,
+                id_val_dia_administrativo: this.id_val_dia_administrativo,
+                id_val_vacaciones: this.id_val_vacaciones,
+                id_val_reemplazo: this.id_val_reemplazo,
+                id_val_turno_extra: this.id_val_turno_extra,
+                id_tipo_dia_administrativo: this.seleccionDAdministrativo
+                    .idDAdministrativo,
+                fecha_dia_administrativo: this.fecha_dia_administrativo,
+                fecha_inicio_vacaciones: this.fecha_inicio_vacaciones,
+                fecha_termino_vacaciones: this.fecha_termino_vacaciones,
+                dias_vacaciones: 0,
+                id_trabajador_reemplazo: this.seleccionTrabajadorReemplazo.id,
+                fecha_inicio_reemplazo: this.fecha_inicio_reemplazo,
+                fecha_termino_reemplazo: this.fecha_termino_reemplazo,
+                dias_reemplazo: 0,
+                fecha_inicio_turno_extra: this.fecha_inicio_turno_extra,
+                fecha_termino_turno_extra: this.fecha_termino_turno_extra,
+                dias_ejecucion_turno_extra: 0,
+                horas_ejecucion_turno_extra: 0,
+                hora_termino_turno_extra: this.hora_termino_turno_extra,
+                hora_inicio_turno_extra: this.hora_inicio_turno_extra,
+                hora_inicio: this.hora_inicio,
+                hora_termino: this.hora_termino,
+                dias_ejecucion: 0,
+                horas_ejecucion: 0,
+                rDAdmin: this.rDAdmin,
+                rVacaciones: this.rVacaciones,
+                rReemplazo: this.rReemplazo,
+                rTurnoExtra: this.rTurnoExtra,
+                id_dia_administrativo: this.id_dia_administrativo,
+                id_vacaciones: this.id_vacaciones,
+                id_reemplazo: this.id_reemplazo,
+                id_turno_extra: this.id_turno_extra,
+                id_calendario: this.id_calendario
             };
 
-            obj.classes = `event-${this.labelColor(this.labelLocal)}`;
-            this.$store.dispatch("calendar/editEvent", obj);
+            axios
+                .post(this.localVal + "/api/Agente/PutCalendarioAsc", events)
+                .then(res => {
+                    if (res.data) {
+                        console.log("Yey");
+                    } else {
+                        console.log("Orrror");
+                    }
+                });
+
+            console.log(events);
+
+            //events.classes = `event-${this.labelColor(this.labelLocal)}`;
+            // this.$store.dispatch("calendar/editEvent", events);
             this.activePromptEditEvent = false;
         },
         removeEvent() {

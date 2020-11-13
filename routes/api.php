@@ -257,3 +257,5 @@ Route::get('/Trabajador/getTrabajadoresByRun/{run}', ['middleware' => 'cors', 'u
 Route::post('/Agente/PostCalendarioAsc', ['middleware' => 'cors', 'uses' => 'CalendarioAscensoresController@postNuevoTCalendario']);
 //Traer Todo Calendario Ascensores
 Route::get('/Agente/GetCalendarioAsc', ['middleware' => 'cors', 'uses' => 'CalendarioAscensoresController@getTodoCalendario']);
+//Modificar o Agregar Items Calendario Ascensores
+Route::post('/Agente/PutCalendarioAsc', ['middleware' => 'cors', 'uses' => 'CalendarioAscensoresController@PutNuevoTCalendario']);
