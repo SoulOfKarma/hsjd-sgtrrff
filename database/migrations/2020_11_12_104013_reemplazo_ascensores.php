@@ -20,6 +20,7 @@ class ReemplazoAscensores extends Migration
             $table->date('fecha_inicio_reemplazo');
             $table->date('fecha_termino_reemplazo');
             $table->bigInteger('dias_reemplazo');
+            $table->boolean('estado_reemplazo');
             $table->timestamps();
         });
     }

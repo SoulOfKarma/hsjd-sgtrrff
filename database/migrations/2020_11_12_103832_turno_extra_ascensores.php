@@ -19,9 +19,10 @@ class TurnoExtraAscensores extends Migration
             $table->time('hora_inicio_turno_extra');
             $table->time('hora_termino_turno_extra');
             $table->date('fecha_inicio_turno_extra');
-            $table->date('fecha_termino_turno_extra');         
+            $table->date('fecha_termino_turno_extra');
             $table->bigInteger('dias_ejecucion_turno_extra');
             $table->bigInteger('horas_ejecucion_turno_extra'); 
+            $table->boolean('estado_turno_extra');
             $table->timestamps();
         });
     }

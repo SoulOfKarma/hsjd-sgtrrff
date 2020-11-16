@@ -19,6 +19,7 @@ class VacacionesAscensores extends Migration
             $table->date('fecha_inicio_vacaciones');
             $table->date('fecha_termino_vacaciones');
             $table->bigInteger('dias_vacaciones');
+            $table->boolean('estado_vacaciones');
             $table->timestamps();
         });
     }

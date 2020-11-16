@@ -18,6 +18,7 @@ class DiaAdministrativoAscensores extends Migration
             $table->bigInteger('id_calendario_ascensores');
             $table->bigInteger('id_tipo_dia_administrativo');
             $table->date('fecha_dia_administrativo');
+            $table->boolean('estado_dia_administrativo');
             $table->timestamps();
         });
     }

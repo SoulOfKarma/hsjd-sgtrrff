@@ -259,3 +259,11 @@ Route::post('/Agente/PostCalendarioAsc', ['middleware' => 'cors', 'uses' => 'Cal
 Route::get('/Agente/GetCalendarioAsc', ['middleware' => 'cors', 'uses' => 'CalendarioAscensoresController@getTodoCalendario']);
 //Modificar o Agregar Items Calendario Ascensores
 Route::post('/Agente/PutCalendarioAsc', ['middleware' => 'cors', 'uses' => 'CalendarioAscensoresController@PutNuevoTCalendario']);
+//Get Dia Administrativo Ascensoristas
+Route::get('/Agente/DAdminAsc', ['middleware' => 'cors', 'uses' => 'DiaAdministrativoController@get_dia_adm']);
+//Get Reemplazos Ascensoristas
+Route::get('/Agente/RAscensoristas', ['middleware' => 'cors', 'uses' => 'ReemplazoController@get_reemplazo']);
+//Get Turno Extra Ascensoristas
+Route::get('/Agente/TurExtAscensoristas', ['middleware' => 'cors', 'uses' => 'TurnoExtraController@get_turnoExtra']);
+//Get Vacaciones Ascensoristas
+Route::get('/Agente/VAscensoristas', ['middleware' => 'cors', 'uses' => 'VacacionesController@get_vacaciones']);

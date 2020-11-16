@@ -23,6 +23,7 @@ class CalendarioAscensores extends Migration
             $table->bigInteger('id_trabajador');
             $table->bigInteger('id_edificio');
             $table->string('label');
+            $table->string('classes');
             $table->bigInteger('id_val_dia_administrativo');
             $table->bigInteger('id_val_vacaciones');
             $table->bigInteger('id_val_reemplazo');

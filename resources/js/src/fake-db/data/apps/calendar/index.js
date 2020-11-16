@@ -18,6 +18,11 @@ const data = {
             text: "Turno Extra",
             value: "turnoextra",
             color: "danger"
+        },
+        {
+            text: "Reemplazo",
+            value: "reemplazo",
+            color: "rgb(37, 172, 249)"
         }
     ]
 };
