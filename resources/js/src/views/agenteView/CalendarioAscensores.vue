@@ -737,6 +737,134 @@
                     >
                 </div>
             </div>
+            <div class="popInforAsc">
+                <vs-popup
+                    title="Informacion Adicional"
+                    :active.sync="infoAdicionalesAct"
+                    classContent="popInfo"
+                >
+                    <vs-table max-items="3" pagination :data="listadoInf">
+                        <template slot="thead">
+                            <vs-th>ID</vs-th>
+                            <vs-th>Titulo</vs-th>
+                            <vs-th>Descripcion</vs-th>
+                            <vs-th>Dia Administrativo</vs-th>
+                            <vs-th>Vacaciones</vs-th>
+                            <vs-th>Reemplazo</vs-th>
+                            <vs-th>Turno Extra</vs-th>
+                            <vs-th>Informacion</vs-th>
+                        </template>
+
+                        <template slot-scope="{ data }">
+                            <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+                                <vs-td :data="data[indextr].id">
+                                    {{ data[indextr].id }}
+                                </vs-td>
+
+                                <vs-td :data="data[indextr].title">
+                                    {{ data[indextr].title }}
+                                </vs-td>
+
+                                <vs-td
+                                    :data="data[indextr].descripcion_ascensores"
+                                >
+                                    {{ data[indextr].descripcion_ascensores }}
+                                </vs-td>
+
+                                <vs-td
+                                    :data="
+                                        data[indextr].id_val_dia_administrativo
+                                    "
+                                >
+                                    <div
+                                        v-if="
+                                            data[indextr]
+                                                .id_val_dia_administrativo == 1
+                                        "
+                                    >
+                                        {{ "Si" }}
+                                    </div>
+                                    <div v-else>
+                                        {{ "No" }}
+                                    </div>
+                                </vs-td>
+                                <vs-td :data="data[indextr].id_val_vacaciones">
+                                    <div
+                                        v-if="
+                                            data[indextr].id_val_vacaciones == 1
+                                        "
+                                    >
+                                        {{ "Si" }}
+                                    </div>
+                                    <div v-else>
+                                        {{ "No" }}
+                                    </div>
+                                </vs-td>
+                                <vs-td :data="data[indextr].id_val_reemplazo">
+                                    <div
+                                        v-if="
+                                            data[indextr].id_val_reemplazo == 1
+                                        "
+                                    >
+                                        {{ "Si" }}
+                                    </div>
+                                    <div v-else>
+                                        {{ "No" }}
+                                    </div>
+                                </vs-td>
+                                <vs-td :data="data[indextr].id_val_turno_extra">
+                                    <div
+                                        v-if="
+                                            data[indextr].id_val_turno_extra ==
+                                                1
+                                        "
+                                    >
+                                        {{ "Si" }}
+                                    </div>
+                                    <div v-else>
+                                        {{ "No" }}
+                                    </div>
+                                </vs-td>
+                                <vs-td :data="data[indextr].id">
+                                    <div
+                                        v-if="
+                                            data[indextr]
+                                                .id_val_dia_administrativo ==
+                                                1 ||
+                                                data[indextr]
+                                                    .id_val_vacaciones == 1 ||
+                                                data[indextr]
+                                                    .id_val_reemplazo == 1 ||
+                                                data[indextr]
+                                                    .id_val_turno_extra == 1
+                                        "
+                                    >
+                                        <info-icon
+                                            size="1.5x"
+                                            class="custom-class"
+                                            @click="verInfo()"
+                                        ></info-icon>
+                                    </div>
+                                </vs-td>
+                            </vs-tr>
+                        </template>
+                    </vs-table>
+                    <vs-popup
+                        class="infoDet"
+                        title="Informacion Desglosada"
+                        :active.sync="popInfoDet"
+                    >
+                        <vs-list
+                            :key="indextr"
+                            v-for="(tr, indextr) in listadoInf"
+                        >
+                            <vx-card>
+                                {{ "Titulo :" + " " + tr.title }}
+                            </vx-card>
+                        </vs-list>
+                    </vs-popup>
+                </vs-popup>
+            </div>
         </vs-popup>
     </div>
 </template>
@@ -753,6 +881,7 @@ import vSelect from "vue-select";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import axios from "axios";
+import { InfoIcon } from "vue-feather-icons";
 
 export default {
     components: {
@@ -760,19 +889,25 @@ export default {
         CalendarViewHeader,
         Datepicker,
         "v-select": vSelect,
-        flatPickr
+        flatPickr,
+        InfoIcon
     },
-    theme: {
-        colors: {
-            primary: "#5b3cc4",
-            success: "rgb(23, 201, 100)",
-            danger: "rgb(242, 19, 93)",
-            warning: "rgb(255, 130, 0)",
-            dark: "rgb(36, 33, 69)"
-        }
+    colors: {
+        primary: "#5b3cc4",
+        success: "rgb(23, 201, 100)",
+        danger: "rgb(242, 19, 93)",
+        warning: "rgb(255, 130, 0)",
+        dark: "rgb(66, 27, 150)"
     },
     data() {
         return {
+            listadoInf: [],
+
+            listadoDet: [],
+
+            infoAdicionalesAct: false,
+            popInfoDet: false,
+
             localVal: "http://10.66.248.51:8000",
 
             configFromdateTimePicker: {
@@ -878,6 +1013,25 @@ export default {
                 enableTime: true,
                 enableSeconds: true,
                 noCalendar: true
+            },
+
+            dataDet: {
+                id_cal_asc: 0,
+                fecha_dia_adm: null,
+                id_tip_dia_adm: "",
+                estado_dia_adm: 0,
+                id_tra_rem_asc: 0,
+                fec_ini_rem: null,
+                fec_ter_rem: null,
+                est_rem: 0,
+                fec_ini_tur_ext: null,
+                fec_ter_tur_ext: null,
+                hor_ini_tur_ext: null,
+                hor_ter_tur_ext: null,
+                est_tur_ext: 0,
+                fec_ini_vac: null,
+                fec_ter_vac: null,
+                est_vac: 0
             },
 
             listadoTrabajadores: [],
@@ -1156,7 +1310,7 @@ export default {
             return label => {
                 if (label === "vacaciones") return "success";
                 else if (label === "dadministrativo") return "warning";
-                else if (label === "reemplazo") return "rgb(37, 172, 249)";
+                else if (label === "reemplazo") return "dark";
                 else if (label === "turnoextra") return "danger";
                 else if (label === "none") return "primary";
             };
@@ -1166,8 +1320,48 @@ export default {
         }
     },
     methods: {
+        verInfo() {
+            let data = {
+                id: this.listadoInf[0].id
+            };
+
+            const dat = data;
+            axios
+                .post(this.localVal + "/api/Agente/GetDataCalenAsc", dat)
+                .then(res => {
+                    this.listadoDet = res.data;
+                    this.dataDet = {
+                        id_cal_asc: 0,
+                        fecha_dia_adm: null,
+                        id_tip_dia_adm: "",
+                        estado_dia_adm: 0,
+                        id_tra_rem_asc: 0,
+                        fec_ini_rem: null,
+                        fec_ter_rem: null,
+                        est_rem: 0,
+                        fec_ini_tur_ext: null,
+                        fec_ter_tur_ext: null,
+                        hor_ini_tur_ext: null,
+                        hor_ter_tur_ext: null,
+                        est_tur_ext: 0,
+                        fec_ini_vac: null,
+                        fec_ter_vac: null,
+                        est_vac: 0
+                    };
+                });
+
+            this.popInfoDet = true;
+        },
         infoDetallada() {
-            console.log("Hizo algo, no?");
+            let listadoInfo = this.listadoCalendarioAsc;
+            let a = [];
+            listadoInfo.forEach((value, index) => {
+                if (value.id == this.id_calendario) {
+                    a.push(value);
+                }
+            });
+            this.listadoInf = a;
+            this.infoAdicionalesAct = true;
         },
         volver() {
             this.activePromptEditEvent = false;
@@ -1706,6 +1900,9 @@ export default {
         }
     },
     created() {
+        this.$vs.theme({
+            dark: "rgb(37, 172, 249)" // my new color
+        });
         this.$store.registerModule("calendar", moduleCalendar);
         this.$store.dispatch("calendar/fetchEvents");
         this.$store.dispatch("calendar/fetchEventLabels");
@@ -1726,4 +1923,10 @@ export default {
 
 <style lang="scss">
 @import "@sass/vuexy/apps/simple-calendar.scss";
+</style>
+
+<style>
+.con-vs-popup .vs-popup {
+    width: auto !important;
+}
 </style>

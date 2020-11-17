@@ -292,7 +292,7 @@ export default [
     },
     {
         url: "/agenteView/CalendarioAscensores",
-        name: "Calendario Ascensores",
+        name: "Ascensoristas",
         slug: "CalendarioAscensores",
         icon: "CalendarIcon"
     }

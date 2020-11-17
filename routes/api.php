@@ -267,3 +267,5 @@ Route::get('/Agente/RAscensoristas', ['middleware' => 'cors', 'uses' => 'Reempla
 Route::get('/Agente/TurExtAscensoristas', ['middleware' => 'cors', 'uses' => 'TurnoExtraController@get_turnoExtra']);
 //Get Vacaciones Ascensoristas
 Route::get('/Agente/VAscensoristas', ['middleware' => 'cors', 'uses' => 'VacacionesController@get_vacaciones']);
+//Traer data especifica
+Route::post('/Agente/GetDataCalenAsc', ['middleware' => 'cors', 'uses' => 'CalendarioAscensoresController@get_data_esp_asc']);

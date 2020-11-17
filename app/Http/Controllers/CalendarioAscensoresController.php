@@ -87,4 +87,17 @@ class CalendarioAscensoresController extends Controller
         }
         
     }
+
+    public function get_data_esp_asc(Request $request){
+            log::info($request);
+            $get_all = CalendarioAscensores::select('*')
+            ->leftjoin('dia_administrativo_ascensores','calendario_ascensores.id','=','dia_administrativo_ascensores.id_calendario_ascensores')
+            ->leftjoin('vacaciones_ascensores','calendario_ascensores.id','=','vacaciones_ascensores.id_calendario_ascensores')
+            ->leftjoin('reemplazo_ascensores','calendario_ascensores.id','=','reemplazo_ascensores.id_calendario_ascensores')
+            ->leftjoin('turno_extra_ascensores','calendario_ascensores.id','=','turno_extra_ascensores.id_calendario_ascensores')
+            ->where('calendario_ascensores.id',$request->id)
+            ->get();
+            log::info($get_all);
+            return $get_all;
+    }
 }

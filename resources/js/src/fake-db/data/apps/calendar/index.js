@@ -22,7 +22,7 @@ const data = {
         {
             text: "Reemplazo",
             value: "reemplazo",
-            color: "rgb(37, 172, 249)"
+            color: "dark"
         }
     ]
 };
