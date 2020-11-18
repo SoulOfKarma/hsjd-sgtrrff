@@ -842,7 +842,18 @@
                                         <info-icon
                                             size="1.5x"
                                             class="custom-class"
-                                            @click="verInfo()"
+                                            @click="
+                                                verInfo(
+                                                    data[indextr]
+                                                        .id_val_dia_administrativo,
+                                                    data[indextr]
+                                                        .id_val_vacaciones,
+                                                    data[indextr]
+                                                        .id_val_reemplazo,
+                                                    data[indextr]
+                                                        .id_val_turno_extra
+                                                )
+                                            "
                                         ></info-icon>
                                     </div>
                                 </vs-td>
@@ -856,11 +867,118 @@
                     >
                         <vs-list
                             :key="indextr"
-                            v-for="(tr, indextr) in listadoInf"
+                            v-for="(tr, indextr) in listadoDet"
                         >
-                            <vx-card>
-                                {{ "Titulo :" + " " + tr.title }}
-                            </vx-card>
+                            <div v-if="listValidaciones.idDAdm == 1">
+                                <vx-card>
+                                    {{
+                                        "Fecha Dia Administrativo :" +
+                                            " " +
+                                            tr.fecha_dia_administrativo
+                                    }}
+                                    <br />
+                                    {{
+                                        "Tipo de dia solicitado :" +
+                                            " " +
+                                            tr.id_tipo_dia_administrativo
+                                    }}
+                                    <br />
+                                    {{
+                                        "Estado dia Adminisrativo:" +
+                                            " " +
+                                            tr.estado_dia_administrativo
+                                    }}
+                                </vx-card>
+                            </div>
+
+                            <div v-if="listValidaciones.idVac == 1">
+                                <vx-card>
+                                    {{
+                                        "Fecha Inicio Vacaciones :" +
+                                            " " +
+                                            tr.fecha_inicio_vacaciones
+                                    }}
+                                    <br />
+                                    {{
+                                        "Fecha Termino Vacaciones :" +
+                                            " " +
+                                            tr.fecha_termino_vacaciones
+                                    }}
+                                    <br />
+                                    {{
+                                        "Estado Vacaciones:" +
+                                            " " +
+                                            tr.estado_vacaciones
+                                    }}
+                                </vx-card>
+                                <br />
+                            </div>
+
+                            <div v-if="listValidaciones.idRem == 1">
+                                <vx-card>
+                                    {{
+                                        "Trabajador Reemplazante :" +
+                                            " " +
+                                            tr.tra_nombre +
+                                            " " +
+                                            tr.tra_apellido
+                                    }}
+                                    <br />
+                                    {{
+                                        "Fecha Inicio Reemplazo :" +
+                                            " " +
+                                            tr.fecha_inicio_reemplazo
+                                    }}
+                                    <br />
+                                    {{
+                                        "Fecha Termino Reemplazo:" +
+                                            " " +
+                                            tr.fecha_termino_reemplazo
+                                    }}
+                                    <br />
+                                    {{
+                                        "Estado Reemplazo:" +
+                                            " " +
+                                            tr.estado_reemplazo
+                                    }}
+                                </vx-card>
+                                <br />
+                            </div>
+
+                            <div v-if="listValidaciones.idTExt == 1">
+                                <vx-card>
+                                    {{
+                                        "Fecha Inicio Turno Extra :" +
+                                            " " +
+                                            tr.fecha_inicio_turno_extra
+                                    }}
+                                    <br />
+                                    {{
+                                        "Hora Inicio Turno Extra :" +
+                                            " " +
+                                            tr.hora_inicio_turno_extra
+                                    }}
+                                    <br />
+                                    {{
+                                        "Fecha Termino Turno Extra:" +
+                                            " " +
+                                            tr.fecha_termino_reemplazo
+                                    }}
+                                    <br />
+                                    {{
+                                        "Hora Termino Turno Extra:" +
+                                            " " +
+                                            tr.hora_termino_turno_extra
+                                    }}
+                                    <br />
+                                    {{
+                                        "Estado Turno Extra:" +
+                                            " " +
+                                            tr.estado_turno_extra
+                                    }}
+                                </vx-card>
+                                <br />
+                            </div>
                         </vs-list>
                     </vs-popup>
                 </vs-popup>
@@ -1015,23 +1133,11 @@ export default {
                 noCalendar: true
             },
 
-            dataDet: {
-                id_cal_asc: 0,
-                fecha_dia_adm: null,
-                id_tip_dia_adm: "",
-                estado_dia_adm: 0,
-                id_tra_rem_asc: 0,
-                fec_ini_rem: null,
-                fec_ter_rem: null,
-                est_rem: 0,
-                fec_ini_tur_ext: null,
-                fec_ter_tur_ext: null,
-                hor_ini_tur_ext: null,
-                hor_ter_tur_ext: null,
-                est_tur_ext: 0,
-                fec_ini_vac: null,
-                fec_ter_vac: null,
-                est_vac: 0
+            listValidaciones: {
+                idDAdm: 0,
+                idVac: 0,
+                idRem: 0,
+                idTExt: 0
             },
 
             listadoTrabajadores: [],
@@ -1259,7 +1365,22 @@ export default {
             listadoDataReemplazo: [],
             listadoDataTurnoExtra: [],
 
-            showDate: new Date(),
+            meses: new Array(
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"
+            ),
+
+            showDate: new Date(moment()),
 
             calendarView: "month",
 
@@ -1320,37 +1441,33 @@ export default {
         }
     },
     methods: {
-        verInfo() {
-            let data = {
-                id: this.listadoInf[0].id
-            };
+        //Informacion Detallada Disponible Solo si tiene activo alguno de los id
+        verInfo(idDAdm, idVac, idRem, idTExt) {
+            if (idDAdm == 1 || idVac == 1 || idRem == 1 || idTExt == 1) {
+                let data = {
+                    id: this.listadoInf[0].id
+                };
 
-            const dat = data;
-            axios
-                .post(this.localVal + "/api/Agente/GetDataCalenAsc", dat)
-                .then(res => {
-                    this.listadoDet = res.data;
-                    this.dataDet = {
-                        id_cal_asc: 0,
-                        fecha_dia_adm: null,
-                        id_tip_dia_adm: "",
-                        estado_dia_adm: 0,
-                        id_tra_rem_asc: 0,
-                        fec_ini_rem: null,
-                        fec_ter_rem: null,
-                        est_rem: 0,
-                        fec_ini_tur_ext: null,
-                        fec_ter_tur_ext: null,
-                        hor_ini_tur_ext: null,
-                        hor_ter_tur_ext: null,
-                        est_tur_ext: 0,
-                        fec_ini_vac: null,
-                        fec_ter_vac: null,
-                        est_vac: 0
-                    };
+                const dat = data;
+                axios
+                    .post(this.localVal + "/api/Agente/GetDataCalenAsc", dat)
+                    .then(res => {
+                        this.listadoDet = res.data;
+                    });
+                this.listValidaciones.idDAdm = idDAdm;
+                this.listValidaciones.idVac = idVac;
+                this.listValidaciones.idRem = idRem;
+                this.listValidaciones.idTExt = idTExt;
+                this.popInfoDet = true;
+            } else {
+                this.$vs.notify({
+                    title: "No tiene Informacion disponible ",
+                    text:
+                        "El Trabajador del turno, debe tener asignado alguno de los campos para su visualizacion",
+                    color: "danger",
+                    position: "top-right"
                 });
-
-            this.popInfoDet = true;
+            }
         },
         infoDetallada() {
             let listadoInfo = this.listadoCalendarioAsc;
@@ -1420,6 +1537,7 @@ export default {
         },
         //Carga Calendario
         simpleCalendarEvents() {
+            console.log(this.showDate);
             axios
                 .get(this.localVal + "/api/Agente/GetCalendarioAsc")
                 .then(res => {
@@ -1754,15 +1872,6 @@ export default {
             this.activePromptEditEvent = true;
         },
         editEvent() {
-            /*  const obj = {
-                id: this.id,
-                title: this.title,
-                startDate: this.startDate,
-                endDate: this.endDate,
-                label: this.labelLocal,
-                url: this.url
-            }; */
-
             const events = {
                 title: this.title,
                 startDate: this.startDate,
@@ -1864,16 +1973,13 @@ export default {
 
             //console.log(events);
             if (events.id_val_dia_administrativo == 1) {
-                console.log("D Admin");
                 this.cargaDAdminAsc();
             } else if (events.id_val_vacaciones == 1) {
-                console.log("Vac");
                 this.cargaVacAsc();
             } else if (events.id_val_reemplazo == 1) {
-                console.log("Rem");
+                c;
                 this.cargaRemAsc();
             } else if (events.id_val_turno_extra == 1) {
-                console.log("Turno Extra");
                 this.cargaTurExtAsc();
             }
 
