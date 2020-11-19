@@ -470,6 +470,7 @@
                             label="descripcionDAdministrativo"
                             :options="listadoDAdministrativo"
                             v-model="seleccionDAdministrativo"
+                            @input="arrayTipoDiaAdm"
                         ></v-select>
                     </div>
                 </div>
@@ -484,22 +485,6 @@
                             v-model="fecha_dia_administrativo"
                             placeholder="Fecha Inicio"
                         />
-                    </div>
-                </div>
-                <div class="flex mb-4">
-                    <div class="w-full m-2">
-                        <ul class="centerx">
-                            <li>
-                                <vs-radio v-model="rDAdmin" vs-value="1"
-                                    >Nuevo Dia Administrativo</vs-radio
-                                >
-                            </li>
-                            <li>
-                                <vs-radio v-model="rDAdmin" vs-value="2"
-                                    >Modificar Dia Administrativo</vs-radio
-                                >
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -542,22 +527,6 @@
                             v-model="fecha_termino_vacaciones"
                             placeholder="Fecha Termino"
                         />
-                    </div>
-                </div>
-                <div class="flex mb-4">
-                    <div class="w-full m-2">
-                        <ul class="centerx">
-                            <li>
-                                <vs-radio v-model="rVacaciones" vs-value="1"
-                                    >Nueva Solicitud de Vacaciones</vs-radio
-                                >
-                            </li>
-                            <li>
-                                <vs-radio v-model="rVacaciones" vs-value="2"
-                                    >Modificar Vacaciones Asignadas</vs-radio
-                                >
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -609,22 +578,6 @@
                             v-model="fecha_termino_reemplazo"
                             placeholder="Fecha Termino"
                         />
-                    </div>
-                </div>
-                <div class="flex mb-4">
-                    <div class="w-full m-2">
-                        <ul class="centerx">
-                            <li>
-                                <vs-radio v-model="rReemplazo" vs-value="1"
-                                    >Nuevo Reemplazo</vs-radio
-                                >
-                            </li>
-                            <li>
-                                <vs-radio v-model="rReemplazo" vs-value="2"
-                                    >Modificar Reemplazo Asignado</vs-radio
-                                >
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -688,22 +641,6 @@
                             v-model="hora_termino_turno_extra"
                             placeholder="Seleccione Hora"
                         />
-                    </div>
-                </div>
-                <div class="flex mb-4">
-                    <div class="w-full m-2">
-                        <ul class="centerx">
-                            <li>
-                                <vs-radio v-model="rTurnoExtra" vs-value="1"
-                                    >Nuevo Turno Extra</vs-radio
-                                >
-                            </li>
-                            <li>
-                                <vs-radio v-model="rTurnoExtra" vs-value="2"
-                                    >Modificar Turno Extra Asignado</vs-radio
-                                >
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -1143,11 +1080,6 @@ export default {
             listadoTrabajadores: [],
             labelLocal: "none",
 
-            rDAdmin: "2",
-            rVacaciones: "2",
-            rReemplazo: "2",
-            rTurnoExtra: "2",
-
             title: "",
             startDate: null,
             endDate: null,
@@ -1222,10 +1154,6 @@ export default {
                 hora_termino: null,
                 dias_ejecucion: 0,
                 horas_ejecucion: 0,
-                rDAdmin: "2",
-                rVacaciones: "2",
-                rReemplazo: "2",
-                rTurnoExtra: "2",
                 id_dia_administrativo: null,
                 id_vacaciones: null,
                 id_reemplazo: null,
@@ -1281,10 +1209,12 @@ export default {
                 }
             ],
 
-            seleccionDAdministrativo: {
-                idDAdministrativo: 1,
-                descripcionDAdministrativo: "Mañana"
-            },
+            seleccionDAdministrativo: [
+                {
+                    idDAdministrativo: 1,
+                    descripcionDAdministrativo: "Mañana"
+                }
+            ],
 
             seleccionValDAdministrativo: {
                 idValDAdministrativo: 2,
@@ -1380,8 +1310,7 @@ export default {
                 "Diciembre"
             ),
 
-            showDate: new Date(moment()),
-
+            showDate: new Date(),
             calendarView: "month",
 
             activePromptAddEvent: false,
@@ -1433,7 +1362,7 @@ export default {
                 else if (label === "dadministrativo") return "warning";
                 else if (label === "reemplazo") return "dark";
                 else if (label === "turnoextra") return "danger";
-                else if (label === "none") return "primary";
+                else if (label === "tnoche") return "primary";
             };
         },
         windowWidth() {
@@ -1452,8 +1381,12 @@ export default {
                 axios
                     .post(this.localVal + "/api/Agente/GetDataCalenAsc", dat)
                     .then(res => {
-                        this.listadoDet = res.data;
+                        //this.listadoDet = res.data;
+                        let a = [];
+                        a.push(res.data);
+                        this.listadoDet = a;
                     });
+
                 this.listValidaciones.idDAdm = idDAdm;
                 this.listValidaciones.idVac = idVac;
                 this.listValidaciones.idRem = idRem;
@@ -1498,6 +1431,21 @@ export default {
 
             this.seleccionValDAdministrativoData = b;
         },
+        arrayTipoDiaAdm() {
+            let a = this.listadoDAdministrativo;
+            let b = [];
+            a.forEach((value, index) => {
+                if (
+                    value.idDAdministrativo ==
+                    this.seleccionDAdministrativo.idDAdministrativo
+                ) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionDAdministrativo = b;
+            console.log(this.seleccionDAdministrativo);
+        },
         arrayVacaciones() {
             let a = this.listadoVacaciones;
             let b = [];
@@ -1537,7 +1485,6 @@ export default {
         },
         //Carga Calendario
         simpleCalendarEvents() {
-            console.log(this.showDate);
             axios
                 .get(this.localVal + "/api/Agente/GetCalendarioAsc")
                 .then(res => {
@@ -1668,210 +1615,248 @@ export default {
             this.addNewEventDialog(date);
         },
         openEditEvent(event) {
-            let calen = this.listadoCalendarioAsc;
-            let b = [];
-            let a = 0;
+            try {
+                let calen = this.listadoCalendarioAsc;
+                let b = [];
+                let a = 0;
 
-            calen.forEach((value, index) => {
-                a = value.id;
-                if (a == event.id) {
-                    b.push(value);
-                }
-            });
-
-            const e = b;
-            this.id_calendario = e[0].id;
-            this.title = e[0].title;
-            this.startDate = e[0].startDate;
-            this.endDate = e[0].endDate;
-            this.descripcion_ascensores = e[0].descripcion_ascensores;
-            this.labelLocal = e[0].label;
-            this.hora_inicio = e[0].hora_inicio;
-            this.hora_termino = e[0].hora_termino;
-            let turno = this.listadoTurno;
-            let d = [];
-            let f = 0;
-
-            turno.forEach((value, index) => {
-                f = value.id;
-                if (f == e[0].id_turno) {
-                    d.push(value);
-                }
-            });
-
-            this.seleccionTurno = d;
-
-            let trabajador = this.listadoTrabajadores;
-            let g = [];
-            let h = 0;
-
-            trabajador.forEach((value, index) => {
-                h = value.id;
-                if (h == e[0].id_trabajador) {
-                    g.push(value);
-                }
-            });
-
-            this.seleccionTrabajador = g;
-
-            let edificio = this.listadoEdificios;
-            let i = [];
-            let j = 0;
-
-            edificio.forEach((value, index) => {
-                j = value.id;
-                if (j == e[0].id_edificio) {
-                    i.push(value);
-                }
-            });
-
-            this.seleccionEdificio = i;
-
-            let valDAdministrativo = this.listadoValDAdministrativo;
-            let k = [];
-            let l = 0;
-
-            valDAdministrativo.forEach((value, index) => {
-                l = value.idValDAdministrativo;
-                if (l == e[0].id_val_dia_administrativo) {
-                    k.push(value);
-                }
-            });
-
-            this.seleccionValDAdministrativo = k;
-
-            let reemplazo = this.listadoReemplazo;
-            let m = [];
-            let n = 0;
-
-            reemplazo.forEach((value, index) => {
-                n = value.idReemplazo;
-                if (n == e[0].id_val_reemplazo) {
-                    m.push(value);
-                }
-            });
-
-            this.seleccionReemplazo = m;
-
-            let vacaciones = this.listadoVacaciones;
-            let o = [];
-            let p = 0;
-
-            vacaciones.forEach((value, index) => {
-                p = value.idVacaciones;
-                if (p == e[0].id_val_vacaciones) {
-                    o.push(value);
-                }
-            });
-
-            this.seleccionVacaciones = o;
-
-            let turnoExtra = this.listadoTurnoExtra;
-            let q = [];
-            let r = 0;
-
-            turnoExtra.forEach((value, index) => {
-                r = value.idTurnoExtra;
-                if (r == e[0].id_val_turno_extra) {
-                    q.push(value);
-                }
-            });
-
-            this.seleccionTurnoExtra = q;
-
-            if (e[0].id_val_dia_administrativo == 1) {
-                let dataDiaAdm = this.listadoDataDAdministrativo;
-                let aa = [];
-                let bb = 0;
-
-                dataDiaAdm.forEach((value, index) => {
-                    bb = value.id_calendario_ascensores;
-                    if (bb == e[0].id) {
-                        aa.push(value);
+                calen.forEach((value, index) => {
+                    a = value.id;
+                    if (a == event.id) {
+                        b.push(value);
                     }
                 });
 
-                this.id_tipo_dia_administrativo =
-                    aa[0].id_tipo_dia_administrativo;
-                this.fecha_dia_administrativo = aa[0].fecha_dia_administrativo;
-                this.id_dia_administrativo = aa[0].id;
+                const e = b;
+                this.id_calendario = e[0].id;
+                this.title = e[0].title;
+                this.startDate = e[0].startDate;
+                this.endDate = e[0].endDate;
+                this.descripcion_ascensores = e[0].descripcion_ascensores;
+                this.labelLocal = e[0].label;
+                this.hora_inicio = e[0].hora_inicio;
+                this.hora_termino = e[0].hora_termino;
+                let turno = this.listadoTurno;
+                let d = [];
+                let f = 0;
 
-                let listSDAdministrativo = this.listadoDAdministrativo;
-                let cc = [];
-                let dd = 0;
-
-                listSDAdministrativo.forEach((value, index) => {
-                    dd = value.idDAdministrativo;
-                    if (dd == aa[0].id_tipo_dia_administrativo) {
-                        cc.push(value);
+                turno.forEach((value, index) => {
+                    f = value.id;
+                    if (f == e[0].id_turno) {
+                        d.push(value);
                     }
                 });
 
-                this.seleccionDAdministrativo = cc;
+                this.seleccionTurno = d;
+
+                let trabajador = this.listadoTrabajadores;
+                let g = [];
+                let h = 0;
+
+                trabajador.forEach((value, index) => {
+                    h = value.id;
+                    if (h == e[0].id_trabajador) {
+                        g.push(value);
+                    }
+                });
+
+                this.seleccionTrabajador = g;
+
+                let edificio = this.listadoEdificios;
+                let i = [];
+                let j = 0;
+
+                edificio.forEach((value, index) => {
+                    j = value.id;
+                    if (j == e[0].id_edificio) {
+                        i.push(value);
+                    }
+                });
+
+                this.seleccionEdificio = i;
+
+                let valDAdministrativo = this.listadoValDAdministrativo;
+                let k = [];
+                let l = 0;
+
+                valDAdministrativo.forEach((value, index) => {
+                    l = value.idValDAdministrativo;
+                    if (l == e[0].id_val_dia_administrativo) {
+                        k.push(value);
+                    }
+                });
+
+                this.seleccionValDAdministrativo = k;
+
+                let reemplazo = this.listadoReemplazo;
+                let m = [];
+                let n = 0;
+
+                reemplazo.forEach((value, index) => {
+                    n = value.idReemplazo;
+                    if (n == e[0].id_val_reemplazo) {
+                        m.push(value);
+                    }
+                });
+
+                this.seleccionReemplazo = m;
+
+                let vacaciones = this.listadoVacaciones;
+                let o = [];
+                let p = 0;
+
+                vacaciones.forEach((value, index) => {
+                    p = value.idVacaciones;
+                    if (p == e[0].id_val_vacaciones) {
+                        o.push(value);
+                    }
+                });
+
+                this.seleccionVacaciones = o;
+
+                let turnoExtra = this.listadoTurnoExtra;
+                let q = [];
+                let r = 0;
+
+                turnoExtra.forEach((value, index) => {
+                    r = value.idTurnoExtra;
+                    if (r == e[0].id_val_turno_extra) {
+                        q.push(value);
+                    }
+                });
+
+                this.seleccionTurnoExtra = q;
+
+                if (e[0].id_val_dia_administrativo == 1) {
+                    let dataDiaAdm = this.listadoDataDAdministrativo;
+                    let aa = [];
+                    let bb = 0;
+
+                    dataDiaAdm.forEach((value, index) => {
+                        bb = value.id_calendario_ascensores;
+                        if (bb == e[0].id) {
+                            aa.push(value);
+                        }
+                    });
+
+                    this.id_tipo_dia_administrativo =
+                        aa[0].id_tipo_dia_administrativo;
+                    this.fecha_dia_administrativo =
+                        aa[0].fecha_dia_administrativo;
+                    this.id_dia_administrativo = aa[0].id;
+
+                    let listSDAdministrativo = this.listadoDAdministrativo;
+                    let cc = [];
+                    let dd = 0;
+
+                    listSDAdministrativo.forEach((value, index) => {
+                        dd = value.idDAdministrativo;
+                        if (dd == aa[0].id_tipo_dia_administrativo) {
+                            cc.push(value);
+                        }
+                    });
+
+                    this.seleccionDAdministrativo = cc;
+                }
+
+                if (e[0].id_val_vacaciones == 1) {
+                    let dataVacaciones = this.listadoDataVacaciones;
+                    let a = [];
+                    let b = 0;
+                    dataVacaciones.forEach((value, index) => {
+                        b = value.id_calendario_ascensores;
+                        if (b == e[0].id) {
+                            a.push(value);
+                        }
+                    });
+
+                    this.fecha_inicio_vacaciones = a[0].fecha_inicio_vacaciones;
+                    this.fecha_termino_vacaciones =
+                        a[0].fecha_termino_vacaciones;
+                    this.id_vacaciones = a[0].id_vacaciones;
+                }
+
+                if (e[0].id_val_reemplazo == 1) {
+                    let dataReemplazo = this.listadoDataReemplazo;
+                    let a = [];
+                    let b = 0;
+                    dataReemplazo.forEach((value, index) => {
+                        b = value.id_calendario_ascensores;
+                        if (b == e[0].id) {
+                            a.push(value);
+                        }
+                    });
+
+                    this.fecha_inicio_reemplazo = a[0].fecha_inicio_reemplazo;
+                    this.fecha_termino_reemplazo = a[0].fecha_termino_reemplazo;
+                    this.id_reemplazo = a[0].id;
+
+                    let dataTrabajador = this.listadoTrabajadores;
+                    let c = [];
+                    let d = 0;
+                    dataTrabajador.forEach((value, index) => {
+                        d = value.id;
+                        if (d == a[0].id_trabajador_reemplazo) {
+                            c.push(value);
+                        }
+                    });
+
+                    this.seleccionTrabajadorReemplazo = c;
+                }
+
+                if (e[0].id_val_turno_extra == 1) {
+                    let dataTurnoExtra = this.listadoDataTurnoExtra;
+                    let a = [];
+                    let b = 0;
+                    dataTurnoExtra.forEach((value, index) => {
+                        b = value.id_calendario_ascensores;
+                        if (b == e[0].id) {
+                            a.push(value);
+                        }
+                    });
+                    this.fecha_inicio_turno_extra =
+                        a[0].fecha_inicio_turno_extra;
+                    this.fecha_termino_turno_extra =
+                        a[0].fecha_termino_turno_extra;
+                    this.id_turno_extra = a[0].id;
+                }
+
+                this.activePromptEditEvent = true;
+            } catch (error) {
+                console.log("Presionaste muy rapido vaquero");
             }
-
-            if (e[0].id_val_vacaciones == 1) {
-                let dataVacaciones = this.listadoDataVacaciones;
-                let a = [];
-                let b = 0;
-                dataVacaciones.forEach((value, index) => {
-                    b = value.id_calendario_ascensores;
-                    if (b == e[0].id) {
-                        a.push(value);
-                    }
-                });
-
-                this.fecha_inicio_vacaciones = a[0].fecha_inicio_vacaciones;
-                this.fecha_termino_vacaciones = a[0].fecha_termino_vacaciones;
-                this.id_vacaciones = a[0].id_vacaciones;
-            }
-
-            if (e[0].id_val_reemplazo == 1) {
-                let dataReemplazo = this.listadoDataReemplazo;
-                let a = [];
-                let b = 0;
-                dataReemplazo.forEach((value, index) => {
-                    b = value.id_calendario_ascensores;
-                    if (b == e[0].id) {
-                        a.push(value);
-                    }
-                });
-
-                this.fecha_inicio_reemplazo = a[0].fecha_inicio_reemplazo;
-                this.fecha_termino_reemplazo = a[0].fecha_termino_reemplazo;
-                this.id_reemplazo = a[0].id;
-
-                let dataTrabajador = this.listadoTrabajadores;
-                let c = [];
-                let d = 0;
-                dataTrabajador.forEach((value, index) => {
-                    d = value.id;
-                    if (d == a[0].id_trabajador_reemplazo) {
-                        c.push(value);
-                    }
-                });
-
-                this.seleccionTrabajadorReemplazo = c;
-            }
-
-            if (e[0].id_val_turno_extra == 1) {
-                let dataTurnoExtra = this.listadoDataTurnoExtra;
-                let a = [];
-                let b = 0;
-                dataTurnoExtra.forEach((value, index) => {
-                    b = value.id_calendario_ascensores;
-                    if (b == e[0].id) {
-                        a.push(value);
-                    }
-                });
-                this.fecha_inicio_turno_extra = a[0].fecha_inicio_turno_extra;
-                this.fecha_termino_turno_extra = a[0].fecha_termino_turno_extra;
-                this.id_turno_extra = a[0].id;
-            }
-
-            this.activePromptEditEvent = true;
         },
         editEvent() {
+            let idVDA = this.seleccionValDAdministrativoData[0]
+                .idValDAdministrativo;
+            let idVac = this.seleccionVacacionesData[0].idVacaciones;
+            let idRem = this.seleccionReemplazoData[0].idReemplazo;
+            let idTurExt = this.seleccionTurnoExtraData[0].idTurnoExtra;
+            let estado_ree = true;
+            let estado_tur_ext = true;
+            let estado_dia_adm = true;
+            let estado_vac = true;
+            if (idVDA == 1) {
+                estado_dia_adm = true;
+            } else {
+                estado_dia_adm = false;
+            }
+            if (idVac == 1) {
+                estado_vac = true;
+            } else {
+                estado_vac = false;
+            }
+            if (idTurExt == 1) {
+                estado_tur_ext = true;
+            } else {
+                estado_tur_ext = false;
+            }
+            if (idRem == 1) {
+                estado_ree = true;
+            } else {
+                estado_ree = false;
+            }
+
             const events = {
                 title: this.title,
                 startDate: this.startDate,
@@ -1881,13 +1866,11 @@ export default {
                 id_trabajador: this.seleccionTrabajador[0].id,
                 id_turno: this.seleccionTurno[0].id,
                 id_edificio: this.seleccionEdificio[0].id,
-                id_val_dia_administrativo: this
-                    .seleccionValDAdministrativoData[0].idValDAdministrativo,
-                id_val_vacaciones: this.seleccionVacacionesData[0].idVacaciones,
-                id_val_reemplazo: this.seleccionReemplazoData[0].idReemplazo,
-                id_val_turno_extra: this.seleccionTurnoExtraData[0]
-                    .idTurnoExtra,
-                id_tipo_dia_administrativo: this.seleccionDAdministrativo
+                id_val_dia_administrativo: idVDA,
+                id_val_vacaciones: idVac,
+                id_val_reemplazo: idRem,
+                id_val_turno_extra: idTurExt,
+                id_tipo_dia_administrativo: this.seleccionDAdministrativo[0]
                     .idDAdministrativo,
                 fecha_dia_administrativo: this.fecha_dia_administrativo,
                 fecha_inicio_vacaciones: this.fecha_inicio_vacaciones,
@@ -1907,20 +1890,16 @@ export default {
                 hora_termino: this.hora_termino,
                 dias_ejecucion: 0,
                 horas_ejecucion: 0,
-                rDAdmin: this.rDAdmin,
-                rVacaciones: this.rVacaciones,
-                rReemplazo: this.rReemplazo,
-                rTurnoExtra: this.rTurnoExtra,
                 id_dia_administrativo: this.id_dia_administrativo,
                 id_vacaciones: this.id_vacaciones,
                 id_reemplazo: this.id_reemplazo,
                 id_turno_extra: this.id_turno_extra,
                 id_calendario_ascensores: this.id_calendario,
                 classes: `event-${this.labelColor(this.labelLocal)}`,
-                estado_turno_extra: true,
-                estado_reemplazo: true,
-                estado_dia_administrativo: true,
-                estado_vacaciones: true
+                estado_turno_extra: estado_tur_ext,
+                estado_reemplazo: estado_ree,
+                estado_dia_administrativo: estado_dia_adm,
+                estado_vacaciones: estado_vac
             };
 
             this.events = {
@@ -1955,10 +1934,6 @@ export default {
                 hora_termino: null,
                 dias_ejecucion: 0,
                 horas_ejecucion: 0,
-                rDAdmin: "2",
-                rVacaciones: "2",
-                rReemplazo: "2",
-                rTurnoExtra: "2",
                 id_dia_administrativo: null,
                 id_vacaciones: null,
                 id_reemplazo: null,
@@ -1977,7 +1952,6 @@ export default {
             } else if (events.id_val_vacaciones == 1) {
                 this.cargaVacAsc();
             } else if (events.id_val_reemplazo == 1) {
-                c;
                 this.cargaRemAsc();
             } else if (events.id_val_turno_extra == 1) {
                 this.cargaTurExtAsc();
@@ -1997,6 +1971,7 @@ export default {
             // this.$store.dispatch("calendar/editEvent", events);
             this.activePromptEditEvent = false;
         },
+
         removeEvent() {
             this.$store.dispatch("calendar/removeEvent", this.id);
             this.activePromptEditEvent = false;

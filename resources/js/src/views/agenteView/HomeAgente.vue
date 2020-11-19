@@ -38,65 +38,11 @@
         <div class="vx-row">
             <div class="vx-col w-full lg:w-1/4 mb-base"></div>
             <div class="vx-col w-full lg:w-1/2 mb-base">
-                <vx-card title="Manual Rápido">
-                    <ul class="activity-timeline" vx-timeline>
-                        <li>
-                            <div class="timeline-icon bg-primary">
-                                <feather-icon
-                                    icon="LayoutIcon"
-                                    svgClasses="text-white stroke-current w-5 h-5"
-                                ></feather-icon>
-                            </div>
-                            <div class="timeline-info">
-                                <p class="font-semibold">Menú</p>
-                                <span class="activity-desc">
-                                    Encontrarás el acceso a la pantalla de
-                                    Inicio, el listado de tickets solicitados y
-                                    el calendario de trabajadores
-                                </span>
-                            </div>
-                            <small class="text-grey activity-e-time"></small>
-                        </li>
-                        <li>
-                            <div class="timeline-icon bg-warning">
-                                <feather-icon
-                                    icon="PlusSquareIcon"
-                                    svgClasses="text-white stroke-current w-5 h-5"
-                                ></feather-icon>
-                            </div>
-                            <div class="timeline-info">
-                                <p class="font-semibold">Calendario</p>
-                                <span class="activity-desc">
-                                    En esta seccion podras ver a los
-                                    trabajadores asignados para realizar una
-                                    solicitud con su hora y fecha de termino
-                                </span>
-                            </div>
-                            <small class="text-grey activity-e-time"></small>
-                        </li>
-                        <li>
-                            <div class="timeline-icon bg-danger">
-                                <feather-icon
-                                    icon="LoaderIcon"
-                                    svgClasses="text-white stroke-current w-5 h-5"
-                                ></feather-icon>
-                            </div>
-                            <div class="timeline-info">
-                                <p class="font-semibold">Listado de Tickets</p>
-                                <span class="activity-desc">
-                                    En esta sección podrás visulizar la
-                                    informacion de las solicitudes realizadas
-                                    por los usuarios, en ella podras asignarle
-                                    tecnicos para su revision, asignarles una
-                                    hora y fecha, confirmar su ubicacion y poder
-                                    generar actualizaciones del avance del
-                                    ticket.
-                                </span>
-                            </div>
-                            <small class="text-grey activity-e-time"></small>
-                        </li>
-                    </ul>
-                </vx-card>
+                <div class="vx-col w-full lg:w-full mb-base">
+                    <vx-card title="Activity Timeline">
+                        <vx-timeline :data="timelineData" />
+                    </vx-card>
+                </div>
             </div>
             <div class="vx-col w-full lg:w-1/4 mb-base"></div>
         </div>
@@ -104,10 +50,42 @@
 </template>
 <script>
 import axios from "axios";
+import VxTimeline from "@/components/timeline/VxTimeline";
 import router from "@/router";
 export default {
+    components: {
+        VxTimeline
+    },
     data() {
-        return { localVal: "http://10.66.248.51:8000" };
+        return {
+            localVal: "http://10.66.248.51:8000",
+            timelineData: [
+                {
+                    color: "danger",
+                    icon: "UsersIcon",
+                    title: "Menú",
+                    desc:
+                        "Encontrarás el acceso a la pantalla de Inicio, el listado de tickets solicitados y el calendario de trabajadores",
+                    time: "20 days ago"
+                },
+                {
+                    color: "success",
+                    icon: "LayoutIcon",
+                    title: "Calendario",
+                    desc:
+                        "En esta seccion podras ver a los trabajadores asignados para realizar una solicitud con su hora y fecha de termino",
+                    time: "25 days ago"
+                },
+                {
+                    color: "primary",
+                    icon: "TvIcon",
+                    title: "Listado de Tickets",
+                    desc:
+                        "En esta sección podrás visualizar la informacion de las solicitudes realizadas por los usuarios, en ella podras asignarle tecnicos para su revision, asignarles una hora y fecha, confirmar su ubicacion y poder generar actualizaciones del avance del ticket.",
+                    time: "28 days ago"
+                }
+            ]
+        };
     },
     methods: {
         detalleImpTicket() {

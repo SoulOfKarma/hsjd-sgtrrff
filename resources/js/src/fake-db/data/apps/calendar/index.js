@@ -23,6 +23,11 @@ const data = {
             text: "Reemplazo",
             value: "reemplazo",
             color: "dark"
+        },
+        {
+            text: "Turno Noche",
+            value: "tnoche",
+            color: "primary"
         }
     ]
 };

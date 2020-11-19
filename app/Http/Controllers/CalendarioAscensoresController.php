@@ -34,44 +34,31 @@ class CalendarioAscensoresController extends Controller
             $idVacaciones = $request->id_val_vacaciones;
             $idReemplazo = $request->id_val_reemplazo;
             $idTurnoExtra = $request->id_val_turno_extra;
-            $rDAdmin = $request->rDAdmin;
-            $rVacaciones = $request->rVacaciones;
-            $rReemplazo = $request->rReemplazo;
-            $rTurnoExtra = $request->rTurnoExtra;
             $idCalendario = $request->id_calendario_ascensores;
             $classesL = $request->classes;
 
-            if($idAdministrativo == 1 && $rDAdmin == 2){
-                DiaAdministrativoAscensores::where('id_calendario_ascensores',$idCalendario)
-                 ->update(['id_tipo_dia_administrativo' => $request->id_tipo_dia_administrativo,'fecha_dia_administrativo' => $request->fecha_dia_administrativo,
+            log::info($request);
+
+            if($idAdministrativo == 1){
+                
+                $get_All = DiaAdministrativoAscensores::UpdateOrCreate(['id_calendario_ascensores' => $request->id_calendario_ascensores,'id_tipo_dia_administrativo' => $request->id_tipo_dia_administrativo,'fecha_dia_administrativo' => $request->fecha_dia_administrativo,
                  'estado_dia_administrativo' => $request->estado_dia_administrativo]);
-            }else if($idAdministrativo == 1 && $rDAdmin == 1){
-               
-                $data = DiaAdministrativoAscensores::create($request->all());
-               
+
+                 log::info($get_All);
             }
-            if($idVacaciones == 1 && $rVacaciones == 2){
-                VacacionesAscensores::where('id_calendario_ascensores',$idCalendario)
-                 ->update(['fecha_inicio_vacaciones'=> $request->fecha_inicio_vacaciones,'fecha_termino_vacaciones' => $request->fecha_termino_vacaciones,
+            if($idVacaciones == 1 ){
+                 DiaAdministrativoAscensores::UpdateOrCreate(['id_calendario_ascensores' => $request->id_calendario_ascensores,'fecha_inicio_vacaciones'=> $request->fecha_inicio_vacaciones,'fecha_termino_vacaciones' => $request->fecha_termino_vacaciones,
                  'dias_vacaciones' => $request->dias_vacaciones, 'estado_vacaciones' => $request->estado_vacaciones]);
-            }else if($idVacaciones == 1 && $rVacaciones == 1){
-                VacacionesAscensores::create($request->all());
             }
-            if($idReemplazo == 1 && $rReemplazo == 2){
-                ReemplazoAscensores::where('id_calendario_ascensores',$idCalendario)
-                ->update(['id_trabajador_reemplazo' => $request->id_trabajador_reemplazo,'fecha_inicio_reemplazo' => $request->fecha_inicio_reemplazo,
+            if($idReemplazo == 1){
+                ReemplazoAscensores::UpdateOrCreate(['id_calendario_ascensores' => $request->id_calendario_ascensores,'id_trabajador_reemplazo' => $request->id_trabajador_reemplazo,'fecha_inicio_reemplazo' => $request->fecha_inicio_reemplazo,
                 'fecha_termino_reemplazo' => $request->fecha_termino_reemplazo,'dias_reemplazo' => $request->dias_reemplazo,'estado_reemplazo' => $request->estado_reemplazo]);
-            }else if($idReemplazo == 1 && $rReemplazo == 1){
-                ReemplazoAscensores::create($request->all());
             }
-            if($idTurnoExtra == 1 && $rTurnoExtra == 2){
-                TurnoExtraAscensores::where('id_calendario_ascensores',$idCalendario)
-                ->update(['hora_inicio_turno_extra' => $request->hora_inicio_turno_extra,'hora_termino_turno_extra' => $request->hora_termino_turno_extra,
+            if($idTurnoExtra == 1){
+                TurnoExtraAscensores::UpdateOrCreate(['id_calendario_ascensores' => $request->id_calendario_ascensores,'hora_inicio_turno_extra' => $request->hora_inicio_turno_extra,'hora_termino_turno_extra' => $request->hora_termino_turno_extra,
                 'fecha_inicio_turno_extra' => $request->fecha_inicio_turno_extra,'fecha_termino_turno_extra'=> $request->fecha_termino_turno_extra,
                 'dias_ejecucion_turno_extra'=> $request->dias_ejecucion_turno_extra,'horas_ejecucion_turno_extra'=> $request->horas_ejecucion_turno_extra,
                 'estado_turno_extra' => $request->estado_turno_extra]);
-            }else if($idTurnoExtra == 1 && $rTurnoExtra == 1){
-                TurnoExtraAscensores::create($request->all());
             }
 
             CalendarioAscensores::where('id',$idCalendario)
@@ -90,16 +77,19 @@ class CalendarioAscensoresController extends Controller
     }
 
     public function get_data_esp_asc(Request $request){
-           
-            $get_all = CalendarioAscensores::select('*')
+        try {
+            $get_alls = CalendarioAscensores::select('*')
             ->leftjoin('dia_administrativo_ascensores','calendario_ascensores.id','=','dia_administrativo_ascensores.id_calendario_ascensores')
             ->leftjoin('vacaciones_ascensores','calendario_ascensores.id','=','vacaciones_ascensores.id_calendario_ascensores')
             ->leftjoin('reemplazo_ascensores','calendario_ascensores.id','=','reemplazo_ascensores.id_calendario_ascensores')
             ->leftjoin('turno_extra_ascensores','calendario_ascensores.id','=','turno_extra_ascensores.id_calendario_ascensores')
             ->leftjoin('trabajadores','reemplazo_ascensores.id_trabajador_reemplazo','=','trabajadores.id')
             ->where('calendario_ascensores.id',$request->id)
-            ->get();
+            ->first();
+            return $get_alls;
+        } catch (\Throwable $th) {
+            return $th;
+        }
             
-            return $get_all;
     }
 }
