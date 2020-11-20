@@ -4,13 +4,7 @@
             <div
                 class="router-header flex flex-wrap items-center mb-6"
                 style="margin-left:10px;"
-            >
-                <div
-                    class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
-                >
-                    <h2 class="mb-1">Página de Inicio</h2>
-                </div>
-            </div>
+            ></div>
         </div>
         <div class="vx-row">
             <div class="vx-col w-full lg:w-1/4 mb-base"></div>
@@ -39,7 +33,7 @@
             <div class="vx-col w-full lg:w-1/4 mb-base"></div>
             <div class="vx-col w-full lg:w-1/2 mb-base">
                 <div class="vx-col w-full lg:w-full mb-base">
-                    <vx-card title="Activity Timeline">
+                    <vx-card title="Informacion del Perfil">
                         <vx-timeline :data="timelineData" />
                     </vx-card>
                 </div>
@@ -65,24 +59,21 @@ export default {
                     icon: "UsersIcon",
                     title: "Menú",
                     desc:
-                        "Encontrarás el acceso a la pantalla de Inicio, el listado de tickets solicitados y el calendario de trabajadores",
-                    time: "20 days ago"
+                        "Encontrarás el acceso a la pantalla de Inicio, el listado de tickets solicitados y el calendario de trabajadores"
                 },
                 {
                     color: "success",
                     icon: "LayoutIcon",
                     title: "Calendario",
                     desc:
-                        "En esta seccion podras ver a los trabajadores asignados para realizar una solicitud con su hora y fecha de termino",
-                    time: "25 days ago"
+                        "En esta seccion podras ver a los trabajadores asignados para realizar una solicitud con su hora y fecha de termino"
                 },
                 {
                     color: "primary",
                     icon: "TvIcon",
                     title: "Listado de Tickets",
                     desc:
-                        "En esta sección podrás visualizar la informacion de las solicitudes realizadas por los usuarios, en ella podras asignarle tecnicos para su revision, asignarles una hora y fecha, confirmar su ubicacion y poder generar actualizaciones del avance del ticket.",
-                    time: "28 days ago"
+                        "En esta sección podrás visualizar la informacion de las solicitudes realizadas por los usuarios, en ella podras asignarle tecnicos para su revision, asignarles una hora y fecha, confirmar su ubicacion y poder generar actualizaciones del avance del ticket."
                 }
             ]
         };

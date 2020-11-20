@@ -5,29 +5,24 @@ const data = {
     events: [],
     labels: [
         {
-            text: "Vacaciones",
-            value: "vacaciones",
-            color: "success"
-        },
-        {
-            text: "Dia Administrativo",
-            value: "dadministrativo",
-            color: "warning"
-        },
-        {
-            text: "Turno Extra",
-            value: "turnoextra",
-            color: "danger"
-        },
-        {
-            text: "Reemplazo",
-            value: "reemplazo",
+            text: "Solicitudes Adicionales",
+            value: "sadicionales",
             color: "dark"
         },
         {
             text: "Turno Noche",
             value: "tnoche",
-            color: "primary"
+            color: "warning"
+        },
+        {
+            text: "Turno Dia",
+            value: "tdia",
+            color: "success"
+        },
+        {
+            text: "Libre",
+            value: "libre",
+            color: "danger"
         }
     ]
 };

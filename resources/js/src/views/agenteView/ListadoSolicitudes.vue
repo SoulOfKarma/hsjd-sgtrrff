@@ -133,6 +133,7 @@
             </vs-table>
         </vx-card>
         <vs-popup
+            :key="componentKey"
             classContent="popup-example"
             title="Realmente desea eliminar el ticket?"
             :active.sync="popupActive2"
@@ -204,6 +205,20 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
+import Vue from "vue";
+import Vuesax from "vuesax";
+
+Vue.use(Vuesax, {
+    theme: {
+        colors: {
+            primary: "#5b3cc4",
+            success: "rgb(23, 201, 100)",
+            danger: "rgb(242, 19, 93)",
+            warning: "rgb(255, 130, 0)",
+            dark: "rgb(36, 33, 69)"
+        }
+    }
+});
 
 export default {
     components: {
@@ -222,6 +237,7 @@ export default {
                     toolbar: [["bold", "italic", "underline", "strike"]]
                 }
             },
+            componentKey: 0,
             dataEliminacion: {
                 id_solicitud: 0,
                 descripcionSeguimiento: "",
@@ -257,7 +273,9 @@ export default {
             this.value2 = uuid;
             this.popupActive2 = true;
         },
-
+        forceRerender() {
+            this.componentKey += 1;
+        },
         cargarSolicitudes() {
             axios
                 .get(this.localVal + "/api/Agente/GetSolicitudTickets")
@@ -435,6 +453,7 @@ export default {
     beforeMount() {
         this.cargarSolicitudes();
         this.openLoadingColor();
+        this.forceRerender();
     }
 };
 </script>

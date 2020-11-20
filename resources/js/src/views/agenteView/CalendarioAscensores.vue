@@ -1,132 +1,143 @@
 <template>
     <div id="simple-calendar-app">
-        <div class="vx-card no-scroll-content">
-            <calendar-view
-                ref="calendar"
-                :displayPeriodUom="calendarView"
-                :show-date="showDate"
-                :events="listadoCalendarioAsc"
-                :eventTop="windowWidth <= 400 ? '2rem' : '3rem'"
-                eventBorderHeight="0px"
-                eventContentHeight="1.65rem"
-                class="theme-default"
-                @click-date="openAddNewEvent"
-                @click-event="openEditEvent"
-                @drop-on-date="eventDragged"
-            >
-                <div slot="header" class="mb-4">
-                    <div class="vx-row no-gutter">
-                        <!-- Month Name -->
-                        <div class="vx-col w-1/3 items-center sm:flex hidden">
-                            <!-- Add new event button -->
-                            <vs-button
+        <vue-easy-print tableShow ref="easyPrint">
+            <div class="vx-card no-scroll-content">
+                <calendar-view
+                    ref="calendar"
+                    :displayPeriodUom="calendarView"
+                    :show-date="showDate"
+                    :events="listadoCalendarioAsc"
+                    :eventTop="windowWidth <= 400 ? '2rem' : '3rem'"
+                    eventBorderHeight="0px"
+                    eventContentHeight="1.65rem"
+                    class="theme-default"
+                    @click-date="openAddNewEvent"
+                    @click-event="openEditEvent"
+                    @drop-on-date="eventDragged"
+                >
+                    <div slot="header" class="mb-4">
+                        <div class="vx-row no-gutter">
+                            <!-- Month Name -->
+                            <div
+                                class="vx-col w-1/3 items-center sm:flex hidden"
+                            >
+                                <!-- Add new event button -->
+                                <!-- <vs-button
                                 icon-pack="feather"
                                 icon="icon-plus"
                                 @click="promptAddNewEvent(new Date())"
                                 >Agregar</vs-button
-                            >
-                        </div>
-
-                        <!-- Current Month -->
-                        <div
-                            class="vx-col sm:w-1/3 w-full sm:my-0 my-3 flex sm:justify-end justify-center order-last"
-                        >
-                            <div class="flex items-center">
-                                <feather-icon
-                                    :icon="
-                                        $vs.rtl
-                                            ? 'ChevronRightIcon'
-                                            : 'ChevronLeftIcon'
-                                    "
-                                    @click="updateMonth(-1)"
-                                    svgClasses="w-5 h-5 m-1"
-                                    class="cursor-pointer bg-primary text-white rounded-full"
-                                />
-
-                                <span
-                                    class="mx-3 text-xl font-medium whitespace-no-wrap"
-                                    >{{ showDate | month }}</span
+                            > -->
+                                <vs-button
+                                    icon-pack="feather"
+                                    icon="icon icon-file"
+                                    @click="printInvoice"
+                                    >Print</vs-button
                                 >
-
-                                <feather-icon
-                                    :icon="
-                                        $vs.rtl
-                                            ? 'ChevronLeftIcon'
-                                            : 'ChevronRightIcon'
-                                    "
-                                    @click="updateMonth(1)"
-                                    svgClasses="w-5 h-5 m-1"
-                                    class="cursor-pointer bg-primary text-white rounded-full"
-                                />
                             </div>
-                        </div>
 
-                        <div class="vx-col sm:w-1/3 w-full flex justify-center">
-                            <template
-                                v-for="(view, index) in calendarViewTypes"
-                            >
-                                <vs-button
-                                    v-if="calendarView === view.val"
-                                    :key="String(view.val) + 'filled'"
-                                    type="filled"
-                                    class="p-3 md:px-8 md:py-3"
-                                    :class="{
-                                        'border-l-0 rounded-l-none': index,
-                                        'rounded-r-none':
-                                            calendarViewTypes.length !==
-                                            index + 1
-                                    }"
-                                    @click="calendarView = view.val"
-                                    >{{ view.label }}</vs-button
-                                >
-                                <vs-button
-                                    v-else
-                                    :key="String(view.val) + 'border'"
-                                    type="border"
-                                    class="p-3 md:px-8 md:py-3"
-                                    :class="{
-                                        'border-l-0 rounded-l-none': index,
-                                        'rounded-r-none':
-                                            calendarViewTypes.length !==
-                                            index + 1
-                                    }"
-                                    @click="calendarView = view.val"
-                                    >{{ view.label }}</vs-button
-                                >
-                            </template>
-                        </div>
-                    </div>
-
-                    <div class="vx-row sm:flex hidden mt-4">
-                        <div class="vx-col w-full flex">
-                            <!-- Labels -->
+                            <!-- Current Month -->
                             <div
-                                class="flex flex-wrap sm:justify-start justify-center"
+                                class="vx-col sm:w-1/3 w-full sm:my-0 my-3 flex sm:justify-end justify-center order-last"
                             >
+                                <div class="flex items-center">
+                                    <feather-icon
+                                        :icon="
+                                            $vs.rtl
+                                                ? 'ChevronRightIcon'
+                                                : 'ChevronLeftIcon'
+                                        "
+                                        @click="updateMonth(-1)"
+                                        svgClasses="w-5 h-5 m-1"
+                                        class="cursor-pointer bg-primary text-white rounded-full"
+                                    />
+
+                                    <span
+                                        class="mx-3 text-xl font-medium whitespace-no-wrap"
+                                        >{{ showDate | month }}</span
+                                    >
+
+                                    <feather-icon
+                                        :icon="
+                                            $vs.rtl
+                                                ? 'ChevronLeftIcon'
+                                                : 'ChevronRightIcon'
+                                        "
+                                        @click="updateMonth(1)"
+                                        svgClasses="w-5 h-5 m-1"
+                                        class="cursor-pointer bg-primary text-white rounded-full"
+                                    />
+                                </div>
+                            </div>
+
+                            <div
+                                class="vx-col sm:w-1/3 w-full flex justify-center"
+                            >
+                                <template
+                                    v-for="(view, index) in calendarViewTypes"
+                                >
+                                    <vs-button
+                                        v-if="calendarView === view.val"
+                                        :key="String(view.val) + 'filled'"
+                                        type="filled"
+                                        class="p-3 md:px-8 md:py-3"
+                                        :class="{
+                                            'border-l-0 rounded-l-none': index,
+                                            'rounded-r-none':
+                                                calendarViewTypes.length !==
+                                                index + 1
+                                        }"
+                                        @click="calendarView = view.val"
+                                        >{{ view.label }}</vs-button
+                                    >
+                                    <vs-button
+                                        v-else
+                                        :key="String(view.val) + 'border'"
+                                        type="border"
+                                        class="p-3 md:px-8 md:py-3"
+                                        :class="{
+                                            'border-l-0 rounded-l-none': index,
+                                            'rounded-r-none':
+                                                calendarViewTypes.length !==
+                                                index + 1
+                                        }"
+                                        @click="calendarView = view.val"
+                                        >{{ view.label }}</vs-button
+                                    >
+                                </template>
+                            </div>
+                        </div>
+
+                        <div class="vx-row sm:flex hidden mt-4">
+                            <div class="vx-col w-full flex">
+                                <!-- Labels -->
                                 <div
-                                    v-for="(label, index) in calendarLabels"
-                                    :key="index"
-                                    class="flex items-center mr-4 mb-2"
+                                    class="flex flex-wrap sm:justify-start justify-center"
                                 >
                                     <div
-                                        class="h-3 w-3 inline-block rounded-full mr-2"
-                                        :class="'bg-' + label.color"
-                                    ></div>
-                                    <span>{{ label.text }}</span>
-                                </div>
-                                <div class="flex items-center mr-4 mb-2">
-                                    <div
-                                        class="h-3 w-3 inline-block rounded-full mr-2 bg-primary"
-                                    ></div>
-                                    <span>Ninguno</span>
+                                        v-for="(label, index) in calendarLabels"
+                                        :key="index"
+                                        class="flex items-center mr-4 mb-2"
+                                    >
+                                        <div
+                                            class="h-3 w-3 inline-block rounded-full mr-2"
+                                            :class="'bg-' + label.color"
+                                        ></div>
+                                        <span>{{ label.text }}</span>
+                                    </div>
+                                    <div class="flex items-center mr-4 mb-2">
+                                        <div
+                                            class="h-3 w-3 inline-block rounded-full mr-2 bg-primary"
+                                        ></div>
+                                        <span>Ninguno</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </calendar-view>
-        </div>
-
+                </calendar-view>
+            </div>
+        </vue-easy-print>
         <!-- ADD EVENT -->
 
         <vs-popup
@@ -207,6 +218,7 @@
                         label="tra_nombre_apellido"
                         :options="listadoTrabajadores"
                         v-model="seleccionTrabajador"
+                        @input="arrayTrabajador"
                     ></v-select>
                 </div>
             </div>
@@ -218,6 +230,7 @@
                         label="descripcionTurno"
                         :options="listadoTurno"
                         v-model="seleccionTurno"
+                        @input="arrayTurno"
                     ></v-select>
                 </div>
             </div>
@@ -229,6 +242,7 @@
                         label="descripcionEdificio"
                         :options="listadoEdificios"
                         v-model="seleccionEdificio"
+                        @input="arrayEdificio"
                     ></v-select>
                 </div>
             </div>
@@ -286,7 +300,11 @@
                 </div>
 
                 <div class="w-1/2 m-2">
-                    <vs-button class="w-full" color="danger" type="filled"
+                    <vs-button
+                        class="w-full"
+                        color="danger"
+                        type="filled"
+                        @click="cerrarVentana"
                         >Cerrar</vs-button
                     >
                 </div>
@@ -373,6 +391,7 @@
                         label="tra_nombre_apellido"
                         :options="listadoTrabajadores"
                         v-model="seleccionTrabajador"
+                        @input="arrayTrabajador"
                     ></v-select>
                 </div>
             </div>
@@ -385,6 +404,7 @@
                         label="descripcionTurno"
                         :options="listadoTurno"
                         v-model="seleccionTurno"
+                        @input="arrayTurno"
                     ></v-select>
                 </div>
             </div>
@@ -397,6 +417,7 @@
                         label="descripcionEdificio"
                         :options="listadoEdificios"
                         v-model="seleccionEdificio"
+                        @input="arrayEdificio"
                     ></v-select>
                 </div>
             </div>
@@ -553,6 +574,7 @@
                             label="tra_nombre_apellido"
                             :options="listadoTrabajadores"
                             v-model="seleccionTrabajadorReemplazo"
+                            @input="arrayTreemplazo"
                         ></v-select>
                     </div>
                 </div>
@@ -937,6 +959,21 @@ import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import axios from "axios";
 import { InfoIcon } from "vue-feather-icons";
+import Vue from "vue";
+import Vuesax from "vuesax";
+import vueEasyPrint from "vue-easy-print";
+
+Vue.use(Vuesax, {
+    theme: {
+        colors: {
+            primary: "#5b3cc4",
+            success: "rgb(23, 201, 100)",
+            danger: "rgb(242, 19, 93)",
+            warning: "rgb(255, 130, 0)",
+            dark: "rgb(36, 33, 69)"
+        }
+    }
+});
 
 export default {
     components: {
@@ -945,14 +982,8 @@ export default {
         Datepicker,
         "v-select": vSelect,
         flatPickr,
-        InfoIcon
-    },
-    colors: {
-        primary: "#5b3cc4",
-        success: "rgb(23, 201, 100)",
-        danger: "rgb(242, 19, 93)",
-        warning: "rgb(255, 130, 0)",
-        dark: "rgb(66, 27, 150)"
+        InfoIcon,
+        vueEasyPrint
     },
     data() {
         return {
@@ -1283,10 +1314,12 @@ export default {
                 tra_nombre_apellido: "Seleccione al Trabajador"
             },
 
-            seleccionTrabajadorReemplazo: {
-                id: 0,
-                tra_nombre_apellido: "Seleccione al Trabajador"
-            },
+            seleccionTrabajadorReemplazo: [
+                {
+                    id: 0,
+                    tra_nombre_apellido: "Seleccione al Trabajador"
+                }
+            ],
 
             listadoCalendarioAsc: [],
 
@@ -1358,11 +1391,10 @@ export default {
         },
         labelColor() {
             return label => {
-                if (label === "vacaciones") return "success";
-                else if (label === "dadministrativo") return "warning";
-                else if (label === "reemplazo") return "dark";
-                else if (label === "turnoextra") return "danger";
-                else if (label === "tnoche") return "primary";
+                if (label === "sadicionales") return "dark";
+                else if (label === "tnoche") return "warning";
+                else if (label === "tdia") return "success";
+                else if (label === "libre") return "danger";
             };
         },
         windowWidth() {
@@ -1416,6 +1448,9 @@ export default {
         volver() {
             this.activePromptEditEvent = false;
         },
+        cerrarVentana() {
+            this.activePromptAddEvent = false;
+        },
         //Seleccion como Array
         arrayDiaAdm() {
             let a = this.listadoValDAdministrativo;
@@ -1430,6 +1465,50 @@ export default {
             });
 
             this.seleccionValDAdministrativoData = b;
+        },
+        arrayTrabajador() {
+            let a = this.listadoTrabajadores;
+            let b = [];
+            a.forEach((value, index) => {
+                if (value.id == this.seleccionTrabajador.id) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionTrabajador = b;
+        },
+        arrayTurno() {
+            let a = this.listadoTurno;
+            let b = [];
+            a.forEach((value, index) => {
+                if (value.id == this.seleccionTurno.id) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionTurno = b;
+        },
+        arrayEdificio() {
+            let a = this.listadoEdificios;
+            let b = [];
+            a.forEach((value, index) => {
+                if (value.id == this.seleccionEdificio.id) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionEdificio = b;
+        },
+        arrayTreemplazo() {
+            let a = this.listadoTrabajadores;
+            let b = [];
+            a.forEach((value, index) => {
+                if (value.id == this.seleccionTrabajadorReemplazo.id) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionTrabajadorReemplazo = b;
         },
         arrayTipoDiaAdm() {
             let a = this.listadoDAdministrativo;
@@ -1568,9 +1647,9 @@ export default {
             this.events.descripcion_ascensores = this.descripcion_ascensores;
             this.events.startDate = this.startDate;
             this.events.endDate = this.endDate;
-            this.events.id_turno = this.seleccionTurno.id;
-            this.events.id_trabajador = this.seleccionTrabajador.id;
-            this.events.id_edificio = this.seleccionEdificio.id;
+            this.events.id_turno = this.seleccionTurno[0].id;
+            this.events.id_trabajador = this.seleccionTrabajador[0].id;
+            this.events.id_edificio = this.seleccionEdificio[0].id;
             this.events.hora_inicio = this.hora_inicio;
             this.events.hora_termino = this.hora_termino;
             this.events.label = this.labelLocal;
@@ -1823,6 +1902,7 @@ export default {
 
                 this.activePromptEditEvent = true;
             } catch (error) {
+                console.log(error);
                 console.log("Presionaste muy rapido vaquero");
             }
         },
@@ -1876,7 +1956,8 @@ export default {
                 fecha_inicio_vacaciones: this.fecha_inicio_vacaciones,
                 fecha_termino_vacaciones: this.fecha_termino_vacaciones,
                 dias_vacaciones: 0,
-                id_trabajador_reemplazo: this.seleccionTrabajadorReemplazo.id,
+                id_trabajador_reemplazo: this.seleccionTrabajadorReemplazo[0]
+                    .id,
                 fecha_inicio_reemplazo: this.fecha_inicio_reemplazo,
                 fecha_termino_reemplazo: this.fecha_termino_reemplazo,
                 dias_reemplazo: 0,
@@ -1978,11 +2059,16 @@ export default {
         },
         eventDragged(event, date) {
             this.$store.dispatch("calendar/eventDragged", { event, date });
+        },
+        printInvoice() {
+            this.$refs.easyPrint.print();
         }
     },
     created() {
         this.$vs.theme({
-            dark: "rgb(37, 172, 249)" // my new color
+            dark: "rgb(37, 172, 249)", // my new color
+            primary: "rgb(111, 121, 242 )",
+            danger: "rgb(233, 206, 36 )"
         });
         this.$store.registerModule("calendar", moduleCalendar);
         this.$store.dispatch("calendar/fetchEvents");
@@ -1996,8 +2082,16 @@ export default {
         this.cargaVacAsc();
         this.cargaTurExtAsc();
     },
+    mounted() {
+        this.$emit("setAppClasses", "invoice-page");
+    },
     beforeDestroy() {
         this.$store.unregisterModule("calendar");
+        this.$vs.theme({
+            dark: "rgb(0, 0, 0)", // my new color
+            primary: "rgb(113, 96, 237)",
+            danger: "rgb(237, 62, 62)"
+        });
     }
 };
 </script>
@@ -2009,5 +2103,82 @@ export default {
 <style>
 .con-vs-popup .vs-popup {
     width: auto !important;
+}
+</style>
+
+<style lang="css">
+.con-colors ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.con-colors li {
+    display: block;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background: rgb(155, 250, 149);
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    cursor: default;
+}
+.primary {
+    background: rgb(var(--primary)) !important;
+    box-shadow: 0px 15px 40px -10px rgba(var(--primary), 0.9);
+}
+.success {
+    background: rgb(var(--success)) !important;
+    box-shadow: 0px 15px 40px -10px rgba(var(--success), 0.9);
+}
+.danger {
+    background: rgb(var(--danger)) !important;
+    box-shadow: 0px 15px 40px -10px rgba(var(--danger), 0.9);
+}
+.warning {
+    background: rgb(var(--warning)) !important;
+    box-shadow: 0px 15px 40px -10px rgba(var(--warning), 0.9);
+}
+.dark {
+    background: rgb(var(--dark)) !important;
+    box-shadow: 0px 15px 40px -10px rgba(var(--dark), 0.9);
+}
+</style>
+
+<style lang="scss">
+@media print {
+    .simple-calendar-app {
+        * {
+            visibility: hidden;
+        }
+
+        #content-area {
+            margin: 0 !important;
+        }
+
+        .vs-con-table {
+            .vs-con-tbody {
+                overflow: hidden !important;
+            }
+        }
+
+        #invoice-container,
+        #invoice-container * {
+            visibility: visible;
+        }
+        #invoice-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            box-shadow: none;
+        }
+    }
+}
+
+@page {
+    size: auto;
 }
 </style>

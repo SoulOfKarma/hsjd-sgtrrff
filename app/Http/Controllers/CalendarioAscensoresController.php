@@ -47,7 +47,7 @@ class CalendarioAscensoresController extends Controller
                  log::info($get_All);
             }
             if($idVacaciones == 1 ){
-                 DiaAdministrativoAscensores::UpdateOrCreate(['id_calendario_ascensores' => $request->id_calendario_ascensores,'fecha_inicio_vacaciones'=> $request->fecha_inicio_vacaciones,'fecha_termino_vacaciones' => $request->fecha_termino_vacaciones,
+                VacacionesAscensores::UpdateOrCreate(['id_calendario_ascensores' => $request->id_calendario_ascensores,'fecha_inicio_vacaciones'=> $request->fecha_inicio_vacaciones,'fecha_termino_vacaciones' => $request->fecha_termino_vacaciones,
                  'dias_vacaciones' => $request->dias_vacaciones, 'estado_vacaciones' => $request->estado_vacaciones]);
             }
             if($idReemplazo == 1){
