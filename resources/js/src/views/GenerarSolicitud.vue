@@ -192,7 +192,7 @@ export default {
         listadoUnidadEspData: [],
         listadoUsuarios: [],
         localVal: "http://10.66.248.51:8000",
-        apiInformatica: "http://10.4.237.33/ticket",
+        apiInformatica: "http://10.4.237.33:80/ticket/public/postedform",
         uuidC: "",
 
         solicitud: {
@@ -525,93 +525,125 @@ export default {
                 position: "top-right"
             });
         },
-        guardarSolicitud() {
-            if (
-                this.solicitud.descripcionP.trim() === "" ||
-                this.solicitud.descripcionP.length < 15
-            ) {
-                this.mensajeError =
-                    "La descripcion no supera los 15 caracteres";
-                this.errorDescripcion(this.mensajeError);
-            } else if (
-                this.solicitud.tituloP.trim() === "" ||
-                this.solicitud.tituloP.length < 10
-            ) {
-                this.mensajeError = "el titulo no supera los 10 caracteres";
-                this.errorTitulo(this.mensajeError);
-            } else if (this.seleccionEdificio.id == 0) {
-                this.mensajeError = "el Edificio";
-                this.errorDrop(this.mensajeError);
-            } else if (this.seleccionServicio.id == 0) {
-                this.mensajeError = "el servicio";
-                this.errorDrop(this.mensajeError);
-            } else if (this.seleccionUnidadEsp.id == 0) {
-                this.mensajeError = "la Unidad especifica";
-                this.errorDrop(this.mensajeError);
-            } else if (this.seleccionReparacion.id == 0) {
-                this.mensajeError = "el tipo de reparacion";
-                this.errorDrop(this.mensajeError);
-            } else if (this.seleccionCategoria.id == 0) {
-                this.mensajeError = "el tipo de categoria";
-                this.errorDrop(this.mensajeError);
-            } else {
-                if (this.seleccionCategoria.id == 5) {
-                    this.solicitudInformatica.first_name = sessionStorage.getItem(
-                        "nombre"
-                    );
-                    this.solicitudInformatica.last_name = sessionStorage.getItem(
-                        "apellido"
-                    );
-                    this.solicitudInformatica.subject = this.solicitud.tituloP;
-                    this.solicitudInformatica.body = this.solicitud.descripcionP;
-                    this.solicitudInformatica.email = this.listadoUsuarios.email;
-                    this.solicitudInformatica.phone = this.listadoUsuarios.anexo;
-                    this.solicitudInformatica.token = this.listadoUsuarios.api_token;
-                    const solicitudNueva = this.solicitudInformatica;
-                    /*  axios
-                        .post(this.apiInformatica, solicitudNueva)
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            this.mensajeGuardado();
-                            //setTimeout(() => {
-                           //     router.back();
-                         //   }, 5000);
-                            this.limpiar();
-                        }); */
+        async guardarSolicitud() {
+            try {
+                if (
+                    this.solicitud.descripcionP.trim() === "" ||
+                    this.solicitud.descripcionP.length < 15
+                ) {
+                    this.mensajeError =
+                        "La descripcion no supera los 15 caracteres";
+                    this.errorDescripcion(this.mensajeError);
+                } else if (
+                    this.solicitud.tituloP.trim() === "" ||
+                    this.solicitud.tituloP.length < 10
+                ) {
+                    this.mensajeError = "el titulo no supera los 10 caracteres";
+                    this.errorTitulo(this.mensajeError);
+                } else if (this.seleccionEdificio.id == 0) {
+                    this.mensajeError = "el Edificio";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionServicio.id == 0) {
+                    this.mensajeError = "el servicio";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionUnidadEsp.id == 0) {
+                    this.mensajeError = "la Unidad especifica";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionReparacion.id == 0) {
+                    this.mensajeError = "el tipo de reparacion";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionCategoria.id == 0) {
+                    this.mensajeError = "el tipo de categoria";
+                    this.errorDrop(this.mensajeError);
                 } else {
-                    this.solicitud.id_edificio = this.seleccionEdificio[0].id;
-                    this.solicitud.id_servicio = this.seleccionServicio[0].id;
-                    this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
-                    this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
-                    this.solicitud.id_categoria = this.seleccionCategoria.id;
-                    var newElement = document.createElement("div");
-                    newElement.innerHTML = this.solicitud.descripcionP;
-                    this.solicitud.descripcionCorreo = newElement.textContent;
-                    const solicitudNueva = this.solicitud;
-                    this.openLoadingColor();
-                    this.solicitud = {
-                        descripcionP: "",
-                        tituloP: "",
-                        id_user: sessionStorage.getItem("id"),
-                        id_estado: 1,
-                        id_edificio: 0,
-                        id_servicio: 0,
-                        id_ubicacionEx: 0,
-                        id_tipoReparacion: 0,
-                        id_categoria: 0
-                    };
-                    axios
-                        .post(
-                            this.localVal + "/api/Usuario/PostSolicitud",
-                            solicitudNueva
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            this.mensajeGuardado();
+                    if (this.seleccionCategoria.id == 5) {
+                        this.solicitudInformatica.first_name = sessionStorage.getItem(
+                            "nombre"
+                        );
+                        this.solicitudInformatica.last_name = sessionStorage.getItem(
+                            "apellido"
+                        );
+                        this.solicitudInformatica.subject = this.solicitud.tituloP;
+                        this.solicitudInformatica.body = this.solicitud.descripcionP;
+                        this.solicitudInformatica.email = this.listadoUsuarios.email;
+                        this.solicitudInformatica.phone = this.listadoUsuarios.anexo;
+                        this.solicitudInformatica.token = sessionStorage.getItem(
+                            "api_token"
+                        );
+                        const solicitudNueva = this.solicitudInformatica;
 
-                            this.limpiar();
-                        });
+                        await axios
+                            .post(this.apiInformatica, solicitudNueva, {
+                                headers: {
+                                    api_key: this.solicitudInformatica.api_key,
+                                    "Access-Control-Allow-Origin": "*",
+                                    "Content-type": "application/json"
+                                }
+                            })
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                this.mensajeGuardado();
+                                //setTimeout(() => {
+                                //     router.back();
+                                //   }, 5000);
+                                this.limpiar();
+                            })
+                            .catch(function(error) {
+                                if (error.response) {
+                                    // The request was made and the server responded with a status code
+                                    // that falls out of the range of 2xx
+                                    console.log(error.response.data);
+                                    console.log(error.response.status);
+                                    console.log(error.response.headers);
+                                } else if (error.request) {
+                                    // The request was made but no response was received
+                                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                    // http.ClientRequest in node.js
+                                    console.log(error.request);
+                                } else {
+                                    // Something happened in setting up the request that triggered an Error
+                                    console.log("Error", error.message);
+                                }
+                                console.log(error.config);
+                            });
+                    } else {
+                        this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                        this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                        this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
+                        this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                        this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.solicitud.descripcionP;
+                        this.solicitud.descripcionCorreo =
+                            newElement.textContent;
+                        const solicitudNueva = this.solicitud;
+                        this.openLoadingColor();
+                        this.solicitud = {
+                            descripcionP: "",
+                            tituloP: "",
+                            id_user: sessionStorage.getItem("id"),
+                            id_estado: 1,
+                            id_edificio: 0,
+                            id_servicio: 0,
+                            id_ubicacionEx: 0,
+                            id_tipoReparacion: 0,
+                            id_categoria: 0
+                        };
+                        axios
+                            .post(
+                                this.localVal + "/api/Usuario/PostSolicitud",
+                                solicitudNueva
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                this.mensajeGuardado();
+
+                                this.limpiar();
+                            });
+                    }
                 }
+            } catch (error) {
+                console.log(error);
             }
         },
         openLoadingColor() {

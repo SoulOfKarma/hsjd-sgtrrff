@@ -1,7 +1,122 @@
 <template>
     <div id="simple-calendar-app">
+        <div class="vx-col md:w-1/1 w-full mb-base">
+            <vx-card>
+                <div class="vx-row no-gutter">
+                    <!-- Month Name -->
+                    <div class="vx-col w-1/3 items-center sm:flex hidden">
+                        <!-- Add new event button -->
+                        <!-- <vs-button
+                                icon-pack="feather"
+                                icon="icon-plus"
+                                @click="promptAddNewEvent(new Date())"
+                                >Agregar</vs-button
+                            > -->
+                        <vs-button
+                            icon-pack="feather"
+                            icon="icon icon-file"
+                            @click="printInvoice"
+                            >Imprimir</vs-button
+                        >
+                    </div>
+
+                    <!-- Current Month -->
+                    <div
+                        class="vx-col sm:w-1/3 w-full sm:my-0 my-3 flex sm:justify-end justify-center order-last"
+                    >
+                        <div class="flex items-center">
+                            <feather-icon
+                                :icon="
+                                    $vs.rtl
+                                        ? 'ChevronRightIcon'
+                                        : 'ChevronLeftIcon'
+                                "
+                                @click="updateMonth(-1)"
+                                svgClasses="w-5 h-5 m-1"
+                                class="cursor-pointer bg-primary text-white rounded-full"
+                            />
+
+                            <span
+                                class="mx-3 text-xl font-medium whitespace-no-wrap"
+                                >{{ showDate | month }}</span
+                            >
+
+                            <feather-icon
+                                :icon="
+                                    $vs.rtl
+                                        ? 'ChevronLeftIcon'
+                                        : 'ChevronRightIcon'
+                                "
+                                @click="updateMonth(1)"
+                                svgClasses="w-5 h-5 m-1"
+                                class="cursor-pointer bg-primary text-white rounded-full"
+                            />
+                        </div>
+                    </div>
+                    <!-- Aca va el temp -->
+                    <div class="vx-col sm:w-1/3 w-full flex justify-center">
+                        <template v-for="(view, index) in calendarViewTypes">
+                            <vs-button
+                                v-if="calendarView === view.val"
+                                :key="String(view.val) + 'filled'"
+                                type="filled"
+                                class="p-3 md:px-8 md:py-3"
+                                :class="{
+                                    'border-l-0 rounded-l-none': index,
+                                    'rounded-r-none':
+                                        calendarViewTypes.length !== index + 1
+                                }"
+                                @click="calendarView = view.val"
+                                >{{ view.label }}</vs-button
+                            >
+                            <vs-button
+                                v-else
+                                :key="String(view.val) + 'border'"
+                                type="border"
+                                class="p-3 md:px-8 md:py-3"
+                                :class="{
+                                    'border-l-0 rounded-l-none': index,
+                                    'rounded-r-none':
+                                        calendarViewTypes.length !== index + 1
+                                }"
+                                @click="calendarView = view.val"
+                                >{{ view.label }}</vs-button
+                            >
+                        </template>
+                    </div>
+                    <!-- Aca termina el temp -->
+                </div>
+
+                <div class="vx-row sm:flex hidden mt-4">
+                    <div class="vx-col w-full flex">
+                        <!-- Labels -->
+                        <div
+                            class="flex flex-wrap sm:justify-start justify-center"
+                        >
+                            <div
+                                v-for="(label, index) in calendarLabels"
+                                :key="index"
+                                class="flex items-center mr-4 mb-2"
+                            >
+                                <div
+                                    class="h-3 w-3 inline-block rounded-full mr-2"
+                                    :class="'bg-' + label.color"
+                                ></div>
+                                <span>{{ label.text }}</span>
+                            </div>
+                            <div class="flex items-center mr-4 mb-2">
+                                <div
+                                    class="h-3 w-3 inline-block rounded-full mr-2 bg-primary"
+                                ></div>
+                                <span>Ninguno</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </vx-card>
+        </div>
         <vue-easy-print tableShow ref="easyPrint">
-            <div class="vx-card no-scroll-content">
+            <div class="vx-card no-scroll-content" id="prin">
                 <calendar-view
                     ref="calendar"
                     :displayPeriodUom="calendarView"
@@ -21,91 +136,31 @@
                             <div
                                 class="vx-col w-1/3 items-center sm:flex hidden"
                             >
-                                <!-- Add new event button -->
-                                <!-- <vs-button
-                                icon-pack="feather"
-                                icon="icon-plus"
-                                @click="promptAddNewEvent(new Date())"
-                                >Agregar</vs-button
-                            > -->
-                                <vs-button
-                                    icon-pack="feather"
-                                    icon="icon icon-file"
-                                    @click="printInvoice"
-                                    >Print</vs-button
+                                <span
+                                    class="mx-3 text-xl font-medium whitespace-no-wrap"
+                                    >Turno Ascensoristas</span
                                 >
+                                <!-- Add new event button -->
                             </div>
 
                             <!-- Current Month -->
                             <div
                                 class="vx-col sm:w-1/3 w-full sm:my-0 my-3 flex sm:justify-end justify-center order-last"
                             >
-                                <div class="flex items-center">
-                                    <feather-icon
-                                        :icon="
-                                            $vs.rtl
-                                                ? 'ChevronRightIcon'
-                                                : 'ChevronLeftIcon'
-                                        "
-                                        @click="updateMonth(-1)"
-                                        svgClasses="w-5 h-5 m-1"
-                                        class="cursor-pointer bg-primary text-white rounded-full"
-                                    />
-
+                                <div
+                                    class="flex items-center"
+                                    id="mesEscondido"
+                                >
                                     <span
                                         class="mx-3 text-xl font-medium whitespace-no-wrap"
                                         >{{ showDate | month }}</span
                                     >
-
-                                    <feather-icon
-                                        :icon="
-                                            $vs.rtl
-                                                ? 'ChevronLeftIcon'
-                                                : 'ChevronRightIcon'
-                                        "
-                                        @click="updateMonth(1)"
-                                        svgClasses="w-5 h-5 m-1"
-                                        class="cursor-pointer bg-primary text-white rounded-full"
-                                    />
                                 </div>
                             </div>
 
                             <div
                                 class="vx-col sm:w-1/3 w-full flex justify-center"
-                            >
-                                <template
-                                    v-for="(view, index) in calendarViewTypes"
-                                >
-                                    <vs-button
-                                        v-if="calendarView === view.val"
-                                        :key="String(view.val) + 'filled'"
-                                        type="filled"
-                                        class="p-3 md:px-8 md:py-3"
-                                        :class="{
-                                            'border-l-0 rounded-l-none': index,
-                                            'rounded-r-none':
-                                                calendarViewTypes.length !==
-                                                index + 1
-                                        }"
-                                        @click="calendarView = view.val"
-                                        >{{ view.label }}</vs-button
-                                    >
-                                    <vs-button
-                                        v-else
-                                        :key="String(view.val) + 'border'"
-                                        type="border"
-                                        class="p-3 md:px-8 md:py-3"
-                                        :class="{
-                                            'border-l-0 rounded-l-none': index,
-                                            'rounded-r-none':
-                                                calendarViewTypes.length !==
-                                                index + 1
-                                        }"
-                                        @click="calendarView = view.val"
-                                        >{{ view.label }}</vs-button
-                                    >
-                                </template>
-                            </div>
+                            ></div>
                         </div>
 
                         <div class="vx-row sm:flex hidden mt-4">
@@ -113,31 +168,14 @@
                                 <!-- Labels -->
                                 <div
                                     class="flex flex-wrap sm:justify-start justify-center"
-                                >
-                                    <div
-                                        v-for="(label, index) in calendarLabels"
-                                        :key="index"
-                                        class="flex items-center mr-4 mb-2"
-                                    >
-                                        <div
-                                            class="h-3 w-3 inline-block rounded-full mr-2"
-                                            :class="'bg-' + label.color"
-                                        ></div>
-                                        <span>{{ label.text }}</span>
-                                    </div>
-                                    <div class="flex items-center mr-4 mb-2">
-                                        <div
-                                            class="h-3 w-3 inline-block rounded-full mr-2 bg-primary"
-                                        ></div>
-                                        <span>Ninguno</span>
-                                    </div>
-                                </div>
+                                ></div>
                             </div>
                         </div>
                     </div>
                 </calendar-view>
             </div>
         </vue-easy-print>
+
         <!-- ADD EVENT -->
 
         <vs-popup
@@ -293,7 +331,7 @@
                     <vs-button
                         @click="addEvent"
                         class="w-full"
-                        color="warning"
+                        color="rgb(31, 210, 77)"
                         type="filled"
                         >Agregar</vs-button
                     >
@@ -302,7 +340,7 @@
                 <div class="w-1/2 m-2">
                     <vs-button
                         class="w-full"
-                        color="danger"
+                        color="rgb(237, 62, 62)"
                         type="filled"
                         @click="cerrarVentana"
                         >Cerrar</vs-button
@@ -672,7 +710,7 @@
                     <vs-button
                         @click="editEvent"
                         class="w-full"
-                        color="warning"
+                        color="rgb(43, 169, 245)"
                         type="filled"
                         >Editar</vs-button
                     >
@@ -681,7 +719,7 @@
                     <vs-button
                         @click="infoDetallada"
                         class="w-full"
-                        color="primary"
+                        color="rgb(95, 100, 247)"
                         type="filled"
                         >Informacion Completa</vs-button
                     >
@@ -690,7 +728,7 @@
                     <vs-button
                         @click="volver"
                         class="w-full"
-                        color="rgb(37, 172, 249)"
+                        color="rgb(231, 5, 5)"
                         type="filled"
                         >Cerrar Ventana</vs-button
                     >
@@ -989,6 +1027,8 @@ export default {
         return {
             listadoInf: [],
 
+            count: 0,
+
             listadoDet: [],
 
             infoAdicionalesAct: false,
@@ -1247,25 +1287,33 @@ export default {
                 }
             ],
 
-            seleccionValDAdministrativo: {
-                idValDAdministrativo: 2,
-                descripcionValDAdministrativo: "No"
-            },
+            seleccionValDAdministrativo: [
+                {
+                    idValDAdministrativo: 2,
+                    descripcionValDAdministrativo: "No"
+                }
+            ],
 
-            seleccionReemplazo: {
-                idReemplazo: 2,
-                descripcionReemplazo: "No"
-            },
+            seleccionReemplazo: [
+                {
+                    idReemplazo: 2,
+                    descripcionReemplazo: "No"
+                }
+            ],
 
-            seleccionVacaciones: {
-                idVacaciones: 2,
-                descripcionVacaciones: "No"
-            },
+            seleccionVacaciones: [
+                {
+                    idVacaciones: 2,
+                    descripcionVacaciones: "No"
+                }
+            ],
 
-            seleccionTurnoExtra: {
-                idTurnoExtra: 2,
-                descripcionTurnoExtra: "No"
-            },
+            seleccionTurnoExtra: [
+                {
+                    idTurnoExtra: 2,
+                    descripcionTurnoExtra: "No"
+                }
+            ],
 
             //Para Hacer Array
 
@@ -1299,20 +1347,26 @@ export default {
             // Aca termina
 
             listadoTurno: [],
-            seleccionTurno: {
-                id: 0,
-                descripcionTurno: "Seleccione Turno"
-            },
+            seleccionTurno: [
+                {
+                    id: 0,
+                    descripcionTurno: "Seleccione Turno"
+                }
+            ],
             listadoEdificios: [],
-            seleccionEdificio: {
-                id: 0,
-                descripcionEdificio: "Seleccione Edificio"
-            },
+            seleccionEdificio: [
+                {
+                    id: 0,
+                    descripcionEdificio: "Seleccione Edificio"
+                }
+            ],
 
-            seleccionTrabajador: {
-                id: 0,
-                tra_nombre_apellido: "Seleccione al Trabajador"
-            },
+            seleccionTrabajador: [
+                {
+                    id: 0,
+                    tra_nombre_apellido: "Seleccione al Trabajador"
+                }
+            ],
 
             seleccionTrabajadorReemplazo: [
                 {
@@ -1395,6 +1449,7 @@ export default {
                 else if (label === "tnoche") return "warning";
                 else if (label === "tdia") return "success";
                 else if (label === "libre") return "danger";
+                else if (label === "none") return "primary";
             };
         },
         windowWidth() {
@@ -1402,6 +1457,51 @@ export default {
         }
     },
     methods: {
+        limpiar() {
+            this.events = {
+                title: "",
+                startDate: null,
+                endDate: null,
+                label: "none",
+                descripcion_ascensores: "",
+                id_trabajador: 0,
+                id_turno: 0,
+                id_edificio: 0,
+                id_val_dia_administrativo: 2,
+                id_val_vacaciones: 2,
+                id_val_reemplazo: 2,
+                id_val_turno_extra: 2,
+                id_tipo_dia_administrativo: 0,
+                fecha_dia_administrativo: null,
+                fecha_inicio_vacaciones: null,
+                fecha_termino_vacaciones: null,
+                dias_vacaciones: 0,
+                id_trabajador_reemplazo: 0,
+                fecha_inicio_reemplazo: null,
+                fecha_termino_reemplazo: null,
+                dias_reemplazo: 0,
+                fecha_inicio_turno_extra: null,
+                fecha_termino_turno_extra: null,
+                dias_ejecucion_turno_extra: null,
+                horas_ejecucion_turno_extra: null,
+                hora_termino_turno_extra: null,
+                hora_inicio_turno_extra: null,
+                hora_inicio: null,
+                hora_termino: null,
+                dias_ejecucion: 0,
+                horas_ejecucion: 0,
+                id_dia_administrativo: null,
+                id_vacaciones: null,
+                id_reemplazo: null,
+                id_turno_extra: null,
+                id_calendario: null,
+                classes: "",
+                estado_turno_extra: true,
+                estado_reemplazo: true,
+                estado_dia_administrativo: true,
+                estado_vacaciones: true
+            };
+        },
         //Informacion Detallada Disponible Solo si tiene activo alguno de los id
         verInfo(idDAdm, idVac, idRem, idTExt) {
             if (idDAdm == 1 || idVac == 1 || idRem == 1 || idTExt == 1) {
@@ -1643,33 +1743,123 @@ export default {
             this.$set(this.configFromdateTimePicker, "maxDate", dateStr);
         },
         addEvent() {
-            this.events.title = this.title;
-            this.events.descripcion_ascensores = this.descripcion_ascensores;
-            this.events.startDate = this.startDate;
-            this.events.endDate = this.endDate;
-            this.events.id_turno = this.seleccionTurno[0].id;
-            this.events.id_trabajador = this.seleccionTrabajador[0].id;
-            this.events.id_edificio = this.seleccionEdificio[0].id;
-            this.events.hora_inicio = this.hora_inicio;
-            this.events.hora_termino = this.hora_termino;
-            this.events.label = this.labelLocal;
-            this.events.classes = `event-${this.labelColor(this.labelLocal)}`;
-
-            const newevent = this.events;
-            axios
-                .post(this.localVal + "/api/Agente/PostCalendarioAsc", newevent)
-                .then(res => {
-                    if (res.data) {
-                        console.log("Ok");
-                        this.simpleCalendarEvents();
+            try {
+                if (this.title == "" || this.title.length < 5) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "El titulo es muy corto o no a llenado el campo",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.descripcion_ascensores == "" ||
+                    this.descripcion_ascensores.length < 5
+                ) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text:
+                            "La descripcion es muy corta o no a llenado el campo",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (this.startDate == null) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "La fecha de inicio no a sido seleccionada",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (this.endDate == null) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "La fecha de termino no a sido seleccionada",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (this.startDate == null) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "La fecha de inicio no a sido seleccionada",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionTurno[0].id <= 0) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "El turno no a sido seleccionado",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionTrabajador[0].id <= 0) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "El trabajador no a sido seleccionado",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionEdificio[0].id <= 0) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "El edificio no a sido seleccionado",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else {
+                    this.events.title = this.title;
+                    this.events.descripcion_ascensores = this.descripcion_ascensores;
+                    this.events.startDate = this.startDate;
+                    this.events.endDate = this.endDate;
+                    this.events.id_turno = this.seleccionTurno[0].id;
+                    this.events.id_trabajador = this.seleccionTrabajador[0].id;
+                    this.events.id_edificio = this.seleccionEdificio[0].id;
+                    this.events.hora_inicio = this.hora_inicio;
+                    this.events.hora_termino = this.hora_termino;
+                    if (this.seleccionTurno[0].id == 1) {
+                        this.events.label = "tdia";
+                    } else if (this.seleccionTurno[0].id == 2) {
+                        this.events.label = "tnoche";
+                    } else if (this.seleccionTurno[0].id == 3) {
+                        this.events.label = "libre";
                     } else {
-                        console.log("Error");
+                        this.events.label = "primary";
                     }
-                });
 
-            //obj.classes = `event-${this.labelColor(this.labelLocal)}`;
-            //this.$store.dispatch("calendar/addEvent", newevent);
-            this.activePromptAddEvent = false;
+                    this.events.classes = `event-${this.labelColor(
+                        this.events.label
+                    )}`;
+
+                    const newevent = this.events;
+
+                    this.limpiar();
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/PostCalendarioAsc",
+                            newevent
+                        )
+                        .then(res => {
+                            if (res.data) {
+                                console.log("Ok");
+                                this.simpleCalendarEvents();
+                            } else {
+                                console.log("Error");
+                            }
+                        });
+
+                    //obj.classes = `event-${this.labelColor(this.labelLocal)}`;
+                    //this.$store.dispatch("calendar/addEvent", newevent);
+                    this.activePromptAddEvent = false;
+                }
+            } catch (error) {
+                console.log(error);
+            }
         },
         updateMonth(val) {
             this.showDate = this.$refs.calendar.getIncrementedPeriod(val);
@@ -1907,150 +2097,294 @@ export default {
             }
         },
         editEvent() {
-            let idVDA = this.seleccionValDAdministrativoData[0]
-                .idValDAdministrativo;
-            let idVac = this.seleccionVacacionesData[0].idVacaciones;
-            let idRem = this.seleccionReemplazoData[0].idReemplazo;
-            let idTurExt = this.seleccionTurnoExtraData[0].idTurnoExtra;
-            let estado_ree = true;
-            let estado_tur_ext = true;
-            let estado_dia_adm = true;
-            let estado_vac = true;
-            if (idVDA == 1) {
-                estado_dia_adm = true;
-            } else {
-                estado_dia_adm = false;
-            }
-            if (idVac == 1) {
-                estado_vac = true;
-            } else {
-                estado_vac = false;
-            }
-            if (idTurExt == 1) {
-                estado_tur_ext = true;
-            } else {
-                estado_tur_ext = false;
-            }
-            if (idRem == 1) {
-                estado_ree = true;
-            } else {
-                estado_ree = false;
-            }
-
-            const events = {
-                title: this.title,
-                startDate: this.startDate,
-                endDate: this.endDate,
-                label: this.labelLocal,
-                descripcion_ascensores: this.descripcion_ascensores,
-                id_trabajador: this.seleccionTrabajador[0].id,
-                id_turno: this.seleccionTurno[0].id,
-                id_edificio: this.seleccionEdificio[0].id,
-                id_val_dia_administrativo: idVDA,
-                id_val_vacaciones: idVac,
-                id_val_reemplazo: idRem,
-                id_val_turno_extra: idTurExt,
-                id_tipo_dia_administrativo: this.seleccionDAdministrativo[0]
-                    .idDAdministrativo,
-                fecha_dia_administrativo: this.fecha_dia_administrativo,
-                fecha_inicio_vacaciones: this.fecha_inicio_vacaciones,
-                fecha_termino_vacaciones: this.fecha_termino_vacaciones,
-                dias_vacaciones: 0,
-                id_trabajador_reemplazo: this.seleccionTrabajadorReemplazo[0]
-                    .id,
-                fecha_inicio_reemplazo: this.fecha_inicio_reemplazo,
-                fecha_termino_reemplazo: this.fecha_termino_reemplazo,
-                dias_reemplazo: 0,
-                fecha_inicio_turno_extra: this.fecha_inicio_turno_extra,
-                fecha_termino_turno_extra: this.fecha_termino_turno_extra,
-                dias_ejecucion_turno_extra: 0,
-                horas_ejecucion_turno_extra: 0,
-                hora_termino_turno_extra: this.hora_termino_turno_extra,
-                hora_inicio_turno_extra: this.hora_inicio_turno_extra,
-                hora_inicio: this.hora_inicio,
-                hora_termino: this.hora_termino,
-                dias_ejecucion: 0,
-                horas_ejecucion: 0,
-                id_dia_administrativo: this.id_dia_administrativo,
-                id_vacaciones: this.id_vacaciones,
-                id_reemplazo: this.id_reemplazo,
-                id_turno_extra: this.id_turno_extra,
-                id_calendario_ascensores: this.id_calendario,
-                classes: `event-${this.labelColor(this.labelLocal)}`,
-                estado_turno_extra: estado_tur_ext,
-                estado_reemplazo: estado_ree,
-                estado_dia_administrativo: estado_dia_adm,
-                estado_vacaciones: estado_vac
-            };
-
-            this.events = {
-                title: "",
-                startDate: null,
-                endDate: null,
-                label: "none",
-                descripcion_ascensores: "",
-                id_trabajador: 0,
-                id_turno: 0,
-                id_edificio: 0,
-                id_val_dia_administrativo: 2,
-                id_val_vacaciones: 2,
-                id_val_reemplazo: 2,
-                id_val_turno_extra: 2,
-                id_tipo_dia_administrativo: 0,
-                fecha_dia_administrativo: null,
-                fecha_inicio_vacaciones: null,
-                fecha_termino_vacaciones: null,
-                dias_vacaciones: 0,
-                id_trabajador_reemplazo: 0,
-                fecha_inicio_reemplazo: null,
-                fecha_termino_reemplazo: null,
-                dias_reemplazo: 0,
-                fecha_inicio_turno_extra: null,
-                fecha_termino_turno_extra: null,
-                dias_ejecucion_turno_extra: null,
-                horas_ejecucion_turno_extra: null,
-                hora_termino_turno_extra: null,
-                hora_inicio_turno_extra: null,
-                hora_inicio: null,
-                hora_termino: null,
-                dias_ejecucion: 0,
-                horas_ejecucion: 0,
-                id_dia_administrativo: null,
-                id_vacaciones: null,
-                id_reemplazo: null,
-                id_turno_extra: null,
-                id_calendario: null,
-                classes: "",
-                estado_turno_extra: true,
-                estado_reemplazo: true,
-                estado_dia_administrativo: true,
-                estado_vacaciones: true
-            };
-
-            //console.log(events);
-            if (events.id_val_dia_administrativo == 1) {
-                this.cargaDAdminAsc();
-            } else if (events.id_val_vacaciones == 1) {
-                this.cargaVacAsc();
-            } else if (events.id_val_reemplazo == 1) {
-                this.cargaRemAsc();
-            } else if (events.id_val_turno_extra == 1) {
-                this.cargaTurExtAsc();
-            }
-
-            axios
-                .post(this.localVal + "/api/Agente/PutCalendarioAsc", events)
-                .then(res => {
-                    if (res.data == true) {
-                        console.log("Ok");
-                        this.simpleCalendarEvents();
+            try {
+                if (this.title == "" || this.title.length < 5) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "El titulo es muy corto o no a llenado el campo",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.descripcion_ascensores == "" ||
+                    this.descripcion_ascensores.length < 5
+                ) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text:
+                            "La descripcion es muy corta o no a llenado el campo",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (this.startDate == null) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "La fecha de inicio no a sido seleccionada",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (this.endDate == null) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "La fecha de termino no a sido seleccionada",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (this.startDate == null) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "La fecha de inicio no a sido seleccionada",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionTurno[0].id <= 0) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "El turno no a sido seleccionado",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionTrabajador[0].id <= 0) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "El trabajador no a sido seleccionado",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionEdificio[0].id <= 0) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "El edificio no a sido seleccionado",
+                        color: "rgb(237, 62, 62)",
+                        position: "top-right"
+                    });
+                } else {
+                    let idVDA = this.seleccionValDAdministrativoData[0]
+                        .idValDAdministrativo;
+                    let idVac = this.seleccionVacacionesData[0].idVacaciones;
+                    let idRem = this.seleccionReemplazoData[0].idReemplazo;
+                    let idTurExt = this.seleccionTurnoExtraData[0].idTurnoExtra;
+                    let estado_ree = true;
+                    let estado_tur_ext = true;
+                    let estado_dia_adm = true;
+                    let estado_vac = true;
+                    let count = 0;
+                    if (idVDA == 1) {
+                        estado_dia_adm = true;
+                        if (
+                            this.seleccionDAdministrativo[0]
+                                .idDAdministrativo == 0
+                        ) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "El Tipo de dia administrativo no a sido seleccionado",
+                                color: "rgb(237, 62, 62)",
+                                position: "top-right"
+                            });
+                            count = 1;
+                        } else if (this.fecha_dia_administrativo == null) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "La fecha del dia administrativo no a sido seleccionada",
+                                color: "rgb(237, 62, 62)",
+                                position: "top-right"
+                            });
+                            count = 1;
+                        }
                     } else {
-                        console.log("Error");
+                        estado_dia_adm = false;
                     }
-                });
+                    if (idVac == 1) {
+                        estado_vac = true;
+                        if (this.fecha_inicio_vacaciones == null) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "La fecha de inicio no a sido seleccionada",
+                                color: "rgb(237, 62, 62)",
+                                position: "top-right"
+                            });
+                            count = 1;
+                        } else if (this.fecha_termino_vacaciones == null) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "La fecha de termino no a sido seleccionada",
+                                color: "rgb(237, 62, 62)",
+                                position: "top-right"
+                            });
+                            count = 1;
+                        }
+                    } else {
+                        estado_vac = false;
+                    }
+                    if (idTurExt == 1) {
+                        estado_tur_ext = true;
+                        if (this.seleccionTrabajadorReemplazo[0].id <= 0) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text: "El trabajador no a sido seleccionado",
+                                color: "rgb(237, 62, 62)",
+                                position: "top-right"
+                            });
+                            count = 1;
+                        } else if (this.fecha_inicio_reemplazo == null) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "La fecha de Inicio no a sido seleccionada",
+                                color: "rgb(237, 62, 62)",
+                                position: "top-right"
+                            });
+                            count = 1;
+                        } else if (this.fecha_termino_reemplazo == null) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "La fecha de termino no a sido seleccionada",
+                                color: "rgb(237, 62, 62)",
+                                position: "top-right"
+                            });
+                            count = 1;
+                        }
+                    } else {
+                        estado_tur_ext = false;
+                    }
+                    if (idRem == 1) {
+                        estado_ree = true;
+                        if (this.fecha_inicio_turno_extra == null) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "La fecha de inicio no a sido seleccionada",
+                                color: "rgb(237, 62, 62)",
+                                position: "top-right"
+                            });
+                            count = 1;
+                        } else if (this.fecha_termino_turno_extra == null) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "La fecha de termino no a sido seleccionada",
+                                color: "rgb(237, 62, 62)",
+                                position: "top-right"
+                            });
+                            count = 1;
+                        }
+                    } else {
+                        estado_ree = false;
+                    }
+                    if (count != 1) {
+                        const events = {
+                            title: this.title,
+                            startDate: this.startDate,
+                            endDate: this.endDate,
+                            label: this.labelLocal,
+                            descripcion_ascensores: this.descripcion_ascensores,
+                            id_trabajador: this.seleccionTrabajador[0].id,
+                            id_turno: this.seleccionTurno[0].id,
+                            id_edificio: this.seleccionEdificio[0].id,
+                            id_val_dia_administrativo: idVDA,
+                            id_val_vacaciones: idVac,
+                            id_val_reemplazo: idRem,
+                            id_val_turno_extra: idTurExt,
+                            id_tipo_dia_administrativo: this
+                                .seleccionDAdministrativo[0].idDAdministrativo,
+                            fecha_dia_administrativo: this
+                                .fecha_dia_administrativo,
+                            fecha_inicio_vacaciones: this
+                                .fecha_inicio_vacaciones,
+                            fecha_termino_vacaciones: this
+                                .fecha_termino_vacaciones,
+                            dias_vacaciones: 0,
+                            id_trabajador_reemplazo: this
+                                .seleccionTrabajadorReemplazo[0].id,
+                            fecha_inicio_reemplazo: this.fecha_inicio_reemplazo,
+                            fecha_termino_reemplazo: this
+                                .fecha_termino_reemplazo,
+                            dias_reemplazo: 0,
+                            fecha_inicio_turno_extra: this
+                                .fecha_inicio_turno_extra,
+                            fecha_termino_turno_extra: this
+                                .fecha_termino_turno_extra,
+                            dias_ejecucion_turno_extra: 0,
+                            horas_ejecucion_turno_extra: 0,
+                            hora_termino_turno_extra: this
+                                .hora_termino_turno_extra,
+                            hora_inicio_turno_extra: this
+                                .hora_inicio_turno_extra,
+                            hora_inicio: this.hora_inicio,
+                            hora_termino: this.hora_termino,
+                            dias_ejecucion: 0,
+                            horas_ejecucion: 0,
+                            id_dia_administrativo: this.id_dia_administrativo,
+                            id_vacaciones: this.id_vacaciones,
+                            id_reemplazo: this.id_reemplazo,
+                            id_turno_extra: this.id_turno_extra,
+                            id_calendario_ascensores: this.id_calendario,
+                            classes: `event-${this.labelColor(
+                                this.labelLocal
+                            )}`,
+                            estado_turno_extra: estado_tur_ext,
+                            estado_reemplazo: estado_ree,
+                            estado_dia_administrativo: estado_dia_adm,
+                            estado_vacaciones: estado_vac
+                        };
 
-            // this.$store.dispatch("calendar/editEvent", events);
-            this.activePromptEditEvent = false;
+                        //console.log(events);
+
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/PutCalendarioAsc",
+                                events
+                            )
+                            .then(res => {
+                                if (res.data == true) {
+                                    console.log("Ok");
+                                    this.simpleCalendarEvents();
+                                    if (events.id_val_dia_administrativo == 1) {
+                                        this.cargaDAdminAsc();
+                                    } else if (events.id_val_vacaciones == 1) {
+                                        this.cargaVacAsc();
+                                    } else if (events.id_val_reemplazo == 1) {
+                                        this.cargaRemAsc();
+                                    } else if (events.id_val_turno_extra == 1) {
+                                        this.cargaTurExtAsc();
+                                    }
+                                } else {
+                                    console.log("Error");
+                                }
+                            });
+
+                        this.limpiar();
+
+                        // this.$store.dispatch("calendar/editEvent", events);
+                        this.activePromptEditEvent = false;
+                    }
+                    count = 0;
+                }
+            } catch (error) {
+                console.log(error);
+            }
         },
 
         removeEvent() {
@@ -2061,14 +2395,17 @@ export default {
             this.$store.dispatch("calendar/eventDragged", { event, date });
         },
         printInvoice() {
-            this.$refs.easyPrint.print();
+            //this.$refs.easyPrint.print();
+            window.print();
         }
     },
     created() {
         this.$vs.theme({
-            dark: "rgb(37, 172, 249)", // my new color
-            primary: "rgb(111, 121, 242 )",
-            danger: "rgb(233, 206, 36 )"
+            dark: "rgb(30, 225, 213)", // my new color
+            primary: "rgb(111, 121, 242)",
+            danger: "rgb(21, 202, 23)",
+            success: "rgb(233, 206, 36)",
+            warning: "rgb(37, 172, 249)"
         });
         this.$store.registerModule("calendar", moduleCalendar);
         this.$store.dispatch("calendar/fetchEvents");
@@ -2083,14 +2420,16 @@ export default {
         this.cargaTurExtAsc();
     },
     mounted() {
-        this.$emit("setAppClasses", "invoice-page");
+        this.$emit("setAppClasses", "simple-calendar-app");
     },
     beforeDestroy() {
         this.$store.unregisterModule("calendar");
         this.$vs.theme({
             dark: "rgb(0, 0, 0)", // my new color
             primary: "rgb(113, 96, 237)",
-            danger: "rgb(237, 62, 62)"
+            danger: "rgb(237, 62, 62)",
+            success: "rgb(31, 210, 77)",
+            warning: "rgb(255, 158, 0)"
         });
     }
 };
@@ -2159,17 +2498,11 @@ export default {
             margin: 0 !important;
         }
 
-        .vs-con-table {
-            .vs-con-tbody {
-                overflow: hidden !important;
-            }
-        }
-
-        #invoice-container,
-        #invoice-container * {
+        #prin,
+        #prin * {
             visibility: visible;
         }
-        #invoice-container {
+        #prin {
             position: absolute;
             left: 0;
             top: 0;
@@ -2180,5 +2513,6 @@ export default {
 
 @page {
     size: auto;
+    -webkit-print-color-adjust: exact !important;
 }
 </style>
