@@ -295,5 +295,11 @@ export default [
         name: "Ascensoristas",
         slug: "CalendarioAscensores",
         icon: "CalendarIcon"
+    },
+    {
+        url: "/agenteView/CalendarioCTelefonica",
+        name: "C. Telefonica",
+        slug: "CalendarioCTelefonica",
+        icon: "CalendarIcon"
     }
 ];

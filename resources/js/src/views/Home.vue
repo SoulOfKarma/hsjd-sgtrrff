@@ -4,13 +4,7 @@
             <div
                 class="router-header flex flex-wrap items-center mb-6"
                 style="margin-left:10px;"
-            >
-                <div
-                    class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
-                >
-                    <h2 class="mb-1">Página de Inicio</h2>
-                </div>
-            </div>
+            ></div>
         </div>
         <div class="vx-row">
             <div class="vx-col w-full lg:w-1/4 mb-base"></div>
@@ -38,87 +32,54 @@
         <div class="vx-row">
             <div class="vx-col w-full lg:w-1/4 mb-base"></div>
             <div class="vx-col w-full lg:w-1/2 mb-base">
-                <vx-card title="Manual Rápido">
-                    <ul class="activity-timeline" vx-timeline>
-                        <li>
-                            <div class="timeline-icon bg-primary">
-                                <feather-icon
-                                    icon="LayoutIcon"
-                                    svgClasses="text-white stroke-current w-5 h-5"
-                                ></feather-icon>
-                            </div>
-                            <div class="timeline-info">
-                                <p class="font-semibold">Menú</p>
-                                <span class="activity-desc">
-                                    Encontrarás el acceso a la pantalla de
-                                    Inicio, el listado de tickets solicitados y
-                                    el calendario de trabajadores
-                                </span>
-                            </div>
-                            <small class="text-grey activity-e-time"></small>
-                        </li>
-                        <li>
-                            <div class="timeline-icon bg-warning">
-                                <feather-icon
-                                    icon="PlusSquareIcon"
-                                    svgClasses="text-white stroke-current w-5 h-5"
-                                ></feather-icon>
-                            </div>
-                            <div class="timeline-info">
-                                <p class="font-semibold">Listado de tickets</p>
-                                <span class="activity-desc">
-                                    En esta seccion podras ver a los
-                                    trabajadores asignados para realizar una
-                                    solicitud con su hora y fecha de termino
-                                </span>
-                            </div>
-                            <small class="text-grey activity-e-time"></small>
-                        </li>
-                        <li>
-                            <div class="timeline-icon bg-danger">
-                                <feather-icon
-                                    icon="LoaderIcon"
-                                    svgClasses="text-white stroke-current w-5 h-5"
-                                ></feather-icon>
-                            </div>
-                            <div class="timeline-info">
-                                <p class="font-semibold">Generar Ticket</p>
-                                <span class="activity-desc">
-                                    En esta sección podrás visulizar la
-                                    informacion de las solicitudes realizadas
-                                    por los usuarios, en ella podras asignarle
-                                    tecnicos para su revision, asignarles una
-                                    hora y fecha, confirmar su ubicacion y poder
-                                    generar actualizaciones del avance del
-                                    ticket.
-                                </span>
-                            </div>
-                            <small class="text-grey activity-e-time"></small>
-                        </li>
-                    </ul>
-                </vx-card>
+                <div class="vx-col w-full lg:w-full mb-base">
+                    <vx-card title="Informacion del Perfil">
+                        <vx-timeline :data="timelineData" />
+                    </vx-card>
+                </div>
             </div>
             <div class="vx-col w-full lg:w-1/4 mb-base"></div>
         </div>
     </div>
 </template>
-
 <script>
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
 import axios from "axios";
+import VxTimeline from "@/components/timeline/VxTimeline";
+import router from "@/router";
 export default {
     components: {
-        quillEditor
+        VxTimeline
     },
     data() {
         return {
-            datoPrueba: "",
-            localVal: "http://10.66.248.51:8000"
+            localVal: "http://10.66.248.51:8000",
+            timelineData: [
+                {
+                    color: "danger",
+                    icon: "UsersIcon",
+                    title: "Inicio",
+                    desc:
+                        "Encontrarás el acceso a la pantalla de Inicio, el listado de tickets solicitados y el calendario de trabajadores"
+                },
+                {
+                    color: "success",
+                    icon: "LayoutIcon",
+                    title: "Generar Solicitud",
+                    desc:
+                        "En esta seccion podra Solicitar los tickets a la Unidad de Mantencion del HSJD"
+                },
+                {
+                    color: "primary",
+                    icon: "TvIcon",
+                    title: "Listado de Tickets",
+                    desc:
+                        "En esta sección podrás visualizar la informacion de sus solicitudes creadas y finalizadas"
+                }
+            ]
         };
-    },
-    methods: {}
+    }
 };
 </script>
+<style lang="scss">
+@import "@sass/vuexy/components/vxTimeline.scss";
+</style>

@@ -161,6 +161,7 @@ import { Validator } from "vee-validate";
 import router from "@/router";
 import moment from "moment";
 
+import { create } from "axios-add-jsonp";
 import { quillEditor } from "vue-quill-editor";
 
 export default {
@@ -192,7 +193,7 @@ export default {
         listadoUnidadEspData: [],
         listadoUsuarios: [],
         localVal: "http://10.66.248.51:8000",
-        apiInformatica: "http://10.4.237.33:80/ticket/public/postedform",
+        apiInformatica: "http://10.4.237.33:80/ticket",
         uuidC: "",
 
         solicitud: {
@@ -215,7 +216,7 @@ export default {
             descripcionCorreo: ""
         },
         solicitudInformatica: {
-            api_key: "PZe1Mv3VhuLnTXNSEE1si1R0e53DRp8C",
+            api_key: process.env.MIX_API_KEY_CREATE,
             user_id: sessionStorage.getItem("id"),
             subject: "",
             body: "",
@@ -525,7 +526,7 @@ export default {
                 position: "top-right"
             });
         },
-        async guardarSolicitud() {
+        guardarSolicitud() {
             try {
                 if (
                     this.solicitud.descripcionP.trim() === "" ||
@@ -571,17 +572,33 @@ export default {
                             "api_token"
                         );
                         const solicitudNueva = this.solicitudInformatica;
+                        /* const request = create({
+                            headers: {
+                                "Content-Type":
+                                    "application/x-www-form-urlencoded"
+                            },
+                            method: "post"
+                        }); */
 
-                        await axios
-                            .post(this.apiInformatica, solicitudNueva, {
-                                headers: {
-                                    api_key: this.solicitudInformatica.api_key,
-                                    "Access-Control-Allow-Origin": "*",
-                                    "Content-type": "application/json"
+                        axios
+                            .post(
+                                this.apiInformatica +
+                                    "/public/api/v1/helpdesk/create",
+                                solicitudNueva,
+                                {
+                                    headers: {
+                                        "Access-Control-Allow-Origin": "*",
+                                        "Content-Type": "application/json",
+                                        Authorization:
+                                            "Bearer" +
+                                            this.solicitudInformatica.api_key
+                                    }
                                 }
-                            })
+                            )
                             .then(res => {
                                 const solicitudServer = res.data;
+                                console.log(solicitudServer);
+                                console.log("Si funciono");
                                 this.mensajeGuardado();
                                 //setTimeout(() => {
                                 //     router.back();
@@ -606,6 +623,42 @@ export default {
                                 }
                                 console.log(error.config);
                             });
+
+                        /* await axios
+                            .post(
+                                this.apiInformatica +
+                                    "?api_key=" +
+                                    this.solicitudInformatica.api_key,
+                                solicitudNueva
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                console.log(solicitudServer);
+                                console.log("Si funciono");
+                                this.mensajeGuardado();
+                                //setTimeout(() => {
+                                //     router.back();
+                                //   }, 5000);
+                                this.limpiar();
+                            })
+                            .catch(function(error) {
+                                if (error.response) {
+                                    // The request was made and the server responded with a status code
+                                    // that falls out of the range of 2xx
+                                    console.log(error.response.data);
+                                    console.log(error.response.status);
+                                    console.log(error.response.headers);
+                                } else if (error.request) {
+                                    // The request was made but no response was received
+                                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                    // http.ClientRequest in node.js
+                                    console.log(error.request);
+                                } else {
+                                    // Something happened in setting up the request that triggered an Error
+                                    console.log("Error", error.message);
+                                }
+                                console.log(error.config);
+                            }); */
                     } else {
                         this.solicitud.id_edificio = this.seleccionEdificio[0].id;
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;

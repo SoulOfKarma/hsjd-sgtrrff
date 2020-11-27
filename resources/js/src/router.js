@@ -127,6 +127,12 @@ const router = new Router({
                         import("./views/agenteView/CalendarioAscensores.vue")
                 },
                 {
+                    path: "/agenteView/CalendarioCTelefonica",
+                    name: "CalendarioCTelefonica",
+                    component: () =>
+                        import("./views/agenteView/CalendarioCTelefonica.vue")
+                },
+                {
                     path: "/agenteView/GenerarTicket",
                     name: "GenerarTicket",
                     component: () =>

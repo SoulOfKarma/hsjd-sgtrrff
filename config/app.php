@@ -164,6 +164,7 @@ return [
         Barryvdh\Snappy\ServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        FruitCake\Cors\CorsServiceProvider::class,
         //App\Providers\SolicitudProvider::class,
 
         /*

@@ -15,7 +15,7 @@ use App\Mail\AutoRespuesta;
 |
 */
 
-Route::middleware('auth:api')->get('/users', function (Request $request) {
+/* Route::middleware('auth:api')->get('/users', function (Request $request) {
 
         $data = [
             'run' => $request->user()->run,
@@ -24,7 +24,7 @@ Route::middleware('auth:api')->get('/users', function (Request $request) {
         ];
         return $data;
        
-        });
+        }); */
         
         // function authenticated(){
         // return true;
@@ -269,3 +269,20 @@ Route::get('/Agente/TurExtAscensoristas', ['middleware' => 'cors', 'uses' => 'Tu
 Route::get('/Agente/VAscensoristas', ['middleware' => 'cors', 'uses' => 'VacacionesController@get_vacaciones']);
 //Traer data especifica
 Route::post('/Agente/GetDataCalenAsc', ['middleware' => 'cors', 'uses' => 'CalendarioAscensoresController@get_data_esp_asc']);
+
+//Agregar Nuevo Calendario Central Telefonica
+Route::post('/Agente/PostCalendarioCTel', ['middleware' => 'cors', 'uses' => 'CalendarioCTelefonicaController@postNuevoTCalendarioCTEL']);
+//Traer Todo Calendario Central Telefonica
+Route::get('/Agente/GetCalendarioCTel', ['middleware' => 'cors', 'uses' => 'CalendarioCTelefonicaController@getTodoCalendarioCTEL']);
+//Modificar o Agregar Items Calendario Central Telefonica
+Route::post('/Agente/PutCalendarioCTel', ['middleware' => 'cors', 'uses' => 'CalendarioCTelefonicaController@PutNuevoTCalendarioCTEL']);
+//Get Dia Administrativo Central Telefonica
+Route::get('/Agente/DAdminCTel', ['middleware' => 'cors', 'uses' => 'DiaAdministrativoCTelefonicaController@get_dia_adm']);
+//Get Reemplazos Central Telefonica
+Route::get('/Agente/RCTelefonica', ['middleware' => 'cors', 'uses' => 'ReemplazoCTelefonicaController@get_reemplazo']);
+//Get Turno Extra Central Telefonica
+Route::get('/Agente/TurExtCTelefonica', ['middleware' => 'cors', 'uses' => 'TurnoExtraCTelefonicaController@get_turnoExtra']);
+//Get Vacaciones Central Telefonica
+Route::get('/Agente/VCTelefonica', ['middleware' => 'cors', 'uses' => 'VacacionesCTelefonicaController@get_vacaciones']);
+//Traer data especifica Central Telefonica
+Route::post('/Agente/GetDataCalenCTel', ['middleware' => 'cors', 'uses' => 'CalendarioCTelefonicaController@get_data_esp_CTEL']);

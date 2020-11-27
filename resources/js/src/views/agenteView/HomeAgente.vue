@@ -77,16 +77,6 @@ export default {
                 }
             ]
         };
-    },
-    methods: {
-        detalleImpTicket() {
-            this.$router.push({
-                name: "DetalleTicketImp"
-            });
-        },
-        imprimir() {
-            axios.get(this.localVal + "/api/Agente/imprimir");
-        }
     }
 };
 </script>
