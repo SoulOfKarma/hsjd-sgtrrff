@@ -29,6 +29,29 @@ use App\Mail\AutoRespuesta;
         // function authenticated(){
         // return true;
         // }
+
+        /* Route::group([
+            'prefix' => 'auth'
+        ], function () {
+            Route::post('login', 'LoginController@login');
+        
+            Route::group([
+              'middleware' => 'auth:api'
+            ], function() {
+               
+                Route::get('user', 'LoginController@user');
+            });
+        }); */
+        Route::post('/auth/login', 'LoginController@login');
+        Route::group(['middleware' => ['jwt.verify']], function() {
+            
+            Route::get('/auth/user', 'LoginController@getAuthenticatedUser');
+            /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/
+      });
+
+      //Guardar Solicitud
+Route::post('/Usuario/PostSolicitudInformatica', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@createTicketInformatica']);
+
 Route::post('/Login/GetUsers', ['middleware' => 'cors', 'uses' => 'LoginController@getUsuarios']);
 Route::post('/Login/GetUsersByToken', ['middleware' => 'cors', 'uses' => 'LoginController@GetUsersByToken']);
 Route::post('/Login/getpr', ['middleware' => 'cors', 'uses' => 'LoginController@adminPr']);

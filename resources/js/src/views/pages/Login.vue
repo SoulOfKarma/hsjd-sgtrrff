@@ -112,12 +112,12 @@ export default {
     methods: {
         async autenticarToken() {
             let token = sessionStorage.getItem("api_token");
-            let rut = sessionStorage.getItem("run");
+            let run = sessionStorage.getItem("run");
 
             if (
-                rut != null &&
+                run != null &&
                 token != null &&
-                rut.length > 8 &&
+                run.length > 8 &&
                 token.length > 0
             ) {
                 var sw = 0;
@@ -126,7 +126,7 @@ export default {
 
                 await axios
                     .post(this.localVal + "/api/Login/GetUsersByToken", {
-                        rut,
+                        run,
                         token
                     })
                     .then(function(response) {
@@ -156,7 +156,6 @@ export default {
                                 sw = 1;
                             }
                         } else {
-                            console.log("Horror");
                             pr = 1;
                         }
                     })
@@ -254,8 +253,8 @@ export default {
 
                     await axios
                         .post(this.localVal + "/api/Login/GetUsers", {
-                            rut: this.run,
-                            pasword: this.password
+                            run: this.run,
+                            password: this.password
                         })
                         .then(function(response) {
                             if (response.data.length > 0) {
@@ -291,11 +290,24 @@ export default {
                             }
                         })
                         .catch(error => console.log(error));
+
+                    await axios
+                        .post(this.localVal + "/api/auth/login", {
+                            run: sessionStorage.getItem("run"),
+                            password: this.password
+                        })
+                        .then(function(response) {
+                            sessionStorage.setItem(
+                                "token",
+                                response.data.token
+                            );
+                        });
+
                     if (sw == 1) {
                         await axios
                             .post(this.localVal + "/api/Login/getpr", {
-                                rut: this.run,
-                                pasword: this.password
+                                run: this.run,
+                                password: this.password
                             })
                             .then(function(response2) {
                                 if (response2.data.length > 0) {
@@ -355,6 +367,7 @@ export default {
                         router.push("/agenteView/HomeAgente");
                     }
                     if (pr == 4 || pr == 5 || pr == 6) {
+                        console.log("Oka");
                         //localStorage.setItem('run',response2.data[0].permiso_usuario);
                         router.push("/home");
                     } else {

@@ -12,6 +12,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class SolicitudUsuarioController extends Controller
 {
@@ -20,6 +21,29 @@ class SolicitudUsuarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function createTicketInformatica(Request $request){
+        $response = Http::asForm()->post('http://10.4.237.33:80/ticket/public/api/v1/helpdesk/create?apikey=PZe1Mv3VhuLnTXNSEE1si1R0e53DRp8C', [
+            'api_key' => $request->api_key,
+            'user_id' => $request->user_id,
+            'subject' => $request->subject,
+            'body' => $request->body,
+            'helptopic' => $request->helptopic,
+            'sla' => $request->sla,
+            'dept' => $request->dept,
+            'token' => $request->token,
+           'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'phone' => $request->phone,
+            'code' => $request->code,
+            'mobile' => $request->mobile,
+            'duedate' => $request->duedate,
+            'email' => $request->email
+        ]);
+        
+        log::info($response);
+        return $response;
+    }
     public function index()
     {
 

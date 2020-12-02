@@ -42,7 +42,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'jwt',
             'provider' => 'users',
             'hash' => false,
         ],
@@ -71,10 +71,10 @@ return [
             'model' => App\Users::class,
         ],
 
-         'users' => [
+         /* 'users' => [
              'driver' => 'database',
              'table' => 'users',
-         ],
+         ], */
     ],
 
     /*

@@ -11,7 +11,12 @@ use App\permiso_usuario;
 use SebastianBergmann\Environment\Console;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use App\Users;
+use Carbon\Carbon;
+use Validator;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class LoginController extends Controller
 {
@@ -19,7 +24,7 @@ class LoginController extends Controller
   public function getUsuarios(Request $request)
   {
     
-    $rut = str_replace('.', '', $request->input('rut'));
+    $rut = str_replace('.', '', $request->input('run'));
     $rut = strtoupper($rut);
     $token = Str::random(60);
 
@@ -35,8 +40,9 @@ class LoginController extends Controller
 
       foreach ($get_all as $p) {
         $hashedPassword = $p->password;
-        if(Hash::check($request->input('pasword'), $hashedPassword)){
+        if(Hash::check($request->input('password'), $hashedPassword)){
         return $get_all;
+        
         }  
         else{
         return 1;
@@ -70,7 +76,7 @@ class LoginController extends Controller
 
   public function adminPr(Request $request)
   {
-    $run = str_replace('.', '', $request->input('rut'));
+    $run = str_replace('.', '', $request->input('run'));
     $run = strtoupper($run);
     $salida = DB::table('tbl_permiso_usuarios')
       ->where('run_usuario', '=', $run)
@@ -90,6 +96,88 @@ class LoginController extends Controller
     $request->session()->forget('login');
     $request->session()->forget('run_usuario');
     $request->session()->forget('permiso_usuario');
+    $request->session()->forget('token');
     $request->session()->flush();
+    
+
+    return response()->json([
+        'message' => 'Successfully logged out'
+    ]);
   }
+
+  public function login(Request $request)
+  {
+
+    $request->validate([
+      'run' => 'required|string',
+      'password' => 'required|string'
+    ]);
+     
+      $credentials = request(['run', 'password']);
+     
+     
+        
+        if (! $token = JWTAuth::attempt($credentials)) {
+          
+            return response()->json(['error' => 'invalid_credentials'], 400);
+        }
+
+      return response()->json(compact('token'));
+    
+  }
+ /*   public function login(Request $request)
+  {
+
+    $request->validate([
+      'run' => 'required|string',
+      'password' => 'required|string'
+  ]);
+     
+      $credentials = request(['run', 'password']);
+
+      if (!Auth::attempt($credentials))
+          return response()->json([
+              'message' => 'Unauthorized'
+          ], 401);
+
+      $user = $request->user();
+      
+      $tokenResult = $user->createToken('Personal Access Token');
+
+      $token = $tokenResult->token;
+      if ($request->remember_me)
+          $token->expires_at = Carbon::now()->addWeeks(1);
+      $token->save();
+
+      return response()->json([
+          'access_token' => $tokenResult->accessToken,
+          'token_type' => 'Bearer',
+          'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
+      ]);
+  } */
+
+  /**
+   * Obtener el objeto User como json
+ */
+
+  /* public function user(Request $request)
+  {
+      return response()->json($request->user());
+  } */
+
+  public function getAuthenticatedUser()
+    {
+        try {
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                    return response()->json(['user_not_found'], 404);
+            }
+            } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+                    return response()->json(['token_expired'], $e->getStatusCode());
+            } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+                    return response()->json(['token_invalid'], $e->getStatusCode());
+            } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+                    return response()->json(['token_absent'], $e->getStatusCode());
+            }
+            return response()->json(compact('user'));
+    }
 }

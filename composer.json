@@ -19,11 +19,13 @@
         "laravel/framework": "^7.0",
         "laravel/passport": "^7.3",
         "laravel/tinker": "^2.0",
+        "lcobucci/jwt": "3.3.3",
         "maatwebsite/excel": "^3.1",
         "spatie/browsershot": "^3.37",
         "verumconsilium/laravel-browsershot": "^1.2",
         "webpatser/laravel-uuid": "^3.0",
-        "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3"
+        "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3",
+        "tymon/jwt-auth": "^1.0.0-rc.3"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.8",

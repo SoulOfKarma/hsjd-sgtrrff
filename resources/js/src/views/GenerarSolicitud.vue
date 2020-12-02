@@ -163,6 +163,7 @@ import moment from "moment";
 
 import { create } from "axios-add-jsonp";
 import { quillEditor } from "vue-quill-editor";
+import Axios from "axios";
 
 export default {
     data: () => ({
@@ -215,6 +216,7 @@ export default {
             descripcionSeguimiento: "Solicitud creada",
             descripcionCorreo: ""
         },
+
         solicitudInformatica: {
             api_key: process.env.MIX_API_KEY_CREATE,
             user_id: sessionStorage.getItem("id"),
@@ -229,9 +231,7 @@ export default {
             phone: 0,
             code: 0,
             mobile: 0,
-            duedate: moment()
-                .startOf("day")
-                .fromNow(),
+            duedate: moment().fromNow(),
             email: ""
         },
         datosCorreo: {
@@ -526,7 +526,7 @@ export default {
                 position: "top-right"
             });
         },
-        guardarSolicitud() {
+        async guardarSolicitud() {
             try {
                 if (
                     this.solicitud.descripcionP.trim() === "" ||
@@ -569,31 +569,29 @@ export default {
                         this.solicitudInformatica.email = this.listadoUsuarios.email;
                         this.solicitudInformatica.phone = this.listadoUsuarios.anexo;
                         this.solicitudInformatica.token = sessionStorage.getItem(
-                            "api_token"
+                            "token"
                         );
+
+                        //this.solicitudInformatica.token = this.solicitudInformatica.api_key;
                         const solicitudNueva = this.solicitudInformatica;
-                        /* const request = create({
+
+                        /* const api = axios.create({
+                            timeout: 10000,
                             headers: {
-                                "Content-Type":
-                                    "application/x-www-form-urlencoded"
-                            },
-                            method: "post"
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token"),
+
+                                "Access-Control-Allow-Origin": "*",
+                                "Content-Type": "application/json",
+                                crossDomain: true
+                            }
                         }); */
 
-                        axios
+                        await axios
                             .post(
-                                this.apiInformatica +
-                                    "/public/api/v1/helpdesk/create",
-                                solicitudNueva,
-                                {
-                                    headers: {
-                                        "Access-Control-Allow-Origin": "*",
-                                        "Content-Type": "application/json",
-                                        Authorization:
-                                            "Bearer" +
-                                            this.solicitudInformatica.api_key
-                                    }
-                                }
+                                this.localVal +
+                                    "/api/Usuario/PostSolicitudInformatica",
+                                solicitudNueva
                             )
                             .then(res => {
                                 const solicitudServer = res.data;
@@ -682,7 +680,7 @@ export default {
                             id_tipoReparacion: 0,
                             id_categoria: 0
                         };
-                        axios
+                        await axios
                             .post(
                                 this.localVal + "/api/Usuario/PostSolicitud",
                                 solicitudNueva
