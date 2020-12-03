@@ -137,7 +137,16 @@ export default {
                 this.nuevoEdificio.descripcionEdificio = this.agregar;
                 const edificio = this.nuevoEdificio;
                 axios
-                    .post(this.localVal + "/api/Agente/PostEdificios", edificio)
+                    .post(
+                        this.localVal + "/api/Agente/PostEdificios",
+                        edificio,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
                     .then(res => {
                         if (res.data == true) {
                             this.listadoEdificios();
@@ -184,7 +193,13 @@ export default {
                 axios
                     .post(
                         this.localVal + "/api/Agente/PutModificarEdificio",
-                        edificio
+                        edificio,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
                     )
                     .then(res => {
                         if (res.data == true) {
@@ -210,9 +225,16 @@ export default {
             }
         },
         listadoEdificios() {
-            axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
-                this.listEdificios = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetEdificios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listEdificios = res.data;
+                });
         }
     },
     created() {

@@ -8,7 +8,10 @@
                             <div v-if="valc">
                                 <div class="flex mb-4">
                                     <div
-                                        class="w-1/5 bg-grid-color-secondary h-12"
+                                        class="w-1/6 bg-grid-color-secondary h-12"
+                                    ></div>
+                                    <div
+                                        class="w-1/2 bg-grid-color-secondary h-12"
                                     >
                                         <v-select
                                             v-model="trabajadorSeleccionado"
@@ -20,9 +23,9 @@
                                         />
                                     </div>
                                     <div
-                                        class="w-1/5 bg-grid-color-secondary h-12"
+                                        class="w-1/6 bg-grid-color-secondary h-12"
                                     ></div>
-                                    <div class="w-1/5 bg-grid-color h-12">
+                                    <div class="w-1/2 bg-grid-color h-12">
                                         <v-select
                                             v-model="horaSeleccionada"
                                             label="descripcionHora"
@@ -35,10 +38,10 @@
                                         />
                                     </div>
                                     <div
-                                        class="w-1/5 bg-grid-color-secondary h-12"
+                                        class="w-1/6 bg-grid-color-secondary h-12"
                                     ></div>
                                     <div
-                                        class="w-1/5 bg-grid-color-secondary h-12"
+                                        class="w-1/2 bg-grid-color-secondary h-12"
                                     >
                                         <v-select
                                             v-model="turnoSeleccionado"
@@ -47,6 +50,22 @@
                                             @input="cambioByTurno()"
                                         />
                                     </div>
+                                    <div
+                                        class="w-1/6 bg-grid-color-secondary h-12"
+                                    ></div>
+                                    <div
+                                        class="w-1/2 bg-grid-color-secondary h-12"
+                                    >
+                                        <vs-button
+                                            color="success"
+                                            type="filled"
+                                            class="w-full"
+                                            >Cargar Todo</vs-button
+                                        >
+                                    </div>
+                                    <div
+                                        class="w-1/6 bg-grid-color-secondary h-12"
+                                    ></div>
                                 </div>
 
                                 <GSTC
@@ -901,7 +920,12 @@ export default {
         },
         cargarTrabajadores() {
             axios
-                .get(this.localVal + "/api/Agente/GetTrabajadoresEX")
+                .get(this.localVal + "/api/Agente/GetTrabajadoresEX", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoTrabajadores = res.data;
                     let c = this.listadoTrabajadores;
@@ -934,13 +958,25 @@ export default {
                 });
         },
         cargarTurnos() {
-            axios.get(this.localVal + "/api/Agente/GetTurnos").then(res => {
-                this.listadoTurnos = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Agente/GetTurnos", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoTurnos = res.data;
+                });
         },
         cargaListadoTickets() {
             axios
-                .get(this.localVal + "/api/Agente/GetTicketAsignadosIND")
+                .get(this.localVal + "/api/Agente/GetTicketAsignadosIND", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoTickets = res.data;
                     let listadoRow = this.config.list.rows;
@@ -980,7 +1016,12 @@ export default {
         },
         cargarHoraFechaCalendario() {
             axios
-                .get(this.localVal + "/api/Agente/getDatoCalendarioIND")
+                .get(this.localVal + "/api/Agente/getDatoCalendarioIND", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoHoraFecha = res.data;
 

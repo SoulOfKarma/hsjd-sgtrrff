@@ -116,7 +116,12 @@ export default {
 
             const cat = this.categoria;
             axios
-                .post(this.localVal + "/api/Agente/ModificarCategoria", cat)
+                .post(this.localVal + "/api/Agente/ModificarCategoria", cat, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     if (res.data) {
                         this.$vs.notify({
@@ -143,9 +148,16 @@ export default {
                 });
         },
         cargarCategoria() {
-            axios.get(this.localVal + "/api/Usuario/GetCategoria").then(res => {
-                this.listadoCategoria = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetCategoria", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoCategoria = res.data;
+                });
         }
     },
     created: function() {

@@ -264,7 +264,12 @@ export default {
         cargaSolicitudEspecifica() {
             let id = this.$route.params.uuid;
             axios
-                .get(this.localVal + `/api/Agente/TraerSolicitud/${id}`)
+                .get(this.localVal + `/api/Agente/TraerSolicitud/${id}`, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.solicitudes = res.data;
                     try {

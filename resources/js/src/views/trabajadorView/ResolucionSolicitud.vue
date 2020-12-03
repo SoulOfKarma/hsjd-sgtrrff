@@ -174,7 +174,13 @@ export default {
                 .post(
                     this.localVal +
                         `/api/Trabajador/GuardarSeguimientoT/${uuid}`,
-                    seguimientoNuevo
+                    seguimientoNuevo,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
                 )
                 .then(res => {
                     const seguimientoServer = res.data;

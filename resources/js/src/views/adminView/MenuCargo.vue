@@ -139,7 +139,12 @@ export default {
                 this.nuevoCargo.descripcionCargo = this.agregar;
                 const cargo = this.nuevoCargo;
                 axios
-                    .post(this.localVal + "/api/Agente/PostCargo", cargo)
+                    .post(this.localVal + "/api/Agente/PostCargo", cargo, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
                     .then(res => {
                         if (res.data == true) {
                             this.listadoCargos();
@@ -179,7 +184,12 @@ export default {
                 this.modificarCargo.id = this.seleccionCargo.id;
                 const cargo = this.modificarCargo;
                 axios
-                    .post(this.localVal + "/api/Agente/PutCargo", cargo)
+                    .post(this.localVal + "/api/Agente/PutCargo", cargo, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
                     .then(res => {
                         if (res.data == true) {
                             this.listadoCargos();
@@ -207,7 +217,12 @@ export default {
         },
         listadoCargos() {
             axios
-                .get(this.localVal + "/api/Agente/getCargoNoJefatura")
+                .get(this.localVal + "/api/Agente/getCargoNoJefatura", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listCargos = res.data;
                 });

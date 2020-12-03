@@ -185,7 +185,16 @@ export default {
                 this.nuevoServicio.id_edificio = this.seleccionEdificiosA.id;
                 const servicio = this.nuevoServicio;
                 axios
-                    .post(this.localVal + "/api/Agente/PostServicios", servicio)
+                    .post(
+                        this.localVal + "/api/Agente/PostServicios",
+                        servicio,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
                     .then(res => {
                         if (res.data == true) {
                             this.listadoEdificios();
@@ -235,7 +244,13 @@ export default {
                 axios
                     .post(
                         this.localVal + "/api/Agente/PutModificarServicio",
-                        servicio
+                        servicio,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
                     )
                     .then(res => {
                         if (res.data == true) {
@@ -263,16 +278,30 @@ export default {
             }
         },
         listadoServicios() {
-            axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
-                this.listServicios = res.data;
-                this.listadoServiciosData = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetServicios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listServicios = res.data;
+                    this.listadoServiciosData = res.data;
+                });
         },
         listadoEdificios() {
-            axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
-                this.listEdificios = res.data;
-                this.listEdificiosA = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetEdificios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listEdificios = res.data;
+                    this.listEdificiosA = res.data;
+                });
         },
         filtroSegunEdificio() {
             if (

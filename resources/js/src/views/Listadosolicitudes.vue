@@ -279,7 +279,12 @@ export default {
         cargarSolicitudes() {
             const data = this.data;
             axios
-                .post(this.localVal + "/api/Usuario/getDataSolicitudes", data)
+                .post(this.localVal + "/api/Usuario/getDataSolicitudes", data, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.solicitudes = res.data;
                 });
@@ -302,7 +307,12 @@ export default {
         modificarSolicitud(id, uuid) {
             //router.push(`/agenteView/FormularioModificar/${id}`);
             axios
-                .get(this.localVal + `/api/Usuario/GetSolicitudCreada/${id}`)
+                .get(this.localVal + `/api/Usuario/GetSolicitudCreada/${id}`, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     if (res.data) {
                         this.$router.push({
@@ -318,7 +328,12 @@ export default {
         eliminarSolicitud(id, uuid, eliminar) {
             if (eliminar) {
                 axios
-                    .get(this.localVal + `/api/Usuario/destroyTicket/${id}`)
+                    .get(this.localVal + `/api/Usuario/destroyTicket/${id}`, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
                     .then(res => {
                         var eliminado = res.data;
                         this.popupActive2 = false;

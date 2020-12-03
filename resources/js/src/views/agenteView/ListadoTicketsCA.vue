@@ -276,7 +276,14 @@ export default {
         generarTicket(id, uuid) {
             axios
                 .get(
-                    this.localVal + `/api/Agente/ValidarTicketAsignadoMod/${id}`
+                    this.localVal +
+                        `/api/Agente/ValidarTicketAsignadoMod/${id}`,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
                 )
                 .then(res => {
                     if (res.data == 1) {
@@ -298,7 +305,12 @@ export default {
         },
         cargarSolicitudes() {
             axios
-                .get(this.localVal + "/api/Agente/GetSolicitudTicketsCA")
+                .get(this.localVal + "/api/Agente/GetSolicitudTicketsCA", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.solicitudes = res.data;
                 });
@@ -333,7 +345,15 @@ export default {
         asignarSolicitud(id, uuid) {
             // router.push(`/agenteView/FormularioAsignar/${id}`);
             axios
-                .get(this.localVal + `/api/Agente/ValidarTicketAsignado/${id}`)
+                .get(
+                    this.localVal + `/api/Agente/ValidarTicketAsignado/${id}`,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
                 .then(res => {
                     if (res.data == 2) {
                         this.$vs.notify({
@@ -358,7 +378,14 @@ export default {
             //router.push(`/agenteView/FormularioModificar/${id}`);
             axios
                 .get(
-                    this.localVal + `/api/Agente/ValidarTicketAsignadoMod/${id}`
+                    this.localVal +
+                        `/api/Agente/ValidarTicketAsignadoMod/${id}`,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
                 )
                 .then(res => {
                     if (res.data == 1) {
@@ -418,7 +445,14 @@ export default {
                     axios
                         .post(
                             this.localVal + "/api/Agente/destroyTicket",
-                            dataEliminacion
+                            dataEliminacion,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
                         )
                         .then(res => {
                             var eliminado = res.data;

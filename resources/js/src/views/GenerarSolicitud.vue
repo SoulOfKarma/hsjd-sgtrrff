@@ -124,6 +124,11 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <div class="vx-row">
                     <div class="vx-col sm:w-2/3 w-full ml-auto">
+                        <input
+                            type="hidden"
+                            name="_token"
+                            :value="csrf_token"
+                        />
                         <vs-button
                             color="success"
                             class="mr-3 mb-2"
@@ -224,12 +229,13 @@ export default {
             body: "",
             helptopic: 1,
             sla: 1,
+            priority: 1,
             dept: "",
             token: "",
             first_name: "",
             last_name: "",
             phone: 0,
-            code: 0,
+            code: 91,
             mobile: 0,
             duedate: moment().fromNow(),
             email: ""
@@ -448,39 +454,74 @@ export default {
         cargarEdificios() {
             this.csrf_token;
 
-            axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
-                this.listadoEdificios = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetEdificios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoEdificios = res.data;
+                });
         },
         cargarServicios() {
             this.csrf_token;
 
-            axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
-                this.listadoServicios = res.data;
-                this.listadoServiciosData = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetServicios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoServicios = res.data;
+                    this.listadoServiciosData = res.data;
+                });
         },
         cargarCategoria() {
             this.csrf_token;
 
-            axios.get(this.localVal + "/api/Usuario/GetCategoria").then(res => {
-                this.listadoCategoria = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetCategoria", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoCategoria = res.data;
+                });
         },
         cargarUnidadEsp() {
             this.csrf_token;
 
-            axios.get(this.localVal + "/api/Usuario/GetUnidadEsp").then(res => {
-                this.listadoUnidadEsp = res.data;
-                this.listadoUnidadEspData = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetUnidadEsp", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoUnidadEsp = res.data;
+                    this.listadoUnidadEspData = res.data;
+                });
         },
         cargarTipoRep() {
             this.csrf_token;
 
-            axios.get(this.localVal + "/api/Usuario/GetTipoRep").then(res => {
-                this.listadoTipoRep = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetTipoRep", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoTipoRep = res.data;
+                });
         },
         errorDrop(mensajeError) {
             this.$vs.notify({
@@ -493,7 +534,12 @@ export default {
         cargarUsuarios() {
             let id = sessionStorage.getItem("id");
             axios
-                .get(this.localVal + `/api/Usuario/getUsuarios/${id}`)
+                .get(this.localVal + `/api/Usuario/getUsuarios/${id}`, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoUsuarios = res.data;
                     this.seleccionEdificio.id = this.listadoUsuarios.id_edificio;
@@ -558,50 +604,26 @@ export default {
                     this.errorDrop(this.mensajeError);
                 } else {
                     if (this.seleccionCategoria.id == 5) {
-                        this.solicitudInformatica.first_name = sessionStorage.getItem(
-                            "nombre"
-                        );
-                        this.solicitudInformatica.last_name = sessionStorage.getItem(
-                            "apellido"
-                        );
-                        this.solicitudInformatica.subject = this.solicitud.tituloP;
-                        this.solicitudInformatica.body = this.solicitud.descripcionP;
-                        this.solicitudInformatica.email = this.listadoUsuarios.email;
-                        this.solicitudInformatica.phone = this.listadoUsuarios.anexo;
-                        this.solicitudInformatica.token = sessionStorage.getItem(
-                            "token"
-                        );
+                        //Json de Login de faveo
 
-                        //this.solicitudInformatica.token = this.solicitudInformatica.api_key;
-                        const solicitudNueva = this.solicitudInformatica;
+                        let data = {
+                            username: "ricardo.soto.g@redsalud.gov.cl",
+                            password: "Darkzero25"
+                        };
 
-                        /* const api = axios.create({
-                            timeout: 10000,
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token"),
-
-                                "Access-Control-Allow-Origin": "*",
-                                "Content-Type": "application/json",
-                                crossDomain: true
-                            }
-                        }); */
-
+                        //Variable para guardar token retornado
+                        let tokenI = "";
+                        //Hacer la peticion para recuperar token
                         await axios
                             .post(
-                                this.localVal +
-                                    "/api/Usuario/PostSolicitudInformatica",
-                                solicitudNueva
+                                this.apiInformatica +
+                                    "/public/api/v1/authenticate",
+                                data
                             )
                             .then(res => {
-                                const solicitudServer = res.data;
-                                console.log(solicitudServer);
-                                console.log("Si funciono");
-                                this.mensajeGuardado();
-                                //setTimeout(() => {
-                                //     router.back();
-                                //   }, 5000);
-                                this.limpiar();
+                                const infoToken = res.data;
+                                tokenI = infoToken.token;
+                                console.log(tokenI);
                             })
                             .catch(function(error) {
                                 if (error.response) {
@@ -621,23 +643,30 @@ export default {
                                 }
                                 console.log(error.config);
                             });
+                        //Llenando los campos para guardar el ticket en faveo
+                        this.solicitudInformatica.first_name = sessionStorage.getItem(
+                            "nombre"
+                        );
+                        this.solicitudInformatica.last_name = sessionStorage.getItem(
+                            "apellido"
+                        );
+                        this.solicitudInformatica.subject = this.solicitud.tituloP;
+                        this.solicitudInformatica.body = this.solicitud.descripcionP;
+                        this.solicitudInformatica.email = this.listadoUsuarios.email;
+                        this.solicitudInformatica.phone = this.listadoUsuarios.anexo;
+                        this.solicitudInformatica.token = tokenI;
 
-                        /* await axios
+                        const solicitudNueva = this.solicitudInformatica;
+                        //Haciendo la peticion para crear el ticket
+                        await axios
                             .post(
                                 this.apiInformatica +
-                                    "?api_key=" +
-                                    this.solicitudInformatica.api_key,
+                                    "/public/api/v1/helpdesk/create?apikey=PZe1Mv3VhuLnTXNSEE1si1R0e53DRp8C",
                                 solicitudNueva
                             )
                             .then(res => {
                                 const solicitudServer = res.data;
-                                console.log(solicitudServer);
-                                console.log("Si funciono");
                                 this.mensajeGuardado();
-                                //setTimeout(() => {
-                                //     router.back();
-                                //   }, 5000);
-                                this.limpiar();
                             })
                             .catch(function(error) {
                                 if (error.response) {
@@ -656,8 +685,9 @@ export default {
                                     console.log("Error", error.message);
                                 }
                                 console.log(error.config);
-                            }); */
+                            });
                     } else {
+                        //Llenando Campos para Guardar Ticket de Mantencion
                         this.solicitud.id_edificio = this.seleccionEdificio[0].id;
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
@@ -680,10 +710,18 @@ export default {
                             id_tipoReparacion: 0,
                             id_categoria: 0
                         };
+                        //Enviando Datos para crear ticket
                         await axios
                             .post(
                                 this.localVal + "/api/Usuario/PostSolicitud",
-                                solicitudNueva
+                                solicitudNueva,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
                             )
                             .then(res => {
                                 const solicitudServer = res.data;

@@ -860,44 +860,89 @@ export default {
             this.$set(this.configFromdateTimePicker, "maxDate", dateStr);
         },
         cargarEdificios() {
-            axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
-                this.listadoEdificios = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetEdificios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoEdificios = res.data;
+                });
         },
         cargarServicios() {
-            axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
-                this.listadoServicios = res.data;
-                this.listadoTemporalServicios = res.data;
-                this.listadoServiciosData = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetServicios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoServicios = res.data;
+                    this.listadoTemporalServicios = res.data;
+                    this.listadoServiciosData = res.data;
+                });
         },
         cargarUnidadEsp() {
-            axios.get(this.localVal + "/api/Usuario/GetUnidadEsp").then(res => {
-                this.listadoUnidadEsp = res.data;
-                this.listadoTemporalUnidadEsp = res.data;
-                this.listadoUnidadEspData = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetUnidadEsp", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoUnidadEsp = res.data;
+                    this.listadoTemporalUnidadEsp = res.data;
+                    this.listadoUnidadEspData = res.data;
+                });
         },
         cargarTipoRep() {
-            axios.get(this.localVal + "/api/Usuario/GetTipoRep").then(res => {
-                this.listadoTipoRep = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetTipoRep", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoTipoRep = res.data;
+                });
         },
         cargarSupervisores() {
             axios
-                .get(this.localVal + "/api/Agente/GetSupervisores")
+                .get(this.localVal + "/api/Agente/GetSupervisores", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoSupervisores = res.data;
                 });
         },
         cargarTurnos() {
-            axios.get(this.localVal + "/api/Agente/GetTurnos").then(res => {
-                this.listadoTurno = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Agente/GetTurnos", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoTurno = res.data;
+                });
         },
         cargarTrabajadores() {
             axios
-                .get(this.localVal + "/api/Agente/GetTrabajadores")
+                .get(this.localVal + "/api/Agente/GetTrabajadores", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.cargarApoyosArray(res.data);
                 });
@@ -921,14 +966,26 @@ export default {
             this.listadoTrabajadores = b;
         },
         cargarEstado() {
-            axios.get(this.localVal + "/api/Agente/GetEstado").then(res => {
-                this.listadoEstado = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Agente/GetEstado", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoEstado = res.data;
+                });
         },
         cargaSolicitudEspecifica() {
             let id = this.$route.params.id;
             axios
-                .get(this.localVal + `/api/Usuario/TraerSolicitud/${id}`)
+                .get(this.localVal + `/api/Usuario/TraerSolicitud/${id}`, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.datosSolicitud = res.data;
                     /* this.cargaEstado();
@@ -1194,7 +1251,14 @@ export default {
                     axios
                         .post(
                             this.localVal + "/api/Agente/PutTicketIND",
-                            ticket
+                            ticket,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
                         )
                         .then(res => {
                             const ticketServer = res.data;
@@ -1281,7 +1345,12 @@ export default {
         cargaTicketAsignado() {
             let id = this.$route.params.id;
             axios
-                .get(this.localVal + `/api/Agente/GetTicketAsignado/${id}`)
+                .get(this.localVal + `/api/Agente/GetTicketAsignado/${id}`, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.datosTicketAsignado = res.data;
 

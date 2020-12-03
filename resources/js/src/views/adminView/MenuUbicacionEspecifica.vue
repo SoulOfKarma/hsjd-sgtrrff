@@ -226,7 +226,13 @@ export default {
                 axios
                     .post(
                         this.localVal + "/api/Agente/PostUnidadEspecifica",
-                        unidadEsp
+                        unidadEsp,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
                     )
                     .then(res => {
                         if (res.data == true) {
@@ -279,7 +285,13 @@ export default {
                 axios
                     .post(
                         this.localVal + "/api/Agente/PutModificarUnidadEsp",
-                        unidadEsp
+                        unidadEsp,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
                     )
                     .then(res => {
                         if (res.data == true) {
@@ -309,24 +321,45 @@ export default {
             }
         },
         listadoUnidadEspecifica() {
-            axios.get(this.localVal + "/api/Usuario/GetUnidadEsp").then(res => {
-                this.listUnidadEsp = res.data;
-                this.listadoUnidadEspData = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetUnidadEsp", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listUnidadEsp = res.data;
+                    this.listadoUnidadEspData = res.data;
+                });
         },
         listadoServicios() {
-            axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
-                this.listServicios = res.data;
-                this.listServiciosA = res.data;
-                this.listadoServiciosData = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetServicios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listServicios = res.data;
+                    this.listServiciosA = res.data;
+                    this.listadoServiciosData = res.data;
+                });
         },
         listadoEdificios() {
-            axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
-                this.listEdificios = res.data;
-                this.listEdificiosA = res.data;
-                this.listadoEdificiosData = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetEdificios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listEdificios = res.data;
+                    this.listEdificiosA = res.data;
+                    this.listadoEdificiosData = res.data;
+                });
         },
         filtroSegunEdificio() {
             if (

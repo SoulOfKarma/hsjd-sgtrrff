@@ -143,7 +143,13 @@ export default {
                 axios
                     .post(
                         this.localVal + "/api/Agente/PostEspecialidad",
-                        especialidad
+                        especialidad,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
                     )
                     .then(res => {
                         if (res.data == true) {
@@ -191,7 +197,13 @@ export default {
                 axios
                     .post(
                         this.localVal + "/api/Agente/PutEspecialidad",
-                        especialidad
+                        especialidad,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
                     )
                     .then(res => {
                         if (res.data == true) {
@@ -219,7 +231,12 @@ export default {
         },
         listadoEspecialidad() {
             axios
-                .get(this.localVal + "/api/Agente/getEspecialidad")
+                .get(this.localVal + "/api/Agente/getEspecialidad", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listEspecialidad = res.data;
                 });

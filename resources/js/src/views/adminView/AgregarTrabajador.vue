@@ -413,7 +413,14 @@ export default {
                     axios
                         .post(
                             this.localVal + "/api/Agente/GuardarTrabajador",
-                            registro
+                            registro,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
                         )
                         .then(res => {
                             this.limpiar();
@@ -587,7 +594,12 @@ export default {
         },
         cargarSupervisores() {
             axios
-                .get(this.localVal + "/api/Agente/getSupervisoresRRFF")
+                .get(this.localVal + "/api/Agente/getSupervisoresRRFF", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoSupervisores = res.data;
                     let b = [];
@@ -600,7 +612,12 @@ export default {
         },
         cargarEspecialidad() {
             axios
-                .get(this.localVal + "/api/Agente/getEspecialidad")
+                .get(this.localVal + "/api/Agente/getEspecialidad", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoEspecialidad = res.data;
                     let b = [];
@@ -612,40 +629,61 @@ export default {
                 });
         },
         cargarEdificios() {
-            axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
-                this.listadoEdificios = res.data;
-                let b = [];
-                let c = this.listadoEdificios;
-                c.forEach((value, index) => {
-                    b.push(value);
+            axios
+                .get(this.localVal + "/api/Usuario/GetEdificios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoEdificios = res.data;
+                    let b = [];
+                    let c = this.listadoEdificios;
+                    c.forEach((value, index) => {
+                        b.push(value);
+                    });
+                    this.listadoEdificios = b;
                 });
-                this.listadoEdificios = b;
-            });
         },
 
         cargarServicios() {
-            axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
-                this.listadoServicios = res.data;
-                this.listadoServiciosData = res.data;
-                let b = [];
-                let c = this.listadoServicios;
-                c.forEach((value, index) => {
-                    b.push(value);
+            axios
+                .get(this.localVal + "/api/Usuario/GetServicios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoServicios = res.data;
+                    this.listadoServiciosData = res.data;
+                    let b = [];
+                    let c = this.listadoServicios;
+                    c.forEach((value, index) => {
+                        b.push(value);
+                    });
+                    this.listadoServicios = b;
                 });
-                this.listadoServicios = b;
-            });
         },
         cargarUnidadEsp() {
-            axios.get(this.localVal + "/api/Usuario/GetUnidadEsp").then(res => {
-                this.listadoUnidadEsp = res.data;
-                this.listadoUnidadEspData = res.data;
-                let b = [];
-                let c = this.listadoUnidadEsp;
-                c.forEach((value, index) => {
-                    b.push(value);
+            axios
+                .get(this.localVal + "/api/Usuario/GetUnidadEsp", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoUnidadEsp = res.data;
+                    this.listadoUnidadEspData = res.data;
+                    let b = [];
+                    let c = this.listadoUnidadEsp;
+                    c.forEach((value, index) => {
+                        b.push(value);
+                    });
+                    this.listadoUnidadEsp = b;
                 });
-                this.listadoUnidadEsp = b;
-            });
         }
     },
     created() {

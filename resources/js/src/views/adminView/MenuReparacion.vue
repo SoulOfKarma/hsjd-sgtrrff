@@ -144,7 +144,13 @@ export default {
                 axios
                     .post(
                         this.localVal + "/api/Agente/PostTipoReparacion",
-                        tipoReparacion
+                        tipoReparacion,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
                     )
                     .then(res => {
                         if (res.data == true) {
@@ -193,7 +199,13 @@ export default {
                 axios
                     .post(
                         this.localVal + "/api/Agente/PutTipoReparacion",
-                        tipoReparacion
+                        tipoReparacion,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
                     )
                     .then(res => {
                         if (res.data == true) {
@@ -222,9 +234,16 @@ export default {
             }
         },
         listadoReparacion() {
-            axios.get(this.localVal + "/api/Usuario/GetTipoRep").then(res => {
-                this.listReparacion = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetTipoRep", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listReparacion = res.data;
+                });
         }
     },
     created() {

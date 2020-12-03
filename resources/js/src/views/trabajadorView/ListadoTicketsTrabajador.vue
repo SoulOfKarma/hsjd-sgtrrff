@@ -105,7 +105,13 @@ export default {
             axios
                 .get(
                     this.localVal +
-                        `/api/Trabajador/getTrabajadoresByRun/${this.run}`
+                        `/api/Trabajador/getTrabajadoresByRun/${this.run}`,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
                 )
                 .then(res => {
                     this.listadoTrabajadores = res.data;
@@ -115,7 +121,14 @@ export default {
         cargarSolicitudes() {
             axios
                 .get(
-                    this.localVal + `/api/Trabajador/TraerTickets/${this.idTra}`
+                    this.localVal +
+                        `/api/Trabajador/TraerTickets/${this.idTra}`,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
                 )
                 .then(res => {
                     this.solicitudes = res.data;

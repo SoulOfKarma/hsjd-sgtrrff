@@ -1511,7 +1511,12 @@ export default {
 
                 const dat = data;
                 axios
-                    .post(this.localVal + "/api/Agente/GetDataCalenAsc", dat)
+                    .post(this.localVal + "/api/Agente/GetDataCalenAsc", dat, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
                     .then(res => {
                         //this.listadoDet = res.data;
                         let a = [];
@@ -1665,41 +1670,77 @@ export default {
         //Carga Calendario
         simpleCalendarEvents() {
             axios
-                .get(this.localVal + "/api/Agente/GetCalendarioAsc")
+                .get(this.localVal + "/api/Agente/GetCalendarioAsc", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoCalendarioAsc = res.data;
                 });
         },
         //Carga de los edificios
         cargarEdificios() {
-            axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
-                this.listadoEdificios = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetEdificios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoEdificios = res.data;
+                });
         },
         //Carga de turnos
         cargarTurnos() {
-            axios.get(this.localVal + "/api/Agente/GetTurnos").then(res => {
-                this.listadoTurno = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Agente/GetTurnos", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoTurno = res.data;
+                });
         },
         //Carga de trabajadores
         cargarTrabajadores() {
             axios
-                .get(this.localVal + "/api/Agente/GetTrabajadores")
+                .get(this.localVal + "/api/Agente/GetTrabajadores", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.cargarApoyosArray(res.data);
                 });
         },
         //Carga de los dias Administrativos
         cargaDAdminAsc() {
-            axios.get(this.localVal + "/api/Agente/DAdminAsc").then(res => {
-                this.listadoDataDAdministrativo = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Agente/DAdminAsc", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoDataDAdministrativo = res.data;
+                });
         },
         //Carga de las Vacaciones
         cargaVacAsc() {
             axios
-                .get(this.localVal + "/api/Agente/VAscensoristas")
+                .get(this.localVal + "/api/Agente/VAscensoristas", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoDataVacaciones = res.data;
                 });
@@ -1707,7 +1748,12 @@ export default {
         //Carga de Reemplazos
         cargaRemAsc() {
             axios
-                .get(this.localVal + "/api/Agente/RAscensoristas")
+                .get(this.localVal + "/api/Agente/RAscensoristas", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoDataReemplazo = res.data;
                 });
@@ -1715,7 +1761,12 @@ export default {
         //Carga de los Turnos Extras
         cargaTurExtAsc() {
             axios
-                .get(this.localVal + "/api/Agente/TurExtAscensoristas")
+                .get(this.localVal + "/api/Agente/TurExtAscensoristas", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoDataTurnoExtra = res.data;
                 });
@@ -1842,7 +1893,14 @@ export default {
                     axios
                         .post(
                             this.localVal + "/api/Agente/PostCalendarioAsc",
-                            newevent
+                            newevent,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
                         )
                         .then(res => {
                             if (res.data) {
@@ -2093,7 +2151,6 @@ export default {
                 this.activePromptEditEvent = true;
             } catch (error) {
                 console.log(error);
-                console.log("Presionaste muy rapido vaquero");
             }
         },
         editEvent() {
@@ -2355,7 +2412,14 @@ export default {
                         axios
                             .post(
                                 this.localVal + "/api/Agente/PutCalendarioAsc",
-                                events
+                                events,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
                             )
                             .then(res => {
                                 if (res.data == true) {

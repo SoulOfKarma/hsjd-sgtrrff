@@ -148,7 +148,12 @@ export default {
             let newWindow = window.open();
 
             axios
-                .get(this.localVal + "/api/Agente/generarExcelTodo")
+                .get(this.localVal + "/api/Agente/generarExcelTodo", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     newWindow.location =
                         "http://" +

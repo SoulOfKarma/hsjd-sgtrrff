@@ -323,30 +323,58 @@ export default {
         cargarEdificios() {
             this.csrf_token;
 
-            axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
-                this.listadoEdificios = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetEdificios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoEdificios = res.data;
+                });
         },
         cargarServicios() {
             this.csrf_token;
 
-            axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
-                this.listadoServicios = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetServicios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoServicios = res.data;
+                });
         },
         cargarUnidadEsp() {
             this.csrf_token;
 
-            axios.get(this.localVal + "/api/Usuario/GetUnidadEsp").then(res => {
-                this.listadoUnidadEsp = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetUnidadEsp", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoUnidadEsp = res.data;
+                });
         },
         cargarTipoRep() {
             this.csrf_token;
 
-            axios.get(this.localVal + "/api/Usuario/GetTipoRep").then(res => {
-                this.listadoTipoRep = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetTipoRep", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoTipoRep = res.data;
+                });
         },
         errorDrop(mensajeError) {
             this.$vs.notify({
@@ -472,7 +500,14 @@ export default {
                     axios
                         .post(
                             this.localVal + "/api/Usuario/PutSolicitud",
-                            solicitudNueva
+                            solicitudNueva,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
                         )
                         .then(res => {
                             const solicitudServer = res.data;
@@ -516,7 +551,12 @@ export default {
         cargarDatosSolicitud() {
             let id = this.$route.params.id;
             axios
-                .get(this.localVal + `/api/Usuario/GetSolicitudCreada/${id}`)
+                .get(this.localVal + `/api/Usuario/GetSolicitudCreada/${id}`, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.datosSolicitud = res.data;
                     this.cargarTodo();

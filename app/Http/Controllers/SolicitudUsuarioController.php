@@ -21,9 +21,10 @@ class SolicitudUsuarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
 
     public function createTicketInformatica(Request $request){
-        $response = Http::asForm()->post('http://10.4.237.33:80/ticket/public/api/v1/helpdesk/create?apikey=PZe1Mv3VhuLnTXNSEE1si1R0e53DRp8C', [
+        $response = Http::withToken($request->token)->asForm()->post('http://10.4.237.33:80/ticket/public/api/v1/helpdesk/create?apikey=PZe1Mv3VhuLnTXNSEE1si1R0e53DRp8C', [
             'api_key' => $request->api_key,
             'user_id' => $request->user_id,
             'subject' => $request->subject,
@@ -39,10 +40,19 @@ class SolicitudUsuarioController extends Controller
             'mobile' => $request->mobile,
             'duedate' => $request->duedate,
             'email' => $request->email
+            
         ]);
-        
         log::info($response);
-        return $response;
+        
+        if($response->successful()){
+            return true;
+        }else if($response->clientError()){
+            return "No pesco 1";
+        }else if($response->serverError()){
+            return "No pesco 2";
+        }
+        
+       
     }
     public function index()
     {

@@ -241,7 +241,13 @@ export default {
             axios
                 .post(
                     this.localVal + "/api/Agente/FinalizarTicket",
-                    seguimientoNuevo
+                    seguimientoNuevo,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
                 )
                 .then(res => {
                     const seguimientoServer = res.data;
@@ -266,7 +272,12 @@ export default {
         cargaSolicitudEspecifica() {
             let id = this.$route.params.uuid;
             axios
-                .get(this.localVal + `/api/Agente/TraerSolicitud/${id}`)
+                .get(this.localVal + `/api/Agente/TraerSolicitud/${id}`, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.solicitudes = res.data;
                     try {
@@ -288,7 +299,12 @@ export default {
         cargaSeguimiento() {
             let uuid = this.$route.params.uuid;
             axios
-                .get(this.localVal + `/api/Agente/TraerSeguimiento/${uuid}`)
+                .get(this.localVal + `/api/Agente/TraerSeguimiento/${uuid}`, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.seguimiento = res.data;
                 });
@@ -328,7 +344,13 @@ export default {
             axios
                 .post(
                     this.localVal + `/api/Agente/GuardarSeguimiento/${uuid}`,
-                    seguimientoNuevo
+                    seguimientoNuevo,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
                 )
                 .then(res => {
                     const seguimientoServer = res.data;

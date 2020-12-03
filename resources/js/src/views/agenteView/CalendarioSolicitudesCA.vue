@@ -8,7 +8,10 @@
                             <div v-if="valc">
                                 <div class="flex mb-4">
                                     <div
-                                        class="w-1/5 bg-grid-color-secondary h-12"
+                                        class="w-1/6 bg-grid-color-secondary h-12"
+                                    ></div>
+                                    <div
+                                        class="w-1/2 bg-grid-color-secondary h-12"
                                     >
                                         <v-select
                                             v-model="trabajadorSeleccionado"
@@ -20,9 +23,9 @@
                                         />
                                     </div>
                                     <div
-                                        class="w-1/5 bg-grid-color-secondary h-12"
+                                        class="w-1/6 bg-grid-color-secondary h-12"
                                     ></div>
-                                    <div class="w-1/5 bg-grid-color h-12">
+                                    <div class="w-1/2 bg-grid-color h-12">
                                         <v-select
                                             v-model="horaSeleccionada"
                                             label="descripcionHora"
@@ -35,10 +38,10 @@
                                         />
                                     </div>
                                     <div
-                                        class="w-1/5 bg-grid-color-secondary h-12"
+                                        class="w-1/6 bg-grid-color-secondary h-12"
                                     ></div>
                                     <div
-                                        class="w-1/5 bg-grid-color-secondary h-12"
+                                        class="w-1/2 bg-grid-color-secondary h-12"
                                     >
                                         <v-select
                                             v-model="turnoSeleccionado"
@@ -47,6 +50,22 @@
                                             @input="cambioByTurno()"
                                         />
                                     </div>
+                                    <div
+                                        class="w-1/6 bg-grid-color-secondary h-12"
+                                    ></div>
+                                    <div
+                                        class="w-1/2 bg-grid-color-secondary h-12"
+                                    >
+                                        <vs-button
+                                            color="success"
+                                            type="filled"
+                                            class="w-full"
+                                            >Cargar Todo</vs-button
+                                        >
+                                    </div>
+                                    <div
+                                        class="w-1/6 bg-grid-color-secondary h-12"
+                                    ></div>
                                 </div>
 
                                 <GSTC
@@ -889,7 +908,12 @@ export default {
         },
         cargarTrabajadores() {
             axios
-                .get(this.localVal + "/api/Agente/GetTrabajadoresEX")
+                .get(this.localVal + "/api/Agente/GetTrabajadoresEX", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoTrabajadores = res.data;
                     let c = this.listadoTrabajadores;
@@ -921,7 +945,12 @@ export default {
         },
         cargaListadoTickets() {
             axios
-                .get(this.localVal + "/api/Agente/GetTicketAsignadosCA")
+                .get(this.localVal + "/api/Agente/GetTicketAsignadosCA", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoTickets = res.data;
                     let listadoRow = this.config.list.rows;
@@ -963,7 +992,12 @@ export default {
         },
         cargarHoraFechaCalendario() {
             axios
-                .get(this.localVal + "/api/Agente/getDatoCalendarioCA")
+                .get(this.localVal + "/api/Agente/getDatoCalendarioCA", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.listadoHoraFecha = res.data;
 
@@ -1073,105 +1107,22 @@ export default {
                         });
                     });
 
-                    /* let plugins = [
-                        Selection({
-                            items: true,
-                            rows: true,
-                            grid: true, // select only grid cells
-                            rectStyle: { opacity: "0.0" }, // hide selecting rectangle
-                            // if there is an item in the current selected cell - do not select that cell
-                            canSelect(type, currentlySelecting) {
-                                if (type === "chart-timeline-grid-row-block") {
-                                    // check if there is any item that lives inside current cell
-                                    return currentlySelecting.filter(
-                                        selected => {
-                                            if (!selected.row.canSelect)
-                                                return false;
-
-                                            for (const item of selected.row
-                                                ._internal.items) {
-                                                if (
-                                                    (item.time.start >=
-                                                        selected.time
-                                                            .leftGlobal &&
-                                                        item.time.start <=
-                                                            selected.time
-                                                                .rightGlobal) ||
-                                                    (item.time.end >=
-                                                        selected.time
-                                                            .leftGlobal &&
-                                                        item.time.end <=
-                                                            selected.time
-                                                                .rightGlobal) ||
-                                                    (item.time.start <=
-                                                        selected.time
-                                                            .leftGlobal &&
-                                                        item.time.end >=
-                                                            selected.time
-                                                                .rightGlobal)
-                                                ) {
-                                                    return false;
-                                                }
-                                            }
-                                            return true;
-                                        }
-                                    );
-                                }
-                                return currentlySelecting;
-                            },
-                            canDeselect(type, currently, all) {
-                                if (type === "chart-timeline-grid-row-blocks") {
-                                    // if we are selecting we can clear previous selection by returning [] else if
-                                    // we are not selecting but something is already selected let it be selected - currently
-                                    return all.selecting[
-                                        "chart-timeline-grid-row-blocks"
-                                    ].length
-                                        ? []
-                                        : currently;
-                                }
-                                return [];
-                            },
-                            selecting(data, type) {
-                                console.log(`selecting ${type}`, data);
-                            },
-                            deselecting(data, type) {
-                                //console.log(`deselecting ${type}`, data);
-                            },
-                            selected(data, type) {
-                                console.log(`selected ${type}`, data);
-                                this.$vs.notify({
-                                    title: "Ticket ya asignado ",
-                                    text:
-                                        "Si necesita modificarlo vaya a Modificar Ticket ",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            },
-                            deselected(data, type) {
-                                //console.log(`deselected ${type}`, data);
-                            }
-                        }),
-                        ItemHold({
-                            time: 1000,
-                            movementThreshold: 2,
-                            action(element, item) {
-                                this.popupActive = true;
-                                this.mensaje();
-                            }
-                        })
-                    ];
-
-                    this.config.plugins = plugins; */
-
                     this.config.chart.items = b;
 
                     this.valc = true;
                 });
         },
         cargarTurnos() {
-            axios.get(this.localVal + "/api/Agente/GetTurnos").then(res => {
-                this.listadoTurnos = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Agente/GetTurnos", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoTurnos = res.data;
+                });
         },
         mensaje2(dato) {
             this.infoGeneral.titulo = "Numero de ticket: " + dato.id;
