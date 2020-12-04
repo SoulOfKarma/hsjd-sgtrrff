@@ -1683,7 +1683,7 @@ export default {
         //Carga de los edificios
         cargarEdificios() {
             axios
-                .get(this.localVal + "/api/Usuario/GetEdificios", {
+                .get(this.localVal + "/api/Usuario/GetEdificiosAsc", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -1709,7 +1709,7 @@ export default {
         //Carga de trabajadores
         cargarTrabajadores() {
             axios
-                .get(this.localVal + "/api/Agente/GetTrabajadores", {
+                .get(this.localVal + "/api/Agente/GetTrabajadoresEspAsc", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")

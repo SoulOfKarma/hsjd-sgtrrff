@@ -1710,7 +1710,7 @@ export default {
         //Carga de trabajadores
         cargarTrabajadores() {
             axios
-                .get(this.localVal + "/api/Agente/GetTrabajadores", {
+                .get(this.localVal + "/api/Agente/GetTrabajadoresEspCTel", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")

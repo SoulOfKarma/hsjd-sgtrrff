@@ -21,6 +21,16 @@ class TipoReparacionController extends Controller
         //
     }
 
+    public function getTReparacionSI()
+    {
+        $get_all = TipoReparacions::select("*")
+        ->where("id","!=",6)
+        ->get();
+
+        return  $get_all;
+        //
+    }
+
     /**
      * Show the form for creating a new resource.
      *

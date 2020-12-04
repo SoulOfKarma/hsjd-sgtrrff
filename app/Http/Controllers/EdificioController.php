@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Edificios;
+use Illuminate\Support\Facades\Log;
 use DB;
 
 class EdificioController extends Controller
@@ -23,6 +24,16 @@ class EdificioController extends Controller
 
         //Retorna Todo del listado de Edificios
 
+    }
+
+    public function GetEdificiosAsc()
+    {
+        $get_all = Edificios::select("*")
+        ->where('id','=',1)
+        ->orWhere('id','=',2)
+        ->get();
+        return  $get_all;
+        //Retorna Todo del listado de Edificios
     }
 
     /**

@@ -43,6 +43,26 @@ class TrabajadorController extends Controller
         return  $get_all;
     }
 
+    public function GetTrabajadoresEspAsc()
+    {
+        //Traer todo de trabajadores
+        $get_all = Trabajadores::select('trabajadores.*',DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"))
+            ->where('id_especialidad1', '=', 18)
+            ->get();
+
+        return  $get_all;
+    }
+
+    public function GetTrabajadoresEspCTel()
+    {
+        //Traer todo de trabajadores
+        $get_all = Trabajadores::select('trabajadores.*',DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"))
+            ->where('id_especialidad1', '=', 17)
+            ->get();
+
+        return  $get_all;
+    }
+
     /**
      * Show the form for creating a new resource.
      *

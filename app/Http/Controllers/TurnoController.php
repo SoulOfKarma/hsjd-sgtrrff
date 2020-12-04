@@ -14,4 +14,12 @@ class TurnoController extends Controller
         return  $get_all;
         //
     }
+
+    public function getTurnoSL(){
+        $get_all = Turno::select("*")
+        ->where('id','=',1) 
+        ->orWhere('id','=',2)
+        ->get();
+        return $get_all;
+    }
 }

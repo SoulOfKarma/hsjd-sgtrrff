@@ -149,7 +149,7 @@ export default {
         },
         cargarCategoria() {
             axios
-                .get(this.localVal + "/api/Usuario/GetCategoria", {
+                .get(this.localVal + "/api/Usuario/getCategoriaSI", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")

@@ -14,10 +14,6 @@ use App\Mail\AutoRespuesta;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-
-        Route::post('/auth/login', 'LoginController@login');
-
         Route::group(['middleware' => ['jwt.verify']], function() {
             //Retornar Login
             Route::get('/auth/user', 'LoginController@getAuthenticatedUser');
@@ -174,14 +170,7 @@ use App\Mail\AutoRespuesta;
             //Traer Dato Join Calendario
             Route::post('/Agente/ModificarCategoria', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ModificarCategoria']);
 
-            //Imprimir Ticket Infraestructura
-            Route::get('/Agente/imprimirPorTicketINFRA/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketINFRA']);
-            //Imprimir Ticket Equipos Medicos
-            Route::get('/Agente/imprimirPorTicketEM/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketEM']);
-            //Imprimir Ticket Industrial
-            Route::get('/Agente/imprimirPorTicketIND/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketIND']);
-            //Imprimir CA
-            Route::get('/Agente/imprimirPorTicketCA/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketCA']);
+            
 
 
             //Generar Excel	
@@ -289,14 +278,39 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/VCTelefonica', ['middleware' => 'cors', 'uses' => 'VacacionesCTelefonicaController@get_vacaciones']);
             //Traer data especifica Central Telefonica
             Route::post('/Agente/GetDataCalenCTel', ['middleware' => 'cors', 'uses' => 'CalendarioCTelefonicaController@get_data_esp_CTEL']);
+            //Traer Trabajadores Solo Ascensoristas
+            Route::get('/Agente/GetTrabajadoresEspAsc', ['middleware' => 'cors', 'uses' => 'TrabajadorController@GetTrabajadoresEspAsc']);
+            //Traer Trabajadores Solo Central Telefonica
+            Route::get('/Agente/GetTrabajadoresEspCTel', ['middleware' => 'cors', 'uses' => 'TrabajadorController@GetTrabajadoresEspCTel']);
+            //Retorna Edificios Solo de Ascensores
+            Route::get('/Usuario/GetEdificiosAsc', ['middleware' => 'cors', 'uses' => 'EdificioController@GetEdificiosAsc']);
+            //Traer Turno Sin Libre
+            Route::get('/Agente/getTurnoSL', ['middleware' => 'cors', 'uses' => 'TurnoController@getTurnoSL']);
+            //Retorna Categorias Sin Informatica
+            Route::get('/Usuario/getCategoriaSI', ['middleware' => 'cors', 'uses' => 'CategoriaController@getCategoriaSI']);
+            //Retorna Tipo Reparacion
+            Route::get('/Usuario/getTReparacionSI', ['middleware' => 'cors', 'uses' => 'TipoReparacionController@getTReparacionSI']);
+            
       });
 
+    Route::post('/auth/login', 'LoginController@login');
+    Route::post('/auth/generarToken', 'LoginController@generarToken');
+     
       //Guardar Solicitud Comodin para Backend
-Route::post('/Usuario/PostSolicitudInformatica', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@createTicketInformatica']);
+    Route::post('/Usuario/PostSolicitudInformatica', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@createTicketInformatica']);
 
-Route::post('/Login/GetUsers', ['middleware' => 'cors', 'uses' => 'LoginController@getUsuarios']);
-Route::post('/Login/GetUsersByToken', ['middleware' => 'cors', 'uses' => 'LoginController@GetUsersByToken']);
-Route::post('/Login/getpr', ['middleware' => 'cors', 'uses' => 'LoginController@adminPr']);
-Route::post('/Login/Salir', ['middleware' => 'cors', 'uses' => 'LoginController@salir']);
+    Route::post('/Login/GetUsers', ['middleware' => 'cors', 'uses' => 'LoginController@getUsuarios']);
+    Route::post('/Login/LoginByRut', ['middleware' => 'cors', 'uses' => 'LoginController@GetUsersByExternalRut']);
+    Route::post('/Login/getpr', ['middleware' => 'cors', 'uses' => 'LoginController@adminPr']);
+    Route::post('/Login/Salir', ['middleware' => 'cors', 'uses' => 'LoginController@salir']);
+
+    //Imprimir Ticket Infraestructura
+    Route::get('/Agente/imprimirPorTicketINFRA/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketINFRA']);
+    //Imprimir Ticket Equipos Medicos
+    Route::get('/Agente/imprimirPorTicketEM/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketEM']);
+    //Imprimir Ticket Industrial
+    Route::get('/Agente/imprimirPorTicketIND/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketIND']);
+    //Imprimir CA
+    Route::get('/Agente/imprimirPorTicketCA/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketCA']);
 
 

@@ -904,7 +904,7 @@ export default {
         },
         cargarTipoRep() {
             axios
-                .get(this.localVal + "/api/Usuario/GetTipoRep", {
+                .get(this.localVal + "/api/Usuario/getTReparacionSI", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -928,7 +928,7 @@ export default {
         },
         cargarTurnos() {
             axios
-                .get(this.localVal + "/api/Agente/GetTurnos", {
+                .get(this.localVal + "/api/Agente/getTurnoSL", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")

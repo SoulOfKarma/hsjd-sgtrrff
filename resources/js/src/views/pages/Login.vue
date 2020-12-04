@@ -110,66 +110,73 @@ export default {
         }
     },
     methods: {
+        //Login por rut y generacion de token
         async autenticarToken() {
-            let token = sessionStorage.getItem("api_token");
-            let run = sessionStorage.getItem("run");
+            const valor = window.location.search;
 
-            if (
-                run != null &&
-                token != null &&
-                run.length > 8 &&
-                token.length > 0
-            ) {
+            const urlParams = new URLSearchParams(valor);
+
+            let data = {
+                run: urlParams.get("run")
+            };
+            //let run = sessionStorage.getItem("run");
+
+            if (data.run != null && data.run.length > 8) {
                 var sw = 0;
                 var pr = 0;
                 var permiso_usuario = "";
 
                 await axios
-                    .post(this.localVal + "/api/Login/GetUsersByToken", {
-                        run,
-                        token
+                    .post(this.localVal + "/api/Login/LoginByRut", {
+                        run: urlParams.get("run")
                     })
                     .then(function(response) {
                         if (response.data.length > 0) {
-                            if (response.data != 1) {
-                                localStorage.setItem(
-                                    "nombre",
-                                    response.data[0].nombre
-                                );
-                                localStorage.setItem(
-                                    "apellido",
-                                    response.data[0].apellido
-                                );
-                                localStorage.setItem(
-                                    "idServicio",
-                                    response.data[0].id_servicio
-                                );
-                                localStorage.setItem(
-                                    "run",
-                                    response.data[0].run
-                                );
-                                localStorage.setItem("id", response.data[0].id);
-                                localStorage.setItem(
-                                    "api_token",
-                                    response.data[0].api_token
-                                );
-                                sw = 1;
-                            }
+                            sessionStorage.setItem(
+                                "nombre",
+                                response.data[0].nombre
+                            );
+                            sessionStorage.setItem(
+                                "apellido",
+                                response.data[0].apellido
+                            );
+                            sessionStorage.setItem(
+                                "idServicio",
+                                response.data[0].id_servicio
+                            );
+                            sessionStorage.setItem("run", response.data[0].run);
+                            sessionStorage.setItem("id", response.data[0].id);
+                            sessionStorage.setItem(
+                                "api_token",
+                                response.data[0].api_token
+                            );
+                            sw = 1;
                         } else {
                             pr = 1;
                         }
                     })
                     .catch(error => console.log(error));
+                let rut = sessionStorage.getItem("run");
+                const myNewStr = rut.substring(0, 4);
+
+                await axios
+                    .post(this.localVal + "/api/auth/generarToken", {
+                        run: sessionStorage.getItem("run"),
+                        password: myNewStr
+                    })
+                    .then(function(response) {
+                        sessionStorage.setItem("token", response.data.token);
+                    });
+
                 if (sw == 1) {
                     await axios
                         .post(this.localVal + "/api/Login/getpr", {
-                            rut,
-                            token
+                            run: urlParams.get("run")
                         })
                         .then(function(response2) {
                             if (response2.data.length > 0) {
                                 if (response2.data[0].estado_login == 1) {
-                                    localStorage.setItem(
+                                    sessionStorage.setItem(
                                         "permiso_usuario",
                                         response2.data[0].permiso_usuario
                                     );
@@ -216,22 +223,26 @@ export default {
                     });
                 }
                 if (pr == 3) {
+                    console.log("Agente");
                     //localStorage.setItem('run',response2.data[0].permiso_usuario);
                     router.push("/agenteView/HomeAgente");
                 }
                 if (pr == 4 || pr == 5 || pr == 6) {
+                    console.log("Usuario, Trabajador");
                     //localStorage.setItem('run',response2.data[0].permiso_usuario);
                     router.push("/home");
                 } else {
                     this.val_run = true;
                 }
             } else {
+                console.log("Hubo un error");
             }
         },
         formatear_run() {
             this.run = format(this.run);
             this.val_run = !validate(this.run);
         },
+        //Login Normal
         async validarSesion() {
             if (
                 this.run == "" ||

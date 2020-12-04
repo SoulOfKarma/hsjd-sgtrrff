@@ -60,6 +60,7 @@
                                             color="success"
                                             type="filled"
                                             class="w-full"
+                                            @click="cargarTodo()"
                                             >Cargar Todo</vs-button
                                         >
                                     </div>
@@ -573,6 +574,178 @@ export default {
             console.log(tipoHora);
             this.config.chart.time.period = tipoHora;
         },
+        cargarTodo() {
+            this.cargarTTrabajadores();
+        },
+        cargarTTrabajadores() {
+            //this.listadoTrabajadores = res.data;
+            let c = this.listadoTrabajadores;
+
+            let arregloTra = [];
+            let listadoFiltrado = [];
+            var va = {};
+            arregloTra.push(va);
+            // console.log(c);
+            arregloTra.push(va);
+            c.forEach((value, index) => {
+                if (value.id != 1) {
+                    let objeto = {
+                        id: 0,
+                        label: "",
+                        expanded: true
+                    };
+
+                    objeto.id = value.id;
+                    objeto.label = value.tra_nombre + " " + value.tra_apellido;
+                    arregloTra.push(objeto);
+                    listadoFiltrado.push(value);
+                }
+            });
+            this.listadoTrabajadoresFiltrado = listadoFiltrado;
+
+            this.config.list.rows = arregloTra;
+            this.cargaTListadoTickets();
+        },
+
+        cargaTListadoTickets() {
+            let listadoRow = this.config.list.rows;
+            let c = this.listadoTickets;
+            let contador = listadoRow.length;
+            let objeto = {
+                id: 0,
+                label: "",
+                parentId: 0,
+                expanded: false,
+                id_solicitud: 0
+            };
+            listadoRow.push(objeto);
+
+            c.forEach((value, index) => {
+                objeto = {
+                    id: 0,
+                    label: "",
+                    parentId: 0,
+                    expanded: false,
+                    id_solicitud: 0
+                };
+                contador = contador + 1;
+                objeto.id = contador;
+
+                objeto.label = value.tra_nombre + " " + value.tra_apellido;
+                objeto.parentId = value.id_trabajador;
+                objeto.id_solicitud = value.id_solicitud;
+                listadoRow.push(objeto);
+            });
+            var cont = listadoRow.length;
+
+            this.config.height = 45 * cont;
+            this.config.list.rows = listadoRow;
+            this.cargarTHoraFechaCalendario();
+        },
+        cargarTHoraFechaCalendario() {
+            let c = this.listadoHoraFecha;
+            let listadoRow = this.config.list.rows;
+
+            var f = {
+                id: "",
+                rowId: "",
+                nticket: "",
+                label: "",
+                titulo: "",
+                descripcion: "",
+                usuario: "",
+                edificio: "",
+                servicio: "",
+                unidadEsp: "",
+                fechaCreacion: moment(),
+                time: {
+                    start: new Date().getTime(),
+                    end: new Date().getTime() + 24 * 60 * 60 * 1000
+                },
+                style: {
+                    background: "#30B2F6",
+                    "border-radius": "1px"
+                }
+            };
+            var fecha = {
+                start: moment(),
+                end: moment()
+            };
+            let b = [];
+
+            let a = 0;
+            b.push(f);
+            c.forEach((value, index) => {
+                listadoRow.forEach((element, indexv2) => {
+                    if (
+                        element.parentId == value.id_trabajador &&
+                        element.id_solicitud == value.id
+                    ) {
+                        f = {
+                            id: "",
+                            rowId: "",
+                            nticket: "",
+                            label: "",
+                            titulo: "",
+                            descripcion: "",
+                            usuario: "",
+                            edificio: "",
+                            servicio: "",
+                            unidadEsp: "",
+                            fechaCreacion: moment(),
+
+                            time: {
+                                start: new Date().getTime(),
+                                end: new Date().getTime() + 24 * 60 * 60 * 1000
+                            },
+                            style: {
+                                background:
+                                    "#" +
+                                    ((Math.random() * 0xffffff) << 0).toString(
+                                        16
+                                    )
+                            }
+                        };
+                        fecha = {
+                            start: moment(),
+                            end: moment()
+                        };
+
+                        f.id = value.id;
+                        f.rowId = element.id;
+                        f.titulo = value.tituloP;
+                        f.nticket = value.nticket;
+                        f.label = "N°Ticket " + value.nticket;
+                        f.fechaCreacion = new Date(value.created_at).getTime();
+
+                        //f.label = value.descripcionP;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = value.descripcionP;
+                        f.descripcion = newElement.textContent;
+                        f.usuario = value.nombrecompleto;
+                        f.edificio = value.descripcionEdificio;
+                        f.servicio = value.descripcionServicio;
+                        f.unidadEsp = value.descripcionUnidadEsp;
+                        fecha.start = new Date(
+                            value.fechaInicio + " " + value.horaInicio
+                        ).getTime();
+                        fecha.end =
+                            new Date(
+                                value.fechaTermino + " " + value.horaTermino
+                            ).getTime() +
+                            24 * 60 * 60 * 1000;
+
+                        f.time = fecha;
+
+                        b.push(f);
+                    }
+                });
+            });
+
+            this.config.chart.items = b;
+            this.forceRerender();
+            this.valc = true;
+        },
         cambioByTrabajador() {
             let arregloTra = [];
 
@@ -959,7 +1132,7 @@ export default {
         },
         cargarTurnos() {
             axios
-                .get(this.localVal + "/api/Agente/GetTurnos", {
+                .get(this.localVal + "/api/Agente/getTurnoSL", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")

@@ -19,6 +19,15 @@ class CategoriaController extends Controller
         return $getall;
     }
 
+    public function getCategoriaSI()
+    {
+        $getall = categoria::select("*")
+        ->where("id","!=",5)
+        ->get();
+
+        return $getall;
+    }
+
     /**
      * Show the form for creating a new resource.
      *

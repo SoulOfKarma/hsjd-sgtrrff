@@ -513,7 +513,7 @@ export default {
             this.csrf_token;
 
             axios
-                .get(this.localVal + "/api/Usuario/GetTipoRep", {
+                .get(this.localVal + "/api/Usuario/getTReparacionSI", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")

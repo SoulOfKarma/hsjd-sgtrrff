@@ -50,7 +50,7 @@ class LoginController extends Controller
       }
   }
 
-  public function GetUsersByToken(Request $request)
+/*   public function GetUsersByToken(Request $request)
   {
     
     $rut = str_replace('.', '', $request->input('rut'));
@@ -72,6 +72,42 @@ class LoginController extends Controller
         return 1;
        }
       }
+  } */
+
+  public function GetUsersByExternalRut(Request $request)
+  {
+    
+    $rut = str_replace('.', '', $request->input('run'));
+    $rut = strtoupper($rut);
+    $token = Str::random(60);
+    Users::where('run',$rut)
+    ->update(['api_token' => Hash::make($token)]);
+    $get_all = DB::table('users')
+      ->where('run', '=', $rut)
+      ->get();
+     
+        return $get_all;
+       
+      
+  }
+
+  public function generarToken(Request $request)
+  {
+
+    $request->validate([
+      'run' => 'required|string',
+      'password' => 'required|string'
+    ]);
+     
+      $credentials = request(['run', 'password']);
+  
+        if (! $token = JWTAuth::attempt($credentials)) {
+          
+            return response()->json(['error' => 'invalid_credentials'], 400);
+        }
+
+      return response()->json(compact('token'));
+      
   }
 
   public function adminPr(Request $request)
@@ -123,45 +159,6 @@ class LoginController extends Controller
       return response()->json(compact('token'));
     
   }
- /*   public function login(Request $request)
-  {
-
-    $request->validate([
-      'run' => 'required|string',
-      'password' => 'required|string'
-  ]);
-     
-      $credentials = request(['run', 'password']);
-
-      if (!Auth::attempt($credentials))
-          return response()->json([
-              'message' => 'Unauthorized'
-          ], 401);
-
-      $user = $request->user();
-      
-      $tokenResult = $user->createToken('Personal Access Token');
-
-      $token = $tokenResult->token;
-      if ($request->remember_me)
-          $token->expires_at = Carbon::now()->addWeeks(1);
-      $token->save();
-
-      return response()->json([
-          'access_token' => $tokenResult->accessToken,
-          'token_type' => 'Bearer',
-          'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
-      ]);
-  } */
-
-  /**
-   * Obtener el objeto User como json
- */
-
-  /* public function user(Request $request)
-  {
-      return response()->json($request->user());
-  } */
 
   public function getAuthenticatedUser()
     {
