@@ -2426,12 +2426,48 @@ export default {
                                     console.log("Ok");
                                     this.simpleCalendarEvents();
                                     if (events.id_val_dia_administrativo == 1) {
+                                        console.log("Re-Cargando Data");
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title:
+                                                "Se ha Asignado dia Adminisrativo correctamente",
+                                            text: "",
+                                            color: "success",
+                                            position: "top-right"
+                                        });
                                         this.cargaDAdminAsc();
                                     } else if (events.id_val_vacaciones == 1) {
+                                        console.log("Re-Cargando Data");
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title:
+                                                "Se ha Asignado dias de vacaciones correctamente",
+                                            text: "",
+                                            color: "success",
+                                            position: "top-right"
+                                        });
                                         this.cargaVacAsc();
                                     } else if (events.id_val_reemplazo == 1) {
+                                        console.log("Re-Cargando Data");
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title:
+                                                "Se ha Asignado dia de reemplazo correctamente",
+                                            text: "",
+                                            color: "success",
+                                            position: "top-right"
+                                        });
                                         this.cargaRemAsc();
                                     } else if (events.id_val_turno_extra == 1) {
+                                        console.log("Re-Cargando Data");
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title:
+                                                "Se ha Asignado turno extra correctamente",
+                                            text: "",
+                                            color: "success",
+                                            position: "top-right"
+                                        });
                                         this.cargaTurExtAsc();
                                     }
                                 } else {
