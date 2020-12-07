@@ -57,23 +57,37 @@ export default {
                 {
                     color: "danger",
                     icon: "UsersIcon",
-                    title: "Menú",
+                    title: "Inicio",
                     desc:
-                        "Encontrarás el acceso a la pantalla de Inicio, el listado de tickets solicitados y el calendario de trabajadores"
+                        "Encontrarás el acceso a la pantalla de Inicio, el menu de los supervisores y administradores y los calendarios de turnos de los ascensoristas y central telefonica"
                 },
                 {
                     color: "success",
                     icon: "LayoutIcon",
-                    title: "Calendario",
+                    title: "Supervisores",
                     desc:
-                        "En esta seccion podras ver a los trabajadores asignados para realizar una solicitud con su hora y fecha de termino"
+                        "En esta seccion podras ver el submenu de los tipos de trabajos que se realizan diariamente, en el cual dentro de estos menus podras encontrar el calendario de solicitudes pendientes asignadas, listado de solicitudes, generar nuevas solicitudes mas completa que los usuarios y reporte de tickets mensuales o generar todos los realizados en excel"
+                },
+                {
+                    color: "success",
+                    icon: "LayoutIcon",
+                    title: "Administradores",
+                    desc:
+                        "En esta seccion podras agregar y modificar nuevos servicios, trabajadores, supervisores, usuarios, etc., para asi tener actualizada la informacion general de la aplicacion"
                 },
                 {
                     color: "primary",
                     icon: "TvIcon",
-                    title: "Listado de Tickets",
+                    title: "Calendario Ascensoristas",
                     desc:
-                        "En esta sección podrás visualizar la informacion de las solicitudes realizadas por los usuarios, en ella podras asignarle tecnicos para su revision, asignarles una hora y fecha, confirmar su ubicacion y poder generar actualizaciones del avance del ticket."
+                        "En este menu podras ver el calendario de turnos de los ascensoristas, podras visualizar los turnos y asignar nuevos turnos para los siguientes meses, ademas podras asignar solicitudes especiales las cuales son: dia administrativo, vacaciones, reemplazos y turno extra"
+                },
+                {
+                    color: "warning",
+                    icon: "TvIcon",
+                    title: "Calendario Central Telefonica",
+                    desc:
+                        "En este menu podras ver el calendario de turnos de la central telefonica, podras visualizar los turnos y asignar nuevos turnos para los siguientes meses, ademas podras asignar solicitudes especiales las cuales son: dia administrativo, vacaciones, reemplazos y turno extra"
                 }
             ]
         };

@@ -94,7 +94,7 @@ export default {
             agregar: "",
             modificar: "",
             listReparacion: [],
-            localVal: "http://10.66.248.51:8000",
+            localVal: process.env.MIX_APP_URL,
             seleccionReparacion: {
                 id: 0,
                 descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
@@ -235,7 +235,7 @@ export default {
         },
         listadoReparacion() {
             axios
-                .get(this.localVal + "/api/Usuario/GetTipoRep", {
+                .get(this.localVal + "/api/Usuario/getTReparacionSI", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")

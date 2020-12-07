@@ -100,7 +100,7 @@ export default {
             password: "",
             val_run: false,
             checkbox_remember_me: false,
-            localVal: "http://10.66.248.51:8000"
+            localVal: process.env.MIX_APP_URL
         };
     },
     computed: {
@@ -227,10 +227,14 @@ export default {
                     //localStorage.setItem('run',response2.data[0].permiso_usuario);
                     router.push("/agenteView/HomeAgente");
                 }
-                if (pr == 4 || pr == 5 || pr == 6) {
-                    console.log("Usuario, Trabajador");
+                if (pr == 4 || pr == 6) {
+                    console.log("Usuario");
                     //localStorage.setItem('run',response2.data[0].permiso_usuario);
                     router.push("/home");
+                }
+                if (pr == 5) {
+                    console.log("Trabajador");
+                    router.push("/HomeTrabajador");
                 } else {
                     this.val_run = true;
                 }
@@ -377,10 +381,14 @@ export default {
                         //localStorage.setItem('run',response2.data[0].permiso_usuario);
                         router.push("/agenteView/HomeAgente");
                     }
-                    if (pr == 4 || pr == 5 || pr == 6) {
-                        console.log("Oka");
+                    if (pr == 4 || pr == 6) {
+                        console.log("Usuario");
                         //localStorage.setItem('run',response2.data[0].permiso_usuario);
                         router.push("/home");
+                    }
+                    if (pr == 5) {
+                        console.log("Trabajador");
+                        router.push("/HomeTrabajador");
                     } else {
                         this.val_run = true;
                     }

@@ -226,7 +226,7 @@ export default {
         popupActive2: false,
         textarea: "",
         currentx: 1,
-        localVal: "http://10.66.248.51:8000",
+        localVal: process.env.MIX_APP_URL,
         solicitudes: [],
         seguimiento: [],
         titulo: "",

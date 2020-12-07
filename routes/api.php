@@ -170,14 +170,6 @@ use App\Mail\AutoRespuesta;
             //Traer Dato Join Calendario
             Route::post('/Agente/ModificarCategoria', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ModificarCategoria']);
 
-            
-
-
-            //Generar Excel	
-            Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');
-            //Generar Excel	Por Fechas
-            Route::get('/Agente/generarExcelByFecha/{fechaInicio}/{fechaTermino}', 'ExcelController@generarExcelByFecha');
-
             //Api Trabajador
             //Traer datos especificos
             Route::get('/Trabajador/TraerTickets/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getTicketsAsignadosJoin']);
@@ -292,6 +284,10 @@ use App\Mail\AutoRespuesta;
             Route::get('/Usuario/getTReparacionSI', ['middleware' => 'cors', 'uses' => 'TipoReparacionController@getTReparacionSI']);
             
       });
+      //Generar Excel	
+      Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');
+      //Generar Excel	Por Fechas
+      Route::get('/Agente/generarExcelByFecha/{fechaInicio}/{fechaTermino}', 'ExcelController@generarExcelByFecha');
 
     Route::post('/auth/login', 'LoginController@login');
     Route::post('/auth/generarToken', 'LoginController@generarToken');

@@ -246,7 +246,7 @@ export default {
                 nombre: sessionStorage.getItem("nombre"),
                 razonEliminacion: ""
             },
-            localVal: "http://10.66.248.51:8000",
+            localVal: process.env.MIX_APP_URL,
             nombre:
                 sessionStorage.getItem("nombre") +
                 " " +

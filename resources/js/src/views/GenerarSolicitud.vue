@@ -61,6 +61,7 @@
                             <h6>1.3 - Seleccione la Unidad Especifica</h6>
                             <br />
                             <v-select
+                                taggable
                                 v-model="seleccionUnidadEsp"
                                 placeholder="Unidad Especifica"
                                 class="w-full select-large"
@@ -198,7 +199,7 @@ export default {
         listadoServiciosData: [],
         listadoUnidadEspData: [],
         listadoUsuarios: [],
-        localVal: "http://10.66.248.51:8000",
+        localVal: process.env.MIX_APP_URL,
         apiInformatica: "http://10.4.237.33:80/ticket",
         uuidC: "",
 
@@ -333,122 +334,151 @@ export default {
             this.seleccionEdificio = b;
         },
         cargaSegunUnidadEsp() {
-            if (
-                this.seleccionUnidadEsp == null ||
-                this.seleccionUnidadEsp.id == 0
-            ) {
-                //this.listadoServicios = this.listadoServiciosData;
-                this.listadoUnidadEsp = this.listadoUnidadEspData;
-            } else {
-                var idGeneral = this.seleccionUnidadEsp.id;
+            try {
+                if (
+                    this.seleccionUnidadEsp.id == 0 ||
+                    this.seleccionUnidadEsp.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar un campo del listado",
+                        color: "success",
+                        position: "top-right"
+                    });
+                } else {
+                    if (
+                        this.seleccionUnidadEsp.id == 0 ||
+                        this.seleccionUnidadEsp == null
+                    ) {
+                        //this.listadoServicios = this.listadoServiciosData;
 
-                let c = this.listadoUnidadEspData;
-                let b = [];
-                var a = 0;
+                        this.listadoUnidadEsp = this.listadoUnidadEspData;
+                    } else {
+                        var idGeneral = this.seleccionUnidadEsp.id;
 
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
+                        let c = this.listadoUnidadEspData;
+                        let b = [];
+                        var a = 0;
+
+                        c.forEach((value, index) => {
+                            a = value.id;
+                            if (a == idGeneral) {
+                                b.push(value);
+                            }
+                        });
+                        this.seleccionUnidadEsp = b;
+                        idGeneral = 0;
+                        idGeneral = this.seleccionUnidadEsp[0].id_servicio;
+                        b = [];
+
+                        c = this.listadoServicios;
+
+                        c.forEach((value, index) => {
+                            a = value.id;
+                            if (a == idGeneral) {
+                                b.push(value);
+                            }
+                        });
+
+                        this.seleccionServicio = b;
+                        idGeneral = 0;
+                        idGeneral = this.seleccionServicio[0].id_edificio;
+                        b = [];
+                        c = this.listadoEdificios;
+
+                        c.forEach((value, index) => {
+                            a = value.id;
+                            if (a == idGeneral) {
+                                b.push(value);
+                            }
+                        });
+
+                        this.seleccionEdificio = b;
                     }
-                });
-                this.seleccionUnidadEsp = b;
-                idGeneral = 0;
-                idGeneral = this.seleccionUnidadEsp[0].id_servicio;
-                b = [];
-
-                c = this.listadoServicios;
-
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
-                    }
-                });
-
-                this.seleccionServicio = b;
-                idGeneral = 0;
-                idGeneral = this.seleccionServicio[0].id_edificio;
-                b = [];
-                c = this.listadoEdificios;
-
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
-                    }
-                });
-
-                this.seleccionEdificio = b;
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
         cargaSegunServicio() {
-            if (
-                this.seleccionServicio == null ||
-                this.seleccionServicio.id == 0
-            ) {
-                this.listadoServicios = this.listadoServiciosData;
-                this.listadoUnidadEsp = this.listadoUnidadEspData;
-            } else {
-                var idGeneral = this.seleccionServicio.id;
+            try {
+                if (
+                    this.seleccionServicio == null ||
+                    this.seleccionServicio.id == 0
+                ) {
+                    this.listadoServicios = this.listadoServiciosData;
+                    this.listadoUnidadEsp = this.listadoUnidadEspData;
+                } else {
+                    var idGeneral = this.seleccionServicio.id;
 
-                let d = this.listadoUnidadEspData;
-                let e = [];
-                var f = 0;
+                    let d = this.listadoUnidadEspData;
+                    let e = [];
+                    var f = 0;
 
-                d.forEach((value, index) => {
-                    a = value.id_servicio;
-                    if (a == idGeneral) {
-                        e.push(value);
-                    }
-                });
+                    d.forEach((value, index) => {
+                        a = value.id_servicio;
+                        if (a == idGeneral) {
+                            e.push(value);
+                        }
+                    });
 
-                this.listadoUnidadEsp = e;
+                    this.listadoUnidadEsp = e;
 
-                let c = this.listadoServiciosData;
-                let b = [];
-                var a = 0;
+                    let c = this.listadoServiciosData;
+                    let b = [];
+                    var a = 0;
 
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
-                    }
-                });
-                this.seleccionServicio = b;
-                idGeneral = 0;
-                idGeneral = this.seleccionServicio[0].id_edificio;
-                b = [];
+                    c.forEach((value, index) => {
+                        a = value.id;
+                        if (a == idGeneral) {
+                            b.push(value);
+                        }
+                    });
+                    this.seleccionServicio = b;
+                    idGeneral = 0;
+                    idGeneral = this.seleccionServicio[0].id_edificio;
+                    b = [];
 
-                c = this.listadoEdificios;
+                    c = this.listadoEdificios;
 
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
-                    }
-                });
+                    c.forEach((value, index) => {
+                        a = value.id;
+                        if (a == idGeneral) {
+                            b.push(value);
+                        }
+                    });
 
-                this.seleccionEdificio = b;
+                    this.seleccionEdificio = b;
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
         filtroSegunEdificio() {
-            if (this.seleccionEdificio == null || this.seleccionEdificio == 0) {
-                this.listadoServicios = this.listadoServiciosData;
-                this.listadoUnidadEsp = this.listadoUnidadEspData;
-            } else {
-                var idGeneral = this.seleccionEdificio.id;
-                let c = this.listadoServiciosData;
-                let b = [];
-                var a = 0;
-                c.forEach((value, index) => {
-                    a = value.id_edificio;
-                    if (a == idGeneral) {
-                        b.push(value);
-                    }
-                });
+            try {
+                if (
+                    this.seleccionEdificio == null ||
+                    this.seleccionEdificio == 0
+                ) {
+                    this.listadoServicios = this.listadoServiciosData;
+                    this.listadoUnidadEsp = this.listadoUnidadEspData;
+                } else {
+                    var idGeneral = this.seleccionEdificio.id;
+                    let c = this.listadoServiciosData;
+                    let b = [];
+                    var a = 0;
+                    c.forEach((value, index) => {
+                        a = value.id_edificio;
+                        if (a == idGeneral) {
+                            b.push(value);
+                        }
+                    });
 
-                this.listadoServicios = b;
+                    this.listadoServicios = b;
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
         cargarEdificios() {

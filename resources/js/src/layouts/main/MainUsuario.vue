@@ -191,7 +191,7 @@ export default {
             navMenuItems: navMenuItems,
             routerTransition: themeConfig.routerTransition || "none",
             routeTitle: this.$route.meta.pageTitle,
-            localVal: "http://10.66.248.51:8000"
+            localVal: process.env.MIX_APP_URL
         };
     },
     watch: {

@@ -71,7 +71,7 @@ export default {
                 {
                     color: "primary",
                     icon: "TvIcon",
-                    title: "Listado de Tickets",
+                    title: "Listado Solicitudes",
                     desc:
                         "En esta sección podrás visualizar la informacion de sus solicitudes creadas y finalizadas"
                 }

@@ -31,7 +31,7 @@
             </vs-alert>
             <!-- Ubicacion -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="1. Lugar del problema" code-toggler>
+                <vx-card title="1. Lugar del problema">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/3 mt-5">
                             <h6>1.1 - Seleccione el Edificio</h6>
@@ -73,7 +73,7 @@
             </div>
             <!-- Informacion del Problema -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="2. Informacion del problema" code-toggler>
+                <vx-card title="2. Informacion del problema">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
                             <h6>2.1 - Tipo de Reparacion</h6>
@@ -132,7 +132,7 @@
                         <vs-button
                             color="warning"
                             class="mr-3 mb-2"
-                            @click="probando"
+                            @click="limpiar()"
                             >Limpiar</vs-button
                         >
                         <vs-button class="mb-2" @click="modificarSolicitud"
@@ -184,7 +184,7 @@ export default {
         listadoUnidadEsp: [],
         listadoTipoRep: [],
         listadoCorreo: [],
-        localVal: "http://10.66.248.51:8000",
+        localVal: process.env.MIX_APP_URL,
         uuidC: "",
         colorLoading: "#ff8000",
         solicitud: {
@@ -235,6 +235,47 @@ export default {
     methods: {
         volver() {
             router.back();
+        },
+        limpiar() {
+            this.solicitud = {
+                id: 0,
+                nombre:
+                    sessionStorage.getItem("nombre") +
+                    " " +
+                    sessionStorage.getItem("apellido"),
+                descripcionP: "",
+                tituloP: "",
+                id_user: sessionStorage.getItem("id"),
+                id_estado: 1,
+                id_edificio: 0,
+                id_servicio: 0,
+                id_ubicacionEx: 0,
+                id_tipoReparacion: 0,
+                id_solicitud: 0,
+                uuid: "",
+                descripcionSeguimiento: "",
+                razonMail: "",
+                descripcionProblema: "",
+                razoncambio: ""
+            };
+            this.seleccionEdificio = {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            };
+            this.seleccionServicio = {
+                id: 0,
+                descripcionServicio: "Seleccione Servicio"
+            };
+            this.seleccionUnidadEsp = {
+                id: 0,
+                descripcionUnidadEsp: "Seleccione Unidad Especifica"
+            };
+            this.seleccionReparacion = {
+                id: 0,
+                descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+            };
+            this.descripcionTitulo = "";
+            this.descripcionProblema = "";
         },
         arrayTipoReparacion(id) {
             let c = this.listadoTipoRep;
@@ -478,7 +519,7 @@ export default {
 
                 const solicitudNueva = this.solicitud;
                 this.openLoadingColor();
-                (this.solicitud = {
+                this.solicitud = {
                     id: 0,
 
                     nombre:
@@ -496,27 +537,27 @@ export default {
                     id_solicitud: 0,
                     uuid: "",
                     descripcionSeguimiento: ""
-                }),
-                    axios
-                        .post(
-                            this.localVal + "/api/Usuario/PutSolicitud",
-                            solicitudNueva,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Usuario/PutSolicitud",
+                        solicitudNueva,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
                             }
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            //console.log(res.data);
-                            this.mensajeGuardado();
-                            setTimeout(() => {
-                                router.back();
-                            }, 5000);
-                        });
+                        }
+                    )
+                    .then(res => {
+                        const solicitudServer = res.data;
+                        //console.log(res.data);
+                        this.mensajeGuardado();
+                        setTimeout(() => {
+                            router.back();
+                        }, 5000);
+                        this.limpiar();
+                    });
             }
         },
         openLoadingColor() {
@@ -524,29 +565,6 @@ export default {
             setTimeout(() => {
                 this.$vs.loading.close();
             }, 2000);
-        },
-        probando2() {
-            console.log(this.descripcionTitulo);
-        },
-        probando() {
-            (this.seleccionEdificio = {
-                id: 0,
-                descripcionEdificio: "Seleccione Edificio"
-            }),
-                (this.seleccionServicio = {
-                    id: 0,
-                    descripcionServicio: "Seleccione Servicio"
-                }),
-                (this.seleccionUnidadEsp = {
-                    id: 0,
-                    descripcionUnidadEsp: "Seleccione Unidad Especifica"
-                }),
-                (this.seleccionReparacion = {
-                    id: 0,
-                    descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
-                }),
-                (this.descripcionTitulo = ""),
-                (this.descripcionProblema = "");
         },
         cargarDatosSolicitud() {
             let id = this.$route.params.id;

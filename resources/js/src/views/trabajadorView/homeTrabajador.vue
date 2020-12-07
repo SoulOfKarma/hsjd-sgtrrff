@@ -52,28 +52,21 @@ export default {
     },
     data() {
         return {
-            localVal: "http://10.66.248.51:8000",
+            localVal: process.env.MIX_APP_URL,
             timelineData: [
                 {
                     color: "danger",
                     icon: "UsersIcon",
                     title: "Inicio",
                     desc:
-                        "Encontrarás el acceso a la pantalla de Inicio, el listado de tickets solicitados y el calendario de trabajadores"
+                        "Encontrarás el acceso a la pantalla de Inicio y el listado de tickets asignados"
                 },
                 {
                     color: "success",
                     icon: "LayoutIcon",
-                    title: "Generar Solicitud",
+                    title: "Listado Solicitud",
                     desc:
-                        "En esta seccion podra Solicitar los tickets a la Unidad de Mantencion del HSJD"
-                },
-                {
-                    color: "primary",
-                    icon: "TvIcon",
-                    title: "Listado de Tickets",
-                    desc:
-                        "En esta sección podrás visualizar la informacion de sus solicitudes creadas y finalizadas"
+                        "En esta seccion podra visualizar los tickets que tiene asignados"
                 }
             ]
         };

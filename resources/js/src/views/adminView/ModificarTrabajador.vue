@@ -155,6 +155,7 @@
                             <h6>3.3 - Seleccione la Unidad Especifica</h6>
                             <br />
                             <v-select
+                                taggable
                                 v-model="seleccionUnidadEsp"
                                 placeholder="Unidad Especifica"
                                 class="w-full select-large"
@@ -182,6 +183,41 @@
                 </div>
             </div>
         </vs-row>
+        <vs-popup
+            :key="componentKey"
+            classContent="popup-example"
+            title="Guardar Nueva Unidad Especifica?"
+            :active.sync="popupActive2"
+        >
+            <vs-input
+                class="inputx mb-3"
+                placeholder="Placeholder"
+                v-model="value1"
+                hidden
+            />
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full ">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="guardarUnidadEsp(value1)"
+                            >Guardar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col sm:w-full w-full ">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popupActive2 = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 <script>
@@ -202,7 +238,7 @@ import { validate, clean, format } from "rut.js";
 export default {
     data() {
         return {
-            localVal: "http://10.66.248.51:8000",
+            localVal: process.env.MIX_APP_URL,
             nombreUsuario: "",
             apellidoUsuario: "",
             anexoUsuario: 0,
@@ -269,7 +305,11 @@ export default {
                 tra_apellido: "",
                 id_especialidad1: 0,
                 id: 0
-            }
+            },
+            value1: "",
+            validaEliminar: false,
+            popupActive2: false,
+            componentKey: 0
         };
     },
     methods: {
@@ -672,54 +712,118 @@ export default {
             });
             this.seleccionSupervisor = b;
         },
+        guardarUnidadEsp(valor) {
+            let unidadEsp = {
+                id_servicio: this.seleccionServicio[0].id,
+                descripcionUnidadEsp: valor
+            };
+
+            axios
+                .post(
+                    this.localVal + "/api/Agente/PostUnidadEspecifica",
+                    unidadEsp,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(res => {
+                    if (res.data == true) {
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Unidad Especifica Agregada Correctamente",
+                            text: "Se Recargara Listado",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.cargarEdificios();
+                        this.cargarServicios();
+                        this.cargarUnidadEsp();
+                        this.validaEliminar = false;
+                        this.popupActive2 = false;
+                    } else {
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Error",
+                            text: "Hubo una falla al agregar la unidad",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                });
+        },
         cargaSegunUnidadEsp() {
-            if (
-                this.seleccionUnidadEsp == null ||
-                this.seleccionUnidadEsp.id == 0
-            ) {
-                //this.listadoServicios = this.listadoServiciosData;
-                this.listadoUnidadEsp = this.listadoUnidadEspData;
-            } else {
-                var idGeneral = this.seleccionUnidadEsp.id;
-
-                let c = this.listadoUnidadEspData;
-                let b = [];
-                var a = 0;
-
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
+            try {
+                if (
+                    this.seleccionUnidadEsp.id == 0 ||
+                    this.seleccionUnidadEsp.id == null
+                ) {
+                    if (
+                        this.seleccionUnidadEsp.descripcionUnidadEsp ===
+                            undefined ||
+                        this.seleccionUnidadEsp.descripcionUnidadEsp === "" ||
+                        this.seleccionUnidadEsp.descripcionUnidadEsp === null
+                    ) {
+                        this.value1 = this.seleccionUnidadEsp;
+                    } else {
+                        this.value1 = this.seleccionUnidadEsp.descripcionUnidadEsp;
                     }
-                });
-                this.seleccionUnidadEsp = b;
-                idGeneral = 0;
-                idGeneral = this.seleccionUnidadEsp[0].id_servicio;
-                b = [];
+                    this.popupActive2 = true;
+                    this.validaEliminar = true;
+                } else {
+                    if (
+                        this.seleccionUnidadEsp == null ||
+                        this.seleccionUnidadEsp.id == 0
+                    ) {
+                        //this.listadoServicios = this.listadoServiciosData;
+                        this.listadoUnidadEsp = this.listadoUnidadEspData;
+                    } else {
+                        var idGeneral = this.seleccionUnidadEsp.id;
 
-                c = this.listadoServicios;
+                        let c = this.listadoUnidadEspData;
+                        let b = [];
+                        var a = 0;
 
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
+                        c.forEach((value, index) => {
+                            a = value.id;
+                            if (a == idGeneral) {
+                                b.push(value);
+                            }
+                        });
+                        this.seleccionUnidadEsp = b;
+                        idGeneral = 0;
+                        idGeneral = this.seleccionUnidadEsp[0].id_servicio;
+                        b = [];
+
+                        c = this.listadoServicios;
+
+                        c.forEach((value, index) => {
+                            a = value.id;
+                            if (a == idGeneral) {
+                                b.push(value);
+                            }
+                        });
+
+                        this.seleccionServicio = b;
+                        idGeneral = 0;
+                        idGeneral = this.seleccionServicio[0].id_edificio;
+                        b = [];
+                        c = this.listadoEdificios;
+
+                        c.forEach((value, index) => {
+                            a = value.id;
+                            if (a == idGeneral) {
+                                b.push(value);
+                            }
+                        });
+
+                        this.seleccionEdificio = b;
                     }
-                });
-
-                this.seleccionServicio = b;
-                idGeneral = 0;
-                idGeneral = this.seleccionServicio[0].id_edificio;
-                b = [];
-                c = this.listadoEdificios;
-
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
-                    }
-                });
-
-                this.seleccionEdificio = b;
+                }
+            } catch (error) {
+                console.log("Debes seleccionar algun campo");
             }
         },
         cargaSegunServicio() {

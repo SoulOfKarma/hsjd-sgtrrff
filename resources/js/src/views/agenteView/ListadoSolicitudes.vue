@@ -252,7 +252,7 @@ export default {
             validaEliminar: false,
             popupActive2: false,
             solicitudes: [],
-            localVal: "http://10.66.248.51:8000",
+            localVal: process.env.MIX_APP_URL,
             nombre:
                 sessionStorage.getItem("nombre") +
                 " " +
