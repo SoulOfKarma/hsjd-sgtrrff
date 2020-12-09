@@ -126,6 +126,26 @@
                                         )
                                     "
                                 ></archive-icon>
+                                <save-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        guardarPDFEscaneado(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></save-icon>
+                                <file-text-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        listadoDocumentacionAsociada(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></file-text-icon>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -189,6 +209,112 @@
                 </div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Subir Solicitud Escaneada"
+            :active.sync="popupActive3"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full ">
+                        <vx-card>
+                            <div class="vx-row mb-12">
+                                <div class="vx-col w-full mt-5">
+                                    <input
+                                        type="file"
+                                        @change="getImage"
+                                        class="form-control"
+                                    />
+                                </div>
+                            </div>
+                        </vx-card>
+                        <br />
+                        <vs-button
+                            color="danger"
+                            type="filled"
+                            @click="uploadImage"
+                            >Guardar Documento</vs-button
+                        >
+                    </div>
+                    <div class="vx-col sm:w-full w-full ">
+                        <vs-button
+                            @click="popupActive3 = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Ver Documentos Asociados"
+            :active.sync="popupActive4"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full ">
+                        <vx-card>
+                            <vs-table
+                                :data="documentacion"
+                                max-items="5"
+                                pagination
+                            >
+                                <template slot="thead">
+                                    <vs-th>ID</vs-th>
+                                    <vs-th>N° Solicitud</vs-th>
+                                    <vs-th>Documento</vs-th>
+                                </template>
+
+                                <template slot-scope="{ data }">
+                                    <vs-tr
+                                        :key="indextr"
+                                        v-for="(tr, indextr) in data"
+                                    >
+                                        <vs-td :data="data[indextr].id">
+                                            {{ data[indextr].id }}
+                                        </vs-td>
+
+                                        <vs-td
+                                            :data="data[indextr].id_solicitud"
+                                        >
+                                            {{ data[indextr].id_solicitud }}
+                                        </vs-td>
+
+                                        <vs-td
+                                            :data="
+                                                data[indextr].nombre_documento
+                                            "
+                                        >
+                                            <file-text-icon
+                                                size="1.5x"
+                                                class="custom-class"
+                                                @click="
+                                                    verDocumento(
+                                                        data[indextr]
+                                                            .nombre_documento
+                                                    )
+                                                "
+                                            ></file-text-icon>
+                                        </vs-td>
+                                    </vs-tr>
+                                </template>
+                            </vs-table>
+                        </vx-card>
+                        <br />
+                    </div>
+                    <div class="vx-col sm:w-full w-full ">
+                        <vs-button
+                            @click="popupActive4 = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 
@@ -207,6 +333,8 @@ import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import Vue from "vue";
 import Vuesax from "vuesax";
+import { SaveIcon } from "vue-feather-icons";
+import { FileTextIcon } from "vue-feather-icons";
 
 Vue.use(Vuesax, {
     theme: {
@@ -228,15 +356,26 @@ export default {
         Trash2Icon,
         UploadIcon,
         CornerDownRightIcon,
-        quillEditor
+        quillEditor,
+        SaveIcon,
+        FileTextIcon
     },
     data() {
         return {
+            users: [
+                {
+                    id: 1,
+                    name: "Leanne Graham",
+                    email: "Sincere@april.biz",
+                    website: "hildegard.org"
+                }
+            ],
             editorOption: {
                 modules: {
                     toolbar: [["bold", "italic", "underline", "strike"]]
                 }
             },
+            image: "",
             componentKey: 0,
             dataEliminacion: {
                 id_solicitud: 0,
@@ -249,10 +388,15 @@ export default {
             colorLoading: "#ff8000",
             value1: "",
             value2: "",
+            value3: "",
             validaEliminar: false,
             popupActive2: false,
+            popupActive3: false,
+            popupActive4: false,
             solicitudes: [],
+            documentacion: [],
             localVal: process.env.MIX_APP_URL,
+            urlDocumentos: process.env.MIX_APP_URL_DOCUMENTOS,
             nombre:
                 sessionStorage.getItem("nombre") +
                 " " +
@@ -261,6 +405,50 @@ export default {
         };
     },
     methods: {
+        verDocumento(link) {
+            const url = this.urlDocumentos + link;
+
+            window.open(url, "_blank");
+        },
+        getImage(event) {
+            //Asignamos la imagen a  nuestra data
+            this.image = event.target.files[0];
+        },
+        uploadImage() {
+            //Creamos el formData
+            var data = new FormData();
+            //Añadimos la imagen seleccionada
+            data.append("avatar", this.image);
+            data.append("id", this.value3);
+
+            axios
+                .post(this.localVal + "/api/Agente/PostDocumentoF", data, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(response => {
+                    if (response.data) {
+                        this.$vs.notify({
+                            title: "Documento Guardado ",
+                            text:
+                                "Podra Visualizarlo en el menu del costado para descargarlo o visualizarlo en el navegador ",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.popupActive3 = false;
+                    } else {
+                        this.$vs.notify({
+                            title: "Error al subir el documento ",
+                            text:
+                                "Intente nuevamente con el formato PDF o alguna Imagen ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                });
+        },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
             setTimeout(() => {
@@ -272,6 +460,16 @@ export default {
             this.value1 = id;
             this.value2 = uuid;
             this.popupActive2 = true;
+        },
+        guardarPDFEscaneado(id, uuid) {
+            this.value3 = id;
+
+            this.popupActive3 = true;
+        },
+        listadoDocumentacionAsociada(id, uuid) {
+            this.value4 = id;
+
+            this.popupActive4 = true;
         },
         forceRerender() {
             this.componentKey += 1;
@@ -286,6 +484,18 @@ export default {
                 })
                 .then(res => {
                     this.solicitudes = res.data;
+                });
+        },
+        cargarDocumentacion() {
+            axios
+                .get(this.localVal + "/api/Agente/getDocumentos", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.documentacion = res.data;
                 });
         },
         detalleSolicitud(id, uuid) {
@@ -488,6 +698,7 @@ export default {
         this.cargarSolicitudes();
         this.openLoadingColor();
         this.forceRerender();
+        this.cargarDocumentacion();
     }
 };
 </script>

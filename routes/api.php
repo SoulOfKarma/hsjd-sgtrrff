@@ -282,6 +282,10 @@ use App\Mail\AutoRespuesta;
             Route::get('/Usuario/getCategoriaSI', ['middleware' => 'cors', 'uses' => 'CategoriaController@getCategoriaSI']);
             //Retorna Tipo Reparacion
             Route::get('/Usuario/getTReparacionSI', ['middleware' => 'cors', 'uses' => 'TipoReparacionController@getTReparacionSI']);
+            //Inserta Documentos de las solicitudes finalizadas
+            Route::post('/Agente/PostDocumentoF', ['middleware' => 'cors', 'uses' => 'DocumentosFController@store']);
+            //Inserta Documentos de las solicitudes finalizadas
+            Route::get('/Agente/getDocumentos', ['middleware' => 'cors', 'uses' => 'DocumentosFController@getData']);
             
       });
       //Generar Excel	

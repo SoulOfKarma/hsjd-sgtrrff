@@ -47,7 +47,7 @@ class TrabajadorController extends Controller
     {
         //Traer todo de trabajadores
         $get_all = Trabajadores::select('trabajadores.*',DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"))
-            ->where('id_especialidad1', '=', 18)
+            ->where('id_especialidad1', '=', 17)
             ->get();
 
         return  $get_all;
@@ -57,7 +57,7 @@ class TrabajadorController extends Controller
     {
         //Traer todo de trabajadores
         $get_all = Trabajadores::select('trabajadores.*',DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"))
-            ->where('id_especialidad1', '=', 17)
+            ->where('id_especialidad1', '=', 18)
             ->get();
 
         return  $get_all;

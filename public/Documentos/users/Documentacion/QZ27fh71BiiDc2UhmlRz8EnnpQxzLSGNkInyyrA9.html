@@ -1,0 +1,89 @@
+$5$$RVPctmpRV/BSIn.1n6igzRFoR1CCPKAcLaSBny2VdL.
+
+
+SET GLOBAL log_bin_trust_function_creators=1;
+DROP FUNCTION IF EXISTS fnStripTags;
+DELIMITER |
+CREATE FUNCTION fnStripTags( Dirty varchar(4000) )
+RETURNS varchar(4000)
+DETERMINISTIC 
+BEGIN
+  DECLARE iStart, iEnd, iLength int;
+    WHILE Locate( '<', Dirty ) > 0 And Locate( '>', Dirty, Locate( '<', Dirty )) > 0 DO
+      BEGIN
+        SET iStart = Locate( '<', Dirty ), iEnd = Locate( '>', Dirty, Locate('<', Dirty ));
+        SET iLength = ( iEnd - iStart) + 1;
+        IF iLength > 0 THEN
+          BEGIN
+            SET Dirty = Insert( Dirty, iStart, iLength, '');
+          END;
+        END IF;
+      END;
+    END WHILE;
+    RETURN Dirty;
+END;
+|
+DELIMITER ;
+SELECT fnStripTags('this <html>is <b>a test</b>, nothing more</html>');
+
+
+Admin crean usuarios y sus claves
+
+19.010.132-0
+Falla Electrica en enchufes de jefatura
+
+No funcionan los enchufes del sector, se comprobo con otros componenentes electricos pero no hubo cambios.
+
+<div class="vx-col w-1/2 mt-5">
+                            <h6>1.6 - Seleccione el Cargo</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionCargo"
+                                placeholder="Edificio"
+                                class="w-full select-large"
+                                label="descripcionCargo"
+                                :options="listadoCargo"
+                            ></v-select>
+                        </div>
+
+
+setTimeout(() => {
+                        router.back();
+                    }, 4000);
+
+Apoyo Clinico
+
+return $get_all;  git remote set-url origin git@github.com:SoulOfKarma/hsjd-rrffv1.git
+
+
+MAIL_DRIVER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=knightwalker.zero5@gmail.com
+MAIL_PASSWORD=gkvrehplmaixwtfo
+MAIL_ENCRYPTION=tls
+MAIL_FROM_NAME=SGTRRFF
+
+MAIL_DRIVER=smtp
+MAIL_HOST=mail.minsal.cl
+MAIL_PORT=443
+MAIL_USERNAME=ricardo.soto.g@redsalud.gov.cl
+MAIL_PASSWORD=Rs18499714
+MAIL_ENCRYPTION=tls
+MAIL_FROM_NAME=SGTRRFF
+
+$ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
+            ->where('solicitud_tickets.id_categoria', 2)
+            ->get();
+
+Recordar a javier sobre una nube para guardar cosas.
+
+->orderBy('seguimiento_solicitudes.id', 'desc')
+
+ razonEliminacion: ""
+
+DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket")
+
+:events="simpleCalendarEvents"
