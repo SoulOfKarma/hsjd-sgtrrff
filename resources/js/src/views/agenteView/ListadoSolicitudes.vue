@@ -220,10 +220,10 @@
                         <vx-card>
                             <div class="vx-row mb-12">
                                 <div class="vx-col w-full mt-5">
-                                    <input
+                                    <vs-input
                                         type="file"
                                         @change="getImage"
-                                        class="form-control"
+                                        class="form-control w-full"
                                     />
                                 </div>
                             </div>
@@ -256,11 +256,7 @@
                 <div class="vx-row">
                     <div class="vx-col sm:w-full w-full ">
                         <vx-card>
-                            <vs-table
-                                :data="documentacion"
-                                max-items="5"
-                                pagination
-                            >
+                            <vs-table :data="documentacion">
                                 <template slot="thead">
                                     <vs-th>ID</vs-th>
                                     <vs-th>N° Solicitud</vs-th>
@@ -276,10 +272,8 @@
                                             {{ data[indextr].id }}
                                         </vs-td>
 
-                                        <vs-td
-                                            :data="data[indextr].id_solicitud"
-                                        >
-                                            {{ data[indextr].id_solicitud }}
+                                        <vs-td :data="data[indextr].nticket">
+                                            {{ data[indextr].nticket }}
                                         </vs-td>
 
                                         <vs-td
@@ -362,14 +356,6 @@ export default {
     },
     data() {
         return {
-            users: [
-                {
-                    id: 1,
-                    name: "Leanne Graham",
-                    email: "Sincere@april.biz",
-                    website: "hildegard.org"
-                }
-            ],
             editorOption: {
                 modules: {
                     toolbar: [["bold", "italic", "underline", "strike"]]
@@ -395,6 +381,7 @@ export default {
             popupActive4: false,
             solicitudes: [],
             documentacion: [],
+            dataDocumentacion: [],
             localVal: process.env.MIX_APP_URL,
             urlDocumentos: process.env.MIX_APP_URL_DOCUMENTOS,
             nombre:
@@ -467,9 +454,18 @@ export default {
             this.popupActive3 = true;
         },
         listadoDocumentacionAsociada(id, uuid) {
-            this.value4 = id;
-
             this.popupActive4 = true;
+            let c = this.dataDocumentacion;
+            let b = [];
+            var a = 0;
+            c.forEach((value, index) => {
+                a = value.id_solicitud;
+                if (a == id) {
+                    b.push(value);
+                }
+            });
+
+            this.documentacion = b;
         },
         forceRerender() {
             this.componentKey += 1;
@@ -496,6 +492,7 @@ export default {
                 })
                 .then(res => {
                     this.documentacion = res.data;
+                    this.dataDocumentacion = res.data;
                 });
         },
         detalleSolicitud(id, uuid) {

@@ -476,7 +476,7 @@ class GestionTicketController extends Controller
             ->orderBy('solicitud_tickets.id', 'desc')
             ->get();
 
-        log::info($ticket);
+        
         return  $ticket;
     }
 

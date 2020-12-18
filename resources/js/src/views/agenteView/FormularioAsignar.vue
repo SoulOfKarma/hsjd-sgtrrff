@@ -95,6 +95,7 @@
                             <h6>2.2 - Seleccione al Trabajador</h6>
                             <br />
                             <v-select
+                                taggable
                                 v-model="seleccionTrabajador"
                                 placeholder="Seleccione al Trabajador"
                                 class="w-full select-large"
@@ -234,6 +235,17 @@
                                 :options="listadoEstado"
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
+                            <br />
+                            <h6>4.3 - Duracion</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionDuracion"
+                                placeholder="Seleccione el Estado"
+                                class="w-full select-large"
+                                label="descripcion_duracion"
+                                :options="listadoDuracion"
+                                @input="arrayDuracion(seleccionDuracion.id)"
+                            ></v-select>
                         </div>
                     </div>
                 </vx-card>
@@ -245,10 +257,7 @@
                         <vs-button color="primary" class="mb-2" @click="volver"
                             >Volver</vs-button
                         >
-                        <vs-button
-                            color="warning"
-                            class="mb-2"
-                            @click="probando"
+                        <vs-button color="warning" class="mb-2" @click="limpiar"
                             >Limpiar</vs-button
                         >
                         <vs-button
@@ -296,6 +305,167 @@
                 </div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Guardar Nuevo Trabajador"
+            :active.sync="popCrearTrabajador"
+            fullscreen
+        >
+            <!-- Usuario -->
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="1. Ingrese Datos del Usuario">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.1 Rut del Trabajador</h6>
+                            <vs-input
+                                class="vx-col w-full mt-5"
+                                v-model="rutUsuario"
+                                v-on:blur="formatear_run"
+                            />
+                            <span
+                                style="font-size: 10px; color: red; margin-left: 10px;"
+                                v-if="val_run"
+                                >Run incorrecto</span
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.2 Nombre del Trabajador</h6>
+                            <vs-input
+                                class="vx-col w-full mt-5"
+                                v-model="nombreUsuario"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.3 Apellido del Trabajador</h6>
+                            <vs-input
+                                class="vx-col w-full mt-5"
+                                v-model="apellidoUsuario"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.4 Anexo del Trabajador</h6>
+                            <vs-input
+                                type="number"
+                                class="vx-col w-full mt-5"
+                                v-model="anexoUsuario"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.5 Correo del Trabajador</h6>
+                            <vs-input
+                                type="email"
+                                class="vx-col w-full mt-5"
+                                v-model="correoUsuario"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.6 Contraseña del Trabajador</h6>
+                            <vs-input
+                                type="password"
+                                class="vx-col w-full mt-5"
+                                v-model="passUsuario"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.7 - Seleccione Supervisor</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionSupervisor"
+                                placeholder="Supervisor"
+                                class="w-full select-large"
+                                label="sup_nombre_apellido"
+                                :options="listadoSupervisores"
+                                @input="arraySupervisor"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.8 - Seleccione Especialidad</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionEspecialidad"
+                                placeholder="Especialidad"
+                                class="w-full select-large"
+                                label="descripcionEspecialidad"
+                                :options="listadoEspecialidad"
+                                @input="arrayEspecialidad"
+                            ></v-select>
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+            <!-- Ubicacion -->
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="2. Ubicacion del Usuario">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>2.1 - Seleccione el Edificio</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionEdificio"
+                                placeholder="Edificio"
+                                class="w-full select-large"
+                                label="descripcionEdificio"
+                                :options="listadoEdificios"
+                                @input="filtroSegunEdificio"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>2.2 - Seleccione el Servicio</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionServicio"
+                                placeholder="Servicio"
+                                class="w-full select-large"
+                                label="descripcionServicio"
+                                :options="listadoServicios"
+                                @input="cargaSegunServicio"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>2.3 - Seleccione la Unidad Especifica</h6>
+                            <br />
+                            <v-select
+                                taggable
+                                v-model="seleccionUnidadEsp"
+                                placeholder="Unidad Especifica"
+                                class="w-full select-large"
+                                label="descripcionUnidadEsp"
+                                :options="listadoUnidadEsp"
+                                @input="cargaSegunUnidadEsp"
+                            ></v-select>
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+            <div class="vx-col md:w-full w-full mb-base">
+                <div class="vx-row mb-12">
+                    <div class="vx-col w-1/3 mt-5">
+                        <vs-button
+                            class="mb-2 w-full"
+                            @click="volverTra"
+                            color="primary"
+                            >Volver
+                        </vs-button>
+                    </div>
+                    <div class="vx-col w-1/3 mt-5">
+                        <vs-button
+                            class="mb-2 w-full"
+                            @click="limpiarTrabajador"
+                            color="warning"
+                            >Limpiar
+                        </vs-button>
+                    </div>
+                    <div class="vx-col w-1/3 mt-5">
+                        <vs-button
+                            class="mb-2 w-full"
+                            @click="guardarTrabajador"
+                            color="success"
+                            >Enviar</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 
@@ -313,6 +483,7 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import router from "@/router";
+import { validate, clean, format } from "rut.js";
 
 export default {
     data: () => ({
@@ -434,6 +605,19 @@ export default {
             enableSeconds: true,
             noCalendar: true
         },
+        val_run: false,
+        nombreUsuario: "",
+        apellidoUsuario: "",
+        anexoUsuario: 0,
+        correoUsuario: "",
+        rutUsuario: "",
+        passUsuario: "",
+        popCrearTrabajador: false,
+        listadoEspecialidad: [],
+        seleccionEspecialidad: {
+            id: 0,
+            descripcionEspecialidad: "Seleccion Especialidad"
+        },
         listadoEdificios: [],
         datosSolicitud: [],
         listadoServicios: [],
@@ -489,7 +673,28 @@ export default {
             fechaCreacion: null,
             id_user: 0,
             descripcionSeguimiento: "",
-            id_usuarioSolicitante: 0
+            id_usuarioSolicitante: 0,
+            idDuracion: 0
+        },
+        registroUsuario: {
+            run: "",
+            email: "",
+            nombre: "",
+            apellido: "",
+            anexo: "",
+            id_cargo: 0,
+            id_cargo_asociado: 0,
+            id_edificio: 0,
+            id_servicio: 0,
+            id_unidadEspecifica: 0,
+            password: "",
+            run_usuario: "",
+            permiso_usuario: 3,
+            estado_login: 1,
+            tra_run: "",
+            tra_nombre: "",
+            tra_apellido: "",
+            id_especialidad1: 0
         },
         listadoTurno: [],
         seleccionTurno: {
@@ -543,6 +748,13 @@ export default {
                 tra_nombre_apellido: "Sin Asignar"
             }
         ],
+        seleccionDuracion: [
+            {
+                id: 1,
+                descripcion_duracion: "Chequeo"
+            }
+        ],
+        listadoDuracion: [],
         variablePrueba: 0,
         mensajeError: "",
 
@@ -594,9 +806,233 @@ export default {
         }
     },
     methods: {
+        volverTra() {
+            this.popCrearTrabajador = false;
+        },
+        formatear_run() {
+            this.rutUsuario = format(this.rutUsuario);
+            this.val_run = !validate(this.rutUsuario);
+        },
         //Volver a la pagina anterior
         volver() {
             router.back();
+        },
+        guardarTrabajador() {
+            if (
+                this.seleccionSupervisor[0] == null ||
+                this.seleccionSupervisor[0].id == 0
+            ) {
+                this.$vs.notify({
+                    title: "Error en Seleccionar al supervisor",
+                    text: "Debe seleccionar a un supervisor para continuar",
+                    color: "danger",
+                    position: "top-right",
+                    time: 3000
+                });
+            } else if (
+                this.seleccionEspecialidad[0] == null ||
+                this.seleccionEspecialidad[0].id == 0
+            ) {
+                this.$vs.notify({
+                    title: "Error en Seleccionar la especialidad",
+                    text: "Debe seleccionar a una especialidad para continuar",
+                    color: "danger",
+                    position: "top-right",
+                    time: 3000
+                });
+            } else if (
+                this.seleccionEdificio[0] == null ||
+                this.seleccionEdificio[0].id == null
+            ) {
+                this.$vs.notify({
+                    title: "Error en Seleccionar el edificio",
+                    text: "Debe seleccionar a un edificio para continuar",
+                    color: "danger",
+                    position: "top-right",
+                    time: 3000
+                });
+            } else if (
+                this.seleccionServicio[0] == null ||
+                this.seleccionServicio[0].id == 0
+            ) {
+                this.$vs.notify({
+                    title: "Error en Seleccionar el servicio",
+                    text: "Debe seleccionar a un servicio para continuar",
+                    color: "danger",
+                    position: "top-right",
+                    time: 3000
+                });
+            } else if (
+                this.seleccionUnidadEsp[0] == null ||
+                this.seleccionUnidadEsp[0].id == 0
+            ) {
+                this.$vs.notify({
+                    title: "Error en Seleccionar la ubicacion especifica",
+                    text:
+                        "Debe seleccionar a una ubicacion especifica para continuar",
+                    color: "danger",
+                    position: "top-right",
+                    time: 3000
+                });
+            } else {
+                this.registroUsuario.run = this.rutUsuario;
+                this.registroUsuario.email = this.correoUsuario;
+                this.registroUsuario.nombre = this.nombreUsuario;
+                this.registroUsuario.apellido = this.apellidoUsuario;
+                this.registroUsuario.anexo = this.anexoUsuario;
+                this.registroUsuario.id_cargo = 6;
+                this.registroUsuario.id_cargo_asociado = this.seleccionSupervisor[0].id;
+                this.registroUsuario.id_edificio = this.seleccionEdificio[0].id;
+                this.registroUsuario.id_servicio = this.seleccionServicio[0].id;
+                this.registroUsuario.id_unidadEspecifica = this.seleccionUnidadEsp[0].id;
+                this.registroUsuario.password = this.passUsuario;
+                this.registroUsuario.run_usuario = this.rutUsuario;
+                this.registroUsuario.tra_run = this.rutUsuario;
+                this.registroUsuario.tra_nombre = this.nombreUsuario;
+                this.registroUsuario.tra_apellido = this.apellidoUsuario;
+                this.registroUsuario.id_especialidad1 = this.seleccionEspecialidad[0].id;
+                this.rutUsuario = format(this.rutUsuario);
+                if (
+                    this.registroUsuario.run == null ||
+                    this.registroUsuario.run < 9 ||
+                    !validate(this.rutUsuario)
+                ) {
+                    this.$vs.notify({
+                        title: "Error en rut",
+                        text:
+                            "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
+                        color: "danger",
+                        position: "top-right",
+                        time: 3000
+                    });
+                } else if (
+                    this.registroUsuario.email == null ||
+                    this.registroUsuario.email < 10
+                ) {
+                    this.$vs.notify({
+                        title: "Error en correo",
+                        text:
+                            "Debe Escribir un correo valido y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right",
+                        time: 3000
+                    });
+                } else {
+                    const registro = this.registroUsuario;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/GuardarTrabajador",
+                            registro,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.limpiar();
+                            const ticketServer = res.data;
+                            this.$vs.notify({
+                                title: "Trabajador Agregado Correctamente",
+                                text: "Se recargaran los campos",
+                                color: "success",
+                                position: "top-right",
+                                time: 3000
+                            });
+                            this.cargarSupervisores();
+                            this.cargarTrabajadores();
+                            this.popCrearTrabajador = false;
+                        });
+                }
+            }
+        },
+        arrayEspecialidad() {
+            let id = this.seleccionEspecialidad.id;
+            let c = this.listadoEspecialidad;
+            let b = [];
+            let a = 0;
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == id) {
+                    b.push(value);
+                }
+            });
+            this.seleccionEspecialidad = b;
+        },
+        cargarEspecialidad() {
+            axios
+                .get(this.localVal + "/api/Agente/getEspecialidad", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoEspecialidad = res.data;
+                    let b = [];
+                    let c = this.listadoEspecialidad;
+                    c.forEach((value, index) => {
+                        b.push(value);
+                    });
+                    this.listadoEspecialidad = b;
+                });
+        },
+        limpiarTrabajador() {
+            this.registroUsuario.run = "";
+            this.registroUsuario.email = "";
+            this.registroUsuario.nombre = "";
+            this.registroUsuario.apellido = "";
+            this.registroUsuario.anexo = 0;
+            this.registroUsuario.id_cargo = 0;
+            this.registroUsuario.id_edificio = 0;
+            this.registroUsuario.id_servicio = 0;
+            this.registroUsuario.id_unidadEspecifica = 0;
+            this.registroUsuario.password = "";
+            this.registroUsuario.run_usuario = "";
+            this.registroUsuario.tra_run = "";
+            this.registroUsuario.tra_nombre = "";
+            this.registroUsuario.tra_apellido = "";
+            this.registroUsuario.id_especialidad1 = 0;
+
+            this.seleccionCargo = [
+                {
+                    id: 0,
+                    descripcionCargo: "Seleccione Cargo"
+                }
+            ];
+            this.seleccionEdificio = [
+                {
+                    id: 0,
+                    descripcionEdificio: "Seleccione Edificio"
+                }
+            ];
+            this.seleccionServicio = [
+                {
+                    id: 0,
+                    descripcionServicio: "Seleccione Servicio"
+                }
+            ];
+            this.seleccionUnidadEsp = [
+                {
+                    id: 0,
+                    descripcionUnidadEsp: "Seleccion Unidad Especifica"
+                }
+            ];
+            this.seleccionEspecialidad = [
+                {
+                    id: 0,
+                    descripcionEspecialidad: "Seleccion Especialidad"
+                }
+            ];
+            this.nombreUsuario = "";
+            this.apellidoUsuario = "";
+            this.anexoUsuario = 0;
+            this.correoUsuario = "";
+            this.rutUsuario = "";
+            this.passUsuario = "";
         },
         guardarUnidadEsp(valor) {
             let unidadEsp = {
@@ -629,6 +1065,10 @@ export default {
                         this.cargarUnidadEsp();
                         this.validaEliminar = false;
                         this.popupActive2 = false;
+                        this.seleccionUnidadEsp = {
+                            id: 0,
+                            descripcionUnidadEsp: "Seleccione Unidad Especifica"
+                        };
                     } else {
                         this.$vs.notify({
                             time: 3000,
@@ -826,9 +1266,53 @@ export default {
             });
             this.seleccionSupervisor = b;
         },
+        arraySupervisor() {
+            let id = this.seleccionSupervisor.id;
+            let c = this.listadoSupervisores;
+            let b = [];
+            let a = 0;
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == id) {
+                    b.push(value);
+                }
+            });
+            this.seleccionSupervisor = b;
+        },
         //Cambiar de Objeto a Array
         arrayTrabajadores(id) {
-            let c = this.listadoTrabajadoresData;
+            if (id == 0 || id == null) {
+                this.popCrearTrabajador = true;
+            } else {
+                let c = this.listadoTrabajadoresData;
+                let b = [];
+                var a = 0;
+
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == id) {
+                        b.push(value);
+                    }
+                });
+                this.seleccionTrabajador = b;
+
+                b = [];
+                a = 0;
+
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == 1) {
+                        b.push(value);
+                    } else if (a != id) {
+                        b.push(value);
+                    }
+                });
+
+                this.listadoApoyo1 = b;
+            }
+        },
+        arrayDuracion(id) {
+            let c = this.listadoDuracion;
             let b = [];
             var a = 0;
 
@@ -838,21 +1322,7 @@ export default {
                     b.push(value);
                 }
             });
-            this.seleccionTrabajador = b;
-
-            b = [];
-            a = 0;
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == 1) {
-                    b.push(value);
-                } else if (a != id) {
-                    b.push(value);
-                }
-            });
-
-            this.listadoApoyo1 = b;
+            this.seleccionDuracion = b;
         },
         //Cambiar de Objeto a Array
         arrayApoyo1(id) {
@@ -1317,6 +1787,7 @@ export default {
                 this.gestionTicket.fechaInicioFormateada = fechaInicioT;
                 this.gestionTicket.id_user = sessionStorage.getItem("id");
                 this.gestionTicket.id_usuarioSolicitante = this.datosSolicitud[0].id_user;
+                this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
                 this.gestionTicket.descripcionSeguimiento =
                     "El Agente " +
                     this.nombre +
@@ -1413,7 +1884,18 @@ export default {
             });
             this.seleccionReparacion = b;
         },
-
+        cargarDuracion() {
+            axios
+                .get(this.localVal + "/api/Agente/GetDuracion", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoDuracion = res.data;
+                });
+        },
         cargarInicial() {
             this.cargarEstado();
             this.cargarTipoRep();
@@ -1424,6 +1906,94 @@ export default {
             this.cargarSupervisores();
             this.cargarTrabajadores();
             this.cargarTurnos();
+            this.cargarDuracion();
+            this.cargarEspecialidad();
+        },
+        limpiar() {
+            gestionTicket = {
+                uuid: "",
+                id_solicitud: 0,
+                id_edificio: 2,
+                id_servicio: 2,
+                id_ubicacionEx: 3,
+                id_tipoReparacion: 3,
+                id_estado: 1,
+                id_supervisor: 4,
+                id_trabajador: 5,
+                idApoyo1: 1,
+                idApoyo2: 1,
+                idApoyo3: 1,
+                idTurno: 0,
+                fechaInicio: null,
+                fechaTermino: null,
+                horaInicio: null,
+                horaTermino: null,
+                horasEjecucion: 0,
+                diasEjecucion: 0,
+                desTrabajador: "",
+                desSupervisor: "",
+                desEdificio: "",
+                desServicio: "",
+                desUbicacion: "",
+                desReparacion: "",
+                desEstado: "",
+                desApoyo1: "",
+                desApoyo2: "",
+                desApoyo3: "",
+                nombre: "",
+                tituloP: "",
+                descripcionP: "",
+                fechaInicioFormateada: null,
+                fechaCreacion: null,
+                id_user: 0,
+                descripcionSeguimiento: "",
+                id_usuarioSolicitante: 0,
+                idDuracion: 0
+            };
+            this.seleccionTurno = {
+                id: 0,
+                descripcionTurno: "Seleccione Turno"
+            };
+            this.seleccionEdificio = {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            };
+            this.seleccionServicio = {
+                id: 0,
+                descripcionServicio: "Seleccione Servicio"
+            };
+            this.seleccionUnidadEsp = {
+                id: 0,
+                descripcionUnidadEsp: "Seleccione Unidad Especifica"
+            };
+            this.seleccionReparacion = {
+                id: 0,
+                descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+            };
+            this.seleccionEstado = {
+                id: 0,
+                descripcionEstado: "Seleccione Estado"
+            };
+            this.seleccionSupervisor = {
+                id: 0,
+                sup_nombre_apellido: "Seleccione al Supervisor"
+            };
+            this.seleccionTrabajador = {
+                id: 0,
+                tra_nombre_apellido: "Seleccione al Trabajador"
+            };
+            this.seleccionApoyo1 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo2 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo3 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
         }
     },
     created: function() {

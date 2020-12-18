@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGestionSolicitudesTable extends Migration
+class GestionSolicitudes extends Migration
 {
     /**
      * Run the migrations.
@@ -23,6 +23,7 @@ class CreateGestionSolicitudesTable extends Migration
             $table->bigInteger('idApoyo2');
             $table->bigInteger('idApoyo3');
             $table->bigInteger('idTurno');
+            $table->bigInteger('idDuracion')->nullable();
             $table->time('horaInicio');
             $table->time('horaCambiada')->nullable();
             $table->time('horaTermino');
@@ -42,6 +43,6 @@ class CreateGestionSolicitudesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gestion_solicitudes');
+        //
     }
 }

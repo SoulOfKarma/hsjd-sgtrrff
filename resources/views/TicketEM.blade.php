@@ -128,8 +128,8 @@
               <div class="col-xs-2"><label>Anexo</label></div>
               <div class="col-xs-2"><label>{{$anexo}}</label> </div>
               <div class="col-xs-1"></div>
-              <div class="col-xs-3"></div>
-              <div class="col-xs-2"></div>
+              <div class="col-xs-3"><label>Duracion</label></div>
+              <div class="col-xs-2"><label>{{$duracionSolicitudes}}</label></div>
               <div class="col-xs-2"></div>
             </div><br>
             <div class="row">
