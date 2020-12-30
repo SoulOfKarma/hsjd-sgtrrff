@@ -175,4 +175,8 @@ class LoginController extends Controller
             }
             return response()->json(compact('user'));
     }
+
+    public function checkToken(){
+      return response()->json(['success' => true ],200);
+    }
 }

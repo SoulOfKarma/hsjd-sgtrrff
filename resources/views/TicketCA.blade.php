@@ -61,11 +61,11 @@
             
             </div>
             <div class="row">
-              <div class="col-xs-2"><label>N°Ticket</label></div>
-              <div class="col-xs-2"><strong>{{$idSolicitud}}</strong></div>
+              <div class="col-xs-2"><label>N°OT</label></div>
+              <div class="col-xs-2"><strong>:{{$idSolicitud}}</strong></div>
               <div class="col-xs-1"></div>
               <div class="col-xs-3"><label>Fecha Solicitud</label> </div>
-              <div class="col-xs-2"><label>{{$fechaS}}</label></div>
+              <div class="col-xs-2"><label>:{{$fechaS}}</label></div>
               <div class="col-xs-2"></div>
             </div>
             <div class="row">
@@ -94,10 +94,10 @@
             </div>
             <div class="row">
               <div class="col-xs-2"><label>Apoyo 1</label></div>
-              <div class="col-xs-2"><label>{{$nomApoyo1}} {{$apeApoyo3}}</label> </div>
+              <div class="col-xs-2"><label>{{$nomApoyo1}} {{$apeApoyo1}}</label> </div>
               <div class="col-xs-1"></div>
               <div class="col-xs-3"><label>Apoyo 2</label> </div>
-              <div class="col-xs-2"><label>{{$nomApoyo2}} {{$apeApoyo3}}</label></div>
+              <div class="col-xs-2"><label>{{$nomApoyo2}} {{$apeApoyo2}}</label></div>
               <div class="col-xs-2"></div>
             </div>
             <div class="row">

@@ -76,6 +76,8 @@ use App\Mail\AutoRespuesta;
             //Gestion Agentes
             //Traer supervisores
             Route::get('/Agente/GetSupervisores', ['middleware' => 'cors', 'uses' => 'SupervisorController@index']);
+            //Traer Todos los tickets Asignados Para Api Externa
+            Route::get('/Agente/ticketsAll', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ticketsAll']);
             //Traer Todos los tickets asignados
             Route::get('/Agente/GetTicketAsignadosInfra', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ticketsCategoriaInfra']);
             //Traer Todos los tickets asignados
@@ -296,6 +298,7 @@ use App\Mail\AutoRespuesta;
       Route::get('/Agente/generarExcelByFecha/{fechaInicio}/{fechaTermino}', 'ExcelController@generarExcelByFecha');
 
     Route::post('/auth/login', 'LoginController@login');
+    Route::post('/auth/check', 'LoginController@checkToken');
     Route::post('/auth/generarToken', 'LoginController@generarToken');
      
       //Guardar Solicitud Comodin para Backend

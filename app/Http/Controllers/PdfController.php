@@ -156,15 +156,37 @@ class PdfController extends Controller
         $apoyo2 = Trabajadores::firstWhere('id', $idApoyo2);
         $apoyo3 = Trabajadores::firstWhere('id', $idApoyo3);
 
+        $nom1 = "";
+        $ape1 = "";
+        $nom2 = "";
+        $ape2 = "";
+        $nom3 = "";
+        $ape3 = "";
 
-        $nom1 = $apoyo1->tra_nombre;
-        $ape1 = $apoyo1->tra_apellido;
 
-        $nom2 = $apoyo2->tra_nombre;
-        $ape2 = $apoyo2->tra_apellido;
+        if($idApoyo1 == 1){
+            $nom1 = "-";
+            $ape1 = "-";
+        }else{
+            $nom1 = $apoyo1->tra_nombre;
+                $ape1 = $apoyo1->tra_apellido;
+        }
 
-        $nom3 = $apoyo3->tra_nombre;
-        $ape3 = $apoyo3->tra_apellido;
+        if($idApoyo2 == 1){
+            $nom2 = "-";
+            $ape2 = "-";
+        }else{
+            $nom2 = $apoyo1->tra_nombre;
+                $ape2 = $apoyo1->tra_apellido;
+        }
+
+        if($idApoyo3 == 1){
+            $nom3 = "-";
+            $ape3 = "-";
+        }else{
+            $nom3 = $apoyo1->tra_nombre;
+            $ape3 = $apoyo1->tra_apellido;
+        }
 
         $idSol = $data->nticket;
         $nombreTra = $data->tra_nombre_apellido;
@@ -263,14 +285,37 @@ class PdfController extends Controller
 
 
 
-        $nom1 = $apoyo1->tra_nombre;
-        $ape1 = $apoyo1->tra_apellido;
+        $nom1 = "";
+        $ape1 = "";
+        $nom2 = "";
+        $ape2 = "";
+        $nom3 = "";
+        $ape3 = "";
 
-        $nom2 = $apoyo2->tra_nombre;
-        $ape2 = $apoyo2->tra_apellido;
 
-        $nom3 = $apoyo3->tra_nombre;
-        $ape3 = $apoyo3->tra_apellido;
+        if($idApoyo1 == 1){
+            $nom1 = "-";
+            $ape1 = "-";
+        }else{
+            $nom1 = $apoyo1->tra_nombre;
+                $ape1 = $apoyo1->tra_apellido;
+        }
+
+        if($idApoyo2 == 1){
+            $nom2 = "-";
+            $ape2 = "-";
+        }else{
+            $nom2 = $apoyo1->tra_nombre;
+                $ape2 = $apoyo1->tra_apellido;
+        }
+
+        if($idApoyo3 == 1){
+            $nom3 = "-";
+            $ape3 = "-";
+        }else{
+            $nom3 = $apoyo1->tra_nombre;
+            $ape3 = $apoyo1->tra_apellido;
+        }
 
         $idSol = $data->nticket;
         $nombreTra = $data->tra_nombre_apellido;
@@ -369,14 +414,37 @@ class PdfController extends Controller
 
 
 
-        $nom1 = $apoyo1->tra_nombre;
-        $ape1 = $apoyo1->tra_apellido;
+        $nom1 = "";
+        $ape1 = "";
+        $nom2 = "";
+        $ape2 = "";
+        $nom3 = "";
+        $ape3 = "";
 
-        $nom2 = $apoyo2->tra_nombre;
-        $ape2 = $apoyo2->tra_apellido;
 
-        $nom3 = $apoyo3->tra_nombre;
-        $ape3 = $apoyo3->tra_apellido;
+        if($idApoyo1 == 1){
+            $nom1 = "-";
+            $ape1 = "-";
+        }else{
+            $nom1 = $apoyo1->tra_nombre;
+                $ape1 = $apoyo1->tra_apellido;
+        }
+
+        if($idApoyo2 == 1){
+            $nom2 = "-";
+            $ape2 = "-";
+        }else{
+            $nom2 = $apoyo1->tra_nombre;
+                $ape2 = $apoyo1->tra_apellido;
+        }
+
+        if($idApoyo3 == 1){
+            $nom3 = "-";
+            $ape3 = "-";
+        }else{
+            $nom3 = $apoyo1->tra_nombre;
+            $ape3 = $apoyo1->tra_apellido;
+        }
 
         $idSol = $data->nticket;
         $nombreTra = $data->tra_nombre_apellido;
@@ -475,14 +543,37 @@ class PdfController extends Controller
 
 
 
-        $nom1 = $apoyo1->tra_nombre;
-        $ape1 = $apoyo1->tra_apellido;
+        $nom1 = "";
+        $ape1 = "";
+        $nom2 = "";
+        $ape2 = "";
+        $nom3 = "";
+        $ape3 = "";
 
-        $nom2 = $apoyo2->tra_nombre;
-        $ape2 = $apoyo2->tra_apellido;
 
-        $nom3 = $apoyo3->tra_nombre;
-        $ape3 = $apoyo3->tra_apellido;
+        if($idApoyo1 == 1){
+            $nom1 = "-";
+            $ape1 = "-";
+        }else{
+            $nom1 = $apoyo1->tra_nombre;
+                $ape1 = $apoyo1->tra_apellido;
+        }
+
+        if($idApoyo2 == 1){
+            $nom2 = "-";
+            $ape2 = "-";
+        }else{
+            $nom2 = $apoyo1->tra_nombre;
+                $ape2 = $apoyo1->tra_apellido;
+        }
+
+        if($idApoyo3 == 1){
+            $nom3 = "-";
+            $ape3 = "-";
+        }else{
+            $nom3 = $apoyo1->tra_nombre;
+            $ape3 = $apoyo1->tra_apellido;
+        }
 
         $idSol = $data->nticket;
         $nombreTra = $data->tra_nombre_apellido;

@@ -6,7 +6,7 @@
                 {{ nombre }} - {{ run }}
             </vs-alert>
 
-            <vs-table search :data="solicitudes" max-items="5" pagination>
+            <vs-table search :data="solicitudes" max-items="15" pagination>
                 <template slot="thead">
                     <vs-th>N° Solicitud</vs-th>
                     <vs-th>Persona Solicitante</vs-th>

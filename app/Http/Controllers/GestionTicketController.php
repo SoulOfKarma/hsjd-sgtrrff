@@ -23,6 +23,17 @@ class GestionTicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function ticketsAll()
+    {
+        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
+            ->orderBy('solicitud_tickets.id', 'desc')
+            ->get();
+        return  $ticket;
+    }
+
     public function ticketsCategoriaInfra()
     {
         $estadoEliminado = 7;
