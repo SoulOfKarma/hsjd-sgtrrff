@@ -26,9 +26,11 @@ class GestionTicketController extends Controller
 
     public function ticketsAll()
     {
+        $filtro = [1,5,6,7];
         $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
+            ->whereNotIn('solicitud_tickets.id_estado',$filtro)
             ->orderBy('solicitud_tickets.id', 'desc')
             ->get();
         return  $ticket;
