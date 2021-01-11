@@ -203,7 +203,7 @@
                                 @on-change="onToChange"
                             />
                             <flat-pickr
-                                :config="configdateTimePicker"
+                                :config="configdateToTimePicker"
                                 v-model="gestionTicket.horaTermino"
                                 placeholder="Seleccione Hora"
                             />
@@ -556,6 +556,7 @@ export default {
         configFromdateTimePicker: {
             minDate: new Date(),
             maxDate: null,
+            defaultDate: new Date(),
             locale: {
                 firstDayOfWeek: 1,
                 weekdays: {
@@ -652,6 +653,12 @@ export default {
         },
 
         configdateTimePicker: {
+            defaultDate: new Date(),
+            enableTime: true,
+            enableSeconds: true,
+            noCalendar: true
+        },
+        configdateToTimePicker: {
             enableTime: true,
             enableSeconds: true,
             noCalendar: true

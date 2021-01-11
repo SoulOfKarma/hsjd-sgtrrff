@@ -650,7 +650,7 @@ export default {
             idApoyo2: 1,
             idApoyo3: 1,
             idTurno: 0,
-            fechaInicio: null,
+            fechaInicio: new date(),
             fechaTermino: null,
             horaInicio: null,
             horaTermino: null,
