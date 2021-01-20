@@ -123,6 +123,8 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/TraerSolicitud/{id}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexEspecifico']);
             //Guardar seguimiento agente
             Route::post('/Agente/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);
+            //Guardar Seguimiento Externo Bodega
+            Route::post('/seguimientoExternoBodega', ['middleware' => 'cors', 'uses' => 'SeguimientoController@seguimientoExternoBodega']);
             //Traer data especifica para correo Asignado
             Route::get('/Agente/GetDataCorreo/{uuid}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getDataCorreo']);
             //Envio de data para el correo

@@ -78,8 +78,19 @@ class SeguimientoController extends Controller
         Mail::send('/Mails/TicketGeneradoUsuario', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) use($listContactos) {
             $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
                 $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Mantencion']);
+                $message->setBcc(['mantencion.hsjd@redsalud.gov.cl'=> 'Mantencion']);
         });
+    }
+
+    public function seguimientoExternoBodega(Request $request)
+    {
+        try {
+            SeguimientoSolicitudes::create($request->all());
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+        
     }
 
     public function seguimientoTrabajador(Request $request, $uuid)
@@ -120,7 +131,7 @@ class SeguimientoController extends Controller
         Mail::send('/Mails/TicketGeneradoUsuario', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) use($listContactos) {
             $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
                 $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Mantencion']);
+                $message->setBcc(['mantencion.hsjd@redsalud.gov.cl'=> 'Mantencion']);
         });
     }
 
@@ -174,7 +185,7 @@ class SeguimientoController extends Controller
             Mail::send('/Mails/TicketResuelto', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) use($listContactos) {
             $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
                 $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Mantencion']);
+                $message->setBcc(['mantencion.hsjd@redsalud.gov.cl'=> 'Mantencion']);
             });
 
             return true;

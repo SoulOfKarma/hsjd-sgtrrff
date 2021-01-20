@@ -554,7 +554,7 @@ export default {
         hora1: moment("8:32", "HH:mm"),
         hora2: moment("12:32", "HH:mm"),
         configFromdateTimePicker: {
-            minDate: new Date(),
+            minDate: null,
             maxDate: null,
             defaultDate: new Date(),
             locale: {
@@ -714,9 +714,9 @@ export default {
             idApoyo2: 1,
             idApoyo3: 1,
             idTurno: 0,
-            fechaInicio: null,
+            fechaInicio: new Date(),
             fechaTermino: null,
-            horaInicio: null,
+            horaInicio: new Date(),
             horaTermino: null,
             horasEjecucion: 0,
             diasEjecucion: 0,

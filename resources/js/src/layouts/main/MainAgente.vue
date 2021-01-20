@@ -189,7 +189,7 @@ export default {
             navMenuItems,
             routerTransition: themeConfig.routerTransition || "none",
             routeTitle: this.$route.meta.pageTitle,
-            localVal: "http://10.66.248.51:8000"
+            localVal: process.env.MIX_APP_URL
         };
     },
     watch: {
@@ -253,8 +253,8 @@ export default {
         }
     },
     methods: {
-        async salir() {
-            await axios
+        salir() {
+            axios
                 .post(this.localVal + "/api/Login/Salir", {
                     rut: ""
                 })
