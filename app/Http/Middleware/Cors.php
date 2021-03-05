@@ -9,12 +9,14 @@ class Cors
     private static $allowedOriginsWhitelist = [
         'http://10.66.248.51:8001',
         'http://10.4.237.33:80',
-        'http://10.66.248.51:8002'
+        'http://10.66.248.51:8002',
+        'http://10.66.248.200:8001',
+        'http://10.66.248.200:8002'
     ];
 
     // All the headers must be a string
 
-    private static $allowedOrigin = ['http://10.66.248.51:8001','http://10.4.237.33:80','http://10.66.248.51:8002'];
+    private static $allowedOrigin = ['http://10.66.248.51:8001','http://10.4.237.33:80','http://10.66.248.51:8002','http://10.66.248.200:8001','http://10.66.248.200:8002'];
 
     private static $allowedMethods = 'OPTIONS, GET, POST, PUT, PATCH, DELETE';
 

@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="http://localhost:8080/proyectov1/public/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://localhost:8001/sgtrrff/public/css/bootstrap.min.css">
 
         <title>Ticket-EquiposMedicos</title>
         <style>#TADescripcion{

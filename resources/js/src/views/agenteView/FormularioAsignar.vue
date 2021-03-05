@@ -75,7 +75,7 @@
             </div>
             <!-- Personal -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="2. Asignar Supervisor y Tecnico">
+                <vx-card title="2. Asignar Supervisor y Tecnico" code-toggler>
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/2 mt-5">
                             <h6>2.1 - Seleccione al Supervisor</h6>
@@ -550,7 +550,6 @@ export default {
                 }
             }
         },
-
         configTodateTimePicker: {
             minDate: null,
             locale: {
@@ -632,25 +631,25 @@ export default {
         listadoApoyo3: [],
         listadoEstado: [],
         listadoCorreo: [],
+        selectEstado: [],
         listadoServiciosData: [],
         listadoUnidadEspData: [],
         listadoTrabajadoresData: [],
-        selectEstado: [],
         gestionTicket: {
             uuid: "",
             id_solicitud: 0,
-            id_edificio: 0,
-            id_servicio: 0,
-            id_ubicacionEx: 0,
-            id_tipoReparacion: 0,
+            id_edificio: 2,
+            id_servicio: 2,
+            id_ubicacionEx: 3,
+            id_tipoReparacion: 3,
             id_estado: 1,
-            id_supervisor: 0,
-            id_trabajador: 0,
+            id_supervisor: 4,
+            id_trabajador: 5,
             idApoyo1: 1,
             idApoyo2: 1,
             idApoyo3: 1,
             idTurno: 0,
-            fechaInicio: new date(),
+            fechaInicio: null,
             fechaTermino: null,
             horaInicio: null,
             horaTermino: null,
@@ -698,14 +697,13 @@ export default {
         },
         listadoTurno: [],
         seleccionTurno: {
-            id: 0,
-            descripcionTurno: "Seleccione Turno"
+            id: 1,
+            descripcionTurno: "Dia"
         },
         seleccionEdificio: {
             id: 0,
             descripcionEdificio: "Seleccione Edificio"
         },
-
         seleccionServicio: {
             id: 0,
             descripcionServicio: "Seleccione Servicio"
@@ -813,7 +811,6 @@ export default {
             this.rutUsuario = format(this.rutUsuario);
             this.val_run = !validate(this.rutUsuario);
         },
-        //Volver a la pagina anterior
         volver() {
             router.back();
         },
@@ -1080,7 +1077,6 @@ export default {
                     }
                 });
         },
-        //Carga Especifica de Servicios segun el edificio seleccionado
         filtroSegunEdificio() {
             if (this.seleccionEdificio == null || this.seleccionEdificio == 0) {
                 this.listadoServicios = this.listadoServiciosData;
@@ -1100,7 +1096,6 @@ export default {
                 this.listadoServicios = b;
             }
         },
-        //Carga automatica de Edificio y Servicio segun la unidad especifica seleccionada
         cargaSegunUnidadEsp() {
             try {
                 if (
@@ -1173,7 +1168,6 @@ export default {
                 console.log("Debes seleccionar algun campo");
             }
         },
-        //Carga de Unidad Especifica segun el servicio
         cargaSegunServicio() {
             if (
                 this.seleccionServicio == null ||
@@ -1224,7 +1218,6 @@ export default {
                 this.seleccionEdificio = b;
             }
         },
-        //Cambiar de Objeto a Array
         arrayEstado(id) {
             let c = this.listadoEstado;
             let b = [];
@@ -1238,7 +1231,19 @@ export default {
             });
             this.seleccionEstado = b;
         },
-        //Cambiar de Objeto a Array
+        arrayDuracion(id) {
+            let c = this.listadoDuracion;
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == id) {
+                    b.push(value);
+                }
+            });
+            this.seleccionDuracion = b;
+        },
         arrayTipoReparacion(id) {
             let c = this.listadoTipoRep;
             let b = [];
@@ -1252,7 +1257,6 @@ export default {
             });
             this.seleccionReparacion = b;
         },
-        //Cambiar de Objeto a Array
         arraySupervisores(id) {
             let c = this.listadoSupervisores;
             let b = [];
@@ -1279,7 +1283,6 @@ export default {
             });
             this.seleccionSupervisor = b;
         },
-        //Cambiar de Objeto a Array
         arrayTrabajadores(id) {
             if (id == 0 || id == null) {
                 this.popCrearTrabajador = true;
@@ -1311,20 +1314,6 @@ export default {
                 this.listadoApoyo1 = b;
             }
         },
-        arrayDuracion(id) {
-            let c = this.listadoDuracion;
-            let b = [];
-            var a = 0;
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionDuracion = b;
-        },
-        //Cambiar de Objeto a Array
         arrayApoyo1(id) {
             let c = this.listadoApoyo1;
             let b = [];
@@ -1352,7 +1341,7 @@ export default {
 
             this.listadoApoyo2 = b;
         },
-        //Cambiar de Objeto a Array
+
         arrayApoyo2(id) {
             let c = this.listadoApoyo2;
             let b = [];
@@ -1380,7 +1369,6 @@ export default {
 
             this.listadoApoyo3 = b;
         },
-        //Cambiar de Objeto a Array
         arrayApoyo3(id) {
             let c = this.listadoApoyo3;
             let b = [];
@@ -1394,15 +1382,12 @@ export default {
             });
             this.seleccionApoyo3 = b;
         },
-        //Seleccion de fechas
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
         },
-        //Seleccion de fechas
         onToChange(selectedDates, dateStr, instance) {
             this.$set(this.configFromdateTimePicker, "maxDate", dateStr);
         },
-        //Carga de los edificios
         cargarEdificios() {
             axios
                 .get(this.localVal + "/api/Usuario/GetEdificios", {
@@ -1415,7 +1400,6 @@ export default {
                     this.listadoEdificios = res.data;
                 });
         },
-        //Carga de los servicios
         cargarServicios() {
             axios
                 .get(this.localVal + "/api/Usuario/GetServicios", {
@@ -1430,7 +1414,6 @@ export default {
                     this.listadoServiciosData = res.data;
                 });
         },
-        //Carga de la unidad Especifica
         cargarUnidadEsp() {
             axios
                 .get(this.localVal + "/api/Usuario/GetUnidadEsp", {
@@ -1445,7 +1428,6 @@ export default {
                     this.listadoUnidadEspData = res.data;
                 });
         },
-        //Carga de Tipo de Reparacion
         cargarTipoRep() {
             axios
                 .get(this.localVal + "/api/Usuario/getTReparacionSI", {
@@ -1458,7 +1440,6 @@ export default {
                     this.listadoTipoRep = res.data;
                 });
         },
-        //Carga de supervisores
         cargarSupervisores() {
             axios
                 .get(this.localVal + "/api/Agente/GetSupervisores", {
@@ -1471,7 +1452,6 @@ export default {
                     this.listadoSupervisores = res.data;
                 });
         },
-        //Carga de turnos
         cargarTurnos() {
             axios
                 .get(this.localVal + "/api/Agente/getTurnoSL", {
@@ -1484,7 +1464,6 @@ export default {
                     this.listadoTurno = res.data;
                 });
         },
-        //Carga de trabajadores
         cargarTrabajadores() {
             axios
                 .get(this.localVal + "/api/Agente/GetTrabajadores", {
@@ -1712,9 +1691,6 @@ export default {
             } else if (this.seleccionTrabajador.id == 0) {
                 this.mensajeError = "el trabajador";
                 this.errorDrop(this.mensajeError);
-            } else if (this.seleccionTurno.id == 0) {
-                this.mensajeError = "el turno";
-                this.errorDrop(this.mensajeError);
             } else if (this.seleccionApoyo1.id == 0) {
                 this.mensajeError = "el apoyo 1";
                 this.errorDrop(this.mensajeError);
@@ -1779,15 +1755,14 @@ export default {
                     .locale("es")
                     .format("Do MMMM YYYY, HH:mm:ss");
                 this.gestionTicket.fechaCreacion = fechaCreacionT;
-
+                this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
                 var fechaInicioT = moment(this.hora1)
                     .locale("es")
                     .format("Do MMMM YYYY, HH:mm:ss");
 
                 this.gestionTicket.fechaInicioFormateada = fechaInicioT;
-                this.gestionTicket.id_user = sessionStorage.getItem("id");
                 this.gestionTicket.id_usuarioSolicitante = this.datosSolicitud[0].id_user;
-                this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
+                this.gestionTicket.id_user = sessionStorage.getItem("id");
                 this.gestionTicket.descripcionSeguimiento =
                     "El Agente " +
                     this.nombre +
@@ -1811,9 +1786,21 @@ export default {
                         this.mensajeGuardado();
                         setTimeout(() => {
                             router.back();
-                        }, 4000);
+                        }, 5000);
                     });
             }
+        },
+        cargarDuracion() {
+            axios
+                .get(this.localVal + "/api/Agente/GetDuracion", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoDuracion = res.data;
+                });
         },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
@@ -1884,18 +1871,7 @@ export default {
             });
             this.seleccionReparacion = b;
         },
-        cargarDuracion() {
-            axios
-                .get(this.localVal + "/api/Agente/GetDuracion", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoDuracion = res.data;
-                });
-        },
+
         cargarInicial() {
             this.cargarEstado();
             this.cargarTipoRep();

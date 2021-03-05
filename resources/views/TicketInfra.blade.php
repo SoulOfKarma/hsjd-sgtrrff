@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="http://localhost:8080/proyectov1/public/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://localhost:8001/sgtrrff/public/css/bootstrap.min.css">
 
         <title>Ticket-Infraestructura</title>
         <style>#TADescripcion{
@@ -51,7 +51,7 @@
     <body>
         <div class="container">
             <div class="row">
-              <div class="col-xs-2"> <img src="http://localhost:8080/proyectov1/resources/assets/images/logo/1.png"></div>
+              <div class="col-xs-2"> <img src="http://localhost:8001/sgtrrff/resources/assets/images/logo/1.png"></div>
                 <div class="col-xs-10">
                   <h3 id="tituloOrd"><b>Orden de Trabajo</b> </h3>
                   <h4 id="subOrd"><b>Unidad de Mantenimiento - Infraestructura</b> </h4>
