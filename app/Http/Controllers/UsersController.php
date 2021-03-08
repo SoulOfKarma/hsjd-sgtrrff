@@ -33,12 +33,12 @@ class UsersController extends Controller
     public function registrarUsuario(Request $request){
         try
         {       
-         $run = $request->run_usuario;
+         /* $run = $request->run_usuario;
          $run = str_replace('.', '', $run);
-         $run = strtoupper($run);
+         $run = strtoupper($run); */
 
          Users::create([
-            'run' => $run,
+            'run' =>  $request->run_usuario,
             'email' => $request->email,
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
@@ -52,11 +52,11 @@ class UsersController extends Controller
             'api_token' => Str::random(60),
          ]);
 
-         tblPermisoUsuarios::create([
+         /* tblPermisoUsuarios::create([
             'run_usuario' => $run,
             'permiso_usuario' => $request->permiso_usuario,
             'estado_login' =>  $request->estado_login
-         ]);
+         ]); */
 
 
          return true;
