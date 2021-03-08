@@ -62,6 +62,15 @@ class SolicitudUsuarioController extends Controller
         return  $get_all;
     }
 
+    public function traerUltimoT(){
+        try {
+            $get_all = SolicitudTickets::latest('id')->first();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+        }
+    }
+
     public function GetSolicitudCreada($id)
     {
         $get_all = SolicitudTickets::find($id);
@@ -219,48 +228,51 @@ class SolicitudUsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $uuid = Uuid::generate()->string;
-        $response = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]));
-        SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $response->id, 'descripcionSeguimiento' => 'Ticket creado']));
-        $id = $request->id_user;
-        $userSearch = Users::where('id',$id)->first();
-            $ValidarCargo = $userSearch->id_cargo_asociado;     
-            $userMail = [];
-
-            if($ValidarCargo == null || $ValidarCargo == 0){
+        try {
+            $uuid = Uuid::generate()->string;
+            $response = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]));
+            SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $response->id, 'descripcionSeguimiento' => 'Ticket creado']));
+            $id = $request->id_user;
+            $userSearch = Users::where('id',$id)->first();
+                $ValidarCargo = $userSearch->id_cargo_asociado;     
+                $userMail = [];
+    
+                if($ValidarCargo == null || $ValidarCargo == 0){
+                    $userMail = Users::select('email')
+                    ->Where('id',$id)
+                    ->orWhere('id_cargo_asociado',$id)
+                    ->get();
+                }else{
+                   
                 $userMail = Users::select('email')
-                ->Where('id',$id)
-                ->orWhere('id_cargo_asociado',$id)
+                ->where('id_cargo_asociado',$ValidarCargo)
+                ->orWhere('id',$ValidarCargo)
                 ->get();
-            }else{
-               
-            $userMail = Users::select('email')
-            ->where('id_cargo_asociado',$ValidarCargo)
-            ->orWhere('id',$ValidarCargo)
-            ->get();
-            }
-
-            $listContactos = [];
-            $i = 0;
-
-            foreach ($userMail as $key) {
-                $listContactos[$i] = $key->email;
-                $i++;
-            }
-            log::info($listContactos);
+                }
+    
+                $listContactos = [];
+                $i = 0;
+    
+                foreach ($userMail as $key) {
+                    $listContactos[$i] = $key->email;
+                    $i++;
+                }
+    
+               $nombre = $request->nombre;
+               $descripcionP = $request->descripcionCorreo;
+               $id_solicitud = $response->id;
+               $titulo = $request->tituloP;
+                Mail::send('/Mails/TicketGenerado', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $titulo], function ($message) use($listContactos) {
+                  $message->setTo($listContactos)->setSubject('Nuevo Ticket Generado');
+                 $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                 
+                });
+                return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
         
-           log::info($listContactos);
-           $nombre = $request->nombre;
-           $descripcionP = $request->descripcionCorreo;
-           $id_solicitud = $response->id;
-           $titulo = $request->tituloP;
-            Mail::send('/Mails/TicketGenerado', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $titulo], function ($message) use($listContactos) {
-              $message->setTo($listContactos)->setSubject('Nuevo Ticket Generado');
-             $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
-             $message->setBcc(['mantencion.hsjd@redsalud.gov.cl'=> 'Mantencion']);
-            });
-
-            return "ok";
         
     }
 

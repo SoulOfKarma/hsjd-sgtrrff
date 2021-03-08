@@ -17,7 +17,8 @@ use App\Mail\AutoRespuesta;
         Route::group(['middleware' => ['jwt.verify']], function() {
             //Retornar Login
             Route::get('/auth/user', 'LoginController@getAuthenticatedUser');
-
+            //Retorna Ultimo ID Ingresado de las solicitudes
+            Route::get('/Usuario/traerUltimoT', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@traerUltimoT']);
             //Retorna Edificios
             Route::get('/Usuario/GetEdificios', ['middleware' => 'cors', 'uses' => 'EdificioController@index']);
             //Route::get('/Usuario/GetEdificios', 'EdificioController@index');

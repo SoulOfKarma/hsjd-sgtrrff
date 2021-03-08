@@ -118,6 +118,16 @@
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
                             <br />
+
+                            <div class="vx-col w-full mt-5">
+                                <h6>Adjuntar Documento</h6>
+                                <br />
+                                <vs-input
+                                    type="file"
+                                    @change="getImage"
+                                    class="form-control w-full"
+                                />
+                            </div>
                         </div>
                     </div>
                 </vx-card>
@@ -142,7 +152,7 @@
                             @click="limpiar"
                             >Limpiar</vs-button
                         >
-                        <vs-button class="mb-2" @click="guardarSolicitud"
+                        <vs-button class="mb-2" @click="cargarUltimoID"
                             >Enviar</vs-button
                         >
                     </div>
@@ -265,7 +275,9 @@ export default {
         seleccionCategoria: {
             id: 0,
             des_categoria: "Seleccione Categoria"
-        }
+        },
+        image: "",
+        lastID: 0
     }),
     computed: {
         csrf_token() {
@@ -274,6 +286,10 @@ export default {
         }
     },
     methods: {
+        getImage(event) {
+            //Asignamos la imagen a  nuestra data
+            this.image = event.target.files[0];
+        },
         volver() {
             router.back();
         },
@@ -604,145 +620,187 @@ export default {
         },
         async guardarSolicitud() {
             try {
-                if (
-                    this.solicitud.descripcionP.trim() === "" ||
-                    this.solicitud.descripcionP.length < 15
-                ) {
-                    this.mensajeError =
-                        "La descripcion no supera los 15 caracteres";
-                    this.errorDescripcion(this.mensajeError);
+                if (this.seleccionCategoria.id == 5) {
+                    //Json de Login de faveo
+
+                    let data = {
+                        username: "ricardo.soto.g@redsalud.gov.cl",
+                        password: "Darkzero25"
+                    };
+
+                    //Variable para guardar token retornado
+                    let tokenI = "";
+                    //Hacer la peticion para recuperar token
+                    await axios
+                        .post(
+                            this.apiInformatica + "/public/api/v1/authenticate",
+                            data
+                        )
+                        .then(res => {
+                            const infoToken = res.data;
+                            tokenI = infoToken.token;
+                            console.log(tokenI);
+                        })
+                        .catch(function(error) {
+                            if (error.response) {
+                                // The request was made and the server responded with a status code
+                                // that falls out of the range of 2xx
+                                console.log(error);
+                            } else if (error.request) {
+                                // The request was made but no response was received
+                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                // http.ClientRequest in node.js
+                                console.log(error);
+                            } else {
+                                // Something happened in setting up the request that triggered an Error
+                                console.log("Error", error);
+                            }
+                            console.log(error);
+                        });
+                    //Llenando los campos para guardar el ticket en faveo
+                    this.solicitudInformatica.first_name = sessionStorage.getItem(
+                        "nombre"
+                    );
+                    this.solicitudInformatica.last_name = sessionStorage.getItem(
+                        "apellido"
+                    );
+                    this.solicitudInformatica.subject = this.solicitud.tituloP;
+                    this.solicitudInformatica.body = this.solicitud.descripcionP;
+                    this.solicitudInformatica.email = this.listadoUsuarios.email;
+                    this.solicitudInformatica.phone = this.listadoUsuarios.anexo;
+                    this.solicitudInformatica.token = tokenI;
+
+                    const solicitudNueva = this.solicitudInformatica;
+                    //Haciendo la peticion para crear el ticket
+                    await axios
+                        .post(
+                            this.apiInformatica +
+                                "/public/api/v1/helpdesk/create?apikey=PZe1Mv3VhuLnTXNSEE1si1R0e53DRp8C",
+                            solicitudNueva
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            this.mensajeGuardado();
+                        })
+                        .catch(function(error) {
+                            if (error.response) {
+                                // The request was made and the server responded with a status code
+                                // that falls out of the range of 2xx
+                                console.log(error);
+                                console.log(error);
+                                console.log(error);
+                            } else if (error.request) {
+                                // The request was made but no response was received
+                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                // http.ClientRequest in node.js
+                                console.log(error.request);
+                            } else {
+                                // Something happened in setting up the request that triggered an Error
+                                console.log("Error", error);
+                            }
+                            console.log(error);
+                        });
                 } else if (
-                    this.solicitud.tituloP.trim() === "" ||
-                    this.solicitud.tituloP.length < 10
+                    this.image == "" ||
+                    this.image == null ||
+                    this.image == 0
                 ) {
-                    this.mensajeError = "el titulo no supera los 10 caracteres";
-                    this.errorTitulo(this.mensajeError);
-                } else if (this.seleccionEdificio.id == 0) {
-                    this.mensajeError = "el Edificio";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionServicio.id == 0) {
-                    this.mensajeError = "el servicio";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionUnidadEsp.id == 0) {
-                    this.mensajeError = "la Unidad especifica";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionReparacion.id == 0) {
-                    this.mensajeError = "el tipo de reparacion";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionCategoria.id == 0) {
-                    this.mensajeError = "el tipo de categoria";
-                    this.errorDrop(this.mensajeError);
-                } else {
-                    if (this.seleccionCategoria.id == 5) {
-                        //Json de Login de faveo
-
-                        let data = {
-                            username: "ricardo.soto.g@redsalud.gov.cl",
-                            password: "Darkzero25"
-                        };
-
-                        //Variable para guardar token retornado
-                        let tokenI = "";
-                        //Hacer la peticion para recuperar token
-                        await axios
-                            .post(
-                                this.apiInformatica +
-                                    "/public/api/v1/authenticate",
-                                data
-                            )
-                            .then(res => {
-                                const infoToken = res.data;
-                                tokenI = infoToken.token;
-                                console.log(tokenI);
-                            })
-                            .catch(function(error) {
-                                if (error.response) {
-                                    // The request was made and the server responded with a status code
-                                    // that falls out of the range of 2xx
-                                    console.log(error.response.data);
-                                    console.log(error.response.status);
-                                    console.log(error.response.headers);
-                                } else if (error.request) {
-                                    // The request was made but no response was received
-                                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                    // http.ClientRequest in node.js
-                                    console.log(error.request);
-                                } else {
-                                    // Something happened in setting up the request that triggered an Error
-                                    console.log("Error", error.message);
+                    //Llenando Campos para Guardar Ticket de Mantencion
+                    this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                    this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                    this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
+                    this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                    this.solicitud.id_categoria = this.seleccionCategoria.id;
+                    var newElement = document.createElement("div");
+                    newElement.innerHTML = this.solicitud.descripcionP;
+                    this.solicitud.descripcionCorreo = newElement.textContent;
+                    const solicitudNueva = this.solicitud;
+                    this.openLoadingColor();
+                    this.solicitud = {
+                        descripcionP: "",
+                        tituloP: "",
+                        id_user: sessionStorage.getItem("id"),
+                        id_estado: 1,
+                        id_edificio: 0,
+                        id_servicio: 0,
+                        id_ubicacionEx: 0,
+                        id_tipoReparacion: 0,
+                        id_categoria: 0
+                    };
+                    //Enviando Datos para crear ticket
+                    await axios
+                        .post(
+                            this.localVal + "/api/Usuario/PostSolicitud",
+                            solicitudNueva,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
                                 }
-                                console.log(error.config);
-                            });
-                        //Llenando los campos para guardar el ticket en faveo
-                        this.solicitudInformatica.first_name = sessionStorage.getItem(
-                            "nombre"
-                        );
-                        this.solicitudInformatica.last_name = sessionStorage.getItem(
-                            "apellido"
-                        );
-                        this.solicitudInformatica.subject = this.solicitud.tituloP;
-                        this.solicitudInformatica.body = this.solicitud.descripcionP;
-                        this.solicitudInformatica.email = this.listadoUsuarios.email;
-                        this.solicitudInformatica.phone = this.listadoUsuarios.anexo;
-                        this.solicitudInformatica.token = tokenI;
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
 
-                        const solicitudNueva = this.solicitudInformatica;
-                        //Haciendo la peticion para crear el ticket
-                        await axios
-                            .post(
-                                this.apiInformatica +
-                                    "/public/api/v1/helpdesk/create?apikey=PZe1Mv3VhuLnTXNSEE1si1R0e53DRp8C",
-                                solicitudNueva
-                            )
-                            .then(res => {
-                                const solicitudServer = res.data;
+                            if (solicitudServer == true) {
                                 this.mensajeGuardado();
-                            })
-                            .catch(function(error) {
-                                if (error.response) {
-                                    // The request was made and the server responded with a status code
-                                    // that falls out of the range of 2xx
-                                    console.log(error.response.data);
-                                    console.log(error.response.status);
-                                    console.log(error.response.headers);
-                                } else if (error.request) {
-                                    // The request was made but no response was received
-                                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                    // http.ClientRequest in node.js
-                                    console.log(error.request);
-                                } else {
-                                    // Something happened in setting up the request that triggered an Error
-                                    console.log("Error", error.message);
+
+                                this.limpiar();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible crear el ticket, revise los campos e intente nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else {
+                    var data = new FormData();
+                    //Añadimos la imagen seleccionada
+                    data.append("avatar", this.image);
+                    data.append("id", this.lastID + 1);
+
+                    //Llenando Campos para Guardar Ticket de Mantencion
+                    this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                    this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                    this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
+                    this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                    this.solicitud.id_categoria = this.seleccionCategoria.id;
+                    var newElement = document.createElement("div");
+                    newElement.innerHTML = this.solicitud.descripcionP;
+                    this.solicitud.descripcionCorreo = newElement.textContent;
+                    const solicitudNueva = this.solicitud;
+                    this.openLoadingColor();
+                    this.solicitud = {
+                        descripcionP: "",
+                        tituloP: "",
+                        id_user: sessionStorage.getItem("id"),
+                        id_estado: 1,
+                        id_edificio: 0,
+                        id_servicio: 0,
+                        id_ubicacionEx: 0,
+                        id_tipoReparacion: 0,
+                        id_categoria: 0
+                    };
+                    //Enviando Datos para crear ticket
+                    await axios
+                        .all([
+                            axios.post(
+                                this.localVal + "/api/Agente/PostDocumentoF",
+                                data,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
                                 }
-                                console.log(error.config);
-                            });
-                    } else {
-                        //Llenando Campos para Guardar Ticket de Mantencion
-                        this.solicitud.id_edificio = this.seleccionEdificio[0].id;
-                        this.solicitud.id_servicio = this.seleccionServicio[0].id;
-                        this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
-                        this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
-                        this.solicitud.id_categoria = this.seleccionCategoria.id;
-                        var newElement = document.createElement("div");
-                        newElement.innerHTML = this.solicitud.descripcionP;
-                        this.solicitud.descripcionCorreo =
-                            newElement.textContent;
-                        const solicitudNueva = this.solicitud;
-                        this.openLoadingColor();
-                        this.solicitud = {
-                            descripcionP: "",
-                            tituloP: "",
-                            id_user: sessionStorage.getItem("id"),
-                            id_estado: 1,
-                            id_edificio: 0,
-                            id_servicio: 0,
-                            id_ubicacionEx: 0,
-                            id_tipoReparacion: 0,
-                            id_categoria: 0
-                        };
-                        //Enviando Datos para crear ticket
-                        await axios
-                            .post(
+                            ),
+                            axios.post(
                                 this.localVal + "/api/Usuario/PostSolicitud",
                                 solicitudNueva,
                                 {
@@ -753,13 +811,27 @@ export default {
                                     }
                                 }
                             )
-                            .then(res => {
-                                const solicitudServer = res.data;
-                                this.mensajeGuardado();
+                        ])
+                        .then(
+                            axios.spread((res1, res2) => {
+                                let data1 = res1.data;
+                                let data2 = res2.data;
+                                if (data1 == true && data2 == true) {
+                                    this.mensajeGuardado();
 
-                                this.limpiar();
-                            });
-                    }
+                                    this.limpiar();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible crear el ticket, revise los campos e intente nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            })
+                        );
                 }
             } catch (error) {
                 console.log(error);
@@ -771,7 +843,50 @@ export default {
                 this.$vs.loading.close();
             }, 2000);
         },
-
+        cargarUltimoID() {
+            if (
+                this.solicitud.descripcionP.trim() === "" ||
+                this.solicitud.descripcionP.length < 15
+            ) {
+                this.mensajeError =
+                    "La descripcion no supera los 15 caracteres";
+                this.errorDescripcion(this.mensajeError);
+            } else if (
+                this.solicitud.tituloP.trim() === "" ||
+                this.solicitud.tituloP.length < 10
+            ) {
+                this.mensajeError = "el titulo no supera los 10 caracteres";
+                this.errorTitulo(this.mensajeError);
+            } else if (this.seleccionEdificio.id == 0) {
+                this.mensajeError = "el Edificio";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionServicio.id == 0) {
+                this.mensajeError = "el servicio";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionUnidadEsp.id == 0) {
+                this.mensajeError = "la Unidad especifica";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionReparacion.id == 0) {
+                this.mensajeError = "el tipo de reparacion";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionCategoria.id == 0) {
+                this.mensajeError = "el tipo de categoria";
+                this.errorDrop(this.mensajeError);
+            } else {
+                axios
+                    .get(this.localVal + "/api/Usuario/traerUltimoT", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        let list = res.data;
+                        this.lastID = list.id;
+                        this.guardarSolicitud();
+                    });
+            }
+        },
         verListas() {
             var idGeneral = 4;
 

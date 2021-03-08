@@ -1,0 +1,5 @@
+SELECT *,if(registro_pagos.idART = 0,106,registroarts.idOrdenCompra) AS OC FROM registro_pagos
+JOIN registroarts ON registro_pagos.uuid = registroarts.uuid
+JOIN tipo_mantenciones ON registro_pagos.idTipoMantencion = tipo_mantenciones.id  
+JOIN orden_compras ON registroarts.idOrdenCompra = orden_compras.id
+JOIN estado_orden_compras ON orden_compras.idEstadoOC = estado_orden_compras.id
