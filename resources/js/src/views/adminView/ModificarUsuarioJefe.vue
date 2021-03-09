@@ -79,6 +79,7 @@
                                 type="number"
                                 class="vx-col w-full mt-5"
                                 v-model="anexoUsuario"
+                                @keypress="isNumber($event)"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -282,7 +283,9 @@ export default {
                 password: "",
                 run_usuario: "",
                 permiso_usuario: 2,
-                estado_login: 1
+                estado_login: 1,
+                idvalRut: 0,
+                idvalmail: 0
             },
             value1: "",
             validaEliminar: false,
@@ -292,8 +295,13 @@ export default {
     },
     methods: {
         formatear_run() {
-            this.rutUsuario = format(this.rutUsuario);
-            this.val_run = !validate(this.rutUsuario);
+            if (this.rutUsuario == "" || this.rutUsuario == null) {
+                console.log("Sin Rut");
+                this.val_run = false;
+            } else {
+                this.rutUsuario = format(this.rutUsuario);
+                this.val_run = !validate(this.rutUsuario);
+            }
         },
         cargarJefaturaSeleccionada() {
             let id = this.seleccionJefatura.id;
@@ -461,7 +469,26 @@ export default {
                 this.modificarUsuario.run_usuario = this.rutUsuario;
                 this.modificarUsuario.id = this.seleccionJefatura[0].id;
                 this.rutUsuario = format(this.rutUsuario);
+
                 if (
+                    this.rutUsuario == 0 ||
+                    this.rutUsuario == null ||
+                    this.rutUsuario == ""
+                ) {
+                    this.modificarUsuario.idvalRut = 0;
+                } else {
+                    this.modificarUsuario.idvalRut = 1;
+                }
+                if (
+                    this.correoUsuario == 0 ||
+                    this.correoUsuario == null ||
+                    this.correoUsuario == ""
+                ) {
+                    this.modificarUsuario.idvalmail = 0;
+                } else {
+                    this.modificarUsuario.idvalmail = 1;
+                }
+                /* if (
                     this.modificarUsuario.run == null ||
                     this.modificarUsuario.run < 9 ||
                     !validate(this.rutUsuario)
@@ -484,7 +511,7 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
-                } else if (
+                } else */ if (
                     this.modificarUsuario.nombre == null ||
                     this.modificarUsuario.nombre < 3
                 ) {
@@ -563,6 +590,7 @@ export default {
                                     position: "top-right"
                                 });
                                 this.limpiar();
+                                this.cargarJefaturaSeleccionada();
                             }
                         });
                 }

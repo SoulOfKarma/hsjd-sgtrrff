@@ -60,6 +60,7 @@
                                 type="number"
                                 class="vx-col w-full mt-5"
                                 v-model="anexoUsuario"
+                                @keypress="isNumber($event)"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -287,7 +288,9 @@ export default {
                 password: "",
                 run_usuario: "",
                 permiso_usuario: 2,
-                estado_login: 1
+                estado_login: 1,
+                idvalRut: 0,
+                idvalmail: 0
             },
             value1: "",
             validaEliminar: false,
@@ -296,9 +299,27 @@ export default {
         };
     },
     methods: {
+        isNumber: function(evt) {
+            evt = evt ? evt : window.event;
+            var charCode = evt.which ? evt.which : evt.keyCode;
+            if (
+                charCode > 31 &&
+                (charCode < 48 || charCode > 57) &&
+                charCode !== 46
+            ) {
+                evt.preventDefault();
+            } else {
+                return true;
+            }
+        },
         formatear_run() {
-            this.rutUsuario = format(this.rutUsuario);
-            this.val_run = !validate(this.rutUsuario);
+            if (this.rutUsuario == "" || this.rutUsuario == null) {
+                console.log("Sin Rut");
+                this.val_run = false;
+            } else {
+                this.rutUsuario = format(this.rutUsuario);
+                this.val_run = !validate(this.rutUsuario);
+            }
         },
         arrayCargo() {
             let id = this.seleccionCargo.id;
@@ -446,8 +467,26 @@ export default {
                 this.registroUsuario.password = this.passUsuario;
                 this.registroUsuario.run_usuario = this.rutUsuario;
                 this.rutUsuario = format(this.rutUsuario);
-
                 if (
+                    this.rutUsuario == 0 ||
+                    this.rutUsuario == null ||
+                    this.rutUsuario == ""
+                ) {
+                    this.registroUsuario.idvalRut = 0;
+                } else {
+                    this.registroUsuario.idvalRut = 1;
+                }
+                if (
+                    this.correoUsuario == 0 ||
+                    this.correoUsuario == null ||
+                    this.correoUsuario == ""
+                ) {
+                    this.registroUsuario.idvalmail = 0;
+                } else {
+                    this.registroUsuario.idvalmail = 1;
+                }
+
+                /* if (
                     this.registroUsuario.run == null ||
                     this.registroUsuario.run < 9 ||
                     !validate(this.rutUsuario)
@@ -470,7 +509,7 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
-                } else if (
+                } else */ if (
                     this.registroUsuario.nombre == null ||
                     this.registroUsuario.nombre < 3
                 ) {

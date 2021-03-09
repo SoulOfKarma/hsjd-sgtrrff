@@ -33,32 +33,101 @@ class UsersController extends Controller
     public function registrarUsuario(Request $request){
         try
         {       
-         /* $run = $request->run_usuario;
-         $run = str_replace('.', '', $run);
-         $run = strtoupper($run); */
-
-         Users::create([
-            'run' =>  $request->run_usuario,
-            'email' => $request->email,
-            'nombre' => $request->nombre,
-            'apellido' => $request->apellido,
-            'anexo' => $request->anexo,
-            'id_cargo' => $request->id_cargo,
-            'id_cargo_asociado' => $request->id_cargo_asociado,
-            'id_edificio' => $request->id_edificio,
-            'id_servicio' => $request->id_servicio,
-            'id_unidadEspecifica' => $request->id_unidadEspecifica,
-            'password' => Hash::make($request->password),
-            'api_token' => Str::random(60),
-         ]);
-
-         /* tblPermisoUsuarios::create([
-            'run_usuario' => $run,
-            'permiso_usuario' => $request->permiso_usuario,
-            'estado_login' =>  $request->estado_login
-         ]); */
-
-
+            $idvalrun = $request->idvalRut;
+            $idvalmail = $request->idvalmail;
+         if($idvalrun == 1){
+            if($idvalmail == 1){
+                $run = $request->run_usuario;
+                $run = str_replace('.', '', $run);
+                $run = strtoupper($run); 
+       
+                Users::create([
+                   'run' =>  $request->run_usuario,
+                   'email' => $request->email,
+                   'nombre' => $request->nombre,
+                   'apellido' => $request->apellido,
+                   'anexo' => $request->anexo,
+                   'id_cargo' => $request->id_cargo,
+                   'id_cargo_asociado' => $request->id_cargo_asociado,
+                   'id_edificio' => $request->id_edificio,
+                   'id_servicio' => $request->id_servicio,
+                   'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                   'password' => Hash::make($request->password),
+                   'api_token' => Str::random(60),
+                ]);
+       
+                 tblPermisoUsuarios::create([
+                   'run_usuario' => $run,
+                   'permiso_usuario' => $request->permiso_usuario,
+                   'estado_login' =>  $request->estado_login
+                ]); 
+             }else{
+                $run = $request->run_usuario;
+                $run = str_replace('.', '', $run);
+                $run = strtoupper($run); 
+       
+                Users::create([
+                   'run' =>  $request->run_usuario,
+                   //'email' => $request->email,
+                   'nombre' => $request->nombre,
+                   'apellido' => $request->apellido,
+                   'anexo' => $request->anexo,
+                   'id_cargo' => $request->id_cargo,
+                   'id_cargo_asociado' => $request->id_cargo_asociado,
+                   'id_edificio' => $request->id_edificio,
+                   'id_servicio' => $request->id_servicio,
+                   'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                   'password' => Hash::make($request->password),
+                   'api_token' => Str::random(60),
+                ]);
+       
+                 tblPermisoUsuarios::create([
+                   'run_usuario' => $run,
+                   'permiso_usuario' => $request->permiso_usuario,
+                   'estado_login' =>  $request->estado_login
+                ]); 
+            }
+         }else{
+             if($idvalmail == 1){
+                /* $run = $request->run_usuario;
+                $run = str_replace('.', '', $run);
+                $run = strtoupper($run);  */
+       
+                Users::create([
+                   //'run' =>  $request->run_usuario,
+                   'email' => $request->email,
+                   'nombre' => $request->nombre,
+                   'apellido' => $request->apellido,
+                   'anexo' => $request->anexo,
+                   'id_cargo' => $request->id_cargo,
+                   'id_cargo_asociado' => $request->id_cargo_asociado,
+                   'id_edificio' => $request->id_edificio,
+                   'id_servicio' => $request->id_servicio,
+                   'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                   'password' => Hash::make($request->password),
+                   'api_token' => Str::random(60),
+                ]);
+             }else{
+                /* $run = $request->run_usuario;
+                $run = str_replace('.', '', $run);
+                $run = strtoupper($run);  */
+       
+                Users::create([
+                   //'run' =>  $request->run_usuario,
+                   //'email' => $request->email,
+                   'nombre' => $request->nombre,
+                   'apellido' => $request->apellido,
+                   'anexo' => $request->anexo,
+                   'id_cargo' => $request->id_cargo,
+                   'id_cargo_asociado' => $request->id_cargo_asociado,
+                   'id_edificio' => $request->id_edificio,
+                   'id_servicio' => $request->id_servicio,
+                   'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                   'password' => Hash::make($request->password),
+                   'api_token' => Str::random(60),
+                ]);
+             }
+         }   
          return true;
         }
         catch(\Throwable $th){
@@ -69,66 +138,219 @@ class UsersController extends Controller
 
     public function modificarUsuarioJefe(Request $request){
         try {
-        $run = $request->run_usuario;
-        $run = str_replace('.', '', $run);
-        $run = strtoupper($run);
+            $idvalrun = $request->idvalRut;
+            $idvalmail = $request->idvalmail;
+            log::info($idvalrun);
+            log::info($idvalmail);
+            if($idvalrun == 1){
+                if($idvalmail == 1){
+                    log::info("Aca weon");
+                    $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run);
+                    log::info($run);
+                    log::info($request);
+                    Users::where('id',$request->id)
+                    ->update([
+                        'run' => $run,
+                        'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
 
-        Users::where('id',$request->id)
-        ->update([
-            'email' => $request->email,
-            'nombre' => $request->nombre,
-            'apellido' => $request->apellido,
-            'anexo' => $request->anexo,
-            'id_cargo' => $request->id_cargo,
-            'id_cargo_asociado' => $request->id_cargo_asociado,
-            'id_edificio' => $request->id_edificio,
-            'id_servicio' => $request->id_servicio,
-            'id_unidadEspecifica' => $request->id_unidadEspecifica,
-            'password' => Hash::make($request->password),
-            'api_token' => Str::random(60),
-        ]);
+                    DB::table('tbl_permiso_usuarios')
+                    ->updateOrInsert([
+                        'run_usuario' => $run,
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]);
+                  
+                 }else{
+                    $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run);
 
-        tblPermisoUsuarios::where('run_usuario',$run)
-        ->update([
-            'permiso_usuario' => $request->permiso_usuario,
-            'estado_login' =>  $request->estado_login
-        ]);
+                    Users::where('id',$request->id)
+                    ->update([
+                        'run' => $run,
+                        //'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
 
+                    DB::table('tbl_permiso_usuarios')
+                    ->updateOrInsert([
+                        'run_usuario' => $run,
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]);
+                }
+             }else{
+                 if($idvalmail == 1){
+                   /*  $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run); */
+
+                    Users::where('id',$request->id)
+                    ->update([
+                        'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
+
+                    /* DB::table('tbl_permiso_usuarios')
+                    ->updateOrInsert([
+                        'run_usuario' => $run,
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]); */
+                    
+                 }else{
+                    Users::where('id',$request->id)
+                    ->update([
+                        //'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
+               }
+            }
         
-        return true;
-    } catch (\Throwable $th) {
-        return false;
-    }
+         return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
 
     }
 
     public function registrarUsuarioSub(Request $request){
         try {
-            $run = $request->run_usuario;
-        $run = str_replace('.', '', $run);
-        $run = strtoupper($run);
-
-        Users::create([
-            'run' => $run,
-            'email' => $request->email,
-            'nombre' => $request->nombre,
-            'apellido' => $request->apellido,
-            'anexo' => $request->anexo,
-            'id_cargo' => $request->id_cargo,
-            'id_cargo_asociado' => $request->id_cargo_asociado,
-            'id_edificio' => $request->id_edificio,
-            'id_servicio' => $request->id_servicio,
-            'id_unidadEspecifica' => $request->id_unidadEspecifica,
-            'password' => Hash::make($request->password),
-            'api_token' => Str::random(60),
-        ]);
-
-        tblPermisoUsuarios::create([
-            'run_usuario' => $run,
-            'permiso_usuario' => $request->permiso_usuario,
-            'estado_login' =>  $request->estado_login
-        ]);
-
+            $idvalrun = $request->idvalRut;
+            $idvalmail = $request->idvalmail;
+         if($idvalrun == 1){
+            if($idvalmail == 1){
+                $run = $request->run_usuario;
+                $run = str_replace('.', '', $run);
+                $run = strtoupper($run); 
+       
+                Users::create([
+                   'run' =>  $request->run_usuario,
+                   'email' => $request->email,
+                   'nombre' => $request->nombre,
+                   'apellido' => $request->apellido,
+                   'anexo' => $request->anexo,
+                   'id_cargo' => $request->id_cargo,
+                   'id_cargo_asociado' => $request->id_cargo_asociado,
+                   'id_edificio' => $request->id_edificio,
+                   'id_servicio' => $request->id_servicio,
+                   'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                   'password' => Hash::make($request->password),
+                   'api_token' => Str::random(60),
+                ]);
+       
+                 tblPermisoUsuarios::create([
+                   'run_usuario' => $run,
+                   'permiso_usuario' => $request->permiso_usuario,
+                   'estado_login' =>  $request->estado_login
+                ]); 
+             }else{
+                $run = $request->run_usuario;
+                $run = str_replace('.', '', $run);
+                $run = strtoupper($run); 
+       
+                Users::create([
+                   'run' =>  $request->run_usuario,
+                   //'email' => $request->email,
+                   'nombre' => $request->nombre,
+                   'apellido' => $request->apellido,
+                   'anexo' => $request->anexo,
+                   'id_cargo' => $request->id_cargo,
+                   'id_cargo_asociado' => $request->id_cargo_asociado,
+                   'id_edificio' => $request->id_edificio,
+                   'id_servicio' => $request->id_servicio,
+                   'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                   'password' => Hash::make($request->password),
+                   'api_token' => Str::random(60),
+                ]);
+       
+                 tblPermisoUsuarios::create([
+                   'run_usuario' => $run,
+                   'permiso_usuario' => $request->permiso_usuario,
+                   'estado_login' =>  $request->estado_login
+                ]); 
+            }
+         }else{
+             if($idvalmail == 1){
+                /* $run = $request->run_usuario;
+                $run = str_replace('.', '', $run);
+                $run = strtoupper($run);  */
+       
+                Users::create([
+                   //'run' =>  $request->run_usuario,
+                   'email' => $request->email,
+                   'nombre' => $request->nombre,
+                   'apellido' => $request->apellido,
+                   'anexo' => $request->anexo,
+                   'id_cargo' => $request->id_cargo,
+                   'id_cargo_asociado' => $request->id_cargo_asociado,
+                   'id_edificio' => $request->id_edificio,
+                   'id_servicio' => $request->id_servicio,
+                   'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                   'password' => Hash::make($request->password),
+                   'api_token' => Str::random(60),
+                ]);
+             }else{
+                /* $run = $request->run_usuario;
+                $run = str_replace('.', '', $run);
+                $run = strtoupper($run);  */
+       
+                Users::create([
+                   //'run' =>  $request->run_usuario,
+                   //'email' => $request->email,
+                   'nombre' => $request->nombre,
+                   'apellido' => $request->apellido,
+                   'anexo' => $request->anexo,
+                   'id_cargo' => $request->id_cargo,
+                   'id_cargo_asociado' => $request->id_cargo_asociado,
+                   'id_edificio' => $request->id_edificio,
+                   'id_servicio' => $request->id_servicio,
+                   'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                   'password' => Hash::make($request->password),
+                   'api_token' => Str::random(60),
+                ]);
+             }
+         }   
         return true;
         } catch (\Throwable $th) {
             return false;
@@ -140,31 +362,110 @@ class UsersController extends Controller
 
     public function modificarUsuarioSub(Request $request){
         try {
-        $run = $request->run_usuario;
-        $run = str_replace('.', '', $run);
-        $run = strtoupper($run);
+            $idvalrun = $request->idvalRut;
+            $idvalmail = $request->idvalmail;
+            if($idvalrun == 1){
+                if($idvalmail == 1){
+                    $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run);
 
-        Users::where('id',$request->id)
-        ->update([
-            'email' => $request->email,
-            'nombre' => $request->nombre,
-            'apellido' => $request->apellido,
-            'anexo' => $request->anexo,
-            'id_cargo' => $request->id_cargo,
-            'id_cargo_asociado' => $request->id_cargo_asociado,
-            'id_edificio' => $request->id_edificio,
-            'id_servicio' => $request->id_servicio,
-            'id_unidadEspecifica' => $request->id_unidadEspecifica,
-            'password' => Hash::make($request->password),
-            'api_token' => Str::random(60),
-        ]);
+                    Users::where('id',$request->id)
+                    ->update([
+                        'run' => $run,
+                        'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
 
-        tblPermisoUsuarios::where('run_usuario',$run)
-        ->update([
-            'permiso_usuario' => $request->permiso_usuario,
-            'estado_login' =>  $request->estado_login
-        ]);
-       
+                    DB::table('tbl_permiso_usuarios')
+                    ->updateOrInsert([
+                        'run_usuario' => $run,
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]);
+                  
+                 }else{
+                    $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run);
+
+                    Users::where('id',$request->id)
+                    ->update([
+                        'run' => $run,
+                        //'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
+
+                    DB::table('tbl_permiso_usuarios')
+                    ->updateOrInsert([
+                        'run_usuario' => $run,
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]);
+                }
+             }else{
+                 if($idvalmail == 1){
+                   /*  $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run); */
+
+                    Users::where('id',$request->id)
+                    ->update([
+                        'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
+
+                    /* DB::table('tbl_permiso_usuarios')
+                    ->updateOrInsert([
+                        'run_usuario' => $run,
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]); */
+                    
+                 }else{
+                    Users::where('id',$request->id)
+                    ->update([
+                        //'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
+               }
+            }
         return true;
 
     } catch (\Throwable $th) {

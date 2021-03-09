@@ -385,6 +385,7 @@
                                 type="number"
                                 class="vx-col w-full mt-5"
                                 v-model="anexoUsuario"
+                                @keypress="isNumber($event)"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -526,11 +527,11 @@
                                         class="vx-col w-full mt-5"
                                         v-model="rutUsuarioU"
                                     />
-                                    <!-- <span
-                    style="font-size: 10px; color: red; margin-left: 10px"
-                    v-if="val_runU"
-                    >Run incorrecto</span
-                  > -->
+                                    <span
+                                        style="font-size: 10px; color: red; margin-left: 10px"
+                                        v-if="val_runU"
+                                        >Run incorrecto</span
+                                    >
                                 </div>
                                 <div class="vx-col w-1/2 mt-5">
                                     <h6>1.2 Nombre del Usuario</h6>
@@ -552,6 +553,7 @@
                                         type="number"
                                         class="vx-col w-full mt-5"
                                         v-model="anexoUsuarioU"
+                                        @keypress="isNumber($event)"
                                     />
                                 </div>
                                 <div class="vx-col w-1/2 mt-5">
@@ -1054,7 +1056,9 @@ export default {
             password: "",
             run_usuario: "",
             permiso_usuario: 2,
-            estado_login: 1
+            estado_login: 1,
+            idvalRut: 0,
+            idvalmail: 0
         }
     }),
     computed: {
@@ -1106,6 +1110,19 @@ export default {
         }
     },
     methods: {
+        isNumber: function(evt) {
+            evt = evt ? evt : window.event;
+            var charCode = evt.which ? evt.which : evt.keyCode;
+            if (
+                charCode > 31 &&
+                (charCode < 48 || charCode > 57) &&
+                charCode !== 46
+            ) {
+                evt.preventDefault();
+            } else {
+                return true;
+            }
+        },
         volverTra() {
             this.popCrearTrabajador = false;
         },
@@ -2204,8 +2221,13 @@ export default {
             this.passUsuarioU = "";
         },
         formatear_runU() {
-            this.rutUsuarioU = format(this.rutUsuarioU);
-            this.val_runU = !validate(this.rutUsuarioU);
+            if (this.rutUsuarioU == "" || this.rutUsuarioU == null) {
+                console.log("Sin Rut");
+                this.val_runU = false;
+            } else {
+                this.rutUsuarioU = format(this.rutUsuarioU);
+                this.val_runU = !validate(this.rutUsuarioU);
+            }
         },
         cargaSegunServicioU() {
             if (
@@ -2304,6 +2326,24 @@ export default {
                 this.registroUsuarioU.id_unidadEspecifica = this.seleccionUnidadEspU[0].id;
                 this.registroUsuarioU.password = this.passUsuarioU;
                 this.registroUsuarioU.run_usuario = this.rutUsuarioU;
+                if (
+                    this.rutUsuarioU == 0 ||
+                    this.rutUsuarioU == null ||
+                    this.rutUsuarioU == ""
+                ) {
+                    this.registroUsuarioU.idvalRut = 0;
+                } else {
+                    this.registroUsuarioU.idvalRut = 1;
+                }
+                if (
+                    this.correoUsuarioU == 0 ||
+                    this.correoUsuarioU == null ||
+                    this.correoUsuarioU == ""
+                ) {
+                    this.registroUsuarioU.idvalmail = 0;
+                } else {
+                    this.registroUsuarioU.idvalmail = 1;
+                }
                 this.rutUsuarioU = format(this.rutUsuarioU);
                 /* if (
                     this.registroUsuarioU.run == null ||
