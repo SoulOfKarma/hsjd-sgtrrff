@@ -1458,6 +1458,18 @@ export default {
                 });
 
                 this.listadoServicios = b;
+
+                c = JSON.parse(JSON.stringify(this.listadoEdificios));
+                b = [];
+                a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        b.push(value);
+                    }
+                });
+
+                this.seleccionEdificio = b;
             }
         },
         cargaSegunUnidadEsp() {
@@ -1467,17 +1479,33 @@ export default {
                     this.seleccionUnidadEsp.id == null
                 ) {
                     if (
-                        this.seleccionUnidadEsp.descripcionUnidadEsp ===
-                            undefined ||
-                        this.seleccionUnidadEsp.descripcionUnidadEsp === "" ||
-                        this.seleccionUnidadEsp.descripcionUnidadEsp === null
+                        this.seleccionServicio.id == 0 ||
+                        this.seleccionServicio[0].id == 0
                     ) {
-                        this.value1 = this.seleccionUnidadEsp;
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Error",
+                            text:
+                                "Debe seleccionar un servicio para poder guardar una nueva unidad especifica asociada",
+                            color: "danger",
+                            position: "top-right"
+                        });
                     } else {
-                        this.value1 = this.seleccionUnidadEsp.descripcionUnidadEsp;
+                        if (
+                            this.seleccionUnidadEsp.descripcionUnidadEsp ===
+                                undefined ||
+                            this.seleccionUnidadEsp.descripcionUnidadEsp ===
+                                "" ||
+                            this.seleccionUnidadEsp.descripcionUnidadEsp ===
+                                null
+                        ) {
+                            this.value1 = this.seleccionUnidadEsp;
+                        } else {
+                            this.value1 = this.seleccionUnidadEsp.descripcionUnidadEsp;
+                        }
+                        this.popupActive2 = true;
+                        this.validaEliminar = true;
                     }
-                    this.popupActive2 = true;
-                    this.validaEliminar = true;
                 } else {
                     if (
                         this.seleccionUnidadEsp == null ||
@@ -1605,16 +1633,10 @@ export default {
                     this.seleccionServicio.id == 0 ||
                     this.seleccionServicio.id == null
                 ) {
-                    if (this.seleccionEdificio.id == 0) {
-                        this.$vs.notify({
-                            time: 3000,
-                            title: "Error",
-                            text:
-                                "Debe seleccionar un edificio para poder guardar un nuevo servicio asociado",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (this.seleccionEdificio[0].id == 0) {
+                    if (
+                        this.seleccionEdificio.id == 0 ||
+                        this.seleccionEdificio[0].id == 0
+                    ) {
                         this.$vs.notify({
                             time: 3000,
                             title: "Error",

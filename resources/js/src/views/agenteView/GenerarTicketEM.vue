@@ -72,6 +72,7 @@
                             <h6>2.2 - Seleccione el Servicio</h6>
                             <br />
                             <v-select
+                                taggable
                                 v-model="seleccionServicio"
                                 placeholder="Servicio"
                                 class="w-full select-large"
@@ -683,6 +684,34 @@
                 </div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Guardar Nuevo Servicio?"
+            :active.sync="popAServicio"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="guardarServicio(value3)"
+                            >Guardar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popAServicio = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 
@@ -988,7 +1017,9 @@ export default {
         validaEliminar: false,
         popupActive2: false,
         popupActive3: false,
+        popAServicio: false,
         value2: "",
+        value3: "",
         componentKey: 0,
         //Lado data crear nuevo usuario
         nombreUsuarioU: "",
@@ -1482,6 +1513,17 @@ export default {
                 });
 
                 this.listadoServicios = b;
+                c = JSON.parse(JSON.stringify(this.listadoEdificios));
+                b = [];
+                a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        b.push(value);
+                    }
+                });
+
+                this.seleccionEdificio = b;
             }
         },
         cargaSegunUnidadEsp() {
@@ -1491,17 +1533,33 @@ export default {
                     this.seleccionUnidadEsp.id == null
                 ) {
                     if (
-                        this.seleccionUnidadEsp.descripcionUnidadEsp ===
-                            undefined ||
-                        this.seleccionUnidadEsp.descripcionUnidadEsp === "" ||
-                        this.seleccionUnidadEsp.descripcionUnidadEsp === null
+                        this.seleccionServicio.id == 0 ||
+                        this.seleccionServicio[0].id == 0
                     ) {
-                        this.value1 = this.seleccionUnidadEsp;
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Error",
+                            text:
+                                "Debe seleccionar un servicio para poder guardar una nueva unidad especifica asociada",
+                            color: "danger",
+                            position: "top-right"
+                        });
                     } else {
-                        this.value1 = this.seleccionUnidadEsp.descripcionUnidadEsp;
+                        if (
+                            this.seleccionUnidadEsp.descripcionUnidadEsp ===
+                                undefined ||
+                            this.seleccionUnidadEsp.descripcionUnidadEsp ===
+                                "" ||
+                            this.seleccionUnidadEsp.descripcionUnidadEsp ===
+                                null
+                        ) {
+                            this.value1 = this.seleccionUnidadEsp;
+                        } else {
+                            this.value1 = this.seleccionUnidadEsp.descripcionUnidadEsp;
+                        }
+                        this.popupActive2 = true;
+                        this.validaEliminar = true;
                     }
-                    this.popupActive2 = true;
-                    this.validaEliminar = true;
                 } else {
                     if (
                         this.seleccionUnidadEsp == null ||
@@ -1556,54 +1614,157 @@ export default {
                 console.log("Debes seleccionar algun campo");
             }
         },
+        guardarServicio(val3) {
+            try {
+                let servicio = {
+                    id_edificio: "",
+                    descripcionServicio: 0
+                };
+                if (
+                    this.seleccionEdificio.id > 0 ||
+                    this.seleccionEdificio.id != 0 ||
+                    this.seleccionEdificio.id !== null
+                ) {
+                    servicio = {
+                        id_edificio: this.seleccionEdificio.id,
+                        descripcionServicio: val3
+                    };
+                } else {
+                    servicio = {
+                        id_edificio: this.seleccionEdificio[0].id,
+                        descripcionServicio: val3
+                    };
+                }
+
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PostServicios",
+                        servicio,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data == true) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Servicio fue Agregado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.value3 = "";
+                            this.cargarEdificios();
+                            this.cargarServicios();
+                            this.cargarUnidadEsp();
+                            this.popAServicio = false;
+                            this.seleccionServicio = {
+                                id: 0,
+                                descripcionServicio: "Seleccione Servicio"
+                            };
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text: "Hubo una falla al agregar servicio",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(
+                    "Hubo un error al guardar el servicio o listar los datos"
+                );
+            }
+        },
         cargaSegunServicio() {
-            if (
-                this.seleccionServicio == null ||
-                this.seleccionServicio.id == 0
-            ) {
-                this.listadoServicios = this.listadoServiciosData;
-                this.listadoUnidadEsp = this.listadoUnidadEspData;
-            } else {
-                var idGeneral = this.seleccionServicio.id;
-
-                let d = this.listadoUnidadEspData;
-                let e = [];
-                var f = 0;
-
-                d.forEach((value, index) => {
-                    a = value.id_servicio;
-                    if (a == idGeneral) {
-                        e.push(value);
+            try {
+                if (
+                    this.seleccionServicio.id == 0 ||
+                    this.seleccionServicio.id == null
+                ) {
+                    if (
+                        this.seleccionEdificio.id == 0 ||
+                        this.seleccionEdificio[0].id == 0
+                    ) {
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Error",
+                            text:
+                                "Debe seleccionar un edificio para poder guardar un nuevo servicio asociado",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    } else {
+                        if (
+                            this.seleccionServicio.descripcionServicio ===
+                                undefined ||
+                            this.seleccionServicio.descripcionServicio === "" ||
+                            this.seleccionServicio.descripcionServicio === null
+                        ) {
+                            this.value3 = this.seleccionServicio;
+                        } else {
+                            this.value3 = this.seleccionServicio.descripcionServicio;
+                        }
+                        this.popAServicio = true;
                     }
-                });
+                } else {
+                    if (
+                        this.seleccionServicio == null ||
+                        this.seleccionServicio.id == 0
+                    ) {
+                        this.listadoServicios = this.listadoServiciosData;
+                        this.listadoUnidadEsp = this.listadoUnidadEspData;
+                    } else {
+                        var idGeneral = this.seleccionServicio.id;
 
-                this.listadoUnidadEsp = e;
+                        let d = this.listadoUnidadEspData;
+                        let e = [];
+                        var f = 0;
 
-                let c = this.listadoServiciosData;
-                let b = [];
-                var a = 0;
+                        d.forEach((value, index) => {
+                            a = value.id_servicio;
+                            if (a == idGeneral) {
+                                e.push(value);
+                            }
+                        });
 
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
+                        this.listadoUnidadEsp = e;
+
+                        let c = this.listadoServiciosData;
+                        let b = [];
+                        var a = 0;
+
+                        c.forEach((value, index) => {
+                            a = value.id;
+                            if (a == idGeneral) {
+                                b.push(value);
+                            }
+                        });
+                        this.seleccionServicio = b;
+                        idGeneral = 0;
+                        idGeneral = this.seleccionServicio[0].id_edificio;
+                        b = [];
+
+                        c = this.listadoEdificios;
+
+                        c.forEach((value, index) => {
+                            a = value.id;
+                            if (a == idGeneral) {
+                                b.push(value);
+                            }
+                        });
+
+                        this.seleccionEdificio = b;
                     }
-                });
-                this.seleccionServicio = b;
-                idGeneral = 0;
-                idGeneral = this.seleccionServicio[0].id_edificio;
-                b = [];
-
-                c = this.listadoEdificios;
-
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
-                    }
-                });
-
-                this.seleccionEdificio = b;
+                }
+            } catch (error) {
+                console.log("Error en servicio");
+                console.log(error);
             }
         },
         arrayEstado(id) {
