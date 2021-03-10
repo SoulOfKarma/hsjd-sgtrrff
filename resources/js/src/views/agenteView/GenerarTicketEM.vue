@@ -950,7 +950,9 @@ export default {
             tra_run: "",
             tra_nombre: "",
             tra_apellido: "",
-            id_especialidad1: 0
+            id_especialidad1: 0,
+            idvalRut: 0,
+            idvalmail: 0
         },
         seleccionEdificio: {
             id: 0,
@@ -1145,8 +1147,13 @@ export default {
             this.popCrearTrabajador = false;
         },
         formatear_run() {
-            this.rutUsuario = format(this.rutUsuario);
-            this.val_run = !validate(this.rutUsuario);
+            if (this.rutUsuario == "" || this.rutUsuario == null) {
+                console.log("Sin Rut");
+                this.val_run = false;
+            } else {
+                this.rutUsuario = format(this.rutUsuario);
+                this.val_run = !validate(this.rutUsuario);
+            }
         },
         agregarNuevoUsuario() {
             try {
@@ -1241,6 +1248,25 @@ export default {
                 this.registroUsuario.id_especialidad1 = this.seleccionEspecialidad[0].id;
                 this.rutUsuario = format(this.rutUsuario);
                 if (
+                    this.rutUsuario == 0 ||
+                    this.rutUsuario == null ||
+                    this.rutUsuario == ""
+                ) {
+                    this.registroUsuario.idvalRut = 0;
+                } else {
+                    this.registroUsuario.idvalRut = 1;
+                }
+                if (
+                    this.correoUsuario == 0 ||
+                    this.correoUsuario == null ||
+                    this.correoUsuario == ""
+                ) {
+                    this.registroUsuario.idvalmail = 0;
+                } else {
+                    this.registroUsuario.idvalmail = 1;
+                }
+                this.rutUsuario = format(this.rutUsuario);
+                /* if (
                     this.registroUsuario.run == null ||
                     this.registroUsuario.run < 9 ||
                     !validate(this.rutUsuario)
@@ -1264,6 +1290,50 @@ export default {
                         color: "danger",
                         position: "top-right",
                         time: 3000
+                    });
+                }  else */ if (
+                    this.registroUsuario.nombre == null ||
+                    this.registroUsuario.nombre < 3
+                ) {
+                    this.$vs.notify({
+                        title: "Error en Nombre",
+                        text:
+                            "Debe Escribir un Nombre valido y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.registroUsuario.apellido == null ||
+                    this.registroUsuario.apellido < 3
+                ) {
+                    this.$vs.notify({
+                        title: "Error en Apellido",
+                        text:
+                            "Debe Escribir un Apellido valido y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.registroUsuario.anexo == null ||
+                    this.registroUsuario.anexo < 6
+                ) {
+                    this.$vs.notify({
+                        title: "Error en Anexo",
+                        text:
+                            "Debe Escribir un Anexo valido y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.registroUsuario.password == null ||
+                    this.registroUsuario.password < 4
+                ) {
+                    this.$vs.notify({
+                        title: "Error en la Contraseña",
+                        text:
+                            "Debe Escribir una contraseña valida y que no este el campo vacio",
+                        color: "danger",
+                        position: "top-right"
                     });
                 } else {
                     const registro = this.registroUsuario;
