@@ -15,7 +15,7 @@ class Trabajadores extends Migration
     {
         Schema::create('trabajadores', function (Blueprint $table) {
             $table->id();
-            $table->string('tra_run')->unique();
+            $table->string('tra_run')->nullable();
             $table->string('tra_nombre');
             $table->string('tra_apellido');
             $table->bigInteger('id_especialidad1')->unsigned();

@@ -16,8 +16,6 @@ class CreateUnidadEspsTable extends Migration
         Schema::create('unidad_esps', function (Blueprint $table) {
             $table->id();
             $table->string('descripcionUnidadEsp');
-            $table->bigInteger('id_servicio')->unsigned();
-            $table->foreign('id_servicio')->references('id')->on('servicios');
             $table->timestamps();
         });
     }

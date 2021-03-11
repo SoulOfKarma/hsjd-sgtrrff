@@ -33,7 +33,7 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="1. Lugar del problema">
                     <div class="vx-row mb-12">
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/2 mt-5">
                             <h6>1.1 - Seleccione el Edificio</h6>
                             <br />
                             <v-select
@@ -45,7 +45,7 @@
                                 @input="filtroSegunEdificio"
                             ></v-select>
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/2 mt-5">
                             <h6>1.2 - Seleccione el Servicio</h6>
                             <br />
                             <v-select
@@ -55,19 +55,6 @@
                                 label="descripcionServicio"
                                 :options="listadoServicios"
                                 @input="cargaSegunServicio"
-                            ></v-select>
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <h6>1.3 - Seleccione la Unidad Especifica</h6>
-                            <br />
-                            <v-select
-                                taggable
-                                v-model="seleccionUnidadEsp"
-                                placeholder="Unidad Especifica"
-                                class="w-full select-large"
-                                label="descripcionUnidadEsp"
-                                :options="listadoUnidadEsp"
-                                @input="cargaSegunUnidadEsp"
                             ></v-select>
                         </div>
                     </div>
@@ -202,12 +189,10 @@ export default {
         colorLoading: "#ff8000",
         listadoEdificios: [],
         listadoServicios: [],
-        listadoUnidadEsp: [],
         listadoTipoRep: [],
         listadoCorreo: [],
         listadoCategoria: [],
         listadoServiciosData: [],
-        listadoUnidadEspData: [],
         listadoUsuarios: [],
         localVal: process.env.MIX_APP_URL,
         apiInformatica: "http://10.4.237.33:80/ticket",
@@ -224,7 +209,7 @@ export default {
             id_estado: 1,
             id_edificio: 0,
             id_servicio: 0,
-            id_ubicacionEx: 0,
+            id_ubicacionEx: 42,
             id_tipoReparacion: 0,
             id_solicitud: 0,
             id_categoria: 0,
@@ -263,10 +248,6 @@ export default {
         seleccionServicio: {
             id: 0,
             descripcionServicio: "Seleccione Servicio"
-        },
-        seleccionUnidadEsp: {
-            id: 0,
-            descripcionUnidadEsp: "Seleccion Unidad Especifica"
         },
         seleccionReparacion: {
             id: 0,
@@ -349,74 +330,6 @@ export default {
 
             this.seleccionEdificio = b;
         },
-        cargaSegunUnidadEsp() {
-            try {
-                if (
-                    this.seleccionUnidadEsp.id == 0 ||
-                    this.seleccionUnidadEsp.id == null
-                ) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "Debe seleccionar un campo del listado",
-                        color: "success",
-                        position: "top-right"
-                    });
-                } else {
-                    if (
-                        this.seleccionUnidadEsp.id == 0 ||
-                        this.seleccionUnidadEsp == null
-                    ) {
-                        //this.listadoServicios = this.listadoServiciosData;
-
-                        this.listadoUnidadEsp = this.listadoUnidadEspData;
-                    } else {
-                        var idGeneral = this.seleccionUnidadEsp.id;
-
-                        let c = this.listadoUnidadEspData;
-                        let b = [];
-                        var a = 0;
-
-                        c.forEach((value, index) => {
-                            a = value.id;
-                            if (a == idGeneral) {
-                                b.push(value);
-                            }
-                        });
-                        this.seleccionUnidadEsp = b;
-                        idGeneral = 0;
-                        idGeneral = this.seleccionUnidadEsp[0].id_servicio;
-                        b = [];
-
-                        c = this.listadoServicios;
-
-                        c.forEach((value, index) => {
-                            a = value.id;
-                            if (a == idGeneral) {
-                                b.push(value);
-                            }
-                        });
-
-                        this.seleccionServicio = b;
-                        idGeneral = 0;
-                        idGeneral = this.seleccionServicio[0].id_edificio;
-                        b = [];
-                        c = this.listadoEdificios;
-
-                        c.forEach((value, index) => {
-                            a = value.id;
-                            if (a == idGeneral) {
-                                b.push(value);
-                            }
-                        });
-
-                        this.seleccionEdificio = b;
-                    }
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        },
         cargaSegunServicio() {
             try {
                 if (
@@ -424,22 +337,8 @@ export default {
                     this.seleccionServicio.id == 0
                 ) {
                     this.listadoServicios = this.listadoServiciosData;
-                    this.listadoUnidadEsp = this.listadoUnidadEspData;
                 } else {
                     var idGeneral = this.seleccionServicio.id;
-
-                    let d = this.listadoUnidadEspData;
-                    let e = [];
-                    var f = 0;
-
-                    d.forEach((value, index) => {
-                        a = value.id_servicio;
-                        if (a == idGeneral) {
-                            e.push(value);
-                        }
-                    });
-
-                    this.listadoUnidadEsp = e;
 
                     let c = this.listadoServiciosData;
                     let b = [];
@@ -538,21 +437,6 @@ export default {
                 })
                 .then(res => {
                     this.listadoCategoria = res.data;
-                });
-        },
-        cargarUnidadEsp() {
-            this.csrf_token;
-
-            axios
-                .get(this.localVal + "/api/Usuario/GetUnidadEsp", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoUnidadEsp = res.data;
-                    this.listadoUnidadEspData = res.data;
                 });
         },
         cargarTipoRep() {
@@ -708,7 +592,6 @@ export default {
                     //Llenando Campos para Guardar Ticket de Mantencion
                     this.solicitud.id_edificio = this.seleccionEdificio[0].id;
                     this.solicitud.id_servicio = this.seleccionServicio[0].id;
-                    this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
                     this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                     this.solicitud.id_categoria = this.seleccionCategoria.id;
                     var newElement = document.createElement("div");
@@ -723,7 +606,7 @@ export default {
                         id_estado: 1,
                         id_edificio: 0,
                         id_servicio: 0,
-                        id_ubicacionEx: 0,
+                        id_ubicacionEx: 42,
                         id_tipoReparacion: 0,
                         id_categoria: 0
                     };
@@ -767,7 +650,6 @@ export default {
                     //Llenando Campos para Guardar Ticket de Mantencion
                     this.solicitud.id_edificio = this.seleccionEdificio[0].id;
                     this.solicitud.id_servicio = this.seleccionServicio[0].id;
-                    this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
                     this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                     this.solicitud.id_categoria = this.seleccionCategoria.id;
                     var newElement = document.createElement("div");
@@ -782,7 +664,7 @@ export default {
                         id_estado: 1,
                         id_edificio: 0,
                         id_servicio: 0,
-                        id_ubicacionEx: 0,
+                        id_ubicacionEx: 42,
                         id_tipoReparacion: 0,
                         id_categoria: 0
                     };
@@ -863,9 +745,6 @@ export default {
             } else if (this.seleccionServicio.id == 0) {
                 this.mensajeError = "el servicio";
                 this.errorDrop(this.mensajeError);
-            } else if (this.seleccionUnidadEsp.id == 0) {
-                this.mensajeError = "la Unidad especifica";
-                this.errorDrop(this.mensajeError);
             } else if (this.seleccionReparacion.id == 0) {
                 this.mensajeError = "el tipo de reparacion";
                 this.errorDrop(this.mensajeError);
@@ -934,7 +813,6 @@ export default {
         this.cargarUsuarios();
         this.cargarEdificios();
         this.cargarServicios();
-        this.cargarUnidadEsp();
         this.cargarCategoria();
         this.cargarTipoRep();
     },

@@ -53,15 +53,6 @@
                             />
                             <br />
                         </div>
-
-                        <div class="vx-col w-full mt-5">
-                            <vs-input
-                                label-placeholder="Unidad Especifica"
-                                v-model="infoSeguimiento.unidadEsp"
-                                disabled="true"
-                                class="w-full"
-                            />
-                        </div>
                         <div class="vx-col md:w-1/1 w-full mb-base">
                             <div class="vx-row">
                                 <div class="vx-col sm:w-2/3 w-full ml-auto">
@@ -207,7 +198,6 @@ export default {
         infoSeguimiento: {
             edificio: "",
             servicio: "",
-            unidadEsp: "",
             nombre: ""
         },
         nombre: sessionStorage.getItem("nombre"),
@@ -295,7 +285,6 @@ export default {
                             this.solicitudes[0].apellido;
                         this.infoSeguimiento.edificio = this.solicitudes[0].descripcionEdificio;
                         this.infoSeguimiento.servicio = this.solicitudes[0].descripcionServicio;
-                        this.infoSeguimiento.unidadEsp = this.solicitudes[0].descripcionUnidadEsp;
                     } catch (error) {
                         router.back();
                     }

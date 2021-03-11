@@ -211,12 +211,6 @@ export default [
                         name: "Servicios",
                         slug: "MenuServicios",
                         icon: "FileIcon"
-                    },
-                    {
-                        url: "/MenuUbicacionEspecifica",
-                        name: "Ubicacion Especifica",
-                        slug: "MenuUbicacionEspecifica",
-                        icon: "FileIcon"
                     }
                 ]
             },

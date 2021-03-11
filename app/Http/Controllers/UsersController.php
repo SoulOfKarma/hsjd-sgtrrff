@@ -475,38 +475,150 @@ class UsersController extends Controller
 
     public function registrarSupervisor(Request $request){
         try {
-            $run = $request->run_usuario;
-        $run = str_replace('.', '', $run);
-        $run = strtoupper($run);
+            $idvalrun = $request->idvalRut;
+            $idvalmail = $request->idvalmail;
+            if($idvalrun == 1){
+                if($idvalmail == 1){
+                    $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run);
 
-        Users::create([
-            'run' => $run,
-            'email' => $request->email,
-            'nombre' => $request->nombre,
-            'apellido' => $request->apellido,
-            'anexo' => $request->anexo,
-            'id_cargo' => $request->id_cargo,
-            'id_cargo_asociado' => $request->id_cargo_asociado,
-            'id_edificio' => $request->id_edificio,
-            'id_servicio' => $request->id_servicio,
-            'id_unidadEspecifica' => $request->id_unidadEspecifica,
-            'password' => Hash::make($request->password),
-            'api_token' => Str::random(60),
-        ]);
+                    Users::create([
+                        'run' => $run,
+                        'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
 
-        Supervisores::create([
-            'sup_run' => $run,
-            'sup_nombre' => $request->nombre,
-            'sup_apellido' => $request->apellido,
-            'id_especialidad1' =>$request->id_especialidad1,
-            'id_especialidad2' =>$request->id_especialidad2,
-        ]);
+                    Supervisores::create([
+                        'sup_run' => $run,
+                        'sup_nombre' => $request->nombre,
+                        'sup_apellido' => $request->apellido,
+                        'id_especialidad1' =>$request->id_especialidad1,
+                        'id_especialidad2' =>$request->id_especialidad2,
+                    ]);
 
-        tblPermisoUsuarios::create([
-            'run_usuario' => $run,
-            'permiso_usuario' => $request->permiso_usuario,
-            'estado_login' =>  $request->estado_login
-        ]);
+                    tblPermisoUsuarios::create([
+                        'run_usuario' => $run,
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]);
+                            
+                 }else{
+                    $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run);
+
+                    Users::create([
+                        'run' => $run,
+                        //'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
+
+                    Supervisores::create([
+                        'sup_run' => $run,
+                        'sup_nombre' => $request->nombre,
+                        'sup_apellido' => $request->apellido,
+                        'id_especialidad1' =>$request->id_especialidad1,
+                        'id_especialidad2' =>$request->id_especialidad2,
+                    ]);
+
+                    tblPermisoUsuarios::create([
+                        'run_usuario' => $run,
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]);
+                
+                }
+             }else{
+                 if($idvalmail == 1){
+                    /* $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run); */
+            
+                    Users::create([
+                        //'run' => $run,
+                        'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
+            
+                    Supervisores::create([
+                        //'sup_run' => $run,
+                        'sup_nombre' => $request->nombre,
+                        'sup_apellido' => $request->apellido,
+                        'id_especialidad1' =>$request->id_especialidad1,
+                        'id_especialidad2' =>$request->id_especialidad2,
+                    ]);
+            
+                    /* tblPermisoUsuarios::create([
+                        'run_usuario' => $run,
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]); */
+                            
+                    
+                 }else{
+                    /* $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run); */
+            
+                    Users::create([
+                        //'run' => $run,
+                        //'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
+            
+                    Supervisores::create([
+                        //'sup_run' => $run,
+                        'sup_nombre' => $request->nombre,
+                        'sup_apellido' => $request->apellido,
+                        'id_especialidad1' =>$request->id_especialidad1,
+                        'id_especialidad2' =>$request->id_especialidad2,
+                    ]);
+            
+                    /* tblPermisoUsuarios::create([
+                        'run_usuario' => $run,
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]); */
+               }
+            }
+            
 
         return true;
 
@@ -518,39 +630,151 @@ class UsersController extends Controller
     }
 
     public function modificarSupervisor(Request $request){
-        try {    
-        $run = $request->run_usuario;
-        $run = str_replace('.', '', $run);
-        $run = strtoupper($run);
+        try {
+            $idvalrun = $request->idvalRut;
+            $idvalmail = $request->idvalmail;
+            if($idvalrun == 1){
+                if($idvalmail == 1){
+                    $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run);
+            
+                    Users::where('id',$request->id)
+                    ->update([
+                        'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
+            
+                    Supervisores::where('sup_run',$run)
+                    ->update([
+                        'sup_nombre' => $request->nombre,
+                        'sup_apellido' => $request->apellido,
+                        'id_especialidad1' =>$request->id_especialidad1,
+                        'id_especialidad2' =>$request->id_especialidad2,
+                    ]);
+            
+                    tblPermisoUsuarios::where('run_usuario',$run)
+                    ->update([
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]);
+                  
+                 }else{
+                    $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run);
 
-        Users::where('id',$request->id)
-        ->update([
-            'email' => $request->email,
-            'nombre' => $request->nombre,
-            'apellido' => $request->apellido,
-            'anexo' => $request->anexo,
-            'id_cargo' => $request->id_cargo,
-            'id_cargo_asociado' => $request->id_cargo_asociado,
-            'id_edificio' => $request->id_edificio,
-            'id_servicio' => $request->id_servicio,
-            'id_unidadEspecifica' => $request->id_unidadEspecifica,
-            'password' => Hash::make($request->password),
-            'api_token' => Str::random(60),
-        ]);
+                    Users::where('id',$request->id)
+                    ->update([
+                        //'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
 
-        Supervisores::where('sup_run',$run)
-        ->update([
-            'sup_nombre' => $request->nombre,
-            'sup_apellido' => $request->apellido,
-            'id_especialidad1' =>$request->id_especialidad1,
-            'id_especialidad2' =>$request->id_especialidad2,
-        ]);
+                    Supervisores::where('sup_run',$run)
+                    ->update([
+                        'sup_nombre' => $request->nombre,
+                        'sup_apellido' => $request->apellido,
+                        'id_especialidad1' =>$request->id_especialidad1,
+                        'id_especialidad2' =>$request->id_especialidad2,
+                    ]);
 
-        tblPermisoUsuarios::where('run_usuario',$run)
-        ->update([
-            'permiso_usuario' => $request->permiso_usuario,
-            'estado_login' =>  $request->estado_login
-        ]);
+                    tblPermisoUsuarios::where('run_usuario',$run)
+                    ->update([
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]);
+                
+                }
+             }else{
+                 if($idvalmail == 1){
+                    /* $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run); */
+
+                    Users::where('id',$request->id)
+                    ->update([
+                        'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
+
+                    Supervisores::where('sup_run',$run)
+                    ->update([
+                        'sup_nombre' => $request->nombre,
+                        'sup_apellido' => $request->apellido,
+                        'id_especialidad1' =>$request->id_especialidad1,
+                        'id_especialidad2' =>$request->id_especialidad2,
+                    ]);
+
+                    /* tblPermisoUsuarios::where('run_usuario',$run)
+                    ->update([
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]); */
+                            
+                    
+                 }else{
+                    /* $run = $request->run_usuario;
+                    $run = str_replace('.', '', $run);
+                    $run = strtoupper($run); */
+
+                    Users::where('id',$request->id)
+                    ->update([
+                        //'email' => $request->email,
+                        'nombre' => $request->nombre,
+                        'apellido' => $request->apellido,
+                        'anexo' => $request->anexo,
+                        'id_cargo' => $request->id_cargo,
+                        'id_cargo_asociado' => $request->id_cargo_asociado,
+                        'id_edificio' => $request->id_edificio,
+                        'id_servicio' => $request->id_servicio,
+                        'id_unidadEspecifica' => $request->id_unidadEspecifica,
+                        'password' => Hash::make($request->password),
+                        'api_token' => Str::random(60),
+                    ]);
+
+                    Supervisores::where('sup_run',$run)
+                    ->update([
+                        'sup_nombre' => $request->nombre,
+                        'sup_apellido' => $request->apellido,
+                        'id_especialidad1' =>$request->id_especialidad1,
+                        'id_especialidad2' =>$request->id_especialidad2,
+                    ]);
+
+                    /* tblPermisoUsuarios::where('run_usuario',$run)
+                    ->update([
+                        'permiso_usuario' => $request->permiso_usuario,
+                        'estado_login' =>  $request->estado_login
+                    ]); */
+               }
+            }    
+        
 
         return true;
     } catch (\Throwable $th) {

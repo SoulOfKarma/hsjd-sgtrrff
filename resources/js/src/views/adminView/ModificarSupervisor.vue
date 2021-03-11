@@ -139,7 +139,7 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="3. Ubicacion del Usuario">
                     <div class="vx-row mb-12">
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/2 mt-5">
                             <h6>3.1 - Seleccione el Edificio</h6>
                             <br />
                             <v-select
@@ -151,7 +151,7 @@
                                 @input="filtroSegunEdificio"
                             ></v-select>
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/2 mt-5">
                             <h6>3.2 - Seleccione el Servicio</h6>
                             <br />
                             <v-select
@@ -161,19 +161,6 @@
                                 label="descripcionServicio"
                                 :options="listadoServicios"
                                 @input="cargaSegunServicio"
-                            ></v-select>
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <h6>3.3 - Seleccione la Unidad Especifica</h6>
-                            <br />
-                            <v-select
-                                taggable
-                                v-model="seleccionUnidadEsp"
-                                placeholder="Unidad Especifica"
-                                class="w-full select-large"
-                                label="descripcionUnidadEsp"
-                                :options="listadoUnidadEsp"
-                                @input="cargaSegunUnidadEsp"
                             ></v-select>
                         </div>
                     </div>
@@ -195,41 +182,6 @@
                 </div>
             </div>
         </vs-row>
-        <vs-popup
-            :key="componentKey"
-            classContent="popup-example"
-            title="Guardar Nueva Unidad Especifica?"
-            :active.sync="popupActive2"
-        >
-            <vs-input
-                class="inputx mb-3"
-                placeholder="Placeholder"
-                v-model="value1"
-                hidden
-            />
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <div class="vx-row">
-                    <div class="vx-col sm:w-full w-full ">
-                        <vs-button
-                            color="warning"
-                            type="filled"
-                            class="w-full m-2"
-                            @click="guardarUnidadEsp(value1)"
-                            >Guardar</vs-button
-                        >
-                    </div>
-                    <div class="vx-col sm:w-full w-full ">
-                        <vs-button
-                            class="w-full m-2"
-                            @click="popupActive2 = false"
-                            color="primary"
-                            type="filled"
-                            >Volver</vs-button
-                        >
-                    </div>
-                </div>
-            </div>
-        </vs-popup>
     </div>
 </template>
 <script>
@@ -259,10 +211,8 @@ export default {
             passUsuario: "",
             listadoEdificios: [],
             listadoServicios: [],
-            listadoUnidadEsp: [],
             listadoUsuariosCargo: [],
             listadoServiciosData: [],
-            listadoUnidadEspData: [],
             listadoEspecialidad: [],
             listadoSupervisor: [],
             seleccionSupervisor: {
@@ -288,10 +238,6 @@ export default {
             seleccionServicio: {
                 id: 0,
                 descripcionServicio: "Seleccione Servicio"
-            },
-            seleccionUnidadEsp: {
-                id: 0,
-                descripcionUnidadEsp: "Seleccion Unidad Especifica"
             },
             dataUsuarioCreador: {
                 nombre:
@@ -321,7 +267,9 @@ export default {
                 sup_apellido: "",
                 id_especialidad1: 0,
                 id_especialidad2: 0,
-                id: 0
+                id: 0,
+                idvalRut: 0,
+                idvalmail: 0
             },
             value1: "",
             validaEliminar: false,
@@ -355,7 +303,6 @@ export default {
             let idCargoAsociado = b[0].id_cargo_asociado;
             let idEdificio = b[0].id_edificio;
             let idServicio = b[0].id_servicio;
-            let idUnidadEsp = b[0].id_unidadEspecifica;
 
             b = [];
             c = this.listadoEspecialidad;
@@ -410,21 +357,15 @@ export default {
             });
 
             this.seleccionServicio = b;
-
-            b = [];
-            c = this.listadoUnidadEsp;
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idUnidadEsp) {
-                    b.push(value);
-                }
-            });
-
-            this.seleccionUnidadEsp = b;
         },
         formatear_run() {
-            this.rutUsuario = format(this.rutUsuario);
-            this.val_run = !validate(this.rutUsuario);
+            if (this.rutUsuario == "" || this.rutUsuario == null) {
+                console.log("Sin Rut");
+                this.val_run = false;
+            } else {
+                this.rutUsuario = format(this.rutUsuario);
+                this.val_run = !validate(this.rutUsuario);
+            }
         },
         arrayEspecialidad1() {
             let id = this.seleccionEspecialidad1.id;
@@ -474,7 +415,7 @@ export default {
             this.modificarSupervisor.id_cargo = 0;
             this.modificarSupervisor.id_edificio = 0;
             this.modificarSupervisor.id_servicio = 0;
-            this.modificarSupervisor.id_unidadEspecifica = 0;
+            this.modificarSupervisor.id_unidadEspecifica = 42;
             this.modificarSupervisor.password = "";
             this.modificarSupervisor.run_usuario = "";
             this.modificarSupervisor.sup_run = "";
@@ -499,12 +440,6 @@ export default {
                 id: 0,
                 descripcionServicio: "Seleccione Servicio"
             };
-            this.seleccionUnidadEsp = [
-                {
-                    id: 0,
-                    descripcionUnidadEsp: "Seleccion Unidad Especifica"
-                }
-            ];
             this.seleccionEspecialidad1 = [
                 {
                     id: 0,
@@ -554,7 +489,6 @@ export default {
                 this.modificarSupervisor.id_cargo_asociado = this.seleccionUsuariosCargo[0].id;
                 this.modificarSupervisor.id_edificio = this.seleccionEdificio[0].id;
                 this.modificarSupervisor.id_servicio = this.seleccionServicio[0].id;
-                this.modificarSupervisor.id_unidadEspecifica = this.seleccionUnidadEsp[0].id;
                 this.modificarSupervisor.password = this.passUsuario;
                 this.modificarSupervisor.run_usuario = this.rutUsuario;
                 this.modificarSupervisor.sup_run = this.rutUsuario;
@@ -565,8 +499,25 @@ export default {
 
                 this.modificarSupervisor.id = this.seleccionSupervisor[0].id;
                 this.rutUsuario = format(this.rutUsuario);
-
                 if (
+                    this.rutUsuario == 0 ||
+                    this.rutUsuario == null ||
+                    this.rutUsuario == ""
+                ) {
+                    this.modificarUsuario.idvalRut = 0;
+                } else {
+                    this.modificarUsuario.idvalRut = 1;
+                }
+                if (
+                    this.correoUsuario == 0 ||
+                    this.correoUsuario == null ||
+                    this.correoUsuario == ""
+                ) {
+                    this.modificarUsuario.idvalmail = 0;
+                } else {
+                    this.modificarUsuario.idvalmail = 1;
+                }
+                /*  if (
                     this.modificarSupervisor.run == null ||
                     this.modificarSupervisor.run < 9 ||
                     !validate(this.rutUsuario)
@@ -591,7 +542,7 @@ export default {
                         position: "top-right",
                         time: 3000
                     });
-                } else if (
+                } else */ if (
                     this.modificarSupervisor.nombre == "" ||
                     this.modificarSupervisor.nombre == null
                 ) {
@@ -749,7 +700,6 @@ export default {
         filtroSegunEdificio() {
             if (this.seleccionEdificio == null || this.seleccionEdificio == 0) {
                 this.listadoServicios = this.listadoServiciosData;
-                this.listadoUnidadEsp = this.listadoUnidadEspData;
             } else {
                 var idGeneral = this.seleccionEdificio.id;
                 let c = this.listadoServiciosData;
@@ -777,142 +727,14 @@ export default {
                 this.seleccionEdificio = b;
             }
         },
-        guardarUnidadEsp(valor) {
-            let unidadEsp = {
-                id_servicio: this.seleccionServicio[0].id,
-                descripcionUnidadEsp: valor
-            };
-
-            axios
-                .post(
-                    this.localVal + "/api/Agente/PostUnidadEspecifica",
-                    unidadEsp,
-                    {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    }
-                )
-                .then(res => {
-                    if (res.data == true) {
-                        this.$vs.notify({
-                            time: 3000,
-                            title: "Unidad Especifica Agregada Correctamente",
-                            text: "Se Recargara Listado",
-                            color: "success",
-                            position: "top-right"
-                        });
-                        this.cargarEdificios();
-                        this.cargarServicios();
-                        this.cargarUnidadEsp();
-                        this.validaEliminar = false;
-                        this.popupActive2 = false;
-                    } else {
-                        this.$vs.notify({
-                            time: 3000,
-                            title: "Error",
-                            text: "Hubo una falla al agregar la unidad",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    }
-                });
-        },
-        cargaSegunUnidadEsp() {
-            try {
-                if (
-                    this.seleccionUnidadEsp.id == 0 ||
-                    this.seleccionUnidadEsp.id == null
-                ) {
-                    if (
-                        this.seleccionUnidadEsp.descripcionUnidadEsp ===
-                            undefined ||
-                        this.seleccionUnidadEsp.descripcionUnidadEsp === "" ||
-                        this.seleccionUnidadEsp.descripcionUnidadEsp === null
-                    ) {
-                        this.value1 = this.seleccionUnidadEsp;
-                    } else {
-                        this.value1 = this.seleccionUnidadEsp.descripcionUnidadEsp;
-                    }
-                    this.popupActive2 = true;
-                    this.validaEliminar = true;
-                } else {
-                    if (
-                        this.seleccionUnidadEsp == null ||
-                        this.seleccionUnidadEsp.id == 0
-                    ) {
-                        //this.listadoServicios = this.listadoServiciosData;
-                        this.listadoUnidadEsp = this.listadoUnidadEspData;
-                    } else {
-                        var idGeneral = this.seleccionUnidadEsp.id;
-
-                        let c = this.listadoUnidadEspData;
-                        let b = [];
-                        var a = 0;
-
-                        c.forEach((value, index) => {
-                            a = value.id;
-                            if (a == idGeneral) {
-                                b.push(value);
-                            }
-                        });
-                        this.seleccionUnidadEsp = b;
-                        idGeneral = 0;
-                        idGeneral = this.seleccionUnidadEsp[0].id_servicio;
-                        b = [];
-
-                        c = this.listadoServicios;
-
-                        c.forEach((value, index) => {
-                            a = value.id;
-                            if (a == idGeneral) {
-                                b.push(value);
-                            }
-                        });
-
-                        this.seleccionServicio = b;
-                        idGeneral = 0;
-                        idGeneral = this.seleccionServicio[0].id_edificio;
-                        b = [];
-                        c = this.listadoEdificios;
-
-                        c.forEach((value, index) => {
-                            a = value.id;
-                            if (a == idGeneral) {
-                                b.push(value);
-                            }
-                        });
-
-                        this.seleccionEdificio = b;
-                    }
-                }
-            } catch (error) {
-                console.log("Debes seleccionar algun campo");
-            }
-        },
         cargaSegunServicio() {
             if (
                 this.seleccionServicio == null ||
                 this.seleccionServicio.id == 0
             ) {
                 this.listadoServicios = this.listadoServiciosData;
-                this.listadoUnidadEsp = this.listadoUnidadEspData;
             } else {
                 var idGeneral = this.seleccionServicio.id;
-
-                let d = this.listadoUnidadEspData;
-                let e = [];
-                var f = 0;
-
-                d.forEach((value, index) => {
-                    a = value.id_servicio;
-                    if (a == idGeneral) {
-                        e.push(value);
-                    }
-                });
-
-                this.listadoUnidadEsp = e;
 
                 let c = this.listadoServiciosData;
                 let b = [];
@@ -1031,33 +853,11 @@ export default {
                     });
                     this.listadoServicios = b;
                 });
-        },
-        cargarUnidadEsp() {
-            this.csrf_token;
-
-            axios
-                .get(this.localVal + "/api/Usuario/GetUnidadEsp", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoUnidadEsp = res.data;
-                    this.listadoUnidadEspData = res.data;
-                    let b = [];
-                    let c = this.listadoUnidadEsp;
-                    c.forEach((value, index) => {
-                        b.push(value);
-                    });
-                    this.listadoUnidadEsp = b;
-                });
         }
     },
     created() {
         this.cargarEdificios();
         this.cargarServicios();
-        this.cargarUnidadEsp();
         this.cargarEspecialidad();
         this.cargarSupervisores();
         this.cargarListadoUsuarios();
