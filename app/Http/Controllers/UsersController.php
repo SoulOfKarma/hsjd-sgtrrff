@@ -144,7 +144,6 @@ class UsersController extends Controller
             log::info($idvalmail);
             if($idvalrun == 1){
                 if($idvalmail == 1){
-                    log::info("Aca weon");
                     $run = $request->run_usuario;
                     $run = str_replace('.', '', $run);
                     $run = strtoupper($run);

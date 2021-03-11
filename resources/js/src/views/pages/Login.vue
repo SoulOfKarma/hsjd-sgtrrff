@@ -112,204 +112,66 @@ export default {
     methods: {
         //Login por rut y generacion de token
         async autenticarToken() {
-            const valor = window.location.search;
+            try {
+                const valor = window.location.search;
 
-            const urlParams = new URLSearchParams(valor);
+                const urlParams = new URLSearchParams(valor);
 
-            let data = {
-                run: urlParams.get("run")
-            };
-            //let run = sessionStorage.getItem("run");
+                let data = {
+                    run: urlParams.get("run")
+                };
+                //let run = sessionStorage.getItem("run");
 
-            if (data.run != null && data.run.length > 8) {
-                var sw = 0;
-                var pr = 0;
-                var permiso_usuario = "";
-
-                await axios
-                    .post(this.localVal + "/api/Login/LoginByRut", {
-                        run: urlParams.get("run")
-                    })
-                    .then(function(response) {
-                        if (response.data.length > 0) {
-                            sessionStorage.setItem(
-                                "nombre",
-                                response.data[0].nombre
-                            );
-                            sessionStorage.setItem(
-                                "apellido",
-                                response.data[0].apellido
-                            );
-                            sessionStorage.setItem(
-                                "idServicio",
-                                response.data[0].id_servicio
-                            );
-                            sessionStorage.setItem("run", response.data[0].run);
-                            sessionStorage.setItem("id", response.data[0].id);
-                            sessionStorage.setItem(
-                                "api_token",
-                                response.data[0].api_token
-                            );
-                            sw = 1;
-                        } else {
-                            pr = 1;
-                        }
-                    })
-                    .catch(error => console.log(error));
-                let rut = sessionStorage.getItem("run");
-                const myNewStr = rut.substring(0, 4);
-
-                await axios
-                    .post(this.localVal + "/api/auth/generarToken", {
-                        run: sessionStorage.getItem("run"),
-                        password: myNewStr
-                    })
-                    .then(function(response) {
-                        sessionStorage.setItem("token", response.data.token);
-                    });
-
-                if (sw == 1) {
-                    await axios
-                        .post(this.localVal + "/api/Login/getpr", {
-                            run: urlParams.get("run")
-                        })
-                        .then(function(response2) {
-                            if (response2.data.length > 0) {
-                                if (response2.data[0].estado_login == 1) {
-                                    sessionStorage.setItem(
-                                        "permiso_usuario",
-                                        response2.data[0].permiso_usuario
-                                    );
-                                    if (
-                                        response2.data[0].permiso_usuario == 1
-                                    ) {
-                                        pr = 3;
-                                    }
-                                    if (
-                                        response2.data[0].permiso_usuario == 2
-                                    ) {
-                                        pr = 4;
-                                    }
-                                    if (
-                                        response2.data[0].permiso_usuario == 3
-                                    ) {
-                                        pr = 5;
-                                    }
-                                    if (
-                                        response2.data[0].permiso_usuario == 4
-                                    ) {
-                                        pr = 6;
-                                    }
-                                    //router.push('/home');
-                                    //pr = 3;
-                                } else {
-                                    pr = 2;
-                                }
-                            }
-                        });
-                }
-                if (pr == 1) {
-                    this.$vs.notify({
-                        color: "danger",
-                        title: "Login",
-                        text: "Usuario y/o Contraseña Incorrectos."
-                    });
-                }
-                if (pr == 2) {
-                    this.$vs.notify({
-                        color: "danger",
-                        title: "Login",
-                        text: "Usted no posee acceso a la plataforma."
-                    });
-                }
-                if (pr == 3) {
-                    console.log("Agente");
-                    //localStorage.setItem('run',response2.data[0].permiso_usuario);
-                    router.push("/agenteView/HomeAgente");
-                }
-                if (pr == 4 || pr == 6) {
-                    console.log("Usuario");
-                    //localStorage.setItem('run',response2.data[0].permiso_usuario);
-                    router.push("/home");
-                }
-                if (pr == 5) {
-                    console.log("Trabajador");
-                    router.push("/HomeTrabajador");
-                } else {
-                    this.val_run = true;
-                }
-            } else {
-                console.log("Hubo un error");
-            }
-        },
-        formatear_run() {
-            this.run = format(this.run);
-            this.val_run = !validate(this.run);
-        },
-        //Login Normal
-        async validarSesion() {
-            if (
-                this.run == "" ||
-                this.run == null ||
-                this.password == "" ||
-                this.password == null
-            ) {
-                this.$vs.notify({
-                    color: "danger",
-                    title: "Datos de sesion",
-                    text: "Run o Contraseña no Ingresada"
-                });
-            } else {
-                this.run = format(this.run);
-                if (validate(this.run)) {
+                if (data.run != null && data.run.length > 8) {
                     var sw = 0;
                     var pr = 0;
                     var permiso_usuario = "";
 
                     await axios
-                        .post(this.localVal + "/api/Login/GetUsers", {
-                            run: this.run,
-                            password: this.password
+                        .post(this.localVal + "/api/Login/LoginByRut", {
+                            run: urlParams.get("run")
                         })
                         .then(function(response) {
                             if (response.data.length > 0) {
-                                if (response.data != 1) {
-                                    sessionStorage.setItem(
-                                        "nombre",
-                                        response.data[0].nombre
-                                    );
-                                    sessionStorage.setItem(
-                                        "apellido",
-                                        response.data[0].apellido
-                                    );
-                                    sessionStorage.setItem(
-                                        "idServicio",
-                                        response.data[0].id_servicio
-                                    );
-                                    sessionStorage.setItem(
-                                        "run",
-                                        response.data[0].run
-                                    );
-                                    sessionStorage.setItem(
-                                        "id",
-                                        response.data[0].id
-                                    );
-                                    sessionStorage.setItem(
-                                        "api_token",
-                                        response.data[0].api_token
-                                    );
-                                    sw = 1;
-                                }
+                                sessionStorage.setItem(
+                                    "nombre",
+                                    response.data[0].nombre
+                                );
+                                sessionStorage.setItem(
+                                    "apellido",
+                                    response.data[0].apellido
+                                );
+                                sessionStorage.setItem(
+                                    "idServicio",
+                                    response.data[0].id_servicio
+                                );
+                                sessionStorage.setItem(
+                                    "run",
+                                    response.data[0].run
+                                );
+                                sessionStorage.setItem(
+                                    "id",
+                                    response.data[0].id
+                                );
+                                sessionStorage.setItem(
+                                    "api_token",
+                                    response.data[0].api_token
+                                );
+                                sw = 1;
                             } else {
                                 pr = 1;
                             }
                         })
-                        .catch(error => console.log(error));
+                        .catch(error =>
+                            console.log("Error Usuario o Contraseña")
+                        );
+                    let rut = sessionStorage.getItem("run");
+                    const myNewStr = rut.substring(0, 4);
 
                     await axios
-                        .post(this.localVal + "/api/auth/login", {
+                        .post(this.localVal + "/api/auth/generarToken", {
                             run: sessionStorage.getItem("run"),
-                            password: this.password
+                            password: myNewStr
                         })
                         .then(function(response) {
                             sessionStorage.setItem(
@@ -321,8 +183,7 @@ export default {
                     if (sw == 1) {
                         await axios
                             .post(this.localVal + "/api/Login/getpr", {
-                                run: this.run,
-                                password: this.password
+                                run: urlParams.get("run")
                             })
                             .then(function(response2) {
                                 if (response2.data.length > 0) {
@@ -378,6 +239,7 @@ export default {
                         });
                     }
                     if (pr == 3) {
+                        console.log("Agente");
                         //localStorage.setItem('run',response2.data[0].permiso_usuario);
                         router.push("/agenteView/HomeAgente");
                     }
@@ -392,7 +254,178 @@ export default {
                     } else {
                         this.val_run = true;
                     }
+                } else {
+                    console.log("Hubo un error");
                 }
+            } catch (error) {
+                this.$vs.notify({
+                    color: "danger",
+                    title: "Login",
+                    text: "Usuario y/o Contraseña Incorrectos."
+                });
+            }
+        },
+        formatear_run() {
+            this.run = format(this.run);
+            this.val_run = !validate(this.run);
+        },
+        //Login Normal
+        async validarSesion() {
+            try {
+                if (
+                    this.run == "" ||
+                    this.run == null ||
+                    this.password == "" ||
+                    this.password == null
+                ) {
+                    this.$vs.notify({
+                        color: "danger",
+                        title: "Datos de sesion",
+                        text: "Run o Contraseña no Ingresada"
+                    });
+                } else {
+                    this.run = format(this.run);
+                    if (validate(this.run)) {
+                        var sw = 0;
+                        var pr = 0;
+                        var permiso_usuario = "";
+
+                        await axios
+                            .post(this.localVal + "/api/Login/GetUsers", {
+                                run: this.run,
+                                password: this.password
+                            })
+                            .then(function(response) {
+                                if (response.data.length > 0) {
+                                    if (response.data != 1) {
+                                        sessionStorage.setItem(
+                                            "nombre",
+                                            response.data[0].nombre
+                                        );
+                                        sessionStorage.setItem(
+                                            "apellido",
+                                            response.data[0].apellido
+                                        );
+                                        sessionStorage.setItem(
+                                            "idServicio",
+                                            response.data[0].id_servicio
+                                        );
+                                        sessionStorage.setItem(
+                                            "run",
+                                            response.data[0].run
+                                        );
+                                        sessionStorage.setItem(
+                                            "id",
+                                            response.data[0].id
+                                        );
+                                        sessionStorage.setItem(
+                                            "api_token",
+                                            response.data[0].api_token
+                                        );
+                                        sw = 1;
+                                    }
+                                } else {
+                                    pr = 1;
+                                }
+                            });
+
+                        await axios
+                            .post(this.localVal + "/api/auth/login", {
+                                run: sessionStorage.getItem("run"),
+                                password: this.password
+                            })
+                            .then(function(response) {
+                                sessionStorage.setItem(
+                                    "token",
+                                    response.data.token
+                                );
+                            });
+
+                        if (sw == 1) {
+                            await axios
+                                .post(this.localVal + "/api/Login/getpr", {
+                                    run: this.run,
+                                    password: this.password
+                                })
+                                .then(function(response2) {
+                                    if (response2.data.length > 0) {
+                                        if (
+                                            response2.data[0].estado_login == 1
+                                        ) {
+                                            sessionStorage.setItem(
+                                                "permiso_usuario",
+                                                response2.data[0]
+                                                    .permiso_usuario
+                                            );
+                                            if (
+                                                response2.data[0]
+                                                    .permiso_usuario == 1
+                                            ) {
+                                                pr = 3;
+                                            }
+                                            if (
+                                                response2.data[0]
+                                                    .permiso_usuario == 2
+                                            ) {
+                                                pr = 4;
+                                            }
+                                            if (
+                                                response2.data[0]
+                                                    .permiso_usuario == 3
+                                            ) {
+                                                pr = 5;
+                                            }
+                                            if (
+                                                response2.data[0]
+                                                    .permiso_usuario == 4
+                                            ) {
+                                                pr = 6;
+                                            }
+                                            //router.push('/home');
+                                            //pr = 3;
+                                        } else {
+                                            pr = 2;
+                                        }
+                                    }
+                                });
+                        }
+                        if (pr == 1) {
+                            this.$vs.notify({
+                                color: "danger",
+                                title: "Login",
+                                text: "Usuario y/o Contraseña Incorrectos."
+                            });
+                        }
+                        if (pr == 2) {
+                            this.$vs.notify({
+                                color: "danger",
+                                title: "Login",
+                                text: "Usted no posee acceso a la plataforma."
+                            });
+                        }
+                        if (pr == 3) {
+                            //localStorage.setItem('run',response2.data[0].permiso_usuario);
+                            router.push("/agenteView/HomeAgente");
+                        }
+                        if (pr == 4 || pr == 6) {
+                            console.log("Usuario");
+                            //localStorage.setItem('run',response2.data[0].permiso_usuario);
+                            router.push("/home");
+                        }
+                        if (pr == 5) {
+                            console.log("Trabajador");
+                            router.push("/HomeTrabajador");
+                        } else {
+                            this.val_run = true;
+                        }
+                    }
+                }
+            } catch (error) {
+                this.$vs.notify({
+                    color: "danger",
+                    title: "Login",
+                    text: "Usuario y/o Contraseña Incorrectos."
+                });
             }
         }
     },
