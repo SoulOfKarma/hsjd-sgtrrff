@@ -181,7 +181,6 @@
                                 :config="configdateTimePicker"
                                 v-model="gestionTicket.horaInicio"
                                 placeholder="Seleccione Hora"
-                                @on-change="onFromChange"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -197,7 +196,6 @@
                                 :config="configdateToTimePicker"
                                 v-model="gestionTicket.horaTermino"
                                 placeholder="Seleccione Hora"
-                                @on-change="onToChange"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -690,7 +688,7 @@ export default {
         configFromdateTimePicker: {
             minDate: null,
             maxDate: null,
-            defaultDate: new Date(),
+            defaultDate: moment().format("YYYY-MM-DD"),
             locale: {
                 firstDayOfWeek: 1,
                 weekdays: {
@@ -787,17 +785,16 @@ export default {
         },
 
         configdateTimePicker: {
-            defaultDate: new Date(),
             enableTime: true,
+            enableSeconds: true,
             noCalendar: true,
-            dateFormat: "H:i",
-            time_24hr: true
+            dateFormat: "H:i"
         },
         configdateToTimePicker: {
             enableTime: true,
             noCalendar: true,
-            dateFormat: "H:i",
-            time_24hr: true
+            time_24hr: true,
+            dateFormat: "H:i"
         },
         val_run: false,
         nombreUsuario: "",
@@ -954,7 +951,7 @@ export default {
         nombreUsuarioU: "",
         apellidoUsuarioU: "",
         anexoUsuarioU: 0,
-        correoUsuarioU: "",
+        correoUsuarioU: "mantencion.hsjd@edsalud.gov.cl",
         rutUsuarioU: "",
         passUsuarioU: "",
         listadoCargoU: [],
@@ -990,7 +987,7 @@ export default {
         },
         registroUsuarioU: {
             run: "",
-            email: "",
+            email: "mantencion.hsjd@edsalud.gov.cl",
             nombre: "",
             apellido: "",
             anexo: "",

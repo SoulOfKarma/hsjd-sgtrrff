@@ -518,72 +518,77 @@ class GestionTicketController extends Controller
     public function NuevoTicket(Request $request)
     {
         //Insertando Ticket
-
-        $uuid = Uuid::uuid4();
-        $id = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]))->id;
-
-        $response = GestionSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
-
-
-        $nombre = $request->nombre;
-        $descripcionP = $request->descripcionCorreo;
-        $id_solicitud = $id;
-        $fecha = $request->fechaInicio;
-        $tituloP = $request->tituloP;
-        $id_user = $request->id_user;
-
-        $userSearch = Users::where('id',$id_user)->first();
-            $ValidarCargo = $userSearch->id_cargo_asociado;     
-            $userMail = [];
-
-            if($ValidarCargo == null || $ValidarCargo == 0){
+        try {
+            $uuid = Uuid::uuid4();
+            $id = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]))->id;
+    
+            $response = GestionSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
+    
+    
+            $nombre = $request->nombre;
+            $descripcionP = $request->descripcionCorreo;
+            $id_solicitud = $id;
+            $fecha = $request->fechaInicio;
+            $tituloP = $request->tituloP;
+            $id_user = $request->id_user;
+    
+            $userSearch = Users::where('id',$id_user)->first();
+                $ValidarCargo = $userSearch->id_cargo_asociado;     
+                $userMail = [];
+    
+                if($ValidarCargo == null || $ValidarCargo == 0){
+                    $userMail = Users::select('email')
+                    ->Where('id',$id_user)
+                    ->orWhere('id_cargo_asociado',$id_user)
+                    ->get();
+                }else{
+                   
                 $userMail = Users::select('email')
-                ->Where('id',$id_user)
-                ->orWhere('id_cargo_asociado',$id_user)
+                ->where('id_cargo_asociado',$ValidarCargo)
+                ->orWhere('id',$ValidarCargo)
                 ->get();
-            }else{
-               
-            $userMail = Users::select('email')
-            ->where('id_cargo_asociado',$ValidarCargo)
-            ->orWhere('id',$ValidarCargo)
-            ->get();
-            }
-
-            $listContactos = [];
-            $i = 0;
-
-            foreach ($userMail as $key) {
-                $listContactos[$i] = $key->email;
-                $i++;
-            }
-
-        $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
-
-        $idTrabajador = $request->id_trabajador;
-        $idSupervisor = $request->id_supervisor;
-
-        $trabajador = Trabajadores::where('id', $idTrabajador)->first();
-        $supervisor = Supervisores::where('id', $idSupervisor)->first();
-
-        $nombreTrabajador = $trabajador->tra_nombre . " " .$trabajador->tra_apellido;
-        $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_apellido;
-
-        SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
-
-        Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
-            $message->setTo($listContactos)->setSubject('Nueva Creacion de ticket');
-            $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
-            $message->setBcc(['mantencion.hsjd@redsalud.gov.cl'=> 'Mantencion']);
-        });
-
-        return $response;
+                }
+    
+                $listContactos = [];
+                $i = 0;
+    
+                foreach ($userMail as $key) {
+                    $listContactos[$i] = $key->email;
+                    $i++;
+                }
+    
+            $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
+    
+            $idTrabajador = $request->id_trabajador;
+            $idSupervisor = $request->id_supervisor;
+    
+            $trabajador = Trabajadores::where('id', $idTrabajador)->first();
+            $supervisor = Supervisores::where('id', $idSupervisor)->first();
+    
+            $nombreTrabajador = $trabajador->tra_nombre . " " .$trabajador->tra_apellido;
+            $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_apellido;
+    
+            SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
+    
+            Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
+                $message->setTo($listContactos)->setSubject('Nueva Creacion de ticket');
+                $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                $message->setBcc(['mantencion.hsjd@redsalud.gov.cl'=> 'Mantencion']);
+            });
+    
+            return $response;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+        
     }
 
     public function NuevoTicketEM(Request $request)
     {
         //Insertando Ticket
-
-        $uuid = Uuid::uuid4();
+        try {
+            $uuid = Uuid::uuid4();
         $id = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]))->id;
 
         $response = GestionSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
@@ -641,13 +646,18 @@ class GestionTicketController extends Controller
         });
 
         return $response;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+        
     }
 
     public function NuevoTicketIND(Request $request)
     {
         //Insertando Ticket
-
-        $uuid = Uuid::uuid4();
+        try {
+            $uuid = Uuid::uuid4();
         $id = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]))->id;
 
         $response = GestionSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
@@ -705,70 +715,79 @@ class GestionTicketController extends Controller
         });
 
         return $response;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+        
     }
 
     public function NuevoTicketCA(Request $request)
     {
         //Insertando Ticket
-
-        $uuid = Uuid::uuid4();
-        $id = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]))->id;
-
-        $response = GestionSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
-
-
-        $nombre = $request->nombre;
-        $descripcionP = $request->descripcionCorreo;
-        $id_solicitud = $id;
-        $fecha = $request->fechaInicio;
-        $tituloP = $request->tituloP;
-        $id_user = $request->id_user;
-
-        $userSearch = Users::where('id',$id_user)->first();
-            $ValidarCargo = $userSearch->id_cargo_asociado;     
-            $userMail = [];
-
-            if($ValidarCargo == null || $ValidarCargo == 0){
+        try {
+            $uuid = Uuid::uuid4();
+            $id = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]))->id;
+    
+            $response = GestionSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
+    
+    
+            $nombre = $request->nombre;
+            $descripcionP = $request->descripcionCorreo;
+            $id_solicitud = $id;
+            $fecha = $request->fechaInicio;
+            $tituloP = $request->tituloP;
+            $id_user = $request->id_user;
+    
+            $userSearch = Users::where('id',$id_user)->first();
+                $ValidarCargo = $userSearch->id_cargo_asociado;     
+                $userMail = [];
+    
+                if($ValidarCargo == null || $ValidarCargo == 0){
+                    $userMail = Users::select('email')
+                    ->Where('id',$id_user)
+                    ->orWhere('id_cargo_asociado',$id_user)
+                    ->get();
+                }else{
+                   
                 $userMail = Users::select('email')
-                ->Where('id',$id_user)
-                ->orWhere('id_cargo_asociado',$id_user)
+                ->where('id_cargo_asociado',$ValidarCargo)
+                ->orWhere('id',$ValidarCargo)
                 ->get();
-            }else{
-               
-            $userMail = Users::select('email')
-            ->where('id_cargo_asociado',$ValidarCargo)
-            ->orWhere('id',$ValidarCargo)
-            ->get();
-            }
-
-            $listContactos = [];
-            $i = 0;
-
-            foreach ($userMail as $key) {
-                $listContactos[$i] = $key->email;
-                $i++;
-            }
-
-        $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
-
-        $idTrabajador = $request->id_trabajador;
-        $idSupervisor = $request->id_supervisor;
-
-        $trabajador = Trabajadores::where('id', $idTrabajador)->first();
-        $supervisor = Supervisores::where('id', $idSupervisor)->first();
-
-        $nombreTrabajador = $trabajador->tra_nombre . " " .$trabajador->tra_apellido;
-        $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_apellido;
-
-        SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
-
-        Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
-            $message->setTo($listContactos)->setSubject('Nueva Creacion de ticket');
-            $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
-            $message->setBcc(['mantencion.hsjd@redsalud.gov.cl'=> 'Mantencion']);
-        });
-
-        return $response;
+                }
+    
+                $listContactos = [];
+                $i = 0;
+    
+                foreach ($userMail as $key) {
+                    $listContactos[$i] = $key->email;
+                    $i++;
+                }
+    
+            $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
+    
+            $idTrabajador = $request->id_trabajador;
+            $idSupervisor = $request->id_supervisor;
+    
+            $trabajador = Trabajadores::where('id', $idTrabajador)->first();
+            $supervisor = Supervisores::where('id', $idSupervisor)->first();
+    
+            $nombreTrabajador = $trabajador->tra_nombre . " " .$trabajador->tra_apellido;
+            $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_apellido;
+    
+            SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
+    
+            Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
+                $message->setTo($listContactos)->setSubject('Nueva Creacion de ticket');
+                $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                $message->setBcc(['mantencion.hsjd@redsalud.gov.cl'=> 'Mantencion']);
+            });
+    
+            return $response;
+        } catch (\Throwable $th) {
+            return false;
+        }
+        
     }
 
     /**

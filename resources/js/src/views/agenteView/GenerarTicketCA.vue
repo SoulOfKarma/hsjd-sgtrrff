@@ -586,7 +586,7 @@
                             color="warning"
                             type="filled"
                             class="w-full m-2"
-                            @click="guardarServicio(value3)"
+                            @click="guardarServicio()"
                             >Guardar</vs-button
                         >
                     </div>
@@ -688,7 +688,7 @@ export default {
         hora1: moment("8:32", "HH:mm"),
         hora2: moment("12:32", "HH:mm"),
         configFromdateTimePicker: {
-            minDate: new Date(),
+            minDate: moment().format("YYYY-MM-DD"),
             maxDate: null,
             locale: {
                 firstDayOfWeek: 1,
@@ -788,7 +788,14 @@ export default {
         configdateTimePicker: {
             enableTime: true,
             enableSeconds: true,
-            noCalendar: true
+            noCalendar: true,
+            dateFormat: "H:i"
+        },
+        configdateToTimePicker: {
+            enableTime: true,
+            noCalendar: true,
+            time_24hr: true,
+            dateFormat: "H:i"
         },
         val_run: false,
         nombreUsuario: "",
@@ -986,7 +993,7 @@ export default {
         },
         registroUsuarioU: {
             run: "",
-            email: "",
+            email: "mantencion.hsjd@edsalud.gov.cl",
             nombre: "",
             apellido: "",
             anexo: "",
@@ -1399,18 +1406,24 @@ export default {
                 id: 0,
                 tra_nombre_apellido: "Seleccione al Trabajador"
             };
-            this.seleccionApoyo1 = {
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            };
-            this.seleccionApoyo2 = {
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            };
-            this.seleccionApoyo3 = {
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            };
+            this.seleccionApoyo1 = [
+                {
+                    id: 1,
+                    tra_nombre_apellido: "Sin Asignar"
+                }
+            ];
+            this.seleccionApoyo2 = [
+                {
+                    id: 1,
+                    tra_nombre_apellido: "Sin Asignar"
+                }
+            ];
+            this.seleccionApoyo3 = [
+                {
+                    id: 1,
+                    tra_nombre_apellido: "Sin Asignar"
+                }
+            ];
         },
         filtroSegunEdificio() {
             if (this.seleccionEdificio == null || this.seleccionEdificio == 0) {

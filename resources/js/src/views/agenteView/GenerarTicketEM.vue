@@ -600,6 +600,38 @@
                 </div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Guardar Nuevo Servicio?"
+            :active.sync="popAServicioU"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="guardarServicioU()"
+                            >Guardar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="
+                                (popAServicioU = false),
+                                    (popCrearUsuario = true)
+                            "
+                            color="primary"
+                            type="filled"
+                        >
+                            Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 
@@ -654,8 +686,9 @@ export default {
         hora1: moment("8:32", "HH:mm"),
         hora2: moment("12:32", "HH:mm"),
         configFromdateTimePicker: {
-            minDate: new Date(),
+            minDate: null,
             maxDate: null,
+            defaultDate: new Date(),
             locale: {
                 firstDayOfWeek: 1,
                 weekdays: {
@@ -752,9 +785,17 @@ export default {
         },
 
         configdateTimePicker: {
+            defaultDate: moment().format("H:i"),
             enableTime: true,
-            enableSeconds: true,
-            noCalendar: true
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true
+        },
+        configdateToTimePicker: {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true
         },
         listadoTurno: [],
         seleccionTurno: {
