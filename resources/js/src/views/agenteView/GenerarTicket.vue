@@ -181,6 +181,7 @@
                                 :config="configdateTimePicker"
                                 v-model="gestionTicket.horaInicio"
                                 placeholder="Seleccione Hora"
+                                @on-change="onFromChange"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -196,6 +197,7 @@
                                 :config="configdateToTimePicker"
                                 v-model="gestionTicket.horaTermino"
                                 placeholder="Seleccione Hora"
+                                @on-change="onToChange"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -754,13 +756,15 @@ export default {
         configdateTimePicker: {
             defaultDate: new Date(),
             enableTime: true,
-            enableSeconds: true,
-            noCalendar: true
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true
         },
         configdateToTimePicker: {
             enableTime: true,
-            enableSeconds: true,
-            noCalendar: true
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true
         },
         val_run: false,
         nombreUsuario: "",
@@ -811,10 +815,10 @@ export default {
             idApoyo2: 1,
             idApoyo3: 1,
             idTurno: 0,
-            fechaInicio: new Date(),
-            fechaTermino: null,
-            horaInicio: new Date(),
-            horaTermino: null,
+            fechaInicio: moment().format("YYYY-MM-DD"),
+            fechaTermino: moment().format("YYYY-MM-DD"),
+            horaInicio: moment().format("H:i"),
+            horaTermino: moment().format("H:i"),
             horasEjecucion: 0,
             diasEjecucion: 0,
             tituloP: "",
@@ -2020,10 +2024,10 @@ export default {
                 idApoyo2: 1,
                 idApoyo3: 1,
                 idTurno: 0,
-                fechaCambiada: null,
-                fechaTermino: null,
-                horaCambiada: null,
-                horaTermino: null,
+                fechaInicio: moment().format("YYYY-MM-DD"),
+                fechaTermino: moment().format("YYYY-MM-DD"),
+                horaInicio: moment().format("H:i"),
+                horaTermino: moment().format("H:i"),
                 horasEjecucion: 0,
                 diasEjecucion: 0,
                 idDuracion: 0
