@@ -2187,18 +2187,18 @@ export default {
                 id: 0,
                 tra_nombre_apellido: "Seleccione al Trabajador"
             };
-            this.seleccionApoyo1 = {
+            this.seleccionApoyo1 = [{
                 id: 1,
                 tra_nombre_apellido: "Sin Asignar"
-            };
-            this.seleccionApoyo2 = {
+            }];
+            this.seleccionApoyo2 = [{
                 id: 1,
                 tra_nombre_apellido: "Sin Asignar"
-            };
-            this.seleccionApoyo3 = {
+            }];
+            this.seleccionApoyo3 = [{
                 id: 1,
                 tra_nombre_apellido: "Sin Asignar"
-            };
+            }];
         },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
@@ -2357,9 +2357,9 @@ export default {
                     position: "top-right"
                 });
             } else if (
-                this.seleccionServicioU == null ||
-                this.seleccionServicioU.id == 0 ||
-                this.seleccionServicioU.id == null
+                this.seleccionServicioU[0] == null ||
+                this.seleccionServicioU[0].id == 0 ||
+                this.seleccionServicioU[0].id == null
             ) {
                 this.$vs.notify({
                     title: "Error al seleccionar el servicio",
