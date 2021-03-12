@@ -354,7 +354,7 @@ export default {
             this.value1 = id;
             this.value2 = uuid;
             this.popupActive3 = true;
-        },
+        } /* ,
         finalizarTicket(id, uuid) {
             console.log(id);
             console.log(uuid);
@@ -366,7 +366,7 @@ export default {
         probar() {
             console.log(this.fechaModificar);
             console.log(this.fechaEliminar);
-        }
+        } */
     },
     beforeMount() {
         this.cargarSolicitudes();

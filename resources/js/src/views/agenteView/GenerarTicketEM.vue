@@ -618,6 +618,7 @@ import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import router from "@/router";
 import { validate, clean, format } from "rut.js";
+import VxCard from "../../components/vx-card/VxCard.vue";
 
 export default {
     data: () => ({
@@ -2403,42 +2404,6 @@ export default {
                 //Dejando como Array la seleccion de edificio
                 c = this.listadoEdificiosU;
                 b = [];
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
-                    }
-                });
-
-                this.seleccionEdificioU = b;
-            }
-        },
-        cargaSegunServicioU() {
-            if (
-                this.seleccionServicioU == null ||
-                this.seleccionServicio.id == 0
-            ) {
-                this.listadoServiciosU = this.listadoServiciosDataU;
-            } else {
-                var idGeneral = this.seleccionServicioU.id;
-
-                let c = this.listadoServiciosDataU;
-                let b = [];
-                var a = 0;
-
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
-                    }
-                });
-                this.seleccionServicioU = b;
-                idGeneral = 0;
-                idGeneral = this.seleccionServicioU[0].id_edificio;
-                b = [];
-
-                c = this.listadoEdificiosU;
-
                 c.forEach((value, index) => {
                     a = value.id;
                     if (a == idGeneral) {

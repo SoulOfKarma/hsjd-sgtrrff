@@ -530,19 +530,20 @@
                                         class="w-full select-large"
                                         label="descripcionEdificio"
                                         :options="listadoEdificiosU"
-                                        @input="filtroSegunEdificioU"
+                                        @input="filtroSegunEdificioU()"
                                     ></v-select>
                                 </div>
                                 <div class="vx-col w-1/2 mt-5">
                                     <h6>2.2 - Seleccione el Servicio</h6>
                                     <br />
                                     <v-select
+                                        taggable
                                         v-model="seleccionServicioU"
                                         placeholder="Servicio"
                                         class="w-full select-large"
                                         label="descripcionServicio"
                                         :options="listadoServiciosU"
-                                        @input="cargaSegunServicioU"
+                                        @input="cargaSegunServicioU()"
                                     ></v-select>
                                 </div>
                             </div>
@@ -601,6 +602,38 @@
                 </div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Guardar Nuevo Servicio?"
+            :active.sync="popAServicioU"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="guardarServicioU()"
+                            >Guardar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="
+                                (popAServicioU = false),
+                                    (popCrearUsuario = true)
+                            "
+                            color="primary"
+                            type="filled"
+                        >
+                            Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 
@@ -619,6 +652,7 @@ import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import router from "@/router";
 import { validate, clean, format } from "rut.js";
+import VxCard from "../../components/vx-card/VxCard.vue";
 
 export default {
     data: () => ({
@@ -802,9 +836,9 @@ export default {
             idApoyo3: 5,
             idTurno: 0,
             fechaInicio: moment().format("YYYY-MM-DD"),
-            fechaTermino: moment().format("YYYY-MM-DD"),
+            fechaTermino: null,
             horaInicio: moment().format("H:i"),
-            horaTermino: moment().format("H:i"),
+            horaTermino: null,
             horasEjecucion: 0,
             diasEjecucion: 0,
             tituloP: "",
@@ -907,8 +941,10 @@ export default {
         popupActive2: false,
         popupActive3: false,
         popAServicio: false,
+        popAServicioU: false,
         value2: "",
         value3: "",
+        value4: "",
         componentKey: 0,
         //Lado data crear nuevo usuario
         nombreUsuarioU: "",
@@ -1406,12 +1442,13 @@ export default {
                 this.seleccionEdificio = b;
             }
         },
-        guardarServicio(val3) {
+        guardarServicio() {
             try {
                 let servicio = {
-                    id_edificio: "",
-                    descripcionServicio: 0
+                    id_edificio: 0,
+                    descripcionServicio: ""
                 };
+
                 if (
                     this.seleccionEdificio.id > 0 ||
                     this.seleccionEdificio.id != 0 ||
@@ -1419,12 +1456,12 @@ export default {
                 ) {
                     servicio = {
                         id_edificio: this.seleccionEdificio.id,
-                        descripcionServicio: val3
+                        descripcionServicio: this.value3
                     };
                 } else {
                     servicio = {
                         id_edificio: this.seleccionEdificio[0].id,
-                        descripcionServicio: val3
+                        descripcionServicio: this.value3
                     };
                 }
 
@@ -1452,6 +1489,63 @@ export default {
                             this.cargarEdificios();
                             this.cargarServicios();
                             this.popAServicio = false;
+                            this.seleccionServicio = {
+                                id: 0,
+                                descripcionServicio: "Seleccione Servicio"
+                            };
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text: "Hubo una falla al agregar servicio",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(
+                    "Hubo un error al guardar el servicio o listar los datos"
+                );
+            }
+        },
+        guardarServicioU() {
+            try {
+                let servicioU = {
+                    id_edificio: 0,
+                    descripcionServicio: ""
+                };
+
+                servicioU = {
+                    id_edificio: this.seleccionEdificioU[0].id,
+                    descripcionServicio: this.value4
+                };
+
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PostServicios",
+                        servicioU,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data == true) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Servicio fue Agregado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.value4 = "";
+                            this.cargarEdificios();
+                            this.cargarServicios();
+                            this.popAServicio = false;
+                            this.popCrearUsuario = true;
                             this.seleccionServicio = {
                                 id: 0,
                                 descripcionServicio: "Seleccione Servicio"
@@ -1878,8 +1972,7 @@ export default {
             this.$vs.notify({
                 time: 5000,
                 title: "Ticket Creado",
-                text:
-                    "Ticket creado correctamente, Retornara a la pagina anterior",
+                text: "Ticket creado correctamente",
                 color: "success",
                 position: "top-right"
             });
@@ -1922,18 +2015,6 @@ export default {
                     this.gestionTicket.fechaInicio < hoy.getDate()
                 ) {
                     this.mensajeError = "la fecha de inicio ";
-                    this.errorDrop(this.mensajeError);
-                } else if (
-                    this.gestionTicket.fechaTermino == null ||
-                    this.gestionTicket.fechaTermino < hoy.getDate()
-                ) {
-                    this.mensajeError = "la fecha de termino";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.gestionTicket.horasEjecucion == 0) {
-                    this.mensajeError = "Las horas calculadas no pueden ser 0";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.gestionTicket.diasEjecucion == 0) {
-                    this.mensajeError = "Los dias calculados no pueden ser 0";
                     this.errorDrop(this.mensajeError);
                 } else if (
                     this.gestionTicket.tituloP.trim() === "" ||
@@ -1990,18 +2071,6 @@ export default {
                     this.mensajeError = "la fecha de inicio ";
                     this.errorDrop(this.mensajeError);
                 } else if (
-                    this.gestionTicket.fechaTermino == null ||
-                    this.gestionTicket.fechaTermino < hoy.getDate()
-                ) {
-                    this.mensajeError = "la fecha de termino";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.gestionTicket.horasEjecucion == 0) {
-                    this.mensajeError = "Las horas calculadas no pueden ser 0";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.gestionTicket.diasEjecucion == 0) {
-                    this.mensajeError = "Los dias calculados no pueden ser 0";
-                    this.errorDrop(this.mensajeError);
-                } else if (
                     this.gestionTicket.tituloP.trim() === "" ||
                     this.gestionTicket.tituloP.length < 10
                 ) {
@@ -2052,9 +2121,6 @@ export default {
                 .then(res => {
                     const ticketServer = res.data;
                     this.mensajeGuardado();
-                    setTimeout(() => {
-                        router.back();
-                    }, 5000);
                 });
         },
         limpiar() {
@@ -2073,9 +2139,9 @@ export default {
                 idApoyo3: 1,
                 idTurno: 0,
                 fechaInicio: moment().format("YYYY-MM-DD"),
-                fechaTermino: moment().format("YYYY-MM-DD"),
+                fechaTermino: null,
                 horaInicio: moment().format("H:i"),
-                horaTermino: moment().format("H:i"),
+                horaTermino: null,
                 horasEjecucion: 0,
                 diasEjecucion: 0,
                 idDuracion: 0
@@ -2188,39 +2254,81 @@ export default {
             }
         },
         cargaSegunServicioU() {
-            if (
-                this.seleccionServicioU == null ||
-                this.seleccionServicioU.id == 0
-            ) {
-                this.listadoServiciosU = this.listadoServiciosDataU;
-            } else {
-                var idGeneral = this.seleccionServicioU.id;
-
-                let c = this.listadoServiciosDataU;
-                let b = [];
-                var a = 0;
-
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
+            try {
+                if (
+                    this.seleccionServicioU.id == 0 ||
+                    this.seleccionServicioU.id == null
+                ) {
+                    if (
+                        this.seleccionEdificioU.id == 0 ||
+                        this.seleccionEdificioU[0].id == 0
+                    ) {
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Error",
+                            text:
+                                "Debe seleccionar un edificio para poder guardar un nuevo servicio asociado",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    } else {
+                        if (
+                            this.seleccionServicioU.descripcionServicio ===
+                                undefined ||
+                            this.seleccionServicioU.descripcionServicio ===
+                                "" ||
+                            this.seleccionServicioU.descripcionServicio === null
+                        ) {
+                            this.value4 = this.seleccionServicioU;
+                        } else {
+                            this.value4 = this.seleccionServicioU.descripcionServicio;
+                        }
+                        this.popCrearUsuario = false;
+                        this.popAServicioU = true;
                     }
-                });
-                this.seleccionServicioU = b;
-                idGeneral = 0;
-                idGeneral = this.seleccionServicioU[0].id_edificio;
-                b = [];
+                } else {
+                    if (
+                        this.seleccionServicioU == null ||
+                        this.seleccionServicioU.id == 0
+                    ) {
+                        this.listadoServiciosU = JSON.parse(
+                            JSON.stringify(this.listadoServiciosDataU)
+                        );
+                    } else {
+                        var idGeneral = this.seleccionServicioU.id;
 
-                c = this.listadoEdificiosU;
+                        let c = JSON.parse(
+                            JSON.stringify(this.listadoServiciosDataU)
+                        );
+                        let b = [];
+                        var a = 0;
 
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
+                        c.forEach((value, index) => {
+                            a = value.id;
+                            if (a == idGeneral) {
+                                b.push(value);
+                            }
+                        });
+                        this.seleccionServicioU = b;
+                        idGeneral = 0;
+                        idGeneral = this.seleccionServicioU[0].id_edificio;
+                        b = [];
+
+                        c = this.listadoEdificiosU;
+
+                        c.forEach((value, index) => {
+                            a = value.id;
+                            if (a == idGeneral) {
+                                b.push(value);
+                            }
+                        });
+
+                        this.seleccionEdificioU = b;
                     }
-                });
-
-                this.seleccionEdificioU = b;
+                }
+            } catch (error) {
+                console.log("Error en Servicio");
+                console.error(error);
             }
         },
         guardarUsuarioU() {
@@ -2236,9 +2344,9 @@ export default {
                     position: "top-right"
                 });
             } else if (
-                this.seleccionServicioU[0] == null ||
-                this.seleccionServicioU[0].id == 0 ||
-                this.seleccionServicioU[0].id == null
+                this.seleccionServicioU == null ||
+                this.seleccionServicioU.id == 0 ||
+                this.seleccionServicioU.id == null
             ) {
                 this.$vs.notify({
                     title: "Error al seleccionar el servicio",
@@ -2424,42 +2532,6 @@ export default {
                 //Dejando como Array la seleccion de edificio
                 c = this.listadoEdificiosU;
                 b = [];
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
-                    }
-                });
-
-                this.seleccionEdificioU = b;
-            }
-        },
-        cargaSegunServicioU() {
-            if (
-                this.seleccionServicioU == null ||
-                this.seleccionServicio.id == 0
-            ) {
-                this.listadoServiciosU = this.listadoServiciosDataU;
-            } else {
-                var idGeneral = this.seleccionServicioU.id;
-
-                let c = this.listadoServiciosDataU;
-                let b = [];
-                var a = 0;
-
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGeneral) {
-                        b.push(value);
-                    }
-                });
-                this.seleccionServicioU = b;
-                idGeneral = 0;
-                idGeneral = this.seleccionServicioU[0].id_edificio;
-                b = [];
-
-                c = this.listadoEdificiosU;
-
                 c.forEach((value, index) => {
                     a = value.id;
                     if (a == idGeneral) {

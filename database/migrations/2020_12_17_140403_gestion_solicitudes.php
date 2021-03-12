@@ -26,12 +26,12 @@ class GestionSolicitudes extends Migration
             $table->bigInteger('idDuracion')->nullable();
             $table->time('horaInicio');
             $table->time('horaCambiada')->nullable();
-            $table->time('horaTermino');
+            $table->time('horaTermino')->nullable();
             $table->date('fechaInicio');
             $table->date('fechaCambiada')->nullable();
-            $table->date('fechaTermino');
-            $table->bigInteger('diasEjecucion');
-            $table->bigInteger('horasEjecucion');
+            $table->date('fechaTermino')->nullable();
+            $table->bigInteger('diasEjecucion')->nullable();
+            $table->bigInteger('horasEjecucion')->nullable();
             $table->timestamps();
         });
     }

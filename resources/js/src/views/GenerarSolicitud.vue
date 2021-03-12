@@ -474,7 +474,6 @@ export default {
                     this.listadoUsuarios = res.data;
                     this.seleccionEdificio.id = this.listadoUsuarios.id_edificio;
                     this.seleccionServicio.id = this.listadoUsuarios.id_servicio;
-                    this.seleccionUnidadEsp.id = this.listadoUsuarios.id_unidadEspecifica;
                 });
         },
         errorTitulo(mensajeError) {

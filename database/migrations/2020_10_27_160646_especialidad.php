@@ -11,6 +11,7 @@ class Especialidad extends Migration
      *
      * @return void
      */
+    
     public function up()
     {
         Schema::create('especialidades', function (Blueprint $table) {
@@ -27,6 +28,6 @@ class Especialidad extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('especialidades');
     }
 }
