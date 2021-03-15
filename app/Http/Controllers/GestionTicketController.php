@@ -271,11 +271,11 @@ class GestionTicketController extends Controller
         } catch (\Throwable $th) {
             log::info($th);
         } finally {
-            /* Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
+             Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
                 $message->setTo($listContactos)->setSubject('Asignacion de ticket');
                 $message->setFrom('ricardo.soto.g@redsalud.gov.cl', 'Ricardo Soto Gomez');
                 $message->setBcc(['mantencion.hsjd@redsalud.gov.cl'=> 'Mantencion']);
-            });  */
+            });  
             return $response = "Ok";
         }
     }
@@ -570,12 +570,12 @@ class GestionTicketController extends Controller
     
             SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
     
-            /* Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
+             Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
                 $message->setTo($listContactos)->setSubject('Nueva Creacion de ticket');
                 $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
                 $message->setBcc(['mantencion.hsjd@redsalud.gov.cl'=> 'Mantencion']);
-            }); */
-    
+            }); 
+
             return $response;
         } catch (\Throwable $th) {
             log::info($th);
