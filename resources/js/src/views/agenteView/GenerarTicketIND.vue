@@ -790,13 +790,13 @@ export default {
             enableTime: true,
             enableSeconds: true,
             noCalendar: true,
-            dateFormat: "H:i"
+            dateFormat: "H:mm"
         },
         configdateToTimePicker: {
             enableTime: true,
             noCalendar: true,
             time_24hr: true,
-            dateFormat: "H:i"
+            dateFormat: "H:mm"
         },
         val_run: false,
         nombreUsuario: "",
@@ -849,7 +849,7 @@ export default {
             idTurno: 0,
             fechaInicio: moment().format("YYYY-MM-DD"),
             fechaTermino: null,
-            horaInicio: moment().format("H:i"),
+            horaInicio: moment().format("H:mm"),
             horaTermino: null,
             horasEjecucion: 0,
             diasEjecucion: 0,
@@ -1157,6 +1157,8 @@ export default {
                     this.rutUsuario == null ||
                     this.rutUsuario == ""
                 ) {
+                    this.registroUsuario.run = null;
+                    this.rutUsuario = null;
                     this.registroUsuario.idvalRut = 0;
                 } else {
                     this.registroUsuario.idvalRut = 1;

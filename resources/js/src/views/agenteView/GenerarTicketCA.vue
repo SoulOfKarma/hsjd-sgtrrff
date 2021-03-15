@@ -844,7 +844,7 @@ export default {
             idTurno: 0,
             fechaInicio: moment().format("YYYY-MM-DD"),
             fechaTermino: null,
-            horaInicio: moment().format("H:i"),
+            horaInicio: moment().format("H:mm"),
             horaTermino: null,
             horasEjecucion: 0,
             diasEjecucion: 0,
@@ -1161,6 +1161,8 @@ export default {
                     this.rutUsuario == null ||
                     this.rutUsuario == ""
                 ) {
+                    this.registroUsuario.run = null;
+                    this.rutUsuario = null;
                     this.registroUsuario.idvalRut = 0;
                 } else {
                     this.registroUsuario.idvalRut = 1;
@@ -2187,18 +2189,24 @@ export default {
                 id: 0,
                 tra_nombre_apellido: "Seleccione al Trabajador"
             };
-            this.seleccionApoyo1 = [{
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            }];
-            this.seleccionApoyo2 = [{
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            }];
-            this.seleccionApoyo3 = [{
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            }];
+            this.seleccionApoyo1 = [
+                {
+                    id: 1,
+                    tra_nombre_apellido: "Sin Asignar"
+                }
+            ];
+            this.seleccionApoyo2 = [
+                {
+                    id: 1,
+                    tra_nombre_apellido: "Sin Asignar"
+                }
+            ];
+            this.seleccionApoyo3 = [
+                {
+                    id: 1,
+                    tra_nombre_apellido: "Sin Asignar"
+                }
+            ];
         },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });

@@ -852,6 +852,8 @@ export default {
                     this.rutUsuario == null ||
                     this.rutUsuario == ""
                 ) {
+                    this.registroUsuario.run = null;
+                    this.rutUsuario = null;
                     this.registroUsuario.idvalRut = 0;
                 } else {
                     this.registroUsuario.idvalRut = 1;
@@ -1826,9 +1828,9 @@ export default {
                 idApoyo3: 1,
                 idTurno: 0,
                 fechaInicio: moment().format("YYYY-MM-DD"),
-                fechaTermino: moment().format("YYYY-MM-DD"),
-                horaInicio: moment().format("H:i"),
-                horaTermino: moment().format("H:i"),
+                fechaTermino: null,
+                horaInicio: moment().format("H:mm"),
+                horaTermino: null,
                 horasEjecucion: 0,
                 diasEjecucion: 0,
                 desTrabajador: "",

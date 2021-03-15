@@ -644,8 +644,8 @@ export default {
             idTurno: 0,
             fechaCambiada: moment().format("YYYY-MM-DD"),
             fechaTermino: moment().format("YYYY-MM-DD"),
-            horaCambiada: moment().format("H:i"),
-            horaTermino: moment().format("H:i"),
+            horaCambiada: moment().format("H:mm"),
+            horaTermino: moment().format("H:mm"),
             horasEjecucion: 0,
             diasEjecucion: 0,
             desTrabajador: "",
@@ -888,6 +888,8 @@ export default {
                     this.rutUsuario == null ||
                     this.rutUsuario == ""
                 ) {
+                    this.registroUsuario.run = null;
+                    this.rutUsuario = null;
                     this.registroUsuario.idvalRut = 0;
                 } else {
                     this.registroUsuario.idvalRut = 1;

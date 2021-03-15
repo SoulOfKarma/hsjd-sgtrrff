@@ -19,7 +19,6 @@ class SupervisorController extends Controller
         //Traer todo de supervisores
         $get_all = Supervisores::select('supervisores.id',DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),'supervisores.id_especialidad1')
         ->get();
-        log::info($get_all);
         return  $get_all;
         
     }

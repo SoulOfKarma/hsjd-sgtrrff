@@ -898,6 +898,8 @@ export default {
                     this.rutUsuario == null ||
                     this.rutUsuario == ""
                 ) {
+                    this.registroUsuario.run = null;
+                    this.rutUsuario = null;
                     this.registroUsuario.idvalRut = 0;
                 } else {
                     this.registroUsuario.idvalRut = 1;

@@ -801,7 +801,7 @@ export default {
         apellidoUsuario: "",
         anexoUsuario: 0,
         correoUsuario: "",
-        rutUsuario: "",
+        rutUsuario: null,
         passUsuario: "",
         popCrearTrabajador: false,
         popCrearUsuario: false,
@@ -859,7 +859,7 @@ export default {
             idDuracion: 0
         },
         registroUsuario: {
-            run: "",
+            run: null,
             email: "",
             nombre: "",
             apellido: "",
@@ -952,7 +952,7 @@ export default {
         apellidoUsuarioU: "",
         anexoUsuarioU: 0,
         correoUsuarioU: "mantencion.hsjd@edsalud.gov.cl",
-        rutUsuarioU: "",
+        rutUsuarioU: null,
         passUsuarioU: "",
         listadoCargoU: [],
         listadoEdificiosU: [],
@@ -986,7 +986,7 @@ export default {
             id_user: sessionStorage.getItem("id")
         },
         registroUsuarioU: {
-            run: "",
+            run: null,
             email: "mantencion.hsjd@edsalud.gov.cl",
             nombre: "",
             apellido: "",
@@ -1156,14 +1156,17 @@ export default {
                 this.registroUsuario.tra_nombre = this.nombreUsuario;
                 this.registroUsuario.tra_apellido = this.apellidoUsuario;
                 this.registroUsuario.id_especialidad1 = this.seleccionEspecialidad[0].id;
-                this.rutUsuario = format(this.rutUsuario);
+
                 if (
                     this.rutUsuario == 0 ||
                     this.rutUsuario == null ||
                     this.rutUsuario == ""
                 ) {
+                    this.registroUsuario.run = null;
+                    this.rutUsuario = null;
                     this.registroUsuario.idvalRut = 0;
                 } else {
+                    this.rutUsuario = format(this.rutUsuario);
                     this.registroUsuario.idvalRut = 1;
                 }
                 if (

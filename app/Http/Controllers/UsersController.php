@@ -786,12 +786,14 @@ class UsersController extends Controller
         try {
             $idvalrun = $request->idvalRut;
             $idvalmail = $request->idvalmail;
+            $run = $request->run_usuario;
+            $run = str_replace('.', '', $run);
+            $run = strtoupper($run);
          if($idvalrun == 1){
             if($idvalmail == 1){
                 $run = $request->run_usuario;
                 $run = str_replace('.', '', $run);
                 $run = strtoupper($run);
-
                 Users::create([
                     'run' => $run,
                     'email' => $request->email,
@@ -824,7 +826,6 @@ class UsersController extends Controller
                 $run = $request->run_usuario;
                 $run = str_replace('.', '', $run);
                 $run = strtoupper($run);
-
                 Users::create([
                     'run' => $run,
                     //'email' => $request->email,
@@ -860,7 +861,7 @@ class UsersController extends Controller
                 $run = strtoupper($run); */
 
                 Users::create([
-                    //'run' => $run,
+                    'run' => null,
                     'email' => $request->email,
                     'nombre' => $request->nombre,
                     'apellido' => $request->apellido,
@@ -875,7 +876,7 @@ class UsersController extends Controller
                 ]);
 
                 Trabajadores::create([
-                    'tra_run' => $run,
+                    'tra_run' => null,
                     'tra_nombre' => $request->nombre,
                     'tra_apellido' => $request->apellido,
                     'id_especialidad1' => $request->id_especialidad1,
@@ -892,7 +893,7 @@ class UsersController extends Controller
                 $run = strtoupper($run); */
 
                 Users::create([
-                    //'run' => $run,
+                    'run' => null,
                     //'email' => $request->email,
                     'nombre' => $request->nombre,
                     'apellido' => $request->apellido,
@@ -907,7 +908,7 @@ class UsersController extends Controller
                 ]);
 
                 Trabajadores::create([
-                    'tra_run' => $run,
+                    'tra_run' => null,
                     'tra_nombre' => $request->nombre,
                     'tra_apellido' => $request->apellido,
                     'id_especialidad1' => $request->id_especialidad1,
@@ -922,7 +923,9 @@ class UsersController extends Controller
             }   
         return true;
         } catch (\Throwable $th) {
+            log::info($th);
             return false;
+            
         }
         
 
