@@ -51,7 +51,7 @@
     <body>
         <div class="container">
             <div class="row">
-              <div class="col-xs-2"> <img src="http://localhost:8080/proyectov1/resources/assets/images/logo/1.png"></div>
+              <div class="col-xs-2"> <img src="http://localhost:8001/sgtrrff/resources/assets/images/logo/1.png"></div>
                 <div class="col-xs-10">
                   <h3 id="tituloOrd"><b>Orden de Trabajo</b> </h3>
                   <h4 id="subOrd"><b>Unidad de Mantenimiento - Industrial</b> </h4>
@@ -77,9 +77,6 @@
               <div class="col-xs-2"></div>
             </div>
             <div class="row">
-              <div class="col-xs-2"><label>Unidad Especifica</label></div>
-              <div class="col-xs-2"><label>{{$desUnidadEsp}}</label></div>
-              <div class="col-xs-1"></div>
               <div class="col-xs-3"><label>Estado</label></div>
               <div class="col-xs-2"><label>{{$desEstado}}</label></div>
               <div class="col-xs-2"></div>

@@ -506,7 +506,7 @@ export default {
         hora1: moment("8:32", "HH:mm"),
         hora2: moment("12:32", "HH:mm"),
         configFromdateTimePicker: {
-            minDate: new Date(),
+            minDate: null,
             maxDate: null,
             locale: {
                 firstDayOfWeek: 1,
@@ -652,10 +652,10 @@ export default {
             idApoyo2: 1,
             idApoyo3: 1,
             idTurno: 0,
-            fechaCambiada: moment().format("YYYY-MM-DD"),
-            fechaTermino: moment().format("YYYY-MM-DD"),
-            horaCambiada: moment().format("H:i"),
-            horaTermino: moment().format("H:i"),
+            fechaCambiada: null,
+            fechaTermino: null,
+            horaCambiada: null,
+            horaTermino: null,
             horasEjecucion: 0,
             diasEjecucion: 0,
             desTrabajador: "",
@@ -1583,6 +1583,25 @@ export default {
                 position: "top-right"
             });
         },
+        cargarHoras() {
+            try {
+                this.gestionTicket.fechaCambiada = moment(new Date()).format(
+                    "YYYY MM DD"
+                );
+                this.gestionTicket.fechaTermino = moment(new Date()).format(
+                    "YYYY MM DD"
+                );
+                this.gestionTicket.horaCambiada = moment(new Date()).format(
+                    "H:i"
+                );
+                this.gestionTicket.horaTermino = moment(new Date()).format(
+                    "H:i"
+                );
+            } catch (error) {
+                console.log("No se cargo la ISO hora");
+                console.log(error);
+            }
+        },
         validarFormulario() {
             var hoy = new Date();
             try {
@@ -1619,7 +1638,7 @@ export default {
                 ) {
                     this.mensajeError = "la fecha de inicio ";
                     this.errorDrop(this.mensajeError);
-                } else if (
+                } /* else if (
                     this.gestionTicket.fechaTermino == null ||
                     this.gestionTicket.fechaTermino < hoy.getDate()
                 ) {
@@ -1631,7 +1650,7 @@ export default {
                 } else if (this.gestionTicket.diasEjecucion == 0) {
                     this.mensajeError = "Los dias calculados no pueden ser 0";
                     this.errorDrop(this.mensajeError);
-                } else {
+                } */ else {
                     this.ModificarFormulario();
                 }
             } catch (error) {
@@ -1668,7 +1687,7 @@ export default {
                 ) {
                     this.mensajeError = "la fecha de inicio ";
                     this.errorDrop(this.mensajeError);
-                } else if (
+                } /* else if (
                     this.gestionTicket.fechaTermino == null ||
                     this.gestionTicket.fechaTermino < hoy.getDate()
                 ) {
@@ -1680,7 +1699,7 @@ export default {
                 } else if (this.gestionTicket.diasEjecucion == 0) {
                     this.mensajeError = "Los dias calculados no pueden ser 0";
                     this.errorDrop(this.mensajeError);
-                } else {
+                } */ else {
                     this.ModificarFormulario();
                 }
             }
@@ -1729,7 +1748,7 @@ export default {
             ) {
                 this.mensajeError = "la fecha de inicio ";
                 this.errorDrop(this.mensajeError);
-            } else if (
+            } /* else if (
                 this.gestionTicket.fechaTermino == null ||
                 this.gestionTicket.fechaTermino < hoy.getDate()
             ) {
@@ -1741,7 +1760,7 @@ export default {
             } else if (this.gestionTicket.diasEjecucion == 0) {
                 this.mensajeError = "Los dias calculados no pueden ser 0";
                 this.errorDrop(this.mensajeError);
-            } else {
+            } */ else {
                 let uuid = this.$route.params.uuid;
                 this.gestionTicket.uuid = uuid;
                 let id = this.$route.params.id;
@@ -1810,10 +1829,10 @@ export default {
                     idApoyo1: 5,
                     idApoyo2: 5,
                     idApoyo3: 5,
-                    fechaCambiada: moment().format("YYYY-MM-DD"),
-                    fechaTermino: moment().format("YYYY-MM-DD"),
-                    horaCambiada: moment().format("H:i"),
-                    horaTermino: moment().format("H:i"),
+                    fechaCambiada: null,
+                    fechaTermino: null,
+                    horaCambiada: null,
+                    horaTermino: null,
                     horasEjecucion: 0,
                     diasEjecucion: 0,
                     idDuracion: 0
@@ -2114,6 +2133,7 @@ export default {
         this.cargarEstado();
         this.cargaSolicitudEspecifica();
         this.cargaTicketAsignado();
+        this.cargarHoras();
     },
     async beforeMount() {},
     components: {

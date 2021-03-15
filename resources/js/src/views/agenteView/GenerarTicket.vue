@@ -845,9 +845,9 @@ export default {
             idApoyo2: 1,
             idApoyo3: 1,
             idTurno: 0,
-            fechaInicio: moment().format("YYYY-MM-DD"),
+            fechaInicio: null,
             fechaTermino: null,
-            horaInicio: moment().format("H:i"),
+            horaInicio: null,
             horaTermino: null,
             horasEjecucion: 0,
             diasEjecucion: 0,
@@ -2088,7 +2088,7 @@ export default {
                 idTurno: 0,
                 fechaInicio: moment().format("YYYY-MM-DD"),
                 fechaTermino: null,
-                horaInicio: moment().format("H:i"),
+                horaInicio: moment().format("H:mm"),
                 horaTermino: null,
                 horasEjecucion: 0,
                 diasEjecucion: 0,
@@ -2484,6 +2484,20 @@ export default {
 
                 this.seleccionEdificioU = b;
             }
+        },
+        cargarHoras() {
+            try {
+                this.gestionTicket.fechaInicio = moment(new Date()).format(
+                    "YYYY-MM-DD"
+                );
+
+                this.gestionTicket.horaInicio = moment(new Date()).format(
+                    "H:mm"
+                );
+            } catch (error) {
+                console.log("No se cargo la ISO hora");
+                console.log(error);
+            }
         }
     },
     created() {
@@ -2498,6 +2512,7 @@ export default {
         this.cargarDuracion();
         this.cargarEspecialidad();
         this.cargarCargoUsuarioU();
+        this.cargarHoras();
     },
     async beforeMount() {},
     components: {

@@ -77,9 +77,6 @@
               <div class="col-xs-2"></div>
             </div>
             <div class="row">
-              <div class="col-xs-2"><label>Unidad Especifica</label></div>
-              <div class="col-xs-2"><label>{{$desUnidadEsp}}</label></div>
-              <div class="col-xs-1"></div>
               <div class="col-xs-3"><label>Estado</label></div>
               <div class="col-xs-2"><label>{{$desEstado}}</label></div>
               <div class="col-xs-2"></div>

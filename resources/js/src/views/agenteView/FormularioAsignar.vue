@@ -615,9 +615,9 @@ export default {
             idApoyo3: 1,
             idTurno: 0,
             fechaInicio: moment().format("YYYY-MM-DD"),
-            fechaTermino: moment().format("YYYY-MM-DD"),
+            fechaTermino: null,
             horaInicio: moment().format("H:i"),
-            horaTermino: moment().format("H:i"),
+            horaTermino: null,
             horasEjecucion: 0,
             diasEjecucion: 0,
             desTrabajador: "",
@@ -1582,18 +1582,6 @@ export default {
                 ) {
                     this.mensajeError = "la fecha de inicio ";
                     this.errorDrop(this.mensajeError);
-                } else if (
-                    this.gestionTicket.fechaTermino == null ||
-                    this.gestionTicket.fechaTermino < hoy.getDate()
-                ) {
-                    this.mensajeError = "la fecha de termino";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.gestionTicket.horasEjecucion == 0) {
-                    this.mensajeError = "Las horas calculadas no pueden ser 0";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.gestionTicket.diasEjecucion == 0) {
-                    this.mensajeError = "Los dias calculados no pueden ser 0";
-                    this.errorDrop(this.mensajeError);
                 } else {
                     this.guardarFormulario();
                 }
@@ -1630,18 +1618,6 @@ export default {
                     this.gestionTicket.fechaInicio < hoy.getDate()
                 ) {
                     this.mensajeError = "la fecha de inicio ";
-                    this.errorDrop(this.mensajeError);
-                } else if (
-                    this.gestionTicket.fechaTermino == null ||
-                    this.gestionTicket.fechaTermino < hoy.getDate()
-                ) {
-                    this.mensajeError = "la fecha de termino";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.gestionTicket.horasEjecucion == 0) {
-                    this.mensajeError = "Las horas calculadas no pueden ser 0";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.gestionTicket.diasEjecucion == 0) {
-                    this.mensajeError = "Los dias calculados no pueden ser 0";
                     this.errorDrop(this.mensajeError);
                 } else {
                     this.guardarFormulario();
@@ -1688,18 +1664,6 @@ export default {
             ) {
                 this.mensajeError = "la fecha de inicio ";
                 this.errorDrop(this.mensajeError);
-            } else if (
-                this.gestionTicket.fechaTermino == null ||
-                this.gestionTicket.fechaTermino < hoy.getDate()
-            ) {
-                this.mensajeError = "la fecha de termino";
-                this.errorDrop(this.mensajeError);
-            } else if (this.gestionTicket.horasEjecucion == 0) {
-                this.mensajeError = "Las horas calculadas no pueden ser 0";
-                this.errorDrop(this.mensajeError);
-            } else if (this.gestionTicket.diasEjecucion == 0) {
-                this.mensajeError = "Los dias calculados no pueden ser 0";
-                this.errorDrop(this.mensajeError);
             } else {
                 let uuid = this.$route.params.uuid;
                 this.gestionTicket.uuid = uuid;
@@ -1718,7 +1682,6 @@ export default {
                 this.gestionTicket.idTurno = this.seleccionTurno.id;
                 this.gestionTicket.desEdificio = this.seleccionEdificio[0].descripcionEdificio;
                 this.gestionTicket.desServicio = this.seleccionServicio[0].descripcionServicio;
-                this.gestionTicket.desUbicacion = this.seleccionUnidadEsp[0].descripcionUnidadEsp;
                 this.gestionTicket.desReparacion = this.seleccionReparacion[0].descripcionTipoReparacion;
                 this.gestionTicket.desEstado = this.seleccionEstado[0].descripcionEstado;
                 this.gestionTicket.desTrabajador = this.seleccionTrabajador[0].tra_nombre_apellido;
@@ -1928,11 +1891,26 @@ export default {
                 id: 1,
                 tra_nombre_apellido: "Sin Asignar"
             };
+        },
+        cargarHoras() {
+            try {
+                this.gestionTicket.fechaInicio = moment(new Date()).format(
+                    "YYYY-MM-DD"
+                );
+
+                this.gestionTicket.horaInicio = moment(new Date()).format(
+                    "H:mm"
+                );
+            } catch (error) {
+                console.log("No se cargo la ISO hora");
+                console.log(error);
+            }
         }
     },
     created: function() {
         this.cargarInicial();
         this.cargaTicketAsignado();
+        this.cargarHoras();
     },
     components: {
         flatPickr,
