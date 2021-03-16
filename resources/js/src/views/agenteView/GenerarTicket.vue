@@ -2186,7 +2186,7 @@ export default {
         },
         // Lado Crear Usuarios
         limpiar2() {
-            this.registroUsuarioU.run = "";
+            this.registroUsuarioU.run = null;
             this.registroUsuarioU.email = "";
             this.registroUsuarioU.nombre = "";
             this.registroUsuarioU.apellido = "";
@@ -2220,7 +2220,7 @@ export default {
             this.apellidoUsuarioU = "";
             this.anexoUsuarioU = 0;
             this.correoUsuarioU = "";
-            this.rutUsuarioU = "";
+            this.rutUsuarioU = null;
             this.passUsuarioU = "";
         },
         formatear_runU() {
@@ -2349,8 +2349,11 @@ export default {
                     this.rutUsuarioU == null ||
                     this.rutUsuarioU == ""
                 ) {
+                    this.registroUsuarioU.run = null;
+                    this.rutUsuarioU = null;
                     this.registroUsuarioU.idvalRut = 0;
                 } else {
+                    this.rutUsuarioU = format(this.rutUsuarioU);
                     this.registroUsuarioU.idvalRut = 1;
                 }
                 if (
