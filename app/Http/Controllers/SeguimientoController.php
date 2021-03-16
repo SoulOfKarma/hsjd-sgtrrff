@@ -77,8 +77,8 @@ class SeguimientoController extends Controller
 
         Mail::send('/Mails/TicketGeneradoUsuario', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) use($listContactos) {
             $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
-                $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
-                $message->setBcc(['mantencion.hsjd@redsalud.gov.cl'=> 'Mantencion']);
+            $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
+            $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
         });
     }
 
@@ -130,8 +130,8 @@ class SeguimientoController extends Controller
 
         Mail::send('/Mails/TicketGeneradoUsuario', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) use($listContactos) {
             $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
-                $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
-                $message->setBcc(['mantencion.hsjd@redsalud.gov.cl'=> 'Mantencion']);
+            $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
+            $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
         });
     }
 
@@ -184,8 +184,8 @@ class SeguimientoController extends Controller
 
             Mail::send('/Mails/TicketResuelto', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) use($listContactos) {
             $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
-                $message->setFrom(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
-                $message->setBcc(['mantencion.hsjd@redsalud.gov.cl'=> 'Mantencion']);
+            $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
+            $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
 
             return true;

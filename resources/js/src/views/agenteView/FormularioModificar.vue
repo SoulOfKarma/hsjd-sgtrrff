@@ -605,15 +605,23 @@ export default {
 
         configdateTimePicker: {
             enableTime: true,
-            enableSeconds: true,
-            noCalendar: true
+            //enableSeconds: true,
+            noCalendar: true,
+            time_24hr: true,
+            dateFormat: "H:i"
+        },
+        configdateToTimePicker: {
+            enableTime: true,
+            noCalendar: true,
+            time_24hr: true,
+            dateFormat: "H:i"
         },
         val_run: false,
         nombreUsuario: "",
         apellidoUsuario: "",
         anexoUsuario: 0,
         correoUsuario: "",
-        rutUsuario: "",
+        rutUsuario: null,
         passUsuario: "",
         popCrearTrabajador: false,
         listadoEspecialidad: [],
@@ -680,7 +688,7 @@ export default {
             idDuracion: 0
         },
         registroUsuario: {
-            run: "",
+            run: null,
             email: "",
             nombre: "",
             apellido: "",
@@ -892,7 +900,7 @@ export default {
                 this.registroUsuario.tra_nombre = this.nombreUsuario;
                 this.registroUsuario.tra_apellido = this.apellidoUsuario;
                 this.registroUsuario.id_especialidad1 = this.seleccionEspecialidad[0].id;
-                this.rutUsuario = format(this.rutUsuario);
+
                 if (
                     this.rutUsuario == 0 ||
                     this.rutUsuario == null ||
@@ -902,6 +910,7 @@ export default {
                     this.rutUsuario = null;
                     this.registroUsuario.idvalRut = 0;
                 } else {
+                    this.rutUsuario = format(this.rutUsuario);
                     this.registroUsuario.idvalRut = 1;
                 }
                 if (
@@ -1017,7 +1026,7 @@ export default {
         },
         arrayEspecialidad() {
             let id = this.seleccionEspecialidad.id;
-            let c = this.listadoEspecialidad;
+            let c = JSON.parse(JSON.stringify(this.listadoEspecialidad));
             let b = [];
             let a = 0;
             c.forEach((value, index) => {
@@ -1047,7 +1056,7 @@ export default {
                 });
         },
         limpiarTrabajador() {
-            this.registroUsuario.run = "";
+            this.registroUsuario.run = null;
             this.registroUsuario.email = "";
             this.registroUsuario.nombre = "";
             this.registroUsuario.apellido = "";
@@ -1055,7 +1064,7 @@ export default {
             this.registroUsuario.id_cargo = 0;
             this.registroUsuario.id_edificio = 0;
             this.registroUsuario.id_servicio = 0;
-            this.registroUsuario.id_unidadEspecifica = 42;
+            //this.registroUsuario.id_unidadEspecifica = 42;
             this.registroUsuario.password = "";
             this.registroUsuario.run_usuario = "";
             this.registroUsuario.tra_run = "";
@@ -1091,15 +1100,17 @@ export default {
             this.apellidoUsuario = "";
             this.anexoUsuario = 0;
             this.correoUsuario = "";
-            this.rutUsuario = "";
+            this.rutUsuario = null;
             this.passUsuario = "";
         },
         filtroSegunEdificio() {
             if (this.seleccionEdificio == null || this.seleccionEdificio == 0) {
-                this.listadoServicios = this.listadoServiciosData;
+                this.listadoServicios = JSON.parse(
+                    JSON.stringify(this.listadoServiciosData)
+                );
             } else {
                 var idGeneral = this.seleccionEdificio.id;
-                let c = this.listadoServiciosData;
+                let c = JSON.parse(JSON.stringify(this.listadoServiciosData));
                 let b = [];
                 var a = 0;
                 c.forEach((value, index) => {
@@ -1229,7 +1240,9 @@ export default {
                     } else {
                         var idGeneral = this.seleccionServicio.id;
 
-                        let c = this.listadoServiciosData;
+                        let c = JSON.parse(
+                            JSON.stringify(this.listadoServiciosData)
+                        );
                         let b = [];
                         var a = 0;
 
@@ -1244,7 +1257,7 @@ export default {
                         idGeneral = this.seleccionServicio[0].id_edificio;
                         b = [];
 
-                        c = this.listadoEdificios;
+                        c = JSON.parse(JSON.stringify(this.listadoEdificios));
 
                         c.forEach((value, index) => {
                             a = value.id;
@@ -1262,7 +1275,7 @@ export default {
             }
         },
         arrayEstado(id) {
-            let c = this.listadoEstado;
+            let c = JSON.parse(JSON.stringify(this.listadoEstado));
             let b = [];
             var a = 0;
 

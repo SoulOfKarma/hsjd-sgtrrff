@@ -118,6 +118,7 @@
                             <h6>3.3 - Seleccione al Apoyo 1</h6>
                             <br />
                             <v-select
+                                taggable
                                 v-model="seleccionApoyo1"
                                 placeholder="Seleccione al Apoyo"
                                 class="w-full select-large"
@@ -786,8 +787,9 @@ export default {
 
         configdateTimePicker: {
             enableTime: true,
-            enableSeconds: true,
+            //enableSeconds: true,
             noCalendar: true,
+            time_24hr: true,
             dateFormat: "H:i"
         },
         configdateToTimePicker: {
@@ -1282,7 +1284,7 @@ export default {
         },
         arrayEspecialidad() {
             let id = this.seleccionEspecialidad.id;
-            let c = this.listadoEspecialidad;
+            let c = JSON.parse(JSON.stringify(this.listadoEspecialidad));
             let b = [];
             let a = 0;
             c.forEach((value, index) => {
@@ -1312,7 +1314,7 @@ export default {
                 });
         },
         limpiarTrabajador() {
-            this.registroUsuario.run = "";
+            this.registroUsuario.run = null;
             this.registroUsuario.email = "";
             this.registroUsuario.nombre = "";
             this.registroUsuario.apellido = "";
@@ -1356,15 +1358,17 @@ export default {
             this.apellidoUsuario = "";
             this.anexoUsuario = 0;
             this.correoUsuario = "";
-            this.rutUsuario = "";
+            this.rutUsuario = null;
             this.passUsuario = "";
         },
         filtroSegunEdificio() {
             if (this.seleccionEdificio == null || this.seleccionEdificio == 0) {
-                this.listadoServicios = this.listadoServiciosData;
+                this.listadoServicios = JSON.parse(
+                    JSON.stringify(this.listadoServiciosData)
+                );
             } else {
                 var idGeneral = this.seleccionEdificio.id;
-                let c = this.listadoServiciosData;
+                let c = JSON.parse(JSON.stringify(this.listadoServiciosData));
                 let b = [];
                 var a = 0;
                 c.forEach((value, index) => {
@@ -1549,11 +1553,15 @@ export default {
                         this.seleccionServicio == null ||
                         this.seleccionServicio.id == 0
                     ) {
-                        this.listadoServicios = this.listadoServiciosData;
+                        this.listadoServicios = JSON.parse(
+                            JSON.stringify(this.listadoServiciosData)
+                        );
                     } else {
                         var idGeneral = this.seleccionServicio.id;
 
-                        let c = this.listadoServiciosData;
+                        let c = JSON.parse(
+                            JSON.stringify(this.listadoServiciosData)
+                        );
                         let b = [];
                         var a = 0;
 
@@ -1568,7 +1576,7 @@ export default {
                         idGeneral = this.seleccionServicio[0].id_edificio;
                         b = [];
 
-                        c = this.listadoEdificios;
+                        c = JSON.parse(JSON.stringify(this.listadoEdificios));
 
                         c.forEach((value, index) => {
                             a = value.id;
@@ -1586,7 +1594,7 @@ export default {
             }
         },
         arrayEstado(id) {
-            let c = this.listadoEstado;
+            let c = JSON.parse(JSON.stringify(this.listadoEstado));
             let b = [];
             var a = 0;
 
@@ -1599,7 +1607,7 @@ export default {
             this.seleccionEstado = b;
         },
         arrayTipoReparacion(id) {
-            let c = this.listadoTipoRep;
+            let c = JSON.parse(JSON.stringify(this.listadoTipoRep));
             let b = [];
             var a = 0;
 
@@ -1612,7 +1620,7 @@ export default {
             this.seleccionReparacion = b;
         },
         arraySupervisores(id) {
-            let c = this.listadoSupervisores;
+            let c = JSON.parse(JSON.stringify(this.listadoSupervisores));
             let b = [];
             var a = 0;
 
@@ -1626,7 +1634,7 @@ export default {
         },
         arraySupervisor() {
             let id = this.seleccionSupervisor.id;
-            let c = this.listadoSupervisores;
+            let c = JSON.parse(JSON.stringify(this.listadoSupervisores));
             let b = [];
             let a = 0;
             c.forEach((value, index) => {
@@ -1638,7 +1646,7 @@ export default {
             this.seleccionSupervisor = b;
         },
         arrayDuracion(id) {
-            let c = this.listadoDuracion;
+            let c = JSON.parse(JSON.stringify(this.listadoDuracion));
             let b = [];
             var a = 0;
 
@@ -1654,7 +1662,9 @@ export default {
             if (id == 0 || id == null) {
                 this.popCrearTrabajador = true;
             } else {
-                let c = this.listadoTrabajadoresData;
+                let c = JSON.parse(
+                    JSON.stringify(this.listadoTrabajadoresData)
+                );
                 let b = [];
                 var a = 0;
 
@@ -1682,7 +1692,7 @@ export default {
             }
         },
         arrayApoyo1(id) {
-            let c = this.listadoApoyo1;
+            let c = JSON.parse(JSON.stringify(this.listadoApoyo1));
             let b = [];
             var a = 0;
 
@@ -1700,6 +1710,8 @@ export default {
             c.forEach((value, index) => {
                 a = value.id;
                 if (id == 1) {
+                    this.seleccionApoyo2 = value;
+                    this.seleccionApoyo3 = value;
                     b.push(value);
                 } else if (a != id) {
                     b.push(value);
@@ -1709,7 +1721,7 @@ export default {
             this.listadoApoyo2 = b;
         },
         arrayApoyo2(id) {
-            let c = this.listadoApoyo2;
+            let c = JSON.parse(JSON.stringify(this.listadoApoyo2));
             let b = [];
             var a = 0;
 
@@ -1727,6 +1739,7 @@ export default {
             c.forEach((value, index) => {
                 a = value.id;
                 if (id == 1) {
+                    this.seleccionApoyo3 = value;
                     b.push(value);
                 } else if (a != id) {
                     b.push(value);
@@ -1736,20 +1749,23 @@ export default {
             this.listadoApoyo3 = b;
         },
         arrayApoyo3(id) {
-            let c = this.listadoApoyo3;
+            let c = JSON.parse(JSON.stringify(this.listadoApoyo3));
             let b = [];
             var a = 0;
 
             c.forEach((value, index) => {
                 a = value.id;
-                if (a == id) {
+                if (id == 1) {
+                    this.seleccionApoyo3 = value;
+                    b.push(value);
+                } else if (a == id) {
                     b.push(value);
                 }
             });
             this.seleccionApoyo3 = b;
         },
         arrayCategoria(id) {
-            let c = this.listadoCategoria;
+            let c = JSON.parse(JSON.stringify(this.listadoCategoria));
             let b = [];
             var a = 0;
 
@@ -2101,42 +2117,60 @@ export default {
                 id: 0,
                 descripcionTurno: "Seleccione Turno"
             };
-            this.seleccionEdificio = {
-                id: 0,
-                descripcionEdificio: "Seleccione Edificio"
-            };
-            this.seleccionServicio = {
-                id: 0,
-                descripcionServicio: "Seleccione Servicio"
-            };
-            this.seleccionReparacion = {
-                id: 0,
-                descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
-            };
-            this.seleccionEstado = {
-                id: 0,
-                descripcionEstado: "Seleccione Estado"
-            };
-            this.seleccionSupervisor = {
-                id: 0,
-                sup_nombre_apellido: "Seleccione al Supervisor"
-            };
-            this.seleccionTrabajador = {
-                id: 0,
-                tra_nombre_apellido: "Seleccione al Trabajador"
-            };
-            this.seleccionApoyo1 = {
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            };
-            this.seleccionApoyo2 = {
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            };
-            this.seleccionApoyo3 = {
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            };
+            this.seleccionEdificio = [
+                {
+                    id: 0,
+                    descripcionEdificio: "Seleccione Edificio"
+                }
+            ];
+            this.seleccionServicio = [
+                {
+                    id: 0,
+                    descripcionServicio: "Seleccione Servicio"
+                }
+            ];
+            this.seleccionReparacion = [
+                {
+                    id: 0,
+                    descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+                }
+            ];
+            this.seleccionEstado = [
+                {
+                    id: 0,
+                    descripcionEstado: "Seleccione Estado"
+                }
+            ];
+            this.seleccionSupervisor = [
+                {
+                    id: 0,
+                    sup_nombre_apellido: "Seleccione al Supervisor"
+                }
+            ];
+            this.seleccionTrabajador = [
+                {
+                    id: 0,
+                    tra_nombre_apellido: "Seleccione al Trabajador"
+                }
+            ];
+            this.seleccionApoyo1 = [
+                {
+                    id: 1,
+                    tra_nombre_apellido: "Sin Asignar"
+                }
+            ];
+            this.seleccionApoyo2 = [
+                {
+                    id: 1,
+                    tra_nombre_apellido: "Sin Asignar"
+                }
+            ];
+            this.seleccionApoyo3 = [
+                {
+                    id: 1,
+                    tra_nombre_apellido: "Sin Asignar"
+                }
+            ];
         },
         cargarDuracion() {
             axios

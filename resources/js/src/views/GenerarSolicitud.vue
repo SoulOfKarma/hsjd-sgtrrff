@@ -287,25 +287,11 @@ export default {
             this.solicitud.tituloP = "";
         },
         cargaESU() {
-            var idGeneral = this.seleccionUnidadEsp.id;
+            var idGeneral = this.seleccionServicio.id;
 
-            let c = this.listadoUnidadEspData;
+            let c = JSON.parse(JSON.stringify(this.listadoServiciosData));
             let b = [];
             var a = 0;
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGeneral) {
-                    b.push(value);
-                }
-            });
-            this.seleccionUnidadEsp = b;
-
-            idGeneral = 0;
-            idGeneral = this.seleccionUnidadEsp[0].id_servicio;
-            b = [];
-
-            c = this.listadoServicios;
 
             c.forEach((value, index) => {
                 a = value.id;
@@ -319,7 +305,7 @@ export default {
             idGeneral = 0;
             idGeneral = this.seleccionServicio[0].id_edificio;
             b = [];
-            c = this.listadoEdificios;
+            c = JSON.parse(JSON.stringify(this.listadoEdificios));
 
             c.forEach((value, index) => {
                 a = value.id;
@@ -336,11 +322,15 @@ export default {
                     this.seleccionServicio == null ||
                     this.seleccionServicio.id == 0
                 ) {
-                    this.listadoServicios = this.listadoServiciosData;
+                    this.listadoServicios = JSON.parse(
+                        JSON.stringify(this.listadoServiciosData)
+                    );
                 } else {
                     var idGeneral = this.seleccionServicio.id;
 
-                    let c = this.listadoServiciosData;
+                    let c = JSON.parse(
+                        JSON.stringify(this.listadoServiciosData)
+                    );
                     let b = [];
                     var a = 0;
 
@@ -355,7 +345,7 @@ export default {
                     idGeneral = this.seleccionServicio[0].id_edificio;
                     b = [];
 
-                    c = this.listadoEdificios;
+                    c = JSON.parse(JSON.stringify(this.listadoEdificios));
 
                     c.forEach((value, index) => {
                         a = value.id;
@@ -376,11 +366,17 @@ export default {
                     this.seleccionEdificio == null ||
                     this.seleccionEdificio == 0
                 ) {
-                    this.listadoServicios = this.listadoServiciosData;
-                    this.listadoUnidadEsp = this.listadoUnidadEspData;
+                    this.listadoServicios = JSON.parse(
+                        JSON.stringify(this.listadoServiciosData)
+                    );
+                    this.listadoUnidadEsp = JSON.parse(
+                        JSON.stringify(this.listadoUnidadEspData)
+                    );
                 } else {
                     var idGeneral = this.seleccionEdificio.id;
-                    let c = this.listadoServiciosData;
+                    let c = JSON.parse(
+                        JSON.stringify(this.listadoServiciosData)
+                    );
                     let b = [];
                     var a = 0;
                     c.forEach((value, index) => {
@@ -422,7 +418,9 @@ export default {
                 })
                 .then(res => {
                     this.listadoServicios = res.data;
-                    this.listadoServiciosData = res.data;
+                    this.listadoServiciosData = JSON.parse(
+                        JSON.stringify(this.listadoServicios)
+                    );
                 });
         },
         cargarCategoria() {
@@ -766,24 +764,11 @@ export default {
             }
         },
         verListas() {
-            var idGeneral = 4;
+            idGeneral = this.seleccionServicio.id;
 
-            let c = this.listadoUnidadEsp;
+            let c = JSON.parse(JSON.stringify(this.listadoServicios));
             let b = [];
             var a = 0;
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGeneral) {
-                    b.push(value);
-                }
-            });
-            this.seleccionUnidadEsp = b;
-            idGeneral = 0;
-            idGeneral = this.seleccionUnidadEsp[0].id_servicio;
-            b = [];
-
-            c = this.listadoServicios;
 
             c.forEach((value, index) => {
                 a = value.id;
@@ -796,7 +781,7 @@ export default {
             idGeneral = 0;
             idGeneral = this.seleccionServicio[0].id_edificio;
             b = [];
-            c = this.listadoEdificios;
+            c = JSON.parse(JSON.stringify(this.listadoEdificios));
 
             c.forEach((value, index) => {
                 a = value.id;
