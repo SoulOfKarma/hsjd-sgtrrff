@@ -2068,7 +2068,7 @@ export default {
             newElement.innerHTML = this.gestionTicket.descripcionP;
             this.gestionTicket.descripcionCorreo = newElement.textContent;
             this.gestionTicket.id_categoria = 1;
-            this.gestionTicket.nombre = this.nombre;
+            this.gestionTicket.nombre = this.seleccionUsuario.nombre;
 
             const ticket = this.gestionTicket;
             this.openLoadingColor();

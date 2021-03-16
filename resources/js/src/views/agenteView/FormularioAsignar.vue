@@ -1485,8 +1485,13 @@ export default {
                 });
         },
         cargarApoyosArray(listadoApoyo) {
-            this.listadoTrabajadoresData = listadoApoyo;
-            let c = listadoApoyo;
+            this.listadoTrabajadoresData = JSON.parse(
+                JSON.stringify(listadoApoyo)
+            );
+            this.listadoApoyo1 = JSON.parse(JSON.stringify(listadoApoyo));
+            this.listadoApoyo2 = JSON.parse(JSON.stringify(listadoApoyo));
+            this.listadoApoyo3 = JSON.parse(JSON.stringify(listadoApoyo));
+            let c = JSON.parse(JSON.stringify(listadoApoyo));
 
             let b = [];
             var a = 0;

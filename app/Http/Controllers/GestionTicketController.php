@@ -120,7 +120,10 @@ class GestionTicketController extends Controller
 
     public function GetTicketAsignado($id)
     {
-        $users = GestionSolicitudes::firstWhere('id_solicitud', $id);
+        $users = GestionSolicitudes::select('gestion_solicitudes.*','solicitud_tickets.id_estado','solicitud_tickets.id_tipoReparacion')
+        ->join('solicitud_tickets','gestion_solicitudes.id_solicitud','=','solicitud_tickets.id')
+        ->where('gestion_solicitudes.id_solicitud',$id)
+        ->get();
         return $users;
     }
 
