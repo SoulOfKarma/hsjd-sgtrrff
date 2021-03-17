@@ -258,15 +258,15 @@
                                 @input="arrayDuracion(seleccionDuracion.id)"
                             ></v-select>
                             <br />
-                            <h6>5.4 - Titulo del problema</h6>
+                            <!-- <h6>5.4 - Titulo del problema</h6>
                             <br />
                             <vs-input
                                 placeholder="Ej. Falla de red en equipo x"
                                 v-model="gestionTicket.tituloP"
                                 class="w-full"
                             />
-                            <br />
-                            <h6>5.5 - Descripcion del problema</h6>
+                            <br /> -->
+                            <h6>5.4 - Descripcion del problema</h6>
                             <br />
                             <quill-editor
                                 v-model="gestionTicket.descripcionP"
@@ -849,7 +849,7 @@ export default {
             horaTermino: null,
             horasEjecucion: 0,
             diasEjecucion: 0,
-            tituloP: "",
+            tituloP: ".",
             descripcionP: "",
             id_categoria: 0,
             descripcionCorreo: "",
@@ -993,7 +993,7 @@ export default {
             id_user: sessionStorage.getItem("id")
         },
         registroUsuarioU: {
-            run: "",
+            run: null,
             email: "mantencion.hsjd@edsalud.gov.cl",
             nombre: "",
             apellido: "",
@@ -2041,12 +2041,6 @@ export default {
                     this.mensajeError = "el apoyo 3";
                     this.errorDrop(this.mensajeError);
                 } else if (
-                    this.gestionTicket.fechaInicio == null ||
-                    this.gestionTicket.fechaInicio < hoy.getDate()
-                ) {
-                    this.mensajeError = "la fecha de inicio ";
-                    this.errorDrop(this.mensajeError);
-                } else if (
                     this.gestionTicket.tituloP.trim() === "" ||
                     this.gestionTicket.tituloP.length < 10
                 ) {
@@ -2101,13 +2095,6 @@ export default {
                     this.mensajeError = "la fecha de inicio ";
                     this.errorDrop(this.mensajeError);
                 } else if (
-                    this.gestionTicket.tituloP.trim() === "" ||
-                    this.gestionTicket.tituloP.length < 10
-                ) {
-                    this.mensajeError =
-                        "El titulo no puede ser menor a 10 caracteres";
-                    this.errorTitulo(this.mensajeError);
-                } else if (
                     this.gestionTicket.descripcionP.trim() === "" ||
                     this.gestionTicket.descripcionP.length < 15
                 ) {
@@ -2136,6 +2123,7 @@ export default {
             var newElement = document.createElement("div");
             newElement.innerHTML = this.gestionTicket.descripcionP;
             this.gestionTicket.descripcionCorreo = newElement.textContent;
+            this.gestionTicket.tituloP = newElement.textContent;
             this.gestionTicket.id_categoria = 4;
             this.gestionTicket.nombre = this.seleccionUsuario.nombre;
 
