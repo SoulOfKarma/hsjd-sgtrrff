@@ -470,7 +470,7 @@ export default {
         hora1: moment("8:32", "HH:mm"),
         hora2: moment("12:32", "HH:mm"),
         configFromdateTimePicker: {
-            minDate: new Date(),
+            minDate: null,
             maxDate: null,
             locale: {
                 firstDayOfWeek: 1,
@@ -569,15 +569,23 @@ export default {
 
         configdateTimePicker: {
             enableTime: true,
-            enableSeconds: true,
-            noCalendar: true
+            //enableSeconds: true,
+            noCalendar: true,
+            time_24hr: true,
+            dateFormat: "H:i"
+        },
+        configdateToTimePicker: {
+            enableTime: true,
+            noCalendar: true,
+            time_24hr: true,
+            dateFormat: "H:i"
         },
         val_run: false,
         nombreUsuario: "",
         apellidoUsuario: "",
         anexoUsuario: 0,
         correoUsuario: "",
-        rutUsuario: "",
+        rutUsuario: null,
         passUsuario: "",
         popCrearTrabajador: false,
         listadoEspecialidad: [],
@@ -614,10 +622,10 @@ export default {
             idApoyo2: 1,
             idApoyo3: 1,
             idTurno: 0,
-            fechaInicio: moment().format("YYYY-MM-DD"),
-            fechaTermino: moment().format("YYYY-MM-DD"),
-            horaInicio: moment().format("H:i"),
-            horaTermino: moment().format("H:i"),
+            fechaInicio: null,
+            fechaTermino: null,
+            horaInicio: null,
+            horaTermino: null,
             horasEjecucion: 0,
             diasEjecucion: 0,
             desTrabajador: "",
@@ -641,7 +649,7 @@ export default {
             idDuracion: 0
         },
         registroUsuario: {
-            run: "",
+            run: null,
             email: "",
             nombre: "",
             apellido: "",
