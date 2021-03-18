@@ -1018,6 +1018,7 @@ export default {
             this.registroUsuario.id_cargo = 0;
             this.registroUsuario.id_edificio = 0;
             this.registroUsuario.id_servicio = 0;
+            this.registroUsuario.id_unidadEspecifica = 42;
             this.registroUsuario.password = "";
             this.registroUsuario.run_usuario = "";
             this.registroUsuario.tra_run = "";
