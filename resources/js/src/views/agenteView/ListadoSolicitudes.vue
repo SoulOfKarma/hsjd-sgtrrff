@@ -10,7 +10,6 @@
                 <template slot="thead">
                     <vs-th>N° Solicitud</vs-th>
                     <vs-th>Persona Solicitante</vs-th>
-                    <vs-th>Titulo</vs-th>
                     <vs-th>Descripcion</vs-th>
                     <vs-th>Estado</vs-th>
                     <vs-th>Opciones Ticket</vs-th>
@@ -24,10 +23,6 @@
 
                         <vs-td :data="data[indextr].id_user">{{
                             data[indextr].nombre + " " + data[indextr].apellido
-                        }}</vs-td>
-
-                        <vs-td :data="data[indextr].tituloP">{{
-                            data[indextr].tituloP
                         }}</vs-td>
 
                         <vs-td
