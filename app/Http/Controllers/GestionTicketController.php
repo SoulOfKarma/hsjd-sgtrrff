@@ -120,7 +120,7 @@ class GestionTicketController extends Controller
 
     public function GetTicketAsignado($id)
     {
-        $users = GestionSolicitudes::select('gestion_solicitudes.*','solicitud_tickets.id_estado','solicitud_tickets.id_tipoReparacion')
+        $users = GestionSolicitudes::select('gestion_solicitudes.*','solicitud_tickets.*',)
         ->join('solicitud_tickets','gestion_solicitudes.id_solicitud','=','solicitud_tickets.id')
         ->where('gestion_solicitudes.id_solicitud',$id)
         ->get();
@@ -474,7 +474,7 @@ class GestionTicketController extends Controller
 
     public function getSolicitudUsuariosJoin()
     {
-        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(solicitud_tickets.id) as nticket"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->where('solicitud_tickets.id_categoria', 1)
@@ -485,7 +485,7 @@ class GestionTicketController extends Controller
 
     public function getSolicitudUsuariosJoinEM()
     {
-        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(solicitud_tickets.id) as nticket"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->where('solicitud_tickets.id_categoria', 2)
@@ -498,7 +498,7 @@ class GestionTicketController extends Controller
 
     public function getSolicitudUsuariosJoinIND()
     {
-        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(solicitud_tickets.id) as nticket"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->where('solicitud_tickets.id_categoria', 3)
@@ -509,7 +509,7 @@ class GestionTicketController extends Controller
 
     public function getSolicitudUsuariosJoinCA()
     {
-        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(solicitud_tickets.id) as nticket"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->where('id_categoria', 4)

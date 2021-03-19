@@ -364,6 +364,12 @@ const router = new Router({
                         import("./views/agenteView/GenerarTicketIND.vue")
                 },
                 {
+                    path: "/agenteView/GenerarTicketIDBase/:id,:uuid",
+                    name: "GenerarTicketIDBase",
+                    component: () =>
+                        import("./views/agenteView/GenerarTicketIDBase.vue")
+                },
+                {
                     path: "/agenteView/GenerarTicketCA",
                     name: "GenerarTicketCA",
                     component: () =>

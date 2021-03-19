@@ -146,6 +146,16 @@
                                         )
                                     "
                                 ></file-text-icon>
+                                <loader-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        GenerarTicketBID(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></loader-icon>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -329,6 +339,7 @@ import Vue from "vue";
 import Vuesax from "vuesax";
 import { SaveIcon } from "vue-feather-icons";
 import { FileTextIcon } from "vue-feather-icons";
+import { LoaderIcon } from "vue-feather-icons";
 
 Vue.use(Vuesax, {
     theme: {
@@ -352,7 +363,8 @@ export default {
         CornerDownRightIcon,
         quillEditor,
         SaveIcon,
-        FileTextIcon
+        FileTextIcon,
+        LoaderIcon
     },
     data() {
         return {
@@ -512,6 +524,19 @@ export default {
                     uuid: `${uuid}`
                 }
             });
+        },
+        GenerarTicketBID(id, uuid) {
+            try {
+                this.$router.push({
+                    name: "GenerarTicketIDBase",
+                    params: {
+                        id: `${id}`,
+                        uuid: `${uuid}`
+                    }
+                });
+            } catch (error) {
+                console.log("No puede cargar la siguiente pagina");
+            }
         },
         generarTicket(id, uuid) {
             axios
