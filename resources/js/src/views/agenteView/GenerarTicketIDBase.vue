@@ -160,6 +160,7 @@
                                 class="w-full select-large"
                                 label="descripcionTurno"
                                 :options="listadoTurno"
+                                @input="arrayTurno(seleccionTurno.id)"
                             ></v-select>
                         </div>
                     </div>
@@ -1081,6 +1082,17 @@ export default {
                     this.seleccionUsuario == null
                 ) {
                     this.popCrearUsuario = true;
+                } else {
+                    let c = JSON.parse(JSON.stringify(this.listadoUsuarios));
+                    let b = [];
+                    let a = 0;
+                    c.forEach((value, index) => {
+                        a = value.id;
+                        if (a == this.seleccionUsuario.id) {
+                            b.push(value);
+                        }
+                    });
+                    this.seleccionUsuario = b;
                 }
             } catch (error) {
                 console.log(error);
@@ -1659,6 +1671,23 @@ export default {
             });
             this.seleccionDuracion = b;
         },
+        arrayTurno(id) {
+            try {
+                let c = JSON.parse(JSON.stringify(this.listadoTurno));
+                let b = [];
+                var a = 0;
+
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == id) {
+                        b.push(value);
+                    }
+                });
+                this.seleccionTurno = b;
+            } catch (error) {
+                console.log("Error al capturar ID turno");
+            }
+        },
         arrayTrabajadores(id) {
             if (id == 0 || id == null) {
                 this.popCrearTrabajador = true;
@@ -2038,39 +2067,90 @@ export default {
             }
         },
         guardarFormulario() {
-            this.gestionTicket.id_user = this.seleccionUsuario.id;
-            this.gestionTicket.id_edificio = this.seleccionEdificio[0].id;
-            this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
-            this.gestionTicket.id_tipoReparacion = this.seleccionReparacion[0].id;
-            this.gestionTicket.id_estado = this.seleccionEstado[0].id;
-            this.gestionTicket.id_supervisor = this.seleccionSupervisor[0].id;
-            this.gestionTicket.id_trabajador = this.seleccionTrabajador[0].id;
-            this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
-            this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
-            this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
-            this.gestionTicket.idTurno = this.seleccionTurno.id;
-            this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
-            //this.gestionTicket.id_categoria = this.seleccionCategoria[0].id;
-            var newElement = document.createElement("div");
-            newElement.innerHTML = this.gestionTicket.descripcionP;
-            this.gestionTicket.descripcionCorreo = newElement.textContent;
-            this.gestionTicket.tituloP = newElement.textContent;
-            this.gestionTicket.id_categoria = 1;
-            this.gestionTicket.nombre = this.seleccionUsuario.nombre;
+            if (
+                this.seleccionUsuario[0].id == null ||
+                this.seleccionUsuario[0].id == 0 ||
+                this.seleccionTurno[0].id == null ||
+                this.seleccionTurno[0].id == 0
+            ) {
+                console.log("aca 1");
+                this.gestionTicket.id_user = this.seleccionUsuario.id;
+                this.gestionTicket.id_edificio = this.seleccionEdificio[0].id;
+                this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
+                this.gestionTicket.id_tipoReparacion = this.seleccionReparacion[0].id;
+                this.gestionTicket.id_estado = this.seleccionEstado[0].id;
+                this.gestionTicket.id_supervisor = this.seleccionSupervisor[0].id;
+                this.gestionTicket.id_trabajador = this.seleccionTrabajador[0].id;
+                this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
+                this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
+                this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
+                this.gestionTicket.idTurno = this.seleccionTurno.id;
+                this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
+                //this.gestionTicket.id_categoria = this.seleccionCategoria[0].id;
+                var newElement = document.createElement("div");
+                newElement.innerHTML = this.gestionTicket.descripcionP;
+                this.gestionTicket.descripcionCorreo = newElement.textContent;
+                this.gestionTicket.tituloP = newElement.textContent;
+                this.gestionTicket.id_categoria = 1;
+                this.gestionTicket.nombre = this.seleccionUsuario.nombre;
 
-            const ticket = this.gestionTicket;
-            this.openLoadingColor();
-            axios
-                .post(this.localVal + "/api/Agente/PostNuevoTicket", ticket, {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    const ticketServer = res.data;
-                    this.mensajeGuardado();
-                });
+                const ticket = this.gestionTicket;
+                this.openLoadingColor();
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PostNuevoTicket",
+                        ticket,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        const ticketServer = res.data;
+                        this.mensajeGuardado();
+                    });
+            } else {
+                console.log("aca 2");
+                this.gestionTicket.id_user = this.seleccionUsuario[0].id;
+                this.gestionTicket.id_edificio = this.seleccionEdificio[0].id;
+                this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
+                this.gestionTicket.id_tipoReparacion = this.seleccionReparacion[0].id;
+                this.gestionTicket.id_estado = this.seleccionEstado[0].id;
+                this.gestionTicket.id_supervisor = this.seleccionSupervisor[0].id;
+                this.gestionTicket.id_trabajador = this.seleccionTrabajador[0].id;
+                this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
+                this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
+                this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
+                this.gestionTicket.idTurno = this.seleccionTurno[0].id;
+                this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
+                //this.gestionTicket.id_categoria = this.seleccionCategoria[0].id;
+                var newElement = document.createElement("div");
+                newElement.innerHTML = this.gestionTicket.descripcionP;
+                this.gestionTicket.descripcionCorreo = newElement.textContent;
+                this.gestionTicket.tituloP = newElement.textContent;
+                this.gestionTicket.id_categoria = 1;
+                this.gestionTicket.nombre = this.seleccionUsuario.nombre;
+
+                const ticket = this.gestionTicket;
+                this.openLoadingColor();
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PostNuevoTicket",
+                        ticket,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        const ticketServer = res.data;
+                        this.mensajeGuardado();
+                    });
+            }
         },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
@@ -2550,7 +2630,6 @@ export default {
                             b.push(value);
                         });
                         this.listadoTicketByID = b;
-
                         c = JSON.parse(JSON.stringify(this.listadoEdificios));
                         let idGeneral = this.listadoTicketByID[0].id_edificio;
                         b = [];
@@ -2708,6 +2787,19 @@ export default {
                         this.seleccionDuracion = b;
 
                         this.gestionTicket.descripcionP = this.listadoTicketByID[0].descripcionP;
+
+                        c = JSON.parse(JSON.stringify(this.listadoUsuarios));
+                        idGeneral = this.listadoTicketByID[0].id_user;
+                        b = [];
+                        a = 0;
+                        c.forEach((value, index) => {
+                            a = value.id;
+                            if (a == idGeneral) {
+                                b.push(value);
+                            }
+                        });
+
+                        this.seleccionUsuario = b;
                     });
             } catch (error) {
                 console.log("No es posible cargar data con el id indicado");

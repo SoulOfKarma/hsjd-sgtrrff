@@ -10,7 +10,6 @@
                 <template slot="thead">
                     <vs-th>N° Solicitud</vs-th>
                     <vs-th>Persona Solicitante</vs-th>
-
                     <vs-th>Descripcion</vs-th>
                     <vs-th>Tipo Reparacion</vs-th>
                     <vs-th>Estado</vs-th>
@@ -38,7 +37,7 @@
                                 data[indextr].descripcionTipoReparacion
                             }}</vs-td
                         >
-                        <vs-td :data="data[indextr].descripcionP">{{
+                        <vs-td :data="data[indextr].descripcionEstado">{{
                             data[indextr].descripcionEstado
                         }}</vs-td>
                         <vs-td :data="data[indextr].id">
