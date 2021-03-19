@@ -10,7 +10,9 @@
                 <template slot="thead">
                     <vs-th>N° Solicitud</vs-th>
                     <vs-th>Persona Solicitante</vs-th>
+
                     <vs-th>Descripcion</vs-th>
+                    <vs-th>Tipo Reparacion</vs-th>
                     <vs-th>Estado</vs-th>
                     <vs-th>Opciones Ticket</vs-th>
                 </template>
@@ -29,6 +31,12 @@
                             :data="data[indextr].descripcionP"
                             v-html="data[indextr].descripcionP"
                             >{{ data[indextr].descripcionP }}</vs-td
+                        >
+                        <vs-td
+                            :data="data[indextr].descripcionTipoReparacion"
+                            >{{
+                                data[indextr].descripcionTipoReparacion
+                            }}</vs-td
                         >
                         <vs-td :data="data[indextr].descripcionP">{{
                             data[indextr].descripcionEstado
