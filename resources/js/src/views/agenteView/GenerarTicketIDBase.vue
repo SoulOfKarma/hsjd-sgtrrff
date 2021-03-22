@@ -1740,8 +1740,6 @@ export default {
             c.forEach((value, index) => {
                 a = value.id;
                 if (id == 1) {
-                    this.seleccionApoyo2 = value;
-                    this.seleccionApoyo3 = value;
                     b.push(value);
                 } else if (a != id) {
                     b.push(value);
@@ -1769,7 +1767,6 @@ export default {
             c.forEach((value, index) => {
                 a = value.id;
                 if (id == 1) {
-                    this.seleccionApoyo3 = value;
                     b.push(value);
                 } else if (a != id) {
                     b.push(value);
@@ -1785,10 +1782,7 @@ export default {
 
             c.forEach((value, index) => {
                 a = value.id;
-                if (id == 1) {
-                    this.seleccionApoyo3 = value;
-                    b.push(value);
-                } else if (a == id) {
+                if (a == id) {
                     b.push(value);
                 }
             });
