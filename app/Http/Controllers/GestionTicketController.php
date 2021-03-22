@@ -277,7 +277,7 @@ class GestionTicketController extends Controller
              Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
                 $message->setTo($listContactos)->setSubject('Asignacion de ticket');
                 $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });  
             return $response = "Ok";
         }
@@ -340,7 +340,7 @@ class GestionTicketController extends Controller
             Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
                 $message->setTo($listContactos)->setSubject('Asignacion de ticket');
                 $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return $response = "Ok";
         }
@@ -404,9 +404,24 @@ class GestionTicketController extends Controller
             Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
                 $message->setTo($listContactos)->setSubject('Asignacion de ticket');
                 $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return $response = "Ok";
+        }
+    }
+
+    public function PostCierreTicket(Request $request){
+        try {
+            $res = GestionSolicitudes::where('id_solicitud',$request->id_solicitud)
+            ->where('uuid', $request->uuid)
+            ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
+            $res2 = SolicitudTickets::where('id',$request->id)
+            ->where('uuid', $request->uuid)
+            ->update(['id_estado' => $request->id_estado]);
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
         }
     }
 
@@ -466,7 +481,7 @@ class GestionTicketController extends Controller
             Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
                 $message->setTo($listContactos)->setSubject('Asignacion de ticket');
                 $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return $response = "Ok";
         }
@@ -580,7 +595,7 @@ class GestionTicketController extends Controller
              Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
                 $message->setTo($listContactos)->setSubject('Nueva Creacion de ticket');
                 $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             }); 
 
             return $response;
@@ -649,7 +664,7 @@ class GestionTicketController extends Controller
         Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
             $message->setTo($listContactos)->setSubject('Nueva Creacion de ticket');
             $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+               // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
         });
 
         return $response;
@@ -718,7 +733,7 @@ class GestionTicketController extends Controller
         Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
             $message->setTo($listContactos)->setSubject('Nueva Creacion de ticket');
             $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-            $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+            //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
         });
 
         return $response;
@@ -787,7 +802,7 @@ class GestionTicketController extends Controller
             Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
                 $message->setTo($listContactos)->setSubject('Nueva Creacion de ticket');
                 $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+               // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
     
             return $response;
@@ -930,7 +945,7 @@ class GestionTicketController extends Controller
             Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor , 'razon' => $razoncambio], function ($message) use($listContactos){
                 $message->setTo($listContactos)->setSubject('Modificacion de ticket');
                 $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+               // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return "ok";
         }
@@ -1014,7 +1029,7 @@ class GestionTicketController extends Controller
             Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor, 'razon' => $razoncambio], function ($message) use($listContactos){
                 $message->setTo($listContactos)->setSubject('Modificacion de ticket');
                 $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+               // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return $response;
         }
@@ -1097,7 +1112,7 @@ class GestionTicketController extends Controller
             Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor, 'razon' => $razoncambio], function ($message) use($listContactos){
                 $message->setTo($listContactos)->setSubject('Modificacion de ticket');
                 $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return $response;
         }
@@ -1180,7 +1195,7 @@ class GestionTicketController extends Controller
             Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor, 'razon' => $razoncambio], function ($message) use($listContactos){
                 $message->setTo($listContactos)->setSubject('Modificacion de ticket');
                 $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+               //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return $response;
         }
@@ -1239,7 +1254,7 @@ class GestionTicketController extends Controller
                 Mail::send('/Mails/TicketEliminado', ['nombre' => $nombre, 'id_solicitud' => $id, 'descripcionSeguimiento' => $razon], function ($message) use($listContactos) {
                     $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
                     $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                    $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                   // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
                 });
 
         return true;
@@ -1285,7 +1300,7 @@ class GestionTicketController extends Controller
                 Mail::send('/Mails/TicketFinalizado', ['nombre' => $nombre, 'id_solicitud' => $id], function ($message) use($listContactos) {
                     $message->setTo($listContactos)->setSubject('Finalizacion de ticket');
                     $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                    $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                   // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
                 });
 
         return true;

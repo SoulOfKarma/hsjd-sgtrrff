@@ -293,6 +293,8 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/getDocumentos', ['middleware' => 'cors', 'uses' => 'DocumentosFController@getData']);
             //Trae Duracion 
             Route::get('/Agente/GetDuracion', ['middleware' => 'cors', 'uses' => 'DuracionSolicitudesController@getAll']);
+            //Guardar Ticket
+            Route::post('/Agente/PostCierreTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@PostCierreTicket']);
             
       });
       //Generar Excel	

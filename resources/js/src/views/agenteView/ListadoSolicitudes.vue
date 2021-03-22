@@ -158,6 +158,17 @@
                                         )
                                     "
                                 ></loader-icon>
+                                <alert-triangle-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        popCerrarTicket(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                >
+                                </alert-triangle-icon>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -321,6 +332,45 @@
                 </div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="popFinTicket"
+            title="Cerrar Ticket?"
+            :active.sync="popFinTicket"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full ">
+                        <vx-card>
+                            <h6>Horas Trabajadas.</h6>
+                            <br />
+                            <vs-input
+                                class="inputx mb-3 w-full"
+                                v-model="horasTrabajadas"
+                                @keypress="isNumber($event)"
+                            />
+                        </vx-card>
+                        <br />
+                    </div>
+                    <div class="vx-col w-full md-5">
+                        <vs-button
+                            @click="popFinTicket = false"
+                            color="primary"
+                            type="filled"
+                            class="w-full m-1"
+                            >Volver</vs-button
+                        >
+                        <vs-button
+                            @click="finalizarTicket"
+                            color="danger"
+                            type="filled"
+                            class="w-full m-1"
+                            >Finalizar Ticket</vs-button
+                        >
+                    </div>
+                </div>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 
@@ -342,6 +392,8 @@ import Vuesax from "vuesax";
 import { SaveIcon } from "vue-feather-icons";
 import { FileTextIcon } from "vue-feather-icons";
 import { LoaderIcon } from "vue-feather-icons";
+import { AlertTriangleIcon } from "vue-feather-icons";
+import moment from "moment";
 
 Vue.use(Vuesax, {
     theme: {
@@ -366,7 +418,8 @@ export default {
         quillEditor,
         SaveIcon,
         FileTextIcon,
-        LoaderIcon
+        LoaderIcon,
+        AlertTriangleIcon
     },
     data() {
         return {
@@ -393,6 +446,8 @@ export default {
             popupActive2: false,
             popupActive3: false,
             popupActive4: false,
+            popFinTicket: false,
+            horasTrabajadas: 0,
             solicitudes: [],
             documentacion: [],
             dataDocumentacion: [],
@@ -402,10 +457,82 @@ export default {
                 sessionStorage.getItem("nombre") +
                 " " +
                 sessionStorage.getItem("apellido"),
-            run: sessionStorage.getItem("run")
+            run: sessionStorage.getItem("run"),
+            idCierreTicket: "",
+            uuidCierreTicket: ""
         };
     },
     methods: {
+        isNumber: function(evt) {
+            evt = evt ? evt : window.event;
+            var charCode = evt.which ? evt.which : evt.keyCode;
+            if (
+                charCode > 31 &&
+                (charCode < 48 || charCode > 57) &&
+                charCode !== 46
+            ) {
+                evt.preventDefault();
+            } else {
+                return true;
+            }
+        },
+        popCerrarTicket(id, uuid) {
+            try {
+                this.popFinTicket = true;
+                this.idCierreTicket = id;
+                this.uuidCierreTicket = uuid;
+            } catch (error) {
+                console.log("Error al Abrir el Pop de cierre");
+            }
+        },
+        finalizarTicket() {
+            try {
+                let data = {
+                    id_solicitud: this.idCierreTicket,
+                    uuid: this.uuidCierreTicket,
+                    horasEjecucion: this.horasTrabajadas,
+                    id: this.idCierreTicket,
+                    id_estado: 6,
+                    horaTermino: moment(new Date()).format("H:mm"),
+                    fechaTermino: moment(new Date()).format("YYYY-MM-DD")
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PostCierreTicket",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(response => {
+                        if (response.data == true) {
+                            this.$vs.notify({
+                                title: "Ticket Cerrado ",
+                                text: "Se recargara listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popFinTicket = false;
+                            this.cargarSolicitudes();
+                            this.horasTrabajadas = 0;
+                        } else {
+                            this.$vs.notify({
+                                title: "Error Al cerrar ticket ",
+                                text:
+                                    "Verifique los campos e intente Nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log("Error al Guardar guardar cambios");
+                console.log(error);
+            }
+        },
         verDocumento(link) {
             const url = this.urlDocumentos + link;
 
