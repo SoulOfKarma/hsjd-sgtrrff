@@ -37,9 +37,9 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             'gestion_solicitudes.diasEjecucion',
             'estado_solicituds.descripcionEstado',
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
-            'gestion_solicitudes.horaCambiada',
+            'turnos.descripcionTurno',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
-            'gestion_solicitudes.horaInicio',
+            'duracion_solicitudes.descripcion_duracion',
             'gestion_solicitudes.horaTermino'
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
@@ -50,6 +50,8 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->join('turnos','gestion_solicitudes.idTurno', '=', 'turnos.id')
+            ->join('duracion_solicitudes','gestion_solicitudes.idDuracion', '=', 'duracion_solicitudes.id')
             ->orderBy('solicitud_tickets.id')
             ->get();
     }
@@ -72,9 +74,9 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             'Dias de Ejecucion',
             'Estado Ticket',
             'Descripcion del Servicio Solicitado ',
-            'Respuesta Hospital',
+            'Turno',
             'Nombre Solicitante',
-            'Hora Inicio',
+            'Tipo de Trabajo',
             'Hora Termino',
         ];
     }
@@ -111,9 +113,9 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
             'gestion_solicitudes.diasEjecucion',
             'estado_solicituds.descripcionEstado',
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
-            'gestion_solicitudes.horaCambiada',
-            'users.nombre',
-            'gestion_solicitudes.horaInicio',
+            'turnos.descripcionTurno',
+            DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            'duracion_solicitudes.descripcion_duracion',
             
             'gestion_solicitudes.horaTermino'
         )
@@ -152,9 +154,9 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
             'Dias de Ejecucion',
             'Estado Ticket',
             'Descripcion del Servicio Solicitado ',
-            'Hora Cambiada',
+            'Turno',
             'Nombre Solicitante',
-            'Hora Inicio',
+            'Tipo de Trabajo',
             'Hora Termino',
         ];
     }
