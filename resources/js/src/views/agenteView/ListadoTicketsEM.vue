@@ -10,9 +10,9 @@
                 <template slot="thead">
                     <vs-th>N° Solicitud</vs-th>
                     <vs-th>Persona Solicitante</vs-th>
+                    <vs-th>Servicio</vs-th>
                     <vs-th>Descripcion</vs-th>
                     <vs-th>Tipo Reparacion</vs-th>
-                    <vs-th>Estado</vs-th>
                     <vs-th>Opciones Ticket</vs-th>
                 </template>
 
@@ -25,7 +25,9 @@
                         <vs-td :data="data[indextr].id_user">{{
                             data[indextr].nombre + " " + data[indextr].apellido
                         }}</vs-td>
-
+                        <vs-td :data="data[indextr].descripcionServicio">{{
+                            data[indextr].descripcionServicio
+                        }}</vs-td>
                         <vs-td
                             :data="data[indextr].descripcionP"
                             v-html="data[indextr].descripcionP"
@@ -37,9 +39,7 @@
                                 data[indextr].descripcionTipoReparacion
                             }}</vs-td
                         >
-                        <vs-td :data="data[indextr].descripcionEstado">{{
-                            data[indextr].descripcionEstado
-                        }}</vs-td>
+
                         <vs-td :data="data[indextr].id">
                             <div v-if="data[indextr].id_estado == 7">
                                 <info-icon
@@ -47,6 +47,18 @@
                                     class="custom-class"
                                     @click="
                                         detalleSolicitudEliminados(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></info-icon>
+                            </div>
+                            <div v-else-if="data[indextr].id_estado == 6">
+                                <info-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        detalleSolicitudFinalizados(
                                             data[indextr].id,
                                             data[indextr].uuid
                                         )
@@ -62,18 +74,6 @@
                                         )
                                     "
                                 ></loader-icon>
-                            </div>
-                            <div v-else-if="data[indextr].id_estado == 6">
-                                <info-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        detalleSolicitudFinalizados(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></info-icon>
                             </div>
                             <div v-else>
                                 <info-icon
