@@ -357,6 +357,17 @@
                                 v-model="horasTrabajadas"
                                 @keypress="isNumber($event)"
                             />
+                            <br />
+                            <h6>Estado</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionEstado"
+                                placeholder="Seleccione el Estado"
+                                class="w-full select-large"
+                                label="descripcionEstado"
+                                :options="listadoEstado"
+                                @input="arrayEstado(seleccionEstado.id)"
+                            ></v-select>
                         </vx-card>
                         <br />
                     </div>
@@ -400,11 +411,13 @@ import { SaveIcon } from "vue-feather-icons";
 import { FileTextIcon } from "vue-feather-icons";
 import { LoaderIcon } from "vue-feather-icons";
 import { AlertTriangleIcon } from "vue-feather-icons";
+import vSelect from "vue-select";
 import moment from "moment";
 
 export default {
     components: {
         ArchiveIcon,
+        "v-select": vSelect,
         InfoIcon,
         PlusCircleIcon,
         Trash2Icon,
@@ -465,7 +478,12 @@ export default {
                 sessionStorage.getItem("apellido"),
             run: sessionStorage.getItem("run"),
             idCierreTicket: "",
-            uuidCierreTicket: ""
+            uuidCierreTicket: "",
+            listadoEstado: [],
+            seleccionEstado: {
+                id: 0,
+                descripcionEstado: "Seleccione Estado"
+            }
         };
     },
     methods: {
@@ -507,7 +525,7 @@ export default {
                     uuid: this.uuidCierreTicket,
                     horasEjecucion: this.horasTrabajadas,
                     id: this.idCierreTicket,
-                    id_estado: 6,
+                    id_estado: this.seleccionEstado[0].id,
                     horaTermino: moment(new Date()).format("H:mm"),
                     fechaTermino: moment(new Date()).format("YYYY-MM-DD")
                 };
@@ -858,6 +876,31 @@ export default {
                         });
                 }
             }
+        },
+        cargarEstado() {
+            axios
+                .get(this.localVal + "/api/Agente/GetEstado", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoEstado = res.data;
+                });
+        },
+        arrayEstado(id) {
+            let c = JSON.parse(JSON.stringify(this.listadoEstado));
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == id) {
+                    b.push(value);
+                }
+            });
+            this.seleccionEstado = b;
         }
     },
     beforeMount() {
@@ -865,6 +908,7 @@ export default {
         this.openLoadingColor();
         this.forceRerender();
         this.cargarDocumentacion();
+        this.cargarEstado();
     }
 };
 </script>
