@@ -26,7 +26,6 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
             'edificios.descripcionEdificio',
             'servicios.descripcionServicio',
-            'unidad_esps.descripcionUnidadEsp',
             'tipo_reparacions.descripcionTipoReparacion',
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo1) as apoyo1"),
@@ -38,9 +37,10 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             'gestion_solicitudes.diasEjecucion',
             'estado_solicituds.descripcionEstado',
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
+            'gestion_solicitudes.horaCambiada',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'gestion_solicitudes.horaInicio',
-            'gestion_solicitudes.horaCambiada',
+            
             'gestion_solicitudes.horaTermino'
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
@@ -48,7 +48,6 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             ->join('solicitud_tickets', 'gestion_solicitudes.id_solicitud', '=', 'solicitud_tickets.id')
             ->join('edificios', 'solicitud_tickets.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_tickets.id_servicio', '=', 'servicios.id')
-            ->join('unidad_esps', 'solicitud_tickets.id_ubicacionEx', '=', 'unidad_esps.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
@@ -63,8 +62,7 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             'Fecha Solicitud',
             'Servicio',
             'Edificio',
-            'Unidad Especifica',
-            'Especialidad Requerida',
+            'Especialidad',
             'Responsable',
             'Apoyo 1',
             'Apoyo 2',
@@ -75,9 +73,9 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             'Dias de Ejecucion',
             'Estado Ticket',
             'Descripcion del Servicio Solicitado ',
+            'Respuesta Hospital',
             'Nombre Solicitante',
             'Hora Inicio',
-            'Hora Cambiada',
             'Hora Termino',
         ];
     }
@@ -103,7 +101,6 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
             'edificios.descripcionEdificio',
             'servicios.descripcionServicio',
-            'unidad_esps.descripcionUnidadEsp',
             'tipo_reparacions.descripcionTipoReparacion',
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo1) as apoyo1"),
@@ -125,7 +122,6 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
             ->join('solicitud_tickets', 'gestion_solicitudes.id_solicitud', '=', 'solicitud_tickets.id')
             ->join('edificios', 'solicitud_tickets.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_tickets.id_servicio', '=', 'servicios.id')
-            ->join('unidad_esps', 'solicitud_tickets.id_ubicacionEx', '=', 'unidad_esps.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
@@ -145,8 +141,7 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
             'Fecha Solicitud',
             'Servicio',
             'Edificio',
-            'Unidad Especifica',
-            'Especialidad Requerida',
+            'Especialidad',
             'Responsable',
             'Apoyo 1',
             'Apoyo 2',
@@ -157,9 +152,9 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
             'Dias de Ejecucion',
             'Estado Ticket',
             'Descripcion del Servicio Solicitado ',
+            'Hora Cambiada',
             'Nombre Solicitante',
             'Hora Inicio',
-            'Hora Cambiada',
             'Hora Termino',
         ];
     }
