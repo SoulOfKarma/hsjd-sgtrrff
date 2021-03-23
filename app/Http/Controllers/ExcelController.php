@@ -22,10 +22,10 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
     public function collection()
     {
         return GestionSolicitudes::select(
-            DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"),
+            DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
-            'edificios.descripcionEdificio',
             'servicios.descripcionServicio',
+            'edificios.descripcionEdificio',
             'tipo_reparacions.descripcionTipoReparacion',
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo1) as apoyo1"),
@@ -40,7 +40,6 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             'gestion_solicitudes.horaCambiada',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'gestion_solicitudes.horaInicio',
-            
             'gestion_solicitudes.horaTermino'
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
@@ -97,10 +96,10 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
         $fechaT = $this->fechaTermino;
 
         $data = GestionSolicitudes::select(
-            DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"),
+            DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
-            'edificios.descripcionEdificio',
             'servicios.descripcionServicio',
+            'edificios.descripcionEdificio',
             'tipo_reparacions.descripcionTipoReparacion',
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo1) as apoyo1"),
@@ -112,9 +111,10 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
             'gestion_solicitudes.diasEjecucion',
             'estado_solicituds.descripcionEstado',
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
+            'gestion_solicitudes.horaCambiada',
             'users.nombre',
             'gestion_solicitudes.horaInicio',
-            'gestion_solicitudes.horaCambiada',
+            
             'gestion_solicitudes.horaTermino'
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
