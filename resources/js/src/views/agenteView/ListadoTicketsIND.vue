@@ -64,6 +64,16 @@
                                         )
                                     "
                                 ></info-icon>
+                                <loader-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        GenerarTicketBID(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></loader-icon>
                             </div>
                             <div v-else>
                                 <info-icon
