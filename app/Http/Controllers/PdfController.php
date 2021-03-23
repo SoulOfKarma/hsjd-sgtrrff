@@ -127,7 +127,7 @@ class PdfController extends Controller
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
-            DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.id) as nticket"),
+            DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat")
@@ -255,7 +255,7 @@ class PdfController extends Controller
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
-            DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.id) as nticket"),
+            DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat")
@@ -384,7 +384,7 @@ class PdfController extends Controller
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
-            DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.id) as nticket"),
+            DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat")
@@ -513,7 +513,7 @@ class PdfController extends Controller
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
-            DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.id) as nticket"),
+            DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat")
