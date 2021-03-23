@@ -31,7 +31,7 @@ class GestionSolicitudes extends Migration
             $table->date('fechaCambiada')->nullable();
             $table->date('fechaTermino')->nullable();
             $table->bigInteger('diasEjecucion')->nullable();
-            $table->bigInteger('horasEjecucion')->nullable();
+            $table->float('horasEjecucion')->nullable();
             $table->timestamps();
         });
     }

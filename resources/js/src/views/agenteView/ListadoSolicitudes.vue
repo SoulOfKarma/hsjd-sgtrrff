@@ -473,7 +473,29 @@ export default {
         };
     },
     methods: {
-        isNumber: function(evt) {
+        isNumber: function($event) {
+            // console.log($event.keyCode); //keyCodes value
+            let keyCode = $event.keyCode ? $event.keyCode : $event.which;
+
+            // only allow number and one dot
+            if (
+                (keyCode < 48 || keyCode > 57) &&
+                (keyCode !== 46 || this.price.indexOf(".") != -1)
+            ) {
+                // 46 is dot
+                $event.preventDefault();
+            }
+
+            // restrict to 2 decimal places
+            if (
+                this.price != null &&
+                this.price.indexOf(".") > -1 &&
+                this.price.split(".")[1].length > 1
+            ) {
+                $event.preventDefault();
+            }
+        },
+        /* isNumber: function(evt) {
             evt = evt ? evt : window.event;
             var charCode = evt.which ? evt.which : evt.keyCode;
             if (
@@ -485,7 +507,7 @@ export default {
             } else {
                 return true;
             }
-        },
+        }, */
         popCerrarTicket(id, uuid) {
             try {
                 this.popFinTicket = true;

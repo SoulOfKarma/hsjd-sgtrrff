@@ -468,17 +468,26 @@ export default {
         };
     },
     methods: {
-        isNumber: function(evt) {
-            evt = evt ? evt : window.event;
-            var charCode = evt.which ? evt.which : evt.keyCode;
+        isNumber: function($event) {
+            // console.log($event.keyCode); //keyCodes value
+            let keyCode = $event.keyCode ? $event.keyCode : $event.which;
+
+            // only allow number and one dot
             if (
-                charCode > 31 &&
-                (charCode < 48 || charCode > 57) &&
-                charCode !== 46
+                (keyCode < 48 || keyCode > 57) &&
+                (keyCode !== 46 || this.price.indexOf(".") != -1)
             ) {
-                evt.preventDefault();
-            } else {
-                return true;
+                // 46 is dot
+                $event.preventDefault();
+            }
+
+            // restrict to 2 decimal places
+            if (
+                this.price != null &&
+                this.price.indexOf(".") > -1 &&
+                this.price.split(".")[1].length > 1
+            ) {
+                $event.preventDefault();
             }
         },
         popCerrarTicket(id, uuid) {
