@@ -127,6 +127,8 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->join('turnos','gestion_solicitudes.idTurno', '=', 'turnos.id')
+            ->join('duracion_solicitudes','gestion_solicitudes.idDuracion', '=', 'duracion_solicitudes.id')
             ->orderBy('solicitud_tickets.id')
             ->whereBetween('solicitud_tickets.created_at', [$fechaI, $fechaT])
             ->get();
