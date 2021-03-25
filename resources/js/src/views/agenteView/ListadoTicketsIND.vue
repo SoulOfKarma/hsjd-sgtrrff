@@ -13,7 +13,7 @@
                     <vs-th>Estado</vs-th>
                     <vs-th>Descripcion</vs-th>
                     <vs-th>Tipo Reparacion</vs-th>
-
+                    <vs-th>Estado</vs-th>
                     <vs-th>Opciones Ticket</vs-th>
                 </template>
 
@@ -40,7 +40,9 @@
                                 data[indextr].descripcionTipoReparacion
                             }}</vs-td
                         >
-
+                        <vs-td :data="data[indextr].descripcionEstado">{{
+                            data[indextr].descripcionEstado
+                        }}</vs-td>
                         <vs-td :data="data[indextr].id">
                             <div v-if="data[indextr].id_estado == 7">
                                 <info-icon
