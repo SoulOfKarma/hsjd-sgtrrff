@@ -2185,8 +2185,11 @@ export default {
         this.cargarSupervisores();
         this.cargarTrabajadores();
         this.cargarEstado();
-        this.cargaSolicitudEspecifica();
-        this.cargaTicketAsignado();
+        setTimeout(() => {
+            this.cargaSolicitudEspecifica();
+            this.cargaTicketAsignado();
+        }, 1000);
+
         this.cargarHoras();
     },
     async beforeMount() {},
