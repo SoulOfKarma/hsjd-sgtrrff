@@ -48,6 +48,21 @@
                                     {{ data[indextr].descripcionEstado }}
                                 </vs-chip>
                             </div>
+                            <div v-if="data[indextr].id_estado == 3">
+                                <vs-chip color="warning">
+                                    {{ data[indextr].descripcionEstado }}
+                                </vs-chip>
+                            </div>
+                            <div v-if="data[indextr].id_estado == 4">
+                                <vs-chip color="warning">
+                                    {{ data[indextr].descripcionEstado }}
+                                </vs-chip>
+                            </div>
+                            <div v-if="data[indextr].id_estado == 5">
+                                <vs-chip color="danger">
+                                    {{ data[indextr].descripcionEstado }}
+                                </vs-chip>
+                            </div>
                             <div v-if="data[indextr].id_estado == 6">
                                 <vs-chip color="danger">
                                     {{ data[indextr].descripcionEstado }}
