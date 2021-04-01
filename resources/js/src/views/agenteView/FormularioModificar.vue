@@ -1957,16 +1957,16 @@ export default {
                 .then(res => {
                     this.datosTicketAsignado = res.data;
 
-                    var datoidSupervisor = this.datosTicketAsignado[0]
+                    let datoidSupervisor = this.datosTicketAsignado[0]
                         .id_supervisor;
-                    var datoidTrabajador = this.datosTicketAsignado[0]
+                    let datoidTrabajador = this.datosTicketAsignado[0]
                         .id_trabajador;
-                    var datoidApoyo1 = this.datosTicketAsignado[0].idApoyo1;
-                    var datoidApoyo2 = this.datosTicketAsignado[0].idApoyo2;
-                    var datoidApoyo3 = this.datosTicketAsignado[0].idApoyo3;
-                    var datoidTurno = this.datosTicketAsignado[0].idTurno;
-                    var datoidEstado = this.datosTicketAsignado[0].id_estado;
-                    var datoidTipoReparacion = this.datosTicketAsignado[0]
+                    let datoidApoyo1 = this.datosTicketAsignado[0].idApoyo1;
+                    let datoidApoyo2 = this.datosTicketAsignado[0].idApoyo2;
+                    let datoidApoyo3 = this.datosTicketAsignado[0].idApoyo3;
+                    let datoidTurno = this.datosTicketAsignado[0].idTurno;
+                    let datoidEstado = this.datosTicketAsignado[0].id_estado;
+                    let datoidTipoReparacion = this.datosTicketAsignado[0]
                         .id_tipoReparacion;
                     this.descripcionP = this.datosTicketAsignado[0].descripcionP;
                     this.cargarSTA(
@@ -2096,7 +2096,7 @@ export default {
                     b.push(value);
                 }
             });
-
+            console.log(b);
             this.seleccionEstado = b;
 
             b = [];
