@@ -236,7 +236,16 @@
                                 @input="arrayDuracion(seleccionDuracion.id)"
                             ></v-select>
                             <br />
-                            <h6>4.4 - Razon de la modificacion</h6>
+                            <h6>4.4 - Descripcion del problema</h6>
+                            <br />
+                            <quill-editor
+                                v-model="descripcionP"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
+                            <h6>4.5 - Razon de la modificacion</h6>
                             <br />
                             <quill-editor
                                 v-model="razoncambio"
@@ -763,7 +772,8 @@ export default {
         componentKey: 0,
         popAServicio: false,
         value2: "",
-        value3: ""
+        value3: "",
+        descripcionP: ""
     }),
     computed: {
         calcularHorasTrabajo() {
@@ -1759,6 +1769,7 @@ export default {
                     .format("Do MMMM YYYY, HH:mm:ss");
                 this.gestionTicket.fechaCambiadaFormateada = fechaCambiadaF;
                 this.gestionTicket.fechaCreacion = fechaCreacionT;
+                this.gestionTicket.descripcionPFormat = this.descripcionP;
                 this.gestionTicket.id_user = localStorage.getItem("id");
                 this.gestionTicket.idUsuarioSesion = this.$route.params.id_user;
                 newElement.innerHTML = this.razoncambio;
@@ -1903,6 +1914,7 @@ export default {
                     var datoidApoyo2 = this.datosTicketAsignado[0].idApoyo2;
                     var datoidApoyo3 = this.datosTicketAsignado[0].idApoyo3;
                     var datoidTurno = this.datosTicketAsignado[0].idTurno;
+                    this.descripcionP = this.datosTicketAsignado[0].descripcionP;
                     var datoidEstado = this.datosTicketAsignado[0].id_estado;
                     var datoidTipoReparacion = this.datosTicketAsignado[0]
                         .id_tipoReparacion;
