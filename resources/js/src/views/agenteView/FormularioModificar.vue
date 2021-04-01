@@ -2200,7 +2200,7 @@ export default {
         setTimeout(() => {
             this.cargaSolicitudEspecifica();
             this.cargaTicketAsignado();
-        }, 1000);
+        }, 2000);
 
         this.cargarHoras();
     },
