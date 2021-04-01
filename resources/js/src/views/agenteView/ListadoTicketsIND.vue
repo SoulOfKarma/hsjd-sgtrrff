@@ -10,7 +10,7 @@
                 <template slot="thead">
                     <vs-th>N° Solicitud</vs-th>
                     <vs-th>Persona Solicitante</vs-th>
-                    <vs-th>Estado</vs-th>
+                    <vs-th>Servicio</vs-th>
                     <vs-th>Descripcion</vs-th>
                     <vs-th>Tipo Reparacion</vs-th>
                     <vs-th>Estado</vs-th>
@@ -34,15 +34,47 @@
                             v-html="data[indextr].descripcionP"
                             >{{ data[indextr].descripcionP }}</vs-td
                         >
-                        <vs-td
-                            :data="data[indextr].descripcionTipoReparacion"
-                            >{{
-                                data[indextr].descripcionTipoReparacion
-                            }}</vs-td
+                        <vs-td :data="data[indextr].descripcionTipoReparacion">
+                            {{ data[indextr].descripcionTipoReparacion }}</vs-td
                         >
-                        <vs-td :data="data[indextr].descripcionEstado">{{
-                            data[indextr].descripcionEstado
-                        }}</vs-td>
+                        <vs-td :data="data[indextr].id_estado">
+                            <div v-if="data[indextr].id_estado == 1">
+                                <vs-chip color="primary">
+                                    {{ data[indextr].descripcionEstado }}
+                                </vs-chip>
+                            </div>
+                            <div v-if="data[indextr].id_estado == 2">
+                                <vs-chip color="success">
+                                    {{ data[indextr].descripcionEstado }}
+                                </vs-chip>
+                            </div>
+                            <div v-if="data[indextr].id_estado == 3">
+                                <vs-chip color="warning">
+                                    {{ data[indextr].descripcionEstado }}
+                                </vs-chip>
+                            </div>
+                            <div v-if="data[indextr].id_estado == 4">
+                                <vs-chip color="warning">
+                                    {{ data[indextr].descripcionEstado }}
+                                </vs-chip>
+                            </div>
+                            <div v-if="data[indextr].id_estado == 5">
+                                <vs-chip color="danger">
+                                    {{ data[indextr].descripcionEstado }}
+                                </vs-chip>
+                            </div>
+                            <div v-if="data[indextr].id_estado == 6">
+                                <vs-chip color="danger">
+                                    {{ data[indextr].descripcionEstado }}
+                                </vs-chip>
+                            </div>
+                            <div v-if="data[indextr].id_estado == 7">
+                                <vs-chip color="warning">
+                                    {{ data[indextr].descripcionEstado }}
+                                </vs-chip>
+                            </div>
+                        </vs-td>
+
                         <vs-td :data="data[indextr].id">
                             <div v-if="data[indextr].id_estado == 7">
                                 <info-icon
@@ -55,6 +87,89 @@
                                         )
                                     "
                                 ></info-icon>
+                                <upload-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        modificarSolicitud(
+                                            data[indextr].id,
+                                            data[indextr].uuid,
+                                            data[indextr].id_user
+                                        )
+                                    "
+                                ></upload-icon>
+
+                                <trash-2-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        abrirPop(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></trash-2-icon>
+                                <corner-down-right-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        cambiarCategoria(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></corner-down-right-icon>
+                                <archive-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        generarTicket(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></archive-icon>
+                                <save-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        guardarPDFEscaneado(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></save-icon>
+                                <file-text-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        listadoDocumentacionAsociada(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></file-text-icon>
+                                <loader-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        GenerarTicketBID(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></loader-icon>
+                                <alert-triangle-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        popCerrarTicket(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                >
+                                </alert-triangle-icon>
                             </div>
                             <div v-else-if="data[indextr].id_estado == 6">
                                 <info-icon
@@ -67,6 +182,68 @@
                                         )
                                     "
                                 ></info-icon>
+                                <upload-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        modificarSolicitud(
+                                            data[indextr].id,
+                                            data[indextr].uuid,
+                                            data[indextr].id_user
+                                        )
+                                    "
+                                ></upload-icon>
+
+                                <trash-2-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        abrirPop(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></trash-2-icon>
+                                <corner-down-right-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        cambiarCategoria(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></corner-down-right-icon>
+                                <archive-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        generarTicket(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></archive-icon>
+                                <save-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        guardarPDFEscaneado(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></save-icon>
+                                <file-text-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        listadoDocumentacionAsociada(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></file-text-icon>
                                 <loader-icon
                                     size="1.5x"
                                     class="custom-class"
@@ -77,6 +254,17 @@
                                         )
                                     "
                                 ></loader-icon>
+                                <alert-triangle-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        popCerrarTicket(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                >
+                                </alert-triangle-icon>
                             </div>
                             <div v-else>
                                 <info-icon
