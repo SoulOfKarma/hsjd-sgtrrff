@@ -255,14 +255,14 @@ class GestionTicketController extends Controller
             ->first();
             }
 
-            $listContactos = [];
+            $listContactos = [$userMail];
             $i = 0;
             //log::info($userMail);
 
-            foreach ($userMail as $key) {
+            /* foreach ($userMail as $key) {
                 $listContactos[$i] = $key->email;
                 $i++;
-            }
+            } */
 
 
             SeguimientoSolicitudes::create($request->all());
@@ -320,13 +320,13 @@ class GestionTicketController extends Controller
             ->first();
             }
 
-            $listContactos = [];
+            $listContactos = [$userMail];
             $i = 0;
 
-            foreach ($userMail as $key) {
+            /* foreach ($userMail as $key) {
                 $listContactos[$i] = $key->email;
                 $i++;
-            }
+            } */
 
 
             SeguimientoSolicitudes::create($request->all());
@@ -383,15 +383,13 @@ class GestionTicketController extends Controller
             ->first();
             }
 
-            $listContactos = [];
+            $listContactos = [$userMail];
             $i = 0;
 
-            foreach ($userMail as $key) {
+            /* foreach ($userMail as $key) {
                 $listContactos[$i] = $key->email;
                 $i++;
-            }
-
-
+            } */
 
             SeguimientoSolicitudes::create($request->all());
             //Insertando Ticket
@@ -462,13 +460,13 @@ class GestionTicketController extends Controller
             ->first();
             }
 
-            $listContactos = [];
+            $listContactos = [$userMail];
             $i = 0;
 
-            foreach ($userMail as $key) {
+            /* foreach ($userMail as $key) {
                 $listContactos[$i] = $key->email;
                 $i++;
-            }
+            } */
 
             SeguimientoSolicitudes::create($request->all());
             //Insertando Ticket
@@ -576,13 +574,13 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [];
+                $listContactos = [$userMail];
                 $i = 0;
-                log::info($userMail);
+                /* log::info($userMail);
                 foreach ($userMail as $key) {
                     $listContactos[$i] = $key->email;
                     $i++;
-                }
+                } */
     
             $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
     
@@ -645,13 +643,13 @@ class GestionTicketController extends Controller
             ->first();
             }
 
-            $listContactos = [];
+            $listContactos = [$userMail];
             $i = 0;
 
-            foreach ($userMail as $key) {
+            /* foreach ($userMail as $key) {
                 $listContactos[$i] = $key->email;
                 $i++;
-            }
+            } */
 
         $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
 
@@ -714,13 +712,13 @@ class GestionTicketController extends Controller
             ->first();
             }
 
-            $listContactos = [];
+            $listContactos = [$userMail];
             $i = 0;
 
-            foreach ($userMail as $key) {
+            /* foreach ($userMail as $key) {
                 $listContactos[$i] = $key->email;
                 $i++;
-            }
+            } */
 
         $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
 
@@ -783,13 +781,13 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [];
+                $listContactos = [$userMail];
                 $i = 0;
     
-                foreach ($userMail as $key) {
+                /* foreach ($userMail as $key) {
                     $listContactos[$i] = $key->email;
                     $i++;
-                }
+                } */
     
             $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
     
@@ -934,15 +932,13 @@ class GestionTicketController extends Controller
             ->orWhere('id',$ValidarCargo)
             ->first();
             }
-            log::info($userMail);
-            $listContactos = [];
+            $listContactos = [$userMail];
             $i = 0;
 
-            foreach ($userMail as $key) {
-                log::info($key);
+            /* foreach ($userMail as $key) {
                 $listContactos[$i] = $key->email;
                 $i++;
-            }
+            } */
 
             
             Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor , 'razon' => $razoncambio], function ($message) use($listContactos){
@@ -1017,13 +1013,13 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [];
+                $listContactos = [$userMail];
                 $i = 0;
     
-                foreach ($userMail as $key) {
+                /* foreach ($userMail as $key) {
                     $listContactos[$i] = $key->email;
                     $i++;
-                }
+                } */
                 Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor, 'razon' => $razoncambio], function ($message) use($listContactos){
                     $message->setTo($listContactos)->setSubject('Modificacion de ticket');
                     $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
@@ -1099,13 +1095,13 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [];
+                $listContactos = [$userMail];
                 $i = 0;
     
-                foreach ($userMail as $key) {
+                /* foreach ($userMail as $key) {
                     $listContactos[$i] = $key->email;
                     $i++;
-                }
+                } */
                 Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor, 'razon' => $razoncambio], function ($message) use($listContactos){
                     $message->setTo($listContactos)->setSubject('Modificacion de ticket');
                     $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
@@ -1181,13 +1177,13 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [];
+                $listContactos = [$userMail];
                 $i = 0;
     
-                foreach ($userMail as $key) {
+                /* foreach ($userMail as $key) {
                     $listContactos[$i] = $key->email;
                     $i++;
-                }
+                } */
                 Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor, 'razon' => $razoncambio], function ($message) use($listContactos){
                     $message->setTo($listContactos)->setSubject('Modificacion de ticket');
                     $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
@@ -1242,13 +1238,13 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [];
+                $listContactos = [$userMail];
                 $i = 0;
     
-                foreach ($userMail as $key) {
+                /* foreach ($userMail as $key) {
                     $listContactos[$i] = $key->email;
                     $i++;
-                }
+                } */
 
                 Mail::send('/Mails/TicketEliminado', ['nombre' => $nombre, 'id_solicitud' => $id, 'descripcionSeguimiento' => $razon], function ($message) use($listContactos) {
                     $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
@@ -1288,13 +1284,13 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [];
+                $listContactos = [$userMail];
                 $i = 0;
     
-                foreach ($userMail as $key) {
+                /* foreach ($userMail as $key) {
                     $listContactos[$i] = $key->email;
                     $i++;
-                }
+                } */
 
                 Mail::send('/Mails/TicketFinalizado', ['nombre' => $nombre, 'id_solicitud' => $id], function ($message) use($listContactos) {
                     $message->setTo($listContactos)->setSubject('Finalizacion de ticket');
