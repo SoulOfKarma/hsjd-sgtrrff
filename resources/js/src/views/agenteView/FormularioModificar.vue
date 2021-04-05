@@ -211,6 +211,7 @@
                             <h6>4.1 - Tipo de Reparacion</h6>
                             <br />
                             <v-select
+                                :key="componentKey"
                                 v-model="seleccionReparacion"
                                 placeholder="Seleccione Tipo de Reparacion"
                                 class="w-full select-large"
@@ -497,6 +498,7 @@ export default {
                 ]
             }
         },
+        componentKey: 0,
         horasCalculadas: 0,
         colorLoading: "#ff8000",
         diaCalculado: 0,
@@ -834,6 +836,9 @@ export default {
         }
     },
     methods: {
+        forceRerender() {
+            this.componentKey += 1;
+        },
         volverTra() {
             this.popCrearTrabajador = false;
         },
@@ -2111,6 +2116,7 @@ export default {
             });
 
             this.seleccionReparacion = b;
+            this.forceRerender();
         },
         cargarInicial() {
             this.cargaEstado();
