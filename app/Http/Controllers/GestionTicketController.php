@@ -578,7 +578,7 @@ class GestionTicketController extends Controller
     
                 $listContactos = [];
                 $i = 0;
-    
+                log::info($userMail);
                 foreach ($userMail as $key) {
                     $listContactos[$i] = $key->email;
                     $i++;
@@ -934,7 +934,7 @@ class GestionTicketController extends Controller
             ->orWhere('id',$ValidarCargo)
             ->get();
             }
-
+            log::info($userMail);
             $listContactos = [];
             $i = 0;
 
