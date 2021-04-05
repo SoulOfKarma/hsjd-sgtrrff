@@ -2096,8 +2096,9 @@ export default {
                     b.push(value);
                 }
             });
-            console.log(b);
+
             this.seleccionEstado = b;
+            console.log(this.seleccionEstado);
 
             b = [];
             c = JSON.parse(JSON.stringify(this.listadoTipoRep));
