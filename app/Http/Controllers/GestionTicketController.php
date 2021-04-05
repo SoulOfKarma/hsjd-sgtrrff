@@ -255,7 +255,7 @@ class GestionTicketController extends Controller
             ->first();
             }
 
-            $listContactos = [$userMail];
+            $listContactos = [$userMail->email];
             $i = 0;
             //log::info($userMail);
 
@@ -320,7 +320,7 @@ class GestionTicketController extends Controller
             ->first();
             }
 
-            $listContactos = [$userMail];
+            $listContactos = [$userMail->email];
             $i = 0;
 
             /* foreach ($userMail as $key) {
@@ -383,7 +383,7 @@ class GestionTicketController extends Controller
             ->first();
             }
 
-            $listContactos = [$userMail];
+            $listContactos = [$userMail->email];
             $i = 0;
 
             /* foreach ($userMail as $key) {
@@ -460,7 +460,7 @@ class GestionTicketController extends Controller
             ->first();
             }
 
-            $listContactos = [$userMail];
+            $listContactos = [$userMail->email];
             $i = 0;
 
             /* foreach ($userMail as $key) {
@@ -574,7 +574,7 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [$userMail];
+                $listContactos = [$userMail->email];
                 $i = 0;
                 /* log::info($userMail);
                 foreach ($userMail as $key) {
@@ -643,7 +643,7 @@ class GestionTicketController extends Controller
             ->first();
             }
 
-            $listContactos = [$userMail];
+            $listContactos = [$userMail->email];
             $i = 0;
 
             /* foreach ($userMail as $key) {
@@ -712,7 +712,7 @@ class GestionTicketController extends Controller
             ->first();
             }
 
-            $listContactos = [$userMail];
+            $listContactos = [$userMail->email];
             $i = 0;
 
             /* foreach ($userMail as $key) {
@@ -781,7 +781,7 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [$userMail];
+                $listContactos = [$userMail->email];
                 $i = 0;
     
                 /* foreach ($userMail as $key) {
@@ -932,7 +932,7 @@ class GestionTicketController extends Controller
             ->orWhere('id',$ValidarCargo)
             ->first();
             }
-            $listContactos = [$userMail];
+            $listContactos = [$userMail->email];
             $i = 0;
 
             /* foreach ($userMail as $key) {
@@ -1013,7 +1013,7 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [$userMail];
+                $listContactos = [$userMail->email];
                 $i = 0;
     
                 /* foreach ($userMail as $key) {
@@ -1095,7 +1095,7 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [$userMail];
+                $listContactos = [$userMail->email];
                 $i = 0;
     
                 /* foreach ($userMail as $key) {
@@ -1177,7 +1177,7 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [$userMail];
+                $listContactos = [$userMail->email];
                 $i = 0;
     
                 /* foreach ($userMail as $key) {
@@ -1238,7 +1238,7 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [$userMail];
+                $listContactos = [$userMail->email];
                 $i = 0;
     
                 /* foreach ($userMail as $key) {
@@ -1284,7 +1284,7 @@ class GestionTicketController extends Controller
                 ->first();
                 }
     
-                $listContactos = [$userMail];
+                $listContactos = [$userMail->email];
                 $i = 0;
     
                 /* foreach ($userMail as $key) {
