@@ -731,14 +731,18 @@ export default {
             id: 0,
             descripcionServicio: "Seleccione Servicio"
         },
-        seleccionReparacion: {
-            id: 0,
-            descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
-        },
-        seleccionEstado: {
-            id: 0,
-            descripcionEstado: "Seleccione Estado"
-        },
+        seleccionReparacion: [
+            {
+                id: 1,
+                descripcionTipoReparacion: "Electrico"
+            }
+        ],
+        seleccionEstado: [
+            {
+                id: 2,
+                descripcionEstado: "En Proceso"
+            }
+        ],
         seleccionSupervisor: {
             id: 0,
             sup_nombre_apellido: "Seleccione al Supervisor"
