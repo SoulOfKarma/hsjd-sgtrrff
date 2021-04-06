@@ -205,7 +205,7 @@
             </div>
             <!-- Informacion del problema -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="4. Problema a Resolver" code-toggler>
+                <vx-card title="4. Problema a Resolver">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
                             <h6>4.1 - Tipo de Reparacion</h6>
@@ -1981,10 +1981,13 @@ export default {
                         datoidApoyo3,
                         datoidTurno
                     );
-                    this.llenarEstadoTReparacion(
-                        datoidEstado,
-                        datoidTipoReparacion
-                    );
+
+                    setTimeout(() => {
+                        this.llenarEstadoTReparacion(
+                            datoidEstado,
+                            datoidTipoReparacion
+                        );
+                    }, 2000);
                 });
         },
         cargarDuracion() {
