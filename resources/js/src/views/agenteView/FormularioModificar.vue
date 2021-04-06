@@ -1979,7 +1979,9 @@ export default {
                         datoidApoyo1,
                         datoidApoyo2,
                         datoidApoyo3,
-                        datoidTurno,
+                        datoidTurno
+                    );
+                    this.llenarEstadoTReparacion(
                         datoidEstado,
                         datoidTipoReparacion
                     );
@@ -1997,15 +1999,38 @@ export default {
                     this.listadoDuracion = res.data;
                 });
         },
+        llenarEstadoTReparacion(datoidEstado, datoidTipoReparacion) {
+            let b = [];
+            let c = JSON.parse(JSON.stringify(this.listadoEstado));
+            let a = 0;
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == datoidEstado) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionEstado = b;
+
+            b = [];
+            c = JSON.parse(JSON.stringify(this.listadoTipoRep));
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == datoidTipoReparacion) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionReparacion = b;
+        },
         cargarSTA(
             datoidSupervisor,
             datoidTrabajador,
             datoidApoyo1,
             datoidApoyo2,
             datoidApoyo3,
-            datoidTurno,
-            datoidEstado,
-            datoidTipoReparacion
+            datoidTurno
         ) {
             let c = JSON.parse(JSON.stringify(this.listadoSupervisores));
             let b = [];
@@ -2090,30 +2115,6 @@ export default {
             } else {
                 this.seleccionTurno = b;
             }
-
-            b = [];
-            c = JSON.parse(JSON.stringify(this.listadoEstado));
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == datoidEstado) {
-                    b.push(value);
-                }
-            });
-
-            this.seleccionEstado = b;
-
-            b = [];
-            c = JSON.parse(JSON.stringify(this.listadoTipoRep));
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == datoidTipoReparacion) {
-                    b.push(value);
-                }
-            });
-
-            this.seleccionReparacion = b;
         },
         cargarInicial() {
             this.cargaEstado();
