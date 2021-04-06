@@ -271,12 +271,12 @@
                         <vs-button color="primary" class="mb-2" @click="volver"
                             >Volver</vs-button
                         >
-                        <vs-button color="primary" class="mb-2" @click="limpiar"
+                        <vs-button color="warning" class="mb-2" @click="limpiar"
                             >Limpiar</vs-button
                         >
                         <vs-button
                             class="mr-3 mb-2"
-                            color="warning"
+                            color="danger"
                             @click="validarFormulario"
                             >Modificar</vs-button
                         >

@@ -264,12 +264,12 @@
                         <vs-button color="primary" class="mb-2" @click="volver"
                             >Volver</vs-button
                         >
-                        <vs-button color="primary" class="mb-2" @click="limpiar"
+                        <vs-button color="warning" class="mb-2" @click="limpiar"
                             >Limpiar</vs-button
                         >
                         <vs-button
                             class="mr-3 mb-2"
-                            color="warning"
+                            color="danger"
                             @click="validarFormulario"
                             >Modificar</vs-button
                         >
@@ -1924,11 +1924,40 @@ export default {
                         datoidApoyo1,
                         datoidApoyo2,
                         datoidApoyo3,
-                        datoidTurno,
-                        datoidEstado,
-                        datoidTipoReparacion
+                        datoidTurno
                     );
+                    setTimeout(() => {
+                        this.llenarEstadoTReparacion(
+                            datoidEstado,
+                            datoidTipoReparacion
+                        );
+                    }, 2000);
                 });
+        },
+        llenarEstadoTReparacion(datoidEstado, datoidTipoReparacion) {
+            let b = [];
+            let c = JSON.parse(JSON.stringify(this.listadoEstado));
+            let a = 0;
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == datoidEstado) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionEstado = b;
+
+            b = [];
+            c = JSON.parse(JSON.stringify(this.listadoTipoRep));
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == datoidTipoReparacion) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionReparacion = b;
         },
         cargarSTA(
             datoidSupervisor,
@@ -1936,9 +1965,7 @@ export default {
             datoidApoyo1,
             datoidApoyo2,
             datoidApoyo3,
-            datoidTurno,
-            datoidEstado,
-            datoidTipoReparacion
+            datoidTurno
         ) {
             let c = JSON.parse(JSON.stringify(this.listadoSupervisores));
             let b = [];
@@ -2023,30 +2050,6 @@ export default {
             } else {
                 this.seleccionTurno = b;
             }
-
-            b = [];
-            c = JSON.parse(JSON.stringify(this.listadoEstado));
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == datoidEstado) {
-                    b.push(value);
-                }
-            });
-
-            this.seleccionEstado = b;
-
-            b = [];
-            c = JSON.parse(JSON.stringify(this.listadoTipoRep));
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == datoidTipoReparacion) {
-                    b.push(value);
-                }
-            });
-
-            this.seleccionReparacion = b;
         },
         cargarInicial() {
             this.cargaEstado();
