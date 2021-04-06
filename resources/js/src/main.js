@@ -15,6 +15,8 @@ import Vuesax from "vuesax";
 
 Vue.use(Vuesax);
 
+import moment from "moment";
+
 // axios
 import axios from "./axios.js";
 Vue.prototype.$http = axios;
