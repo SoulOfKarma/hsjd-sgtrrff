@@ -15,12 +15,12 @@ class EstadoController extends Controller
      */
     public function index()
     {
-        $dataFiltro1 = [1];
-        $dataFiltro2 = [7];
+        //$dataFiltro1 = [1];
+        //$dataFiltro2 = [7];
         //$dataFiltro3 = [6];
         $get_all = EstadoSolicituds::select('estado_solicituds.*')
-        ->whereNotIn('id',$dataFiltro1)
-        ->whereNotIn('id',$dataFiltro2)
+        //->whereNotIn('id',$dataFiltro1)
+        //->whereNotIn('id',$dataFiltro2)
         //->whereNotIn('id',$dataFiltro3)
         ->get();
 
