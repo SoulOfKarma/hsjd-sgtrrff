@@ -156,10 +156,6 @@ class PdfController extends Controller
         $apoyo2 = Trabajadores::firstWhere('id', $idApoyo2);
         $apoyo3 = Trabajadores::firstWhere('id', $idApoyo3);
 
-        log::info($apoyo1);
-        log::info($apoyo2);
-        log::info($apoyo3);
-
         $nom1 = "";
         $ape1 = "";
         $nom2 = "";
@@ -191,6 +187,11 @@ class PdfController extends Controller
             $nom3 = $apoyo1->tra_nombre;
             $ape3 = $apoyo1->tra_apellido;
         }
+
+        
+        log::info($nom1);
+        log::info($nom2);
+        log::info($nom3);
 
         $idSol = $data->nticket;
         $nombreTra = $data->tra_nombre_apellido;
