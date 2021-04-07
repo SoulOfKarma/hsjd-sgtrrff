@@ -176,7 +176,7 @@ class PdfController extends Controller
             $nom2 = "-";
             $ape2 = "-";
         }else{
-            $nom2 = $apoyo2>tra_nombre;
+            $nom2 = $apoyo2->tra_nombre;
                 $ape2 = $apoyo2->tra_apellido;
         }
 
