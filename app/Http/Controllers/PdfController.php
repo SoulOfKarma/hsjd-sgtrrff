@@ -176,22 +176,17 @@ class PdfController extends Controller
             $nom2 = "-";
             $ape2 = "-";
         }else{
-            $nom2 = $apoyo1->tra_nombre;
-                $ape2 = $apoyo1->tra_apellido;
+            $nom2 = $apoyo2>tra_nombre;
+                $ape2 = $apoyo2->tra_apellido;
         }
 
         if($idApoyo3 == 1){
             $nom3 = "-";
             $ape3 = "-";
         }else{
-            $nom3 = $apoyo1->tra_nombre;
-            $ape3 = $apoyo1->tra_apellido;
+            $nom3 = $apoyo3->tra_nombre;
+            $ape3 = $apoyo3->tra_apellido;
         }
-
-        
-        log::info($nom1);
-        log::info($nom2);
-        log::info($nom3);
 
         $idSol = $data->nticket;
         $nombreTra = $data->tra_nombre_apellido;
@@ -310,16 +305,16 @@ class PdfController extends Controller
             $nom2 = "-";
             $ape2 = "-";
         }else{
-            $nom2 = $apoyo1->tra_nombre;
-                $ape2 = $apoyo1->tra_apellido;
+            $nom2 = $apoyo2->tra_nombre;
+                $ape2 = $apoyo2->tra_apellido;
         }
 
         if($idApoyo3 == 1){
             $nom3 = "-";
             $ape3 = "-";
         }else{
-            $nom3 = $apoyo1->tra_nombre;
-            $ape3 = $apoyo1->tra_apellido;
+            $nom3 = $apoyo3->tra_nombre;
+            $ape3 = $apoyo3->tra_apellido;
         }
 
         $idSol = $data->nticket;
@@ -439,16 +434,16 @@ class PdfController extends Controller
             $nom2 = "-";
             $ape2 = "-";
         }else{
-            $nom2 = $apoyo1->tra_nombre;
-                $ape2 = $apoyo1->tra_apellido;
+            $nom2 = $apoyo2->tra_nombre;
+                $ape2 = $apoyo2->tra_apellido;
         }
 
         if($idApoyo3 == 1){
             $nom3 = "-";
             $ape3 = "-";
         }else{
-            $nom3 = $apoyo1->tra_nombre;
-            $ape3 = $apoyo1->tra_apellido;
+            $nom3 = $apoyo3->tra_nombre;
+            $ape3 = $apoyo3->tra_apellido;
         }
 
         $idSol = $data->nticket;
@@ -542,15 +537,9 @@ class PdfController extends Controller
         $idApoyo2 = $data->idApoyo2;
         $idApoyo3 = $data->idApoyo3;
 
-        log::info($idApoyo1);
-        log::info($idApoyo2);
-        log::info($idApoyo3);
-
         $apoyo1 = Trabajadores::firstWhere('id', $idApoyo1);
         $apoyo2 = Trabajadores::firstWhere('id', $idApoyo2);
         $apoyo3 = Trabajadores::firstWhere('id', $idApoyo3);
-
-
 
         $nom1 = "";
         $ape1 = "";
@@ -572,16 +561,16 @@ class PdfController extends Controller
             $nom2 = "-";
             $ape2 = "-";
         }else{
-            $nom2 = $apoyo1->tra_nombre;
-                $ape2 = $apoyo1->tra_apellido;
+            $nom2 = $apoyo2->tra_nombre;
+                $ape2 = $apoyo2->tra_apellido;
         }
 
         if($idApoyo3 == 1){
             $nom3 = "-";
             $ape3 = "-";
         }else{
-            $nom3 = $apoyo1->tra_nombre;
-            $ape3 = $apoyo1->tra_apellido;
+            $nom3 = $apoyo3->tra_nombre;
+            $ape3 = $apoyo3->tra_apellido;
         }
 
         $idSol = $data->nticket;
