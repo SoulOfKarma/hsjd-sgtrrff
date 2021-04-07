@@ -6,45 +6,473 @@
         <link rel="stylesheet" href="http://localhost:8001/sgtrrff/public/css/bootstrap.min.css">
 
         <title>Ticket-EquiposMedicos</title>
-        <style>#TADescripcion{
-          width: 99%;
-        }
-        
-        #alinearDerecha{
-          text-align: right;
-          width: 75%;
-        }
-        
-        #tituloOrd{
-          text-align: center;
-          width: 75%;
-        }
-        
-        #subOrd{
-          text-align: center;
-          width: 75%;
-        }
+        <style>
+                    /*!
+            * Bootstrap v3.3.7 (http://getbootstrap.com)
+            * Copyright 2011-2016 Twitter, Inc.
+            * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+            */
 
-        #hoverL{
-          text-align: center;
-          width:60%;
-       
-        }
+            /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
-        #centrarFirmas{
-          width: 300px;
-          height: 50px;
-        }
-        
-        #TADescripcion {
-            height: 8em;
-            width: 90%;
-        }
-        
-        .panel-body{
-          height: 2em;
-            width: 90%;
-        }
+            html {
+                font-family: sans-serif;
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+            }
+
+            body {
+                margin: 0;
+            }
+
+            article,
+            aside,
+            details,
+            figcaption,
+            figure,
+            footer,
+            header,
+            hgroup,
+            main,
+            menu,
+            nav,
+            section,
+            summary {
+                display: block;
+            }
+
+            b,
+            strong {
+                font-weight: 700;
+            }
+
+            h1 {
+                margin: 0.67em 0;
+                font-size: 2em;
+            }
+
+            hr {
+                height: 0;
+                -webkit-box-sizing: content-box;
+                -moz-box-sizing: content-box;
+                box-sizing: content-box;
+            }
+
+            /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
+
+            @media print {
+                *,
+                h2,
+                h3,
+                p {
+                    orphans: 3;
+                    widows: 3;
+                }
+                h2,
+                h3 {
+                    page-break-after: avoid;
+                }
+            }
+
+            hr {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                border: 0;
+                border-top: 1px solid #eee;
+            }
+
+            .h1,
+            .h2,
+            .h3,
+            .h4,
+            .h5,
+            .h6,
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                font-family: inherit;
+                font-weight: 500;
+                line-height: 1.1;
+                color: inherit;
+            }
+
+            .h1 .small,
+            .h1 small,
+            .h2 .small,
+            .h2 small,
+            .h3 .small,
+            .h3 small,
+            .h4 .small,
+            .h4 small,
+            .h5 .small,
+            .h5 small,
+            .h6 .small,
+            .h6 small,
+            h1 .small,
+            h1 small,
+            h2 .small,
+            h2 small,
+            h3 .small,
+            h3 small,
+            h4 .small,
+            h4 small,
+            h5 .small,
+            h5 small,
+            h6 .small,
+            h6 small {
+                font-weight: 400;
+                line-height: 1;
+                color: #777;
+            }
+
+            .h1,
+            .h2,
+            .h3,
+            h1,
+            h2,
+            h3 {
+                margin-top: 20px;
+                margin-bottom: 10px;
+            }
+
+            .h1 .small,
+            .h1 small,
+            .h2 .small,
+            .h2 small,
+            .h3 .small,
+            .h3 small,
+            h1 .small,
+            h1 small,
+            h2 .small,
+            h2 small,
+            h3 .small,
+            h3 small {
+                font-size: 65%;
+            }
+
+            .h4,
+            .h5,
+            .h6,
+            h4,
+            h5,
+            h6 {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            .h4 .small,
+            .h4 small,
+            .h5 .small,
+            .h5 small,
+            .h6 .small,
+            .h6 small,
+            h4 .small,
+            h4 small,
+            h5 .small,
+            h5 small,
+            h6 .small,
+            h6 small {
+                font-size: 75%;
+            }
+
+            .h1,
+            h1 {
+                font-size: 36px;
+            }
+
+            .h2,
+            h2 {
+                font-size: 30px;
+            }
+
+            .h3,
+            h3 {
+                font-size: 24px;
+            }
+
+            .h4,
+            h4 {
+                font-size: 18px;
+            }
+
+            .h5,
+            h5 {
+                font-size: 14px;
+            }
+
+            .h6,
+            h6 {
+                font-size: 12px;
+            }
+
+            p {
+                margin: 0 0 10px;
+            }
+
+            .container {
+                padding-right: 15px;
+                padding-left: 15px;
+                margin-right: auto;
+                margin-left: auto;
+            }
+
+            @media (min-width: 768px) {
+                .container {
+                    width: 750px;
+                }
+            }
+
+            @media (min-width: 992px) {
+                .container {
+                    width: 970px;
+                }
+            }
+
+            @media (min-width: 1200px) {
+                .container {
+                    width: 1170px;
+                }
+            }
+
+            .container-fluid {
+                padding-right: 15px;
+                padding-left: 15px;
+                margin-right: auto;
+                margin-left: auto;
+            }
+
+            .row {
+                margin-right: -15px;
+                margin-left: -15px;
+            }
+
+            .col-xs-1,
+            .col-xs-10,
+            .col-xs-11,
+            .col-xs-12,
+            .col-xs-2,
+            .col-xs-3,
+            .col-xs-4,
+            .col-xs-5,
+            .col-xs-6,
+            .col-xs-7,
+            .col-xs-8,
+            .col-xs-9 {
+                position: relative;
+                min-height: 1px;
+                padding-right: 15px;
+                padding-left: 15px;
+            }
+
+            .col-xs-1,
+            .col-xs-10,
+            .col-xs-11,
+            .col-xs-12,
+            .col-xs-2,
+            .col-xs-3,
+            .col-xs-4,
+            .col-xs-5,
+            .col-xs-6,
+            .col-xs-7,
+            .col-xs-8,
+            .col-xs-9 {
+                float: left;
+            }
+
+            .col-xs-12 {
+                width: 100%;
+            }
+
+            .col-xs-11 {
+                width: 91.66666667%;
+            }
+
+            .col-xs-10 {
+                width: 83.33333333%;
+            }
+
+            .col-xs-9 {
+                width: 75%;
+            }
+
+            .col-xs-8 {
+                width: 66.66666667%;
+            }
+
+            .col-xs-7 {
+                width: 58.33333333%;
+            }
+
+            .col-xs-6 {
+                width: 50%;
+            }
+
+            .col-xs-5 {
+                width: 41.66666667%;
+            }
+
+            .col-xs-4 {
+                width: 33.33333333%;
+            }
+
+            .col-xs-3 {
+                width: 25%;
+            }
+
+            .col-xs-2 {
+                width: 16.66666667%;
+            }
+
+            .col-xs-1 {
+                width: 8.33333333%;
+            }
+
+            label {
+                display: inline-block;
+                max-width: 100%;
+                margin-bottom: 5px;
+                font-weight: 700;
+            }
+
+            .container-fluid > .navbar-collapse,
+            .container-fluid > .navbar-header,
+            .container > .navbar-collapse,
+            .container > .navbar-header {
+                margin-right: -15px;
+                margin-left: -15px;
+            }
+
+            .panel {
+                margin-bottom: 15px;
+                background-color: #fff;
+                border: 1px solid transparent;
+                border-radius: 4px;
+                -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+                box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+            }
+
+            .panel-body {
+                padding: 16px;
+            }
+
+            .panel-heading {
+                padding: 10px 15px;
+                border-bottom: 1px solid transparent;
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+            }
+
+            .panel-heading > .dropdown .dropdown-toggle {
+                color: inherit;
+            }
+
+            .panel-title {
+                margin-top: 0;
+                margin-bottom: 0;
+                font-size: 16px;
+                color: inherit;
+            }
+
+            .panel-title > .small,
+            .panel-title > .small > a,
+            .panel-title > a,
+            .panel-title > small,
+            .panel-title > small > a {
+                color: inherit;
+            }
+
+            .panel-footer {
+                padding: 10px 15px;
+                background-color: #f5f5f5;
+                border-top: 1px solid #ddd;
+                border-bottom-right-radius: 3px;
+                border-bottom-left-radius: 3px;
+            }
+
+            .panel-primary {
+                border-color: #337ab7;
+            }
+
+            .panel-primary > .panel-heading {
+                color: #000000;
+                background-color: #fff;
+                border-color: #337ab7;
+            }
+
+            .panel-primary > .panel-heading + .panel-collapse > .panel-body {
+                border-top-color: #337ab7;
+            }
+
+            .panel-primary > .panel-heading .badge {
+                color: #000000;
+                background-color: #fff;
+            }
+
+            .panel-primary > .panel-footer + .panel-collapse > .panel-body {
+                border-bottom-color: #337ab7;
+            }
+
+            .container-fluid:after,
+            .container-fluid:before,
+            .container:after,
+            .container:before,
+            .panel-body:after,
+            .panel-body:before,
+            .row:after,
+            .row:before {
+                display: table;
+                content: " ";
+            }
+
+            .container-fluid:after,
+            .container:after,
+            .panel-body:after,
+            .row:after {
+                clear: both;
+            }
+                    </style>
+                    <style>#TADescripcion{
+                      width: 99%;
+                    }
+                    
+                    #alinearDerecha{
+                      text-align: right;
+                      width: 75%;
+                    }
+                    
+                    #tituloOrd{
+                      text-align: center;
+                      width: 75%;
+                    }
+                    
+                    #subOrd{
+                      text-align: center;
+                      width: 75%;
+                    }
+
+                    #hoverL{
+                      text-align: center;
+                      width:60%;
+                  
+                    }
+
+                    #centrarFirmas{
+                      width: 300px;
+                      height: 50px;
+                    }
+                    
+                    #TADescripcion {
+                        height: 8em;
+                        width: 90%;
+                    }
+                    
+                    .panel-body{
+                      height: 2em;
+                        width: 90%;
+                    }
         </style>
 
     </head>

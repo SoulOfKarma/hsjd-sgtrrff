@@ -1,0 +1,18 @@
+
+insert into edificios (id, descripcionEdificio) values (4, 'Idell');
+insert into edificios (id, descripcionEdificio) values (5, 'Jean');
+insert into edificios (id, descripcionEdificio) values (6, 'Meridith');
+insert into edificios (id, descripcionEdificio) values (7, 'Alyda');
+insert into edificios (id, descripcionEdificio) values (8, 'Yetta');
+insert into edificios (id, descripcionEdificio) values (9, 'Joell');
+insert into edificios (id, descripcionEdificio) values (10, 'Salmon');
+insert into edificios (id, descripcionEdificio) values (11, 'Rog');
+insert into edificios (id, descripcionEdificio) values (12, 'Sol');
+insert into edificios (id, descripcionEdificio) values (13, 'Eduard');
+insert into edificios (id, descripcionEdificio) values (14, 'Layla');
+insert into edificios (id, descripcionEdificio) values (15, 'Tiphany');
+insert into edificios (id, descripcionEdificio) values (16, 'Verla');
+insert into edificios (id, descripcionEdificio) values (17, 'Gregorius');
+insert into edificios (id, descripcionEdificio) values (18, 'Cynthea');
+insert into edificios (id, descripcionEdificio) values (19, 'Aurelea');
+insert into edificios (id, descripcionEdificio) values (20, 'Alene');

@@ -355,7 +355,7 @@
             }
 
             .panel-body {
-                padding: 25px;
+                padding: 16px;
             }
 
             .panel-heading {
