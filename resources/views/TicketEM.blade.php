@@ -490,71 +490,71 @@
             </div>
             <div class="row">
               <div class="col-xs-2"><label>N°OT</label></div>
-              <div class="col-xs-2">{{$idSolicitud}}</div>
+              <div class="col-xs-2"><small>{{$idSolicitud}}</small></div>
               <div class="col-xs-1"></div>
               <div class="col-xs-2"><label>Fecha Solicitud</label> </div>
-              <div class="col-xs-2">{{$fechaS}}</div>
+              <div class="col-xs-2"><small>{{$fechaS}}</small></div>
               <div class="col-xs-1"></div>
             </div>
             <div class="row">
               <div class="col-xs-2"><label>Edificio</label></div>
-              <div class="col-xs-2">{{$desEdificio}}</div>
+              <div class="col-xs-2"><small>{{$desEdificio}}</small></div>
               <div class="col-xs-1"></div>
               <div class="col-xs-2"><label>Servicio</label></div>
-              <div class="col-xs-2">{{$desServicio}}</div>
+              <div class="col-xs-2"><small>{{$desServicio}}</small></div>
               <div class="col-xs-1"></div>
             </div>
             <div class="row">
               <div class="col-xs-2"><label>Estado</label></div>
-              <div class="col-xs-2">{{$desEstado}}</div>
+              <div class="col-xs-2"><small>{{$desEstado}}</small></div>
               <div class="col-xs-1"></div>
             </div>
             <div class="row">
               <div class="col-xs-2"><label>Responsable</label></div>
-              <div class="col-xs-2">{{$nombreTra}} </div>
+              <div class="col-xs-2"><small>{{$nombreTra}}</smail> </div>
               <div class="col-xs-1"></div>
               <div class="col-xs-2"><label>Supervisor</label> </div>
-              <div class="col-xs-2">{{$nombreSup}}</div>
+              <div class="col-xs-2"><small>{{$nombreSup}}</small></div>
               <div class="col-xs-1"></div>
             </div>
             <div class="row">
               <div class="col-xs-2"><label>Apoyo 1</label></div>
-              <div class="col-xs-2">{{$nomApoyo1}} {{$apeApoyo1}} </div>
+              <div class="col-xs-2"><small>{{$nomApoyo1}} {{$apeApoyo1}} <small></div>
               <div class="col-xs-1"></div>
               <div class="col-xs-2"><label>Apoyo 2</label> </div>
-              <div class="col-xs-2">{{$nomApoyo2}} {{$apeApoyo2}}</div>
+              <div class="col-xs-2"><small>{{$nomApoyo2}} {{$apeApoyo2}}</small></div>
               <div class="col-xs-1"></div>
             </div>
             <div class="row">
               <div class="col-xs-2"><label>Apoyo 3</label></div>
-              <div class="col-xs-2">{{$nomApoyo3}} {{$apeApoyo3}}</div>
+              <div class="col-xs-2"><small>{{$nomApoyo3}} {{$apeApoyo3}}</small></div>
               <div class="col-xs-1"></div>
               <div class="col-xs-2"><label>Especialidad</label> </div>
-              <div class="col-xs-2">{{$desTipoRep}}</div>
+              <div class="col-xs-2"><small>{{$desTipoRep}}</small></div>
               <div class="col-xs-1"></div>
             </div>
             <div class="row">
               <div class="col-xs-2"><label>Fecha Programada</label></div>
-              <div class="col-xs-2">{{$fechaI}} </div>
+              <div class="col-xs-2"><small>{{$fechaI}}</small> </div>
               <div class="col-xs-1"></div>
               <div class="col-xs-2"><label>Dias Ejecucion</label></div>
-              <div class="col-xs-2">{{$diasEjecucion}}</div>
+              <div class="col-xs-2"><small>{{$diasEjecucion}}</small></div>
               <div class="col-xs-1"></div>
             </div>
             <div class="row">
               <div class="col-xs-2"><label>Horas Ejecucion</label></div>
-              <div class="col-xs-2">{{$horasEjecucion}} </div>
+              <div class="col-xs-2"><small>{{$horasEjecucion}}</small> </div>
               <div class="col-xs-1"></div>
               <div class="col-xs-2"><label>Turno</label></div>
-              <div class="col-xs-2">{{$descripcionTurno}}</div>
+              <div class="col-xs-2"><small>{{$descripcionTurno}}</small></div>
               <div class="col-xs-1"></div>
             </div>
             <div class="row">
               <div class="col-xs-2"><label>Anexo</label></div>
-              <div class="col-xs-2">{{$anexo}} </div>
+              <div class="col-xs-2"><small>{{$anexo}}</small> </div>
               <div class="col-xs-1"></div>
               <div class="col-xs-2"><label>Duracion</label></div>
-              <div class="col-xs-2">{{$duracionSolicitudes}}</div>
+              <div class="col-xs-2"><small>{{$duracionSolicitudes}}</small></div>
               <div class="col-xs-1"></div>
             </div><br>
             <div class="row">
