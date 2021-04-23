@@ -2038,12 +2038,11 @@ export default {
                     this.mensajeError = "el apoyo 3";
                     this.errorDrop(this.mensajeError);
                 } else if (
-                    this.gestionTicket.tituloP.trim() === "" ||
-                    this.gestionTicket.tituloP.length < 10
+                    this.gestionTicket.fechaInicio == null ||
+                    this.gestionTicket.fechaInicio < hoy.getDate()
                 ) {
-                    this.mensajeError =
-                        "El titulo no puede ser menor a 10 caracteres";
-                    this.errorTitulo(this.mensajeError);
+                    this.mensajeError = "la fecha de inicio ";
+                    this.errorDrop(this.mensajeError);
                 } else if (
                     this.gestionTicket.descripcionP.trim() === "" ||
                     this.gestionTicket.descripcionP.length < 15
@@ -2116,14 +2115,12 @@ export default {
             this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
             this.gestionTicket.idTurno = this.seleccionTurno.id;
             this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
-            //this.gestionTicket.id_categoria = this.seleccionCategoria[0].id;
             var newElement = document.createElement("div");
             newElement.innerHTML = this.gestionTicket.descripcionP;
             this.gestionTicket.descripcionCorreo = newElement.textContent;
             this.gestionTicket.tituloP = newElement.textContent;
             this.gestionTicket.id_categoria = 4;
             this.gestionTicket.nombre = this.seleccionUsuario.nombre;
-
             const ticket = this.gestionTicket;
             this.openLoadingColor();
             axios
