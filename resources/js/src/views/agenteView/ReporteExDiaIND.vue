@@ -247,13 +247,13 @@ export default {
                     newWindow.location =
                         "http://" +
                         window.location.hostname +
-                        ":8001/api/Agente/generarExcelTodo";
+                        ":8001/api/Agente/generarExcelTodoI";
                 });
         },
         GenerarExcel() {
             const url =
                 this.localVal +
-                "/api/Agente/generarExcelByFecha/" +
+                "/api/Agente/generarExcelByFechaI/" +
                 this.fechas.fechaInicio +
                 "/" +
                 this.fechas.fechaTermino;

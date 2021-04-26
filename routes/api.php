@@ -301,6 +301,18 @@ use App\Mail\AutoRespuesta;
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');
       //Generar Excel	Por Fechas
       Route::get('/Agente/generarExcelByFecha/{fechaInicio}/{fechaTermino}', 'ExcelController@generarExcelByFecha');
+      //Generar Excel	
+      Route::get('/Agente/generarExcelTodoEM', 'ExcelController@generarExcelTodoEM');
+      //Generar Excel	Por Fechas
+      Route::get('/Agente/generarExcelByFechaEM/{fechaInicio}/{fechaTermino}', 'ExcelController@generarExcelByFechaEM');
+      //Generar Excel	
+      Route::get('/Agente/generarExcelTodoAP', 'ExcelController@generarExcelTodoAP');
+      //Generar Excel	Por Fechas
+      Route::get('/Agente/generarExcelByFechaAP/{fechaInicio}/{fechaTermino}', 'ExcelController@generarExcelByFechaAP');
+      //Generar Excel	
+      Route::get('/Agente/generarExcelTodoI', 'ExcelController@generarExcelTodoI');
+      //Generar Excel	Por Fechas
+      Route::get('/Agente/generarExcelByFechaI/{fechaInicio}/{fechaTermino}', 'ExcelController@generarExcelByFechI');
 
     Route::post('/auth/login', 'LoginController@login');
     Route::post('/auth/check', 'LoginController@checkToken');

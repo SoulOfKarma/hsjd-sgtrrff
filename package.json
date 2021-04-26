@@ -85,6 +85,7 @@
         "xlsx": "^0.15.0"
     },
     "dependencies": {
+        "ant-design-vue": "^1.7.4",
         "axios-add-jsonp": "^0.1.0",
         "axios-jsonp-pro": "^1.1.8",
         "gantt-schedule-timeline-calendar": "^3.3.4",
