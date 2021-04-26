@@ -385,7 +385,7 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
 
 //Equipos Medicos Reporte Fechas Excel
 
-class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoSize
+class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAutoSize
 {
     public function __construct($fechaInicio, $fechaTermino)
     {
@@ -469,7 +469,7 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
 
 //Apoyo Clinico Reporte Fechas Excel
 
-class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoSize
+class GestionExportByFechasAP implements FromCollection, WithHeadings, ShouldAutoSize
 {
     public function __construct($fechaInicio, $fechaTermino)
     {
@@ -553,7 +553,7 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
 
 //Industrial Reporte Fechas Excel
 
-class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoSize
+class GestionExportByFechasI implements FromCollection, WithHeadings, ShouldAutoSize
 {
     public function __construct($fechaInicio, $fechaTermino)
     {
