@@ -164,7 +164,7 @@ class GestionExportAP implements FromCollection, WithHeadings, ShouldAutoSize
 
     public function collection()
     {
-        $filtro = [3];
+        $filtro = [4];
         return GestionSolicitudes::select(
             DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
@@ -236,7 +236,7 @@ class GestionExportI implements FromCollection, WithHeadings, ShouldAutoSize
 
     public function collection()
     {
-        $filtro = [4];
+        $filtro = [3];
         return GestionSolicitudes::select(
             DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
@@ -483,7 +483,7 @@ class GestionExportByFechasAP implements FromCollection, WithHeadings, ShouldAut
     {
         $fechaI = $this->fechaInicio;
         $fechaT = $this->fechaTermino;
-        $filtro = [3];
+        $filtro = [4];
 
         $data = GestionSolicitudes::select(
             DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
@@ -567,7 +567,7 @@ class GestionExportByFechasI implements FromCollection, WithHeadings, ShouldAuto
     {
         $fechaI = $this->fechaInicio;
         $fechaT = $this->fechaTermino;
-        $filtro = [4];
+        $filtro = [3];
 
         $data = GestionSolicitudes::select(
             DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
