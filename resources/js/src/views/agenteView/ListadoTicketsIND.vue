@@ -10,6 +10,7 @@
                 <template slot="thead">
                     <vs-th>N° Solicitud</vs-th>
                     <vs-th>Persona Solicitante</vs-th>
+                    <vs-th>Responsable</vs-th>
                     <vs-th>Servicio</vs-th>
                     <vs-th>Descripcion</vs-th>
                     <vs-th>Tipo Reparacion</vs-th>
@@ -24,7 +25,10 @@
                         }}</vs-td>
 
                         <vs-td :data="data[indextr].id_user">{{
-                            data[indextr].nombre + " " + data[indextr].apellido
+                            data[indextr].nombre
+                        }}</vs-td>
+                        <vs-td :data="data[indextr].nombreTra">{{
+                            data[indextr].nombreTra
                         }}</vs-td>
                         <vs-td :data="data[indextr].descripcionServicio">{{
                             data[indextr].descripcionServicio
