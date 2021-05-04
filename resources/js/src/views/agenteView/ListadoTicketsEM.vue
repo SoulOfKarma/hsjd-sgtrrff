@@ -504,6 +504,16 @@ export default {
                     }
                 },
                 {
+                    label: "Fecha Solicitud",
+                    field: "fechaSolicitud",
+                    type: "date",
+                    dateInputFormat: "yyyy-MM-dd",
+                    dateOutputFormat: "dd/MM/yyyy",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
                     label: "Opciones",
                     field: "action"
                 }
