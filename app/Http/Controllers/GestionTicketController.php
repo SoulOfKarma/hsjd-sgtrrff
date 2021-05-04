@@ -492,6 +492,7 @@ class GestionTicketController extends Controller
         'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion', 
         'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
          DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
+         DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
          DB::raw("(CASE WHEN gestion_solicitudes.id_trabajador IS NULL THEN 'PENDIENTE'
              ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
@@ -509,9 +510,10 @@ class GestionTicketController extends Controller
     public function getSolicitudUsuariosJoinEM()
     {
         $ticket = SolicitudTickets::select('solicitud_tickets.*', DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
-        'servicios.descripcionServicio', 'tipo_reparacions.descripcionTipoReparacion','estado_solicituds.descripcionEstado',
-         DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
-          DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
+        'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion', 
+        'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
+         DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
+         DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
          DB::raw("(CASE WHEN gestion_solicitudes.id_trabajador IS NULL THEN 'PENDIENTE'
              ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
@@ -531,10 +533,11 @@ class GestionTicketController extends Controller
     public function getSolicitudUsuariosJoinIND()
     {
         $ticket = SolicitudTickets::select('solicitud_tickets.*', DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
-        'servicios.descripcionServicio', 'tipo_reparacions.descripcionTipoReparacion', 'estado_solicituds.descripcionEstado',
-         DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
-          DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
-          DB::raw("(CASE WHEN gestion_solicitudes.id_trabajador IS NULL THEN 'PENDIENTE'
+        'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion', 
+        'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
+         DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
+         DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
+         DB::raw("(CASE WHEN gestion_solicitudes.id_trabajador IS NULL THEN 'PENDIENTE'
              ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('tipo_reparacions','solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
@@ -551,9 +554,10 @@ class GestionTicketController extends Controller
     public function getSolicitudUsuariosJoinCA()
     {
         $ticket = SolicitudTickets::select('solicitud_tickets.*', DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
-        'servicios.descripcionServicio', 'tipo_reparacions.descripcionTipoReparacion', 'estado_solicituds.descripcionEstado',
-         DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), 
+        'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion', 
+        'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
          DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
+         DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
          DB::raw("(CASE WHEN gestion_solicitudes.id_trabajador IS NULL THEN 'PENDIENTE'
              ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')

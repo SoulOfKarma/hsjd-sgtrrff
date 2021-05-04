@@ -1,384 +1,147 @@
 <template>
     <div>
-        <vx-card title="1. Listado de Tickets">
+        <vx-card>
             <vs-alert active="true" color="success">
                 Agente:
                 {{ nombre }} - {{ run }}
             </vs-alert>
+        </vx-card>
+        <br />
+        <vx-card title="Listado de Solicitudes">
+            <vue-good-table
+                :columns="columns"
+                :rows="solicitudes"
+                :pagination-options="{
+                    enabled: true,
+                    perPage: 10
+                }"
+            >
+                <template slot="table-row" slot-scope="props">
+                    <!-- Column: Name -->
+                    <span
+                        v-if="props.column.field === 'fullName'"
+                        class="text-nowrap"
+                    >
+                    </span>
 
-            <vs-table search :data="solicitudes" max-items="15" pagination>
-                <template slot="thead">
-                    <vs-th>N° Solicitud</vs-th>
-                    <vs-th>Persona Solicitante</vs-th>
-                    <vs-th>Responsable</vs-th>
-                    <vs-th>Servicio</vs-th>
-                    <vs-th>Descripcion</vs-th>
-                    <vs-th>Tipo Reparacion</vs-th>
-                    <vs-th>Estado</vs-th>
-                    <vs-th>Opciones Ticket</vs-th>
-                </template>
-
-                <template slot-scope="{ data }">
-                    <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                        <vs-td :data="data[indextr].id">{{
-                            data[indextr].nticket
-                        }}</vs-td>
-
-                        <vs-td :data="data[indextr].id_user">{{
-                            data[indextr].nombre
-                        }}</vs-td>
-                        <vs-td :data="data[indextr].nombreTra">{{
-                            data[indextr].nombreTra
-                        }}</vs-td>
-                        <vs-td :data="data[indextr].descripcionServicio">{{
-                            data[indextr].descripcionServicio
-                        }}</vs-td>
-                        <vs-td
-                            :data="data[indextr].descripcionP"
-                            v-html="data[indextr].descripcionP"
-                            >{{ data[indextr].descripcionP }}</vs-td
+                    <span
+                        v-if="props.column.field == 'descripcionEstado'"
+                        class="text-nowrap"
+                    >
+                        <vs-chip
+                            v-if="props.row.id_estado == 1"
+                            color="primary"
                         >
-                        <vs-td :data="data[indextr].descripcionTipoReparacion">
-                            {{ data[indextr].descripcionTipoReparacion }}</vs-td
+                            {{ props.row.descripcionEstado }}
+                        </vs-chip>
+
+                        <vs-chip
+                            v-if="props.row.id_estado == 2"
+                            color="success"
                         >
-                        <vs-td :data="data[indextr].id_estado">
-                            <div v-if="data[indextr].id_estado == 1">
-                                <vs-chip color="primary">
-                                    {{ data[indextr].descripcionEstado }}
-                                </vs-chip>
-                            </div>
-                            <div v-if="data[indextr].id_estado == 2">
-                                <vs-chip color="success">
-                                    {{ data[indextr].descripcionEstado }}
-                                </vs-chip>
-                            </div>
-                            <div v-if="data[indextr].id_estado == 3">
-                                <vs-chip color="warning">
-                                    {{ data[indextr].descripcionEstado }}
-                                </vs-chip>
-                            </div>
-                            <div v-if="data[indextr].id_estado == 4">
-                                <vs-chip color="warning">
-                                    {{ data[indextr].descripcionEstado }}
-                                </vs-chip>
-                            </div>
-                            <div v-if="data[indextr].id_estado == 5">
-                                <vs-chip color="danger">
-                                    {{ data[indextr].descripcionEstado }}
-                                </vs-chip>
-                            </div>
-                            <div v-if="data[indextr].id_estado == 6">
-                                <vs-chip color="danger">
-                                    {{ data[indextr].descripcionEstado }}
-                                </vs-chip>
-                            </div>
-                            <div v-if="data[indextr].id_estado == 7">
-                                <vs-chip color="warning">
-                                    {{ data[indextr].descripcionEstado }}
-                                </vs-chip>
-                            </div>
-                        </vs-td>
+                            {{ props.row.descripcionEstado }}
+                        </vs-chip>
+                        <vs-chip
+                            v-if="props.row.id_estado == 3"
+                            color="warning"
+                        >
+                            {{ props.row.descripcionEstado }}
+                        </vs-chip>
+                        <vs-chip
+                            v-if="props.row.id_estado == 4"
+                            color="warning"
+                        >
+                            {{ props.row.descripcionEstado }}
+                        </vs-chip>
+                        <vs-chip v-if="props.row.id_estado == 5" color="danger">
+                            {{ props.row.descripcionEstado }}
+                        </vs-chip>
+                        <vs-chip v-if="props.row.id_estado == 6" color="danger">
+                            {{ props.row.descripcionEstado }}
+                        </vs-chip>
+                        <vs-chip
+                            v-if="props.row.id_estado == 7"
+                            color="warning"
+                        >
+                            {{ props.row.descripcionEstado }}
+                        </vs-chip>
+                    </span>
 
-                        <vs-td :data="data[indextr].id">
-                            <div v-if="data[indextr].id_estado == 7">
-                                <info-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        detalleSolicitudEliminados(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></info-icon>
-                                <upload-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        modificarSolicitud(
-                                            data[indextr].id,
-                                            data[indextr].uuid,
-                                            data[indextr].id_user
-                                        )
-                                    "
-                                ></upload-icon>
+                    <!-- Column: Action -->
+                    <span v-else-if="props.column.field === 'action'">
+                        <plus-circle-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="
+                                asignarSolicitud(props.row.id, props.row.uuid)
+                            "
+                        ></plus-circle-icon>
+                        <upload-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="
+                                modificarSolicitud(props.row.id, props.row.uuid)
+                            "
+                        ></upload-icon>
+                        <trash-2-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="abrirPop(props.row.id, props.row.uuid)"
+                        ></trash-2-icon>
+                        <corner-down-right-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="
+                                cambiarCategoria(props.row.id, props.row.uuid)
+                            "
+                        ></corner-down-right-icon>
+                        <printer-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="generarTicket(props.row.id, props.row.uuid)"
+                        ></printer-icon>
+                        <save-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="
+                                guardarPDFEscaneado(
+                                    props.row.id,
+                                    props.row.uuid
+                                )
+                            "
+                        ></save-icon>
+                        <file-text-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="
+                                listadoDocumentacionAsociada(
+                                    props.row.id,
+                                    props.row.uuid
+                                )
+                            "
+                        ></file-text-icon>
+                        <loader-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="
+                                GenerarTicketBID(props.row.id, props.row.uuid)
+                            "
+                        ></loader-icon>
+                        <alert-triangle-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="
+                                popCerrarTicket(props.row.id, props.row.uuid)
+                            "
+                        ></alert-triangle-icon>
+                    </span>
 
-                                <trash-2-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        abrirPop(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></trash-2-icon>
-                                <corner-down-right-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        cambiarCategoria(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></corner-down-right-icon>
-                                <archive-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        generarTicket(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></archive-icon>
-                                <save-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        guardarPDFEscaneado(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></save-icon>
-                                <file-text-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        listadoDocumentacionAsociada(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></file-text-icon>
-                                <loader-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        GenerarTicketBID(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></loader-icon>
-                                <alert-triangle-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        popCerrarTicket(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                >
-                                </alert-triangle-icon>
-                            </div>
-                            <div v-else-if="data[indextr].id_estado == 6">
-                                <info-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        detalleSolicitudFinalizados(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></info-icon>
-                                <upload-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        modificarSolicitud(
-                                            data[indextr].id,
-                                            data[indextr].uuid,
-                                            data[indextr].id_user
-                                        )
-                                    "
-                                ></upload-icon>
-
-                                <trash-2-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        abrirPop(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></trash-2-icon>
-                                <corner-down-right-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        cambiarCategoria(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></corner-down-right-icon>
-                                <archive-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        generarTicket(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></archive-icon>
-                                <save-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        guardarPDFEscaneado(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></save-icon>
-                                <file-text-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        listadoDocumentacionAsociada(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></file-text-icon>
-                                <loader-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        GenerarTicketBID(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></loader-icon>
-                                <alert-triangle-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        popCerrarTicket(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                >
-                                </alert-triangle-icon>
-                            </div>
-                            <div v-else>
-                                <info-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        detalleSolicitud(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></info-icon>
-                                <plus-circle-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        asignarSolicitud(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></plus-circle-icon>
-                                <upload-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        modificarSolicitud(
-                                            data[indextr].id,
-                                            data[indextr].uuid,
-                                            data[indextr].id_user
-                                        )
-                                    "
-                                ></upload-icon>
-
-                                <trash-2-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        abrirPop(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></trash-2-icon>
-                                <corner-down-right-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        cambiarCategoria(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></corner-down-right-icon>
-                                <archive-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        generarTicket(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></archive-icon>
-                                <save-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        guardarPDFEscaneado(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></save-icon>
-                                <file-text-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        listadoDocumentacionAsociada(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></file-text-icon>
-                                <loader-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        GenerarTicketBID(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                ></loader-icon>
-                                <alert-triangle-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        popCerrarTicket(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
-                                    "
-                                >
-                                </alert-triangle-icon>
-                            </div>
-                        </vs-td>
-                    </vs-tr>
-                </template>
-            </vs-table>
+                    <!-- Column: Common -->
+                    <span v-else>
+                        {{ props.formattedRow[props.column.field] }}
+                    </span>
+                </template></vue-good-table
+            >
         </vx-card>
         <vs-popup
             :key="componentKey"
@@ -604,25 +367,18 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import Vue from "vue";
-import Vuesax from "vuesax";
+//import Vuesax from "vuesax";
 import { SaveIcon } from "vue-feather-icons";
 import { FileTextIcon } from "vue-feather-icons";
 import { LoaderIcon } from "vue-feather-icons";
 import { AlertTriangleIcon } from "vue-feather-icons";
 import vSelect from "vue-select";
 import moment from "moment";
-
-Vue.use(Vuesax, {
-    theme: {
-        colors: {
-            primary: "#5b3cc4",
-            success: "rgb(23, 201, 100)",
-            danger: "rgb(242, 19, 93)",
-            warning: "rgb(255, 130, 0)",
-            dark: "rgb(36, 33, 69)"
-        }
-    }
-});
+import { PrinterIcon } from "vue-feather-icons";
+// import the styles
+import "vue-good-table/dist/vue-good-table.css";
+import VueGoodTablePlugin from "vue-good-table";
+Vue.use(VueGoodTablePlugin);
 
 export default {
     components: {
@@ -637,10 +393,14 @@ export default {
         SaveIcon,
         FileTextIcon,
         LoaderIcon,
-        AlertTriangleIcon
+        AlertTriangleIcon,
+        PrinterIcon
     },
     data() {
         return {
+            pageLength: 10,
+            dir: false,
+            searchTerm: "",
             editorOption: {
                 modules: {
                     toolbar: [["bold", "italic", "underline", "strike"]]
@@ -682,7 +442,62 @@ export default {
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: "Seleccione Estado"
-            }
+            },
+            columns: [
+                {
+                    label: "N° Ticket",
+                    field: "nticket",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Solicitante",
+                    field: "nombre",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Responsable",
+                    field: "nombreTra",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Servicio",
+                    field: "descripcionServicio",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion Problema",
+                    field: "desFormat",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Tipo Reparacion",
+                    field: "descripcionTipoReparacion",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Estado",
+                    field: "descripcionEstado",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
+                }
+            ]
         };
     },
     methods: {
@@ -1113,6 +928,23 @@ export default {
                 }
             });
             this.seleccionEstado = b;
+        },
+        onGridReady(params) {
+            const updateData = data => {
+                this.solicitudes = data;
+            };
+            axios
+                .get(this.localVal + "/api/Agente/GetSolicitudTickets", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.solicitudes = res.data;
+                    resp => resp.json();
+                    data => updateData(data);
+                });
         }
     },
     beforeMount() {

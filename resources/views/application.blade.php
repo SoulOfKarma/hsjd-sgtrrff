@@ -27,8 +27,8 @@
 
     <!-- <script src="js/app.js"></script> -->
     <script src="{{ asset(mix('js/app.js')) }}"></script>
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
-      <script src="https://unpkg.com/vuesax"></script>
+    <!--<script src="https://unpkg.com/vue/dist/vue.js"></script>-->
+      <!--<script src="https://unpkg.com/vuesax"></script>-->
 
   </body>
 </html>
