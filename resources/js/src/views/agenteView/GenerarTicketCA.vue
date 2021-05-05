@@ -2118,7 +2118,7 @@ export default {
             var newElement = document.createElement("div");
             newElement.innerHTML = this.gestionTicket.descripcionP;
             this.gestionTicket.descripcionCorreo = newElement.textContent;
-            this.gestionTicket.tituloP = newElement.textContent;
+            this.gestionTicket.tituloP = "Sin Titulo";
             this.gestionTicket.id_categoria = 4;
             this.gestionTicket.nombre = this.seleccionUsuario.nombre;
             const ticket = this.gestionTicket;

@@ -2099,7 +2099,7 @@ export default {
             var newElement = document.createElement("div");
             newElement.innerHTML = this.gestionTicket.descripcionP;
             this.gestionTicket.descripcionCorreo = newElement.textContent;
-            this.gestionTicket.tituloP = newElement.textContent;
+            this.gestionTicket.tituloP = "Sin Titulo";
             this.gestionTicket.id_categoria = 3;
             this.gestionTicket.nombre = this.nombre;
             this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
