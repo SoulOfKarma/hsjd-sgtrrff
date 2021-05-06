@@ -25,6 +25,119 @@
                 margin: 0;
             }
 
+            ul,
+            ol {
+              margin-top: 0;
+              margin-bottom: 10px;
+            }
+            ul ul,
+            ol ul,
+            ul ol,
+            ol ol {
+              margin-bottom: 0;
+            }
+            .list-unstyled {
+              padding-left: 0;
+              list-style: none;
+            }
+            .list-inline {
+              padding-left: 0;
+              margin-left: -5px;
+              list-style: none;
+            }
+            .list-inline > li {
+              display: inline-block;
+              padding-right: 5px;
+              padding-left: 5px;
+            }
+            dl {
+              margin-top: 0;
+              margin-bottom: 20px;
+            }
+            dt,
+            dd {
+              line-height: 1.42857143;
+            }
+            dt {
+              font-weight: bold;
+            }
+            dd {
+              margin-left: 0;
+            }
+            @media (min-width: 768px) {
+              .dl-horizontal dt {
+                float: left;
+                width: 160px;
+                overflow: hidden;
+                clear: left;
+                text-align: right;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+              .dl-horizontal dd {
+                margin-left: 180px;
+              }
+            }
+            abbr[title],
+            abbr[data-original-title] {
+              cursor: help;
+              border-bottom: 1px dotted #777;
+            }
+            .initialism {
+              font-size: 90%;
+              text-transform: uppercase;
+            }
+            blockquote {
+              padding: 10px 20px;
+              margin: 0 0 20px;
+              font-size: 17.5px;
+              border-left: 5px solid #eee;
+            }
+            blockquote p:last-child,
+            blockquote ul:last-child,
+            blockquote ol:last-child {
+              margin-bottom: 0;
+            }
+
+            hr {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                border: 0;
+                border-top: 1px solid #eee;
+            }
+
+            .list-group {
+              padding-left: 0;
+              margin-bottom: 20px;
+            }
+            .list-group-item {
+              position: relative;
+              display: block;
+              padding: 10px 15px;
+              margin-bottom: -1px;
+              background-color: #fff;
+              border: 1px solid #ddd;
+            }
+
+            .panel > .list-group,
+            .panel > .panel-collapse > .list-group {
+              margin-bottom: 0;
+            }
+            .panel > .list-group .list-group-item,
+            .panel > .panel-collapse > .list-group .list-group-item {
+              border-width: 1px 0;
+              border-radius: 0;
+            }
+
+            .list-group + .panel-footer {
+              border-top-width: 0;
+            }
+
+            .panel-group .panel-heading + .panel-collapse > .panel-body,
+            .panel-group .panel-heading + .panel-collapse > .list-group {
+              border-top: 1px solid #ddd;
+            }
+
             article,
             aside,
             details,
@@ -563,9 +676,13 @@
                   <div class="panel-heading">
                     <h3 class="panel-title">Solicitud realizada por el servicio de {{$desServicio}} - {{$desEdificio}}</h3>
                   </div>
-                  <div class="panel-body" id="descripcion">
-                    {{$descripcionPro}}
-                  </div>
+                  <br>
+                  <!-- <div class="panel-body" id="descripcion">
+                  </div>  -->
+                  
+                  <?php
+                    echo "<ul>$descripcionPro </ul>";
+                  ?>  
                 </div>
               </div>
             </div><br>
