@@ -28,9 +28,10 @@ class DocumentosFController extends Controller
 
     }
 
-    public function getData(){
-       $get_all = SubirDocumentos::select("subir_documentos.*",DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+    public function getData(Request $request){
+       $get_all = SubirDocumentos::select("subir_documentos.*",DB::raw("CONCAT(solicitud_tickets.id) as nticket"))
        ->join("solicitud_tickets","subir_documentos.id_solicitud","=","solicitud_tickets.id")
+       ->where("solicitud_tickets.id",$request->id)
        ->get();
        return $get_all;
     }

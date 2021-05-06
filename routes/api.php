@@ -290,7 +290,7 @@ use App\Mail\AutoRespuesta;
             //Inserta Documentos de las solicitudes finalizadas
             Route::post('/Agente/PostDocumentoF', ['middleware' => 'cors', 'uses' => 'DocumentosFController@store']);
             //Inserta Documentos de las solicitudes finalizadas
-            Route::get('/Agente/getDocumentos', ['middleware' => 'cors', 'uses' => 'DocumentosFController@getData']);
+            Route::post('/Agente/getDocumentos', ['middleware' => 'cors', 'uses' => 'DocumentosFController@getData']);
             //Trae Duracion 
             Route::get('/Agente/GetDuracion', ['middleware' => 'cors', 'uses' => 'DuracionSolicitudesController@getAll']);
             //Guardar Ticket

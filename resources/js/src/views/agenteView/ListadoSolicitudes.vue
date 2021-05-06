@@ -671,18 +671,32 @@ export default {
             this.popupActive3 = true;
         },
         listadoDocumentacionAsociada(id, uuid) {
+            //a
             this.popupActive4 = true;
-            let c = this.dataDocumentacion;
-            let b = [];
-            var a = 0;
-            c.forEach((value, index) => {
-                a = value.id_solicitud;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
+            let data = {
+                id: id
+            };
+            axios
+                .post(this.localVal + "/api/Agente/getDocumentos", data, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    let listado = res.data;
+                    /* let b = [];
+                    let a = 0;
+                    listado.forEach((value, index) => {
+                        a = value.id_solicitud;
+                        if (a == id) {
+                            b.push(value);
+                        }
+                    }); */
 
-            this.documentacion = b;
+                    this.documentacion = JSON.parse(JSON.stringify(listado));
+                });
+            //let c = this.dataDocumentacion;
         },
         forceRerender() {
             this.componentKey += 1;
@@ -967,7 +981,7 @@ export default {
         this.cargarSolicitudes();
         this.openLoadingColor();
         this.forceRerender();
-        this.cargarDocumentacion();
+        //this.cargarDocumentacion();
         this.cargarEstado();
     }
 };
