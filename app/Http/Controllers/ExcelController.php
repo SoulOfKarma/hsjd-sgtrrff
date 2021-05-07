@@ -34,14 +34,17 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
-            'gestion_solicitudes.horasEjecucion',
-            'gestion_solicitudes.diasEjecucion',
+            DB::raw("(CASE WHEN gestion_solicitudes.horasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.horasEjecucion END) AS horasEjecucion"),
+            DB::raw("(CASE WHEN gestion_solicitudes.diasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.diasEjecucion END) AS diasEjecucion"),
             'estado_solicituds.descripcionEstado',
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
             'turnos.descripcionTurno',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
-            'gestion_solicitudes.horaTermino'
+            DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
+             ELSE gestion_solicitudes.horaTermino END) AS horaTermino")
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
@@ -105,14 +108,17 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
-            'gestion_solicitudes.horasEjecucion',
-            'gestion_solicitudes.diasEjecucion',
+            DB::raw("(CASE WHEN gestion_solicitudes.horasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.horasEjecucion END) AS horasEjecucion"),
+            DB::raw("(CASE WHEN gestion_solicitudes.diasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.diasEjecucion END) AS diasEjecucion"),
             'estado_solicituds.descripcionEstado',
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
             'turnos.descripcionTurno',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
-            'gestion_solicitudes.horaTermino'
+            DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
+             ELSE gestion_solicitudes.horaTermino END) AS horaTermino")
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
@@ -177,14 +183,17 @@ class GestionExportAP implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
-            'gestion_solicitudes.horasEjecucion',
-            'gestion_solicitudes.diasEjecucion',
+            DB::raw("(CASE WHEN gestion_solicitudes.horasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.horasEjecucion END) AS horasEjecucion"),
+            DB::raw("(CASE WHEN gestion_solicitudes.diasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.diasEjecucion END) AS diasEjecucion"),
             'estado_solicituds.descripcionEstado',
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
             'turnos.descripcionTurno',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
-            'gestion_solicitudes.horaTermino'
+            DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
+             ELSE gestion_solicitudes.horaTermino END) AS horaTermino")
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
@@ -249,14 +258,17 @@ class GestionExportI implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
-            'gestion_solicitudes.horasEjecucion',
-            'gestion_solicitudes.diasEjecucion',
+            DB::raw("(CASE WHEN gestion_solicitudes.horasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.horasEjecucion END) AS horasEjecucion"),
+            DB::raw("(CASE WHEN gestion_solicitudes.diasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.diasEjecucion END) AS diasEjecucion"),
             'estado_solicituds.descripcionEstado',
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
             'turnos.descripcionTurno',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
-            'gestion_solicitudes.horaTermino'
+            DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
+             ELSE gestion_solicitudes.horaTermino END) AS horaTermino")
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
@@ -329,15 +341,17 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
-            'gestion_solicitudes.horasEjecucion',
-            'gestion_solicitudes.diasEjecucion',
+            DB::raw("(CASE WHEN gestion_solicitudes.horasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.horasEjecucion END) AS horasEjecucion"),
+            DB::raw("(CASE WHEN gestion_solicitudes.diasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.diasEjecucion END) AS diasEjecucion"),
             'estado_solicituds.descripcionEstado',
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
             'turnos.descripcionTurno',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
-            
-            'gestion_solicitudes.horaTermino'
+            DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
+             ELSE gestion_solicitudes.horaTermino END) AS horaTermino")
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
@@ -413,15 +427,17 @@ class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAut
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
-            'gestion_solicitudes.horasEjecucion',
-            'gestion_solicitudes.diasEjecucion',
+            DB::raw("(CASE WHEN gestion_solicitudes.horasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.horasEjecucion END) AS horasEjecucion"),
+            DB::raw("(CASE WHEN gestion_solicitudes.diasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.diasEjecucion END) AS diasEjecucion"),
             'estado_solicituds.descripcionEstado',
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
             'turnos.descripcionTurno',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
-            
-            'gestion_solicitudes.horaTermino'
+            DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
+             ELSE gestion_solicitudes.horaTermino END) AS horaTermino")
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
@@ -497,15 +513,17 @@ class GestionExportByFechasAP implements FromCollection, WithHeadings, ShouldAut
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
-            'gestion_solicitudes.horasEjecucion',
-            'gestion_solicitudes.diasEjecucion',
+            DB::raw("(CASE WHEN gestion_solicitudes.horasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.horasEjecucion END) AS horasEjecucion"),
+            DB::raw("(CASE WHEN gestion_solicitudes.diasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.diasEjecucion END) AS diasEjecucion"),
             'estado_solicituds.descripcionEstado',
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
             'turnos.descripcionTurno',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
-            
-            'gestion_solicitudes.horaTermino'
+            DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
+             ELSE gestion_solicitudes.horaTermino END) AS horaTermino")
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
@@ -581,15 +599,17 @@ class GestionExportByFechasI implements FromCollection, WithHeadings, ShouldAuto
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
-            'gestion_solicitudes.horasEjecucion',
-            'gestion_solicitudes.diasEjecucion',
+            DB::raw("(CASE WHEN gestion_solicitudes.horasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.horasEjecucion END) AS horasEjecucion"),
+            DB::raw("(CASE WHEN gestion_solicitudes.diasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.diasEjecucion END) AS diasEjecucion"),
             'estado_solicituds.descripcionEstado',
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
             'turnos.descripcionTurno',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
-            
-            'gestion_solicitudes.horaTermino'
+            DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
+             ELSE gestion_solicitudes.horaTermino END) AS horaTermino")
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
