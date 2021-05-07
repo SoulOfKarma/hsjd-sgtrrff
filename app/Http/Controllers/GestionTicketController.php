@@ -493,7 +493,7 @@ class GestionTicketController extends Controller
         'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
          DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
          DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
-         DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio,'%Y-%m-%d') as fechaSolicitud"),
+         DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio,'%d/%m/%Y') as fechaSolicitud"),
          DB::raw("(CASE WHEN gestion_solicitudes.id_trabajador IS NULL THEN 'PENDIENTE'
              ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
@@ -515,7 +515,7 @@ class GestionTicketController extends Controller
         'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
          DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
          DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
-         DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio,'%Y-%m-%d') as fechaSolicitud"),
+         DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio,'%d/%m/%Y') as fechaSolicitud"),
          DB::raw("(CASE WHEN gestion_solicitudes.id_trabajador IS NULL THEN 'PENDIENTE'
              ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
@@ -539,7 +539,7 @@ class GestionTicketController extends Controller
         'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
          DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
          DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
-         DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio,'%Y-%m-%d') as fechaSolicitud"),
+         DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio,'%d/%m/%Y') as fechaSolicitud"),
          DB::raw("(CASE WHEN gestion_solicitudes.id_trabajador IS NULL THEN 'PENDIENTE'
              ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
@@ -561,7 +561,7 @@ class GestionTicketController extends Controller
         'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
          DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
          DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
-         DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio,'%Y-%m-%d') as fechaSolicitud"),
+         DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio,'%d/%m/%Y') as fechaSolicitud"),
          DB::raw("(CASE WHEN gestion_solicitudes.id_trabajador IS NULL THEN 'PENDIENTE'
              ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')

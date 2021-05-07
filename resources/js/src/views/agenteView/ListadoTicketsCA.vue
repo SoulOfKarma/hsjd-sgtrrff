@@ -503,7 +503,7 @@ export default {
                     label: "Fecha Solicitud",
                     field: "fechaSolicitud",
                     type: "date",
-                    dateInputFormat: "yyyy-MM-dd",
+                    dateInputFormat: "dd/MM/yyyy",
                     dateOutputFormat: "dd/MM/yyyy",
                     filterOptions: {
                         enabled: true
