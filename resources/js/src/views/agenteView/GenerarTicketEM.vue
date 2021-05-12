@@ -798,8 +798,8 @@ export default {
         },
         listadoTurno: [],
         seleccionTurno: {
-            id: 0,
-            descripcionTurno: "Seleccione Turno"
+            id: 1,
+            descripcionTurno: "Dia"
         },
         val_run: false,
         nombreUsuario: "",

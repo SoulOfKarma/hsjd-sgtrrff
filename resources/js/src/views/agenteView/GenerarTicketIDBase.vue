@@ -829,8 +829,8 @@ export default {
         listadoTurno: [],
         listadoServiciosData: [],
         seleccionTurno: {
-            id: 0,
-            descripcionTurno: "Seleccione Turno"
+            id: 1,
+            descripcionTurno: "Dia"
         },
         listadoUsuarios: [],
         gestionTicket: {
