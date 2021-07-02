@@ -1,11 +1,117 @@
 <template>
     <div>
-        <vx-card title="Listado de Tickets" code-toggler>
+        <vx-card title="Listado de Tickets">
             <vs-alert active="true" color="success">
-                Listado de tickets creados por: {{ nombre }} - {{ run }}
-            </vs-alert>
+                Listado de tickets creados por: {{ nombre }} -
+                {{ run }} </vs-alert
+            ><br />
+            <vx-card>
+                <vue-good-table
+                    :columns="columns"
+                    :rows="solicitudes"
+                    :pagination-options="{
+                        enabled: true,
+                        perPage: 10
+                    }"
+                >
+                    <template slot="table-row" slot-scope="props">
+                        <!-- Column: Name -->
+                        <span
+                            v-if="props.column.field === 'fullName'"
+                            class="text-nowrap"
+                        >
+                        </span>
+                        <span
+                            v-if="props.column.field === 'descripcionP'"
+                            class="text-nowrap"
+                        >
+                            <div v-html="props.row.descripcionP"></div>
+                        </span>
+                        <span
+                            v-else-if="
+                                props.column.field == 'descripcionEstado'
+                            "
+                            class="text-nowrap"
+                        >
+                            <vs-chip
+                                v-if="props.row.id_estado == 1"
+                                color="primary"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
 
-            <vs-table search :data="solicitudes" max-items="5" pagination>
+                            <vs-chip
+                                v-if="props.row.id_estado == 2"
+                                color="success"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
+                            <vs-chip
+                                v-if="props.row.id_estado == 3"
+                                color="warning"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
+                            <vs-chip
+                                v-if="props.row.id_estado == 4"
+                                color="warning"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
+                            <vs-chip
+                                v-if="props.row.id_estado == 5"
+                                color="danger"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
+                            <vs-chip
+                                v-if="props.row.id_estado == 6"
+                                color="danger"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
+                            <vs-chip
+                                v-if="props.row.id_estado == 7"
+                                color="warning"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
+                        </span>
+                        <!-- Column: Action -->
+                        <span v-else-if="props.column.field === 'action'">
+                            <plus-circle-icon
+                                size="1.5x"
+                                class="custom-class"
+                                @click="
+                                    detalleSolicitud(
+                                        props.row.id_solicitud,
+                                        props.row.uuid
+                                    )
+                                "
+                            ></plus-circle-icon>
+                            <upload-icon
+                                size="1.5x"
+                                class="custom-class"
+                                @click="
+                                    generarTicket(
+                                        props.row.id_solicitud,
+                                        props.row.uuid,
+                                        props.row.id_categoria
+                                    )
+                                "
+                            ></upload-icon>
+                        </span>
+
+                        <!-- Column: Common -->
+                        <span v-else>
+                            {{ props.formattedRow[props.column.field] }}
+                        </span>
+                    </template></vue-good-table
+                >
+            </vx-card>
+        </vx-card>
+
+        <!-- <vs-table search :data="solicitudes" max-items="5" pagination>
                 <template slot="thead">
                     <vs-th>N° Solicitud</vs-th>
                     <vs-th>Persona Solicitante</vs-th>
@@ -70,8 +176,7 @@
                         </vs-td>
                     </vs-tr>
                 </template>
-            </vs-table>
-        </vx-card>
+            </vs-table> -->
     </div>
 </template>
 <script>
@@ -82,6 +187,11 @@ import { PlusCircleIcon } from "vue-feather-icons";
 import { Trash2Icon } from "vue-feather-icons";
 import { UploadIcon } from "vue-feather-icons";
 import { ArchiveIcon } from "vue-feather-icons";
+// import the styles
+import Vue from "vue";
+import "vue-good-table/dist/vue-good-table.css";
+import VueGoodTablePlugin from "vue-good-table";
+Vue.use(VueGoodTablePlugin);
 export default {
     components: {
         InfoIcon,
@@ -94,6 +204,75 @@ export default {
         return {
             solicitudes: [],
             listadoTrabajadores: [],
+            columns: [
+                {
+                    label: "N° Ticket",
+                    field: "nticket",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Solicitante",
+                    field: "nombre_solicitante",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Servicio",
+                    field: "descripcionServicio",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion Problema",
+                    field: "desFormat",
+                    html: true,
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Tipo Reparacion",
+                    field: "descripcionTipoReparacion",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Estado",
+                    field: "descripcionEstado",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Fecha Creacion",
+                    field: "fechaCreacion",
+                    type: "date",
+                    dateInputFormat: "dd/MM/yyyy",
+                    dateOutputFormat: "dd/MM/yyyy",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Fecha Asignacion",
+                    field: "fechaAsignacion",
+                    type: "date",
+                    dateInputFormat: "dd/MM/yyyy",
+                    dateOutputFormat: "dd/MM/yyyy",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
+                }
+            ],
             localVal: process.env.MIX_APP_URL,
             nombre: sessionStorage.getItem("nombre"),
             run: sessionStorage.getItem("run"),
