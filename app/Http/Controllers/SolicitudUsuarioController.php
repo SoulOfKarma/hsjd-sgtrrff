@@ -116,14 +116,24 @@ class SolicitudUsuarioController extends Controller
 
     public function getTicketsAsignadosJoin($id)
     {
-
-        $ticket = SolicitudTickets::select('solicitud_tickets.*', DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as fechaCreacion"), DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as fechaAsignacion"), 'gestion_solicitudes.*', DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"), DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre_solicitante"), 'estado_solicituds.descripcionEstado', DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+        $ticket = SolicitudTickets::select('solicitud_tickets.*', 
+        DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as fechaCreacion"),
+         DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as fechaAsignacion"),
+          'gestion_solicitudes.*', DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
+          DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
+          DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
+           DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre_solicitante"), 
+           'estado_solicituds.descripcionEstado', 'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion',
+           DB::raw("CONCAT(solicitud_tickets.id) as nticket"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->join('tipo_reparacions','solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
+        ->join('servicios','solicitud_tickets.id_servicio','=','servicios.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('gestion_solicitudes', 'solicitud_tickets.id', '=', 'gestion_solicitudes.id_solicitud')
             ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->where('gestion_solicitudes.id_trabajador', $id)
+            ->orderBy('solicitud_tickets.id', 'desc')
             ->get();
 
 

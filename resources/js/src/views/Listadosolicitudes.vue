@@ -4,6 +4,7 @@
             <vs-alert active="true" color="success">
                 Listado de tickets creados por: {{ nombre }} - {{ run }}
             </vs-alert>
+            <br />
             <vx-card>
                 <vue-good-table
                     :columns="columns"
@@ -140,16 +141,6 @@
                                         )
                                     "
                                 ></plus-circle-icon>
-                                <check-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        abrirPopFinalizar(
-                                            props.row.id,
-                                            props.row.uuid
-                                        )
-                                    "
-                                ></check-icon>
                             </div>
                             <div v-else>
                                 <plus-circle-icon
