@@ -29,6 +29,7 @@
             </div>
             <div class="vx-col w-full lg:w-1/4 mb-base"></div>
         </div>
+
         <div class="vx-row">
             <div class="vx-col w-full lg:w-1/4 mb-base"></div>
             <div class="vx-col w-full lg:w-1/2 mb-base">

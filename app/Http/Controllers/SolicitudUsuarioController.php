@@ -81,8 +81,15 @@ class SolicitudUsuarioController extends Controller
     {
         $estadoEliminado = [7];
 
-        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre','users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
-            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+        //$ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre','users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+        $ticket = SolicitudTickets::select('solicitud_tickets.*', DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
+         'estado_solicituds.descripcionEstado',DB::raw("DATE_FORMAT(solicitud_tickets.created_at,'%d/%m/%Y') as fechaSolicitud"),
+         'servicios.descripcionServicio',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+         DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
+         'tipo_reparacions.descripcionTipoReparacion', DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"))
+        ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+        ->join('tipo_reparacions','solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
+        ->join('servicios','solicitud_tickets.id_servicio','=','servicios.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->whereNotIn('solicitud_tickets.id_estado',$estadoEliminado)
             ->where('solicitud_tickets.id_servicio', $request->idServicio)

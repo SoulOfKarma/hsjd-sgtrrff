@@ -322,12 +322,6 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/agenteView/DetalleTicket",
-                    name: "DetalleTicketImp",
-                    component: () =>
-                        import("./views/agenteView/DetalleTicket.vue")
-                },
-                {
                     path: "/agenteView/ListadoTicketsEM",
                     name: "ListadoTicketsEM",
                     component: () =>
@@ -474,6 +468,13 @@ const router = new Router({
                     name: "ReporteExDiaCA",
                     component: () =>
                         import("./views/agenteView/ReporteExDiaCA.vue")
+                },
+
+                {
+                    path: "/agenteView/CalendarioPruebas",
+                    name: "CalendarioPruebas",
+                    component: () =>
+                        import("./views/agenteView/CalendarioPruebas.vue")
                 }
             ]
         },

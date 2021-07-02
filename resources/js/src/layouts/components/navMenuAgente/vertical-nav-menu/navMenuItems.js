@@ -295,5 +295,11 @@ export default [
         name: "C. Telefonica",
         slug: "CalendarioCTelefonica",
         icon: "CalendarIcon"
+    },
+    {
+        url: "/agenteView/CalendarioPruebas",
+        name: "Calendario P.",
+        slug: "CalendarioPruebas",
+        icon: "CalendarIcon"
     }
 ];

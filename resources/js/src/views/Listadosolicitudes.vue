@@ -1,137 +1,179 @@
 <template>
     <div>
-        <vx-card title="1. Listado de Tickets" code-toggler>
+        <vx-card title="1. Listado de Tickets">
             <vs-alert active="true" color="success">
                 Listado de tickets creados por: {{ nombre }} - {{ run }}
             </vs-alert>
-
-            <vs-table search :data="solicitudes" max-items="5" pagination>
-                <template slot="thead">
-                    <vs-th>N° Solicitud</vs-th>
-                    <vs-th>Persona Solicitante</vs-th>
-                    <vs-th>Titulo</vs-th>
-                    <vs-th>Descripcion</vs-th>
-                    <vs-th>Estado</vs-th>
-                    <vs-th>Opciones Ticket</vs-th>
-                </template>
-
-                <template slot-scope="{ data }">
-                    <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                        <vs-td :data="data[indextr].id">{{
-                            data[indextr].nticket
-                        }}</vs-td>
-
-                        <vs-td :data="data[indextr].id_user">{{
-                            data[indextr].nombre + " " + data[indextr].apellido
-                        }}</vs-td>
-
-                        <vs-td :data="data[indextr].tituloP">{{
-                            data[indextr].tituloP
-                        }}</vs-td>
-
-                        <vs-td
-                            :data="data[indextr].descripcionP"
-                            v-html="data[indextr].descripcionP"
-                            >{{ data[indextr].descripcionP }}</vs-td
+            <vx-card>
+                <vue-good-table
+                    :columns="columns"
+                    :rows="solicitudes"
+                    :pagination-options="{
+                        enabled: true,
+                        perPage: 10
+                    }"
+                >
+                    <template slot="table-row" slot-scope="props">
+                        <!-- Column: Name -->
+                        <span
+                            v-if="props.column.field === 'fullName'"
+                            class="text-nowrap"
                         >
-                        <vs-td :data="data[indextr].descripcionP">{{
-                            data[indextr].descripcionEstado
-                        }}</vs-td>
-                        <vs-td :data="data[indextr].id">
-                            <div v-if="data[indextr].Horas < 1">
-                                <info-icon
+                        </span>
+                        <span
+                            v-if="props.column.field === 'descripcionP'"
+                            class="text-nowrap"
+                        >
+                            <div v-html="props.row.descripcionP"></div>
+                        </span>
+                        <span
+                            v-else-if="
+                                props.column.field == 'descripcionEstado'
+                            "
+                            class="text-nowrap"
+                        >
+                            <vs-chip
+                                v-if="props.row.id_estado == 1"
+                                color="primary"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
+
+                            <vs-chip
+                                v-if="props.row.id_estado == 2"
+                                color="success"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
+                            <vs-chip
+                                v-if="props.row.id_estado == 3"
+                                color="warning"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
+                            <vs-chip
+                                v-if="props.row.id_estado == 4"
+                                color="warning"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
+                            <vs-chip
+                                v-if="props.row.id_estado == 5"
+                                color="danger"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
+                            <vs-chip
+                                v-if="props.row.id_estado == 6"
+                                color="danger"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
+                            <vs-chip
+                                v-if="props.row.id_estado == 7"
+                                color="warning"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
+                        </span>
+                        <!-- Column: Action -->
+                        <span v-else-if="props.column.field === 'action'">
+                            <div v-if="props.row.Horas < 1">
+                                <plus-circle-icon
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
                                         detalleSolicitud(
-                                            data[indextr].id,
-                                            data[indextr].uuid
+                                            props.row.id,
+                                            props.row.uuid
                                         )
                                     "
-                                ></info-icon>
+                                ></plus-circle-icon>
                                 <upload-icon
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
                                         modificarSolicitud(
-                                            data[indextr].id,
-                                            data[indextr].uuid
+                                            props.row.id,
+                                            props.row.uuid
                                         )
                                     "
                                 ></upload-icon>
-
                                 <trash-2-icon
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
-                                        abrirPop(
-                                            data[indextr].id,
-                                            data[indextr].uuid
-                                        )
+                                        abrirPop(props.row.id, props.row.uuid)
                                     "
                                 ></trash-2-icon>
                             </div>
-                            <div v-else-if="data[indextr].Horas < 8">
-                                <info-icon
+                            <div v-else-if="props.row.Horas < 8">
+                                <plus-circle-icon
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
                                         detalleSolicitud(
-                                            data[indextr].id,
-                                            data[indextr].uuid
+                                            props.row.id,
+                                            props.row.uuid
                                         )
                                     "
-                                ></info-icon>
+                                ></plus-circle-icon>
                                 <upload-icon
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
                                         modificarSolicitud(
-                                            data[indextr].id,
-                                            data[indextr].uuid
+                                            props.row.id,
+                                            props.row.uuid
                                         )
                                     "
                                 ></upload-icon>
                             </div>
-                            <div v-else-if="data[indextr].id_estado == 5">
-                                <info-icon
+                            <div v-else-if="props.row.id_estado == 5">
+                                <plus-circle-icon
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
                                         detalleSolicitud(
-                                            data[indextr].id,
-                                            data[indextr].uuid
+                                            props.row.id,
+                                            props.row.uuid
                                         )
                                     "
-                                ></info-icon>
+                                ></plus-circle-icon>
                                 <check-icon
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
                                         abrirPopFinalizar(
-                                            data[indextr].id,
-                                            data[indextr].uuid
+                                            props.row.id,
+                                            props.row.uuid
                                         )
                                     "
                                 ></check-icon>
                             </div>
                             <div v-else>
-                                <info-icon
+                                <plus-circle-icon
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
                                         detalleSolicitud(
-                                            data[indextr].id,
-                                            data[indextr].uuid
+                                            props.row.id,
+                                            props.row.uuid
                                         )
                                     "
-                                ></info-icon>
+                                ></plus-circle-icon>
                             </div>
-                        </vs-td>
-                    </vs-tr>
-                </template>
-            </vs-table>
+                        </span>
+
+                        <!-- Column: Common -->
+                        <span v-else>
+                            {{ props.formattedRow[props.column.field] }}
+                        </span>
+                    </template>
+                </vue-good-table>
+            </vx-card>
         </vx-card>
+
         <vs-popup
             classContent="popup-example"
             title="Realmente desea eliminar el ticket?"
@@ -236,6 +278,11 @@ import { Trash2Icon } from "vue-feather-icons";
 import { UploadIcon } from "vue-feather-icons";
 import { CheckIcon } from "vue-feather-icons";
 import moment from "moment";
+// import the styles
+import Vue from "vue";
+import "vue-good-table/dist/vue-good-table.css";
+import VueGoodTablePlugin from "vue-good-table";
+Vue.use(VueGoodTablePlugin);
 
 export default {
     components: {
@@ -251,6 +298,65 @@ export default {
             fechaModificar: moment().format("DD/MM/YYYY HH:mm"),
             fechaEliminar: moment().format("DD/MM/YYYY HH:mm"),
             solicitudes: [],
+            columns: [
+                {
+                    label: "N° Ticket",
+                    field: "nticket",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Solicitante",
+                    field: "nombre",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Servicio",
+                    field: "descripcionServicio",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion Problema",
+                    field: "descripcionP",
+                    html: true,
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Tipo Reparacion",
+                    field: "descripcionTipoReparacion",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Estado",
+                    field: "descripcionEstado",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Fecha Solicitud",
+                    field: "fechaSolicitud",
+                    type: "date",
+                    dateInputFormat: "dd/MM/yyyy",
+                    dateOutputFormat: "dd/MM/yyyy",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
+                }
+            ],
             value1: "",
             value2: "",
             validaEliminar: false,
