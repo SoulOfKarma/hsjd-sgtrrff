@@ -273,7 +273,7 @@ export default {
                 .then(res => {
                     this.solicitudes = res.data;
                     try {
-                        this.titulo = "Ticket N°" + this.solicitudes[0].nticket;
+                        this.titulo = "Ticket N°" + this.solicitudes[0].id;
                         this.infoSeguimiento.nombre =
                             this.solicitudes[0].nombre +
                             " " +
@@ -289,7 +289,12 @@ export default {
         cargaSeguimiento() {
             let uuid = this.$route.params.uuid;
             axios
-                .get(this.localVal + `/api/Agente/TraerSeguimiento/${uuid}`)
+                .get(this.localVal + `/api/Agente/TraerSeguimiento/${uuid}`, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
                 .then(res => {
                     this.seguimiento = res.data;
                 });
