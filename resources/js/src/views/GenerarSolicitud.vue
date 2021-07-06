@@ -697,7 +697,9 @@ export default {
                                 let data2 = res2.data;
                                 if (data1 == true && data2 == true) {
                                     this.mensajeGuardado();
-
+                                    setTimeout(() => {
+                                        router.back();
+                                    }, 4000);
                                     this.limpiar();
                                 } else {
                                     this.$vs.notify({

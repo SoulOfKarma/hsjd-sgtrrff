@@ -8,7 +8,7 @@
                 <div
                     class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
                 >
-                    <h2 class="mb-1">Registrar nuevo Ticket</h2>
+                    <h2 class="mb-1">Modificar Solicitud</h2>
                 </div>
                 <div class="vx-breadcrumb ml-4 md:block hidden">
                     <div
@@ -33,7 +33,7 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="1. Lugar del problema">
                     <div class="vx-row mb-12">
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/2 mt-5">
                             <h6>1.1 - Seleccione el Edificio</h6>
                             <br />
                             <v-select
@@ -44,7 +44,7 @@
                                 :options="listadoEdificios"
                             ></v-select>
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/2 mt-5">
                             <h6>1.2 - Seleccione el Servicio</h6>
                             <br />
                             <v-select
@@ -54,18 +54,6 @@
                                 label="descripcionServicio"
                                 :options="listadoServicios"
                                 @input="cargaSegunServicio"
-                            ></v-select>
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <h6>1.3 - Seleccione la Unidad Especifica</h6>
-                            <br />
-                            <v-select
-                                v-model="seleccionUnidadEsp"
-                                placeholder="Unidad Especifica"
-                                class="w-full select-large"
-                                label="descripcionUnidadEsp"
-                                :options="listadoUnidadEsp"
-                                @input="cargaSegunUnidadEsp"
                             ></v-select>
                         </div>
                     </div>
@@ -216,8 +204,8 @@ export default {
             descripcionServicio: "Seleccione Servicio"
         },
         seleccionUnidadEsp: {
-            id: 0,
-            descripcionUnidadEsp: "Seleccione Unidad Especifica"
+            id: 42,
+            descripcionUnidadEsp: "N/A"
         },
         seleccionReparacion: {
             id: 0,
@@ -477,16 +465,13 @@ export default {
             } else if (this.seleccionServicio.id == 0) {
                 this.mensajeError = "el servicio";
                 this.errorDrop(this.mensajeError);
-            } else if (this.seleccionUnidadEsp.id == 0) {
-                this.mensajeError = "la Unidad especifica";
-                this.errorDrop(this.mensajeError);
             } else if (this.seleccionReparacion.id == 0) {
                 this.mensajeError = "el tipo de reparacion";
                 this.errorDrop(this.mensajeError);
             } else {
                 this.solicitud.id_edificio = this.seleccionEdificio[0].id;
                 this.solicitud.id_servicio = this.seleccionServicio[0].id;
-                this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
+                this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp.id;
                 this.solicitud.id_tipoReparacion = this.seleccionReparacion[0].id;
                 this.solicitud.id = this.datosSolicitud.id;
                 this.solicitud.tituloP = this.descripcionTitulo;

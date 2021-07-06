@@ -143,7 +143,7 @@ class SolicitudUsuarioController extends Controller
 
     public function ModificarSolicitud(Request $request)
     {
-       
+        try {
             $response2 = SolicitudTickets::where('uuid', $request->uuid)
             ->where('id', $request->id)
             ->update([
@@ -200,6 +200,11 @@ class SolicitudUsuarioController extends Controller
                 $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return "ok";
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+            
 
        
         
@@ -279,16 +284,27 @@ class SolicitudUsuarioController extends Controller
                $descripcionP = $request->descripcionCorreo;
                $id_solicitud = $response->id;
                $titulo = $request->tituloP;
+               $validarTicket = 1;
+               
                 Mail::send('/Mails/TicketGenerado', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $titulo], function ($message) use($listContactos) {
-                  $message->setTo($listContactos)->setSubject('Nuevo Ticket Generado');
-                  $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                  $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
-                 
-                });
-                return true;
+                    $message->setTo($listContactos)->setSubject('Nuevo Ticket Generado');
+                    $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
+                    $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                   
+                  });
+                  return true;
+               
+               
+                
         } catch (\Throwable $th) {
-            log::info($th);
-            return false;
+            if($validarTicket == 1){
+                return true;
+            }
+            else{
+                log::info($th);
+                return false;
+            }
+            
         }
         
         
