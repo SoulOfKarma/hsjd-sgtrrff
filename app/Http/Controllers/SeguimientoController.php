@@ -198,9 +198,8 @@ class SeguimientoController extends Controller
 
     public function indexSeguimiento($uuid)
     {
-        $users = SeguimientoSolicitudes::select('seguimiento_solicitudes')
+        $users = SeguimientoSolicitudes::select('seguimiento_solicitudes.*', 'users.nombre', 'users.apellido')
             ->join('users', 'seguimiento_solicitudes.id_user', '=', 'users.id')
-            ->select('seguimiento_solicitudes.*', 'users.nombre', 'users.apellido')
             ->where('seguimiento_solicitudes.uuid', '=', $uuid)
             ->orderBy('seguimiento_solicitudes.id', 'desc')
             ->get();

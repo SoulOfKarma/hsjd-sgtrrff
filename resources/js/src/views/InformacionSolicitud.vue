@@ -149,8 +149,7 @@ export default {
                 .then(res => {
                     this.solicitudes = res.data;
                     this.titulo =
-                        "1. Seguimiento Ticket N°" +
-                        this.solicitudes[0].nticket;
+                        "1. Seguimiento Ticket N°" + this.solicitudes[0].id;
                     this.tituloProblema = this.solicitudes[0].tituloP;
                     this.descripcionProblema = this.solicitudes[0].descripcionP;
                 });
