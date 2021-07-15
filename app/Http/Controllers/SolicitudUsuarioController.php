@@ -242,6 +242,43 @@ class SolicitudUsuarioController extends Controller
         //
     }
 
+    public function getTicketsKPI(){
+        try {
+            $get_all = SolicitudTickets::select('estado_solicituds.descripcionEstado as orderType',
+            DB::raw("COUNT(solicitud_tickets.id_estado) AS counts"),
+            DB::raw("(CASE WHEN solicitud_tickets.id_estado = 1 THEN 'primary'
+                          WHEN solicitud_tickets.id_estado = 2 THEN 'warning'
+                          WHEN solicitud_tickets.id_estado = 4 THEN 'danger'
+                          WHEN solicitud_tickets.id_estado = 6 THEN 'success'
+                          WHEN solicitud_tickets.id_estado = 7 THEN 'dark'
+                          END) AS color"))
+            ->join('estado_solicituds','solicitud_tickets.id_estado','=','estado_solicituds.id')
+            ->groupby('estado_solicituds.id')
+            ->get();
+            //log::info($get_all);
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getTicketsKPITotal(){
+        try {
+            $get_all = SolicitudTickets::select(DB::raw("COUNT(solicitud_tickets.id) AS openTickets"),
+            DB::raw("(SELECT COUNT(solicitud_tickets.id_estado) FROM solicitud_tickets WHERE solicitud_tickets.id_estado = 1) AS NewTickets"),
+            DB::raw("(SELECT COUNT(solicitud_tickets.id_estado) FROM solicitud_tickets WHERE solicitud_tickets.id_estado BETWEEN 2 AND 4) AS OpenTickets"),
+            DB::raw("(SELECT COUNT(solicitud_tickets.id_estado) FROM solicitud_tickets WHERE solicitud_tickets.id_estado BETWEEN 5 AND 6) AS FinalTicket"),
+            DB::raw("ROUND((SELECT COUNT(solicitud_tickets.id_estado) FROM solicitud_tickets WHERE solicitud_tickets.id_estado BETWEEN 1 AND 4)/(SELECT COUNT(solicitud_tickets.id_estado) FROM solicitud_tickets WHERE solicitud_tickets.id_estado BETWEEN 5 AND 6)) AS Porcentaje"))
+            ->join('estado_solicituds','solicitud_tickets.id_estado','=','estado_solicituds.id')
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *

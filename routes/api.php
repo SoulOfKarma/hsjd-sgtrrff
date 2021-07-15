@@ -295,6 +295,12 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/GetDuracion', ['middleware' => 'cors', 'uses' => 'DuracionSolicitudesController@getAll']);
             //Guardar Ticket
             Route::post('/Agente/PostCierreTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@PostCierreTicket']);
+
+            //Datos KPI 
+            //Traer Estados Tickets
+            Route::get('/Agente/TraerKPITickets', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getTicketsKPI']);
+            //Traer Tickets Pendientes,Finalizados y Nuevos.
+            Route::get('/Agente/TraerKPITicketsTotal', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getTicketsKPITotal']);
             
       });
       //Generar Excel	
