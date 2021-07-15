@@ -151,10 +151,11 @@
                 </vx-card>
             </div>
         </div>
+        <br />
         <div class="vx-row">
             <!--<div class="vx-col w-full lg:w-1/4 mb-base"></div>-->
-            <div class="vx-col w-1/2 mb-base">
-                <vx-card title="Support Tracker">
+            <div class="vx-col w-full mb-base">
+                <vx-card title="Support Tracker" :key="resetI">
                     <!-- CARD ACTION -->
                     <template slot="actions">
                         <change-time-duration-dropdown />
@@ -214,8 +215,8 @@
                     </div>
                 </vx-card>
             </div>
-            <div class="vx-col w-1/2 mb-base">
-                <vx-card title="Product Orders">
+            <div class="vx-col w-full mb-base">
+                <vx-card title="Product Orders" :key="resetI">
                     <!-- CARD ACTION -->
                     <template slot="actions">
                         <change-time-duration-dropdown />
@@ -226,10 +227,7 @@
                         <vue-apex-charts
                             type="radialBar"
                             height="420"
-                            :options="
-                                analyticsData.productOrdersRadialBar
-                                    .chartOptions
-                            "
+                            :options="productOrdersRadialBar.chartOptions"
                             :series="productsOrder.series"
                         />
                     </div>
@@ -275,6 +273,7 @@ export default {
     data() {
         return {
             localVal: process.env.MIX_APP_URL,
+            resetI: 0,
             supportTracker: {},
             productsOrder: {},
             salesBarSession: {},
@@ -315,44 +314,183 @@ export default {
                     desc:
                         "En este menu podras ver el calendario de turnos de la central telefonica, podras visualizar los turnos y asignar nuevos turnos para los siguientes meses, ademas podras asignar solicitudes especiales las cuales son: dia administrativo, vacaciones, reemplazos y turno extra"
                 }
-            ]
+            ],
+            productOrdersRadialBar: {
+                chartOptions: {
+                    labels: [
+                        "Enviado",
+                        "En Proceso",
+                        "Pendiente",
+                        "Finalizado",
+                        "Eliminado"
+                    ],
+                    plotOptions: {
+                        radialBar: {
+                            size: 165,
+                            offsetY: -5,
+                            hollow: {
+                                size: "20%"
+                            },
+                            track: {
+                                background: "#ebebeb",
+                                strokeWidth: "100%",
+                                margin: 15
+                            },
+                            dataLabels: {
+                                show: true,
+                                name: {
+                                    fontSize: "18px"
+                                },
+                                value: {
+                                    fontSize: "16px",
+                                    color: "#636a71",
+                                    offsetY: 11
+                                },
+                                total: {
+                                    show: true,
+                                    label: "Total",
+                                    formatter() {
+                                        return 36;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    responsive: [
+                        {
+                            breakpoint: 576,
+                            options: {
+                                plotOptions: {
+                                    radialBar: {
+                                        size: 150,
+                                        hollow: {
+                                            size: "20%"
+                                        },
+                                        track: {
+                                            background: "#ebebeb",
+                                            strokeWidth: "100%",
+                                            margin: 15
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    colors: [
+                        "#7961F9",
+                        "#FF9F43",
+                        "#EA5455",
+                        "#1fcd39",
+                        "#000000"
+                    ],
+                    fill: {
+                        type: "gradient",
+                        gradient: {
+                            // enabled: true,
+                            shade: "dark",
+                            type: "vertical",
+                            shadeIntensity: 0.5,
+                            gradientToColors: [
+                                "#9c8cfc",
+                                "#FFC085",
+                                "#f29292",
+                                "#1fcd39",
+                                "#000000"
+                            ],
+                            inverseColors: false,
+                            opacityFrom: 1,
+                            opacityTo: 1,
+                            stops: [0, 100]
+                        }
+                    },
+                    stroke: {
+                        lineCap: "round"
+                    },
+                    chart: {
+                        height: 355,
+                        dropShadow: {
+                            enabled: true,
+                            blur: 3,
+                            left: 1,
+                            top: 1,
+                            opacity: 0.1
+                        }
+                    }
+                }
+            }
         };
     },
     methods: {
         cargaST() {
-            this.supportTracker = {
-                analyticsData: {
-                    openTickets: 163,
-                    meta: {
-                        "New Tickets": 29,
-                        "Open Tickets": 63,
-                        "Response Time": "1d"
-                    }
-                },
-                series: [83]
-            };
+            try {
+                axios
+                    .get(this.localVal + "/api/Agente/TraerKPITicketsTotal", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        //this.productsOrder = res.data;
+                        let list = res.data;
+                        console.log(list);
+
+                        this.supportTracker = {
+                            analyticsData: {
+                                openTickets: list[0].openTickets,
+                                meta: {
+                                    "Tickets Nuevos": list[0].NewTickets,
+                                    "Tickets Abiertos": list[0].OpenTickets,
+                                    "Tickets Finalizados": list[0].FinalTicket
+                                }
+                            },
+                            series: [parseInt(list[0].Porcentaje)]
+                        };
+
+                        console.log(this.supportTracker);
+
+                        //this.productsOrder = dat;
+                        // this.resetI += 1;
+                    });
+            } catch (error) {
+                console.log("Error al cargar datos");
+            }
         },
         cargaSO() {
-            this.productsOrder = {
-                analyticsData: [
-                    {
-                        orderType: "Finished",
-                        counts: 23043,
-                        color: "primary"
-                    },
-                    {
-                        orderType: "Pending",
-                        counts: 14658,
-                        color: "warning"
-                    },
-                    {
-                        orderType: "Rejected ",
-                        counts: 4758,
-                        color: "danger"
-                    }
-                ],
-                series: [70, 52, 26]
-            };
+            try {
+                axios
+                    .get(this.localVal + "/api/Agente/TraerKPITickets", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        //this.productsOrder = res.data;
+                        let list = res.data;
+                        // console.log(list);
+                        let b = [];
+                        let obj = {};
+                        list.forEach((value, index) => {
+                            obj = {};
+                            obj = {
+                                orderType: value.descripcionEstado,
+                                counts: value.MAX,
+                                color: "primary"
+                            };
+                            b.push(obj);
+                        });
+                        let dat = {
+                            analyticsData: list,
+                            series: [50, 10, 10, 10, 20]
+                        };
+
+                        this.productsOrder = dat;
+                        this.resetI += 1;
+                    });
+            } catch (error) {
+                console.log("Error al cargar datos");
+            }
         }
     },
     created() {
