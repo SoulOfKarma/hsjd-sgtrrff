@@ -433,7 +433,6 @@ export default {
                     .then(res => {
                         //this.productsOrder = res.data;
                         let list = res.data;
-                        console.log(list);
 
                         this.supportTracker = {
                             analyticsData: {
@@ -446,8 +445,6 @@ export default {
                             },
                             series: [parseInt(list[0].Porcentaje)]
                         };
-
-                        console.log(this.supportTracker);
 
                         //this.productsOrder = dat;
                         // this.resetI += 1;
@@ -471,20 +468,121 @@ export default {
                         // console.log(list);
                         let b = [];
                         let obj = {};
+                        let contador = 0;
                         list.forEach((value, index) => {
                             obj = {};
-                            obj = {
-                                orderType: value.descripcionEstado,
-                                counts: value.MAX,
-                                color: "primary"
-                            };
+                            obj = parseInt(value.porcentaje);
+                            contador = contador + value.counts;
                             b.push(obj);
                         });
+
+                        this.productOrdersRadialBar = {
+                            chartOptions: {
+                                labels: [
+                                    "Enviado",
+                                    "En Proceso",
+                                    "Pendiente",
+                                    "Finalizado",
+                                    "Eliminado"
+                                ],
+                                plotOptions: {
+                                    radialBar: {
+                                        size: 165,
+                                        offsetY: -5,
+                                        hollow: {
+                                            size: "20%"
+                                        },
+                                        track: {
+                                            background: "#ebebeb",
+                                            strokeWidth: "100%",
+                                            margin: 15
+                                        },
+                                        dataLabels: {
+                                            show: true,
+                                            name: {
+                                                fontSize: "18px"
+                                            },
+                                            value: {
+                                                fontSize: "16px",
+                                                color: "#636a71",
+                                                offsetY: 11
+                                            },
+                                            total: {
+                                                show: true,
+                                                label: "Total",
+                                                formatter() {
+                                                    return contador;
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                responsive: [
+                                    {
+                                        breakpoint: 576,
+                                        options: {
+                                            plotOptions: {
+                                                radialBar: {
+                                                    size: 150,
+                                                    hollow: {
+                                                        size: "20%"
+                                                    },
+                                                    track: {
+                                                        background: "#ebebeb",
+                                                        strokeWidth: "100%",
+                                                        margin: 15
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ],
+                                colors: [
+                                    "#7961F9",
+                                    "#FF9F43",
+                                    "#EA5455",
+                                    "#1fcd39",
+                                    "#000000"
+                                ],
+                                fill: {
+                                    type: "gradient",
+                                    gradient: {
+                                        // enabled: true,
+                                        shade: "dark",
+                                        type: "vertical",
+                                        shadeIntensity: 0.5,
+                                        gradientToColors: [
+                                            "#9c8cfc",
+                                            "#FFC085",
+                                            "#f29292",
+                                            "#1fcd39",
+                                            "#000000"
+                                        ],
+                                        inverseColors: false,
+                                        opacityFrom: 1,
+                                        opacityTo: 1,
+                                        stops: [0, 100]
+                                    }
+                                },
+                                stroke: {
+                                    lineCap: "round"
+                                },
+                                chart: {
+                                    height: 355,
+                                    dropShadow: {
+                                        enabled: true,
+                                        blur: 3,
+                                        left: 1,
+                                        top: 1,
+                                        opacity: 0.1
+                                    }
+                                }
+                            }
+                        };
                         let dat = {
                             analyticsData: list,
-                            series: [50, 10, 10, 10, 20]
+                            series: b
                         };
-
                         this.productsOrder = dat;
                         this.resetI += 1;
                     });
