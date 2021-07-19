@@ -490,7 +490,6 @@ export default {
                             contador = contador + value.counts;
                             b.push(obj);
                         });
-                        console.log(label);
                         this.productOrdersRadialBar = {
                             chartOptions: {
                                 labels: label,
