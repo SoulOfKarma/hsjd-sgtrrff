@@ -473,6 +473,8 @@ export default {
                         let objData = {};
                         let codcolors = [];
                         let objcolor = {};
+                        let gradcolors = [];
+                        let objgragcolor = {};
                         list.forEach((value, index) => {
                             obj = {};
                             obj = parseInt(value.porcentaje);
@@ -482,6 +484,9 @@ export default {
                             objcolor = {};
                             objcolor = value.codcolor;
                             codcolors.push(objcolor);
+                            objgragcolor = {};
+                            objgragcolor = value.codcolor;
+                            gradcolors.push(objgragcolor);
                             contador = contador + value.counts;
                             b.push(obj);
                         });
@@ -549,13 +554,7 @@ export default {
                                         shade: "dark",
                                         type: "vertical",
                                         shadeIntensity: 0.5,
-                                        gradientToColors: [
-                                            "#9c8cfc",
-                                            "#FFC085",
-                                            "#f29292",
-                                            "#1fcd39",
-                                            "#000000"
-                                        ],
+                                        gradientToColors: gradcolors,
                                         inverseColors: false,
                                         opacityFrom: 1,
                                         opacityTo: 1,
