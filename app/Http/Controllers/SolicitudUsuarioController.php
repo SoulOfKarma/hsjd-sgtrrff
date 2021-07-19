@@ -248,13 +248,17 @@ class SolicitudUsuarioController extends Controller
             DB::raw("COUNT(solicitud_tickets.id_estado) AS counts"),
             DB::raw("(CASE WHEN solicitud_tickets.id_estado = 1 THEN 'primary'
                           WHEN solicitud_tickets.id_estado = 2 THEN 'warning'
+                          WHEN solicitud_tickets.id_estado = 3 THEN 'warning'
                           WHEN solicitud_tickets.id_estado = 4 THEN 'danger'
+                          WHEN solicitud_tickets.id_estado = 5 THEN 'success'
                           WHEN solicitud_tickets.id_estado = 6 THEN 'success'
                           WHEN solicitud_tickets.id_estado = 7 THEN 'dark'
                           END) AS color"),
             DB::raw("(CASE WHEN solicitud_tickets.id_estado = 1 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 1)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
             WHEN solicitud_tickets.id_estado = 2 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 2)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
+            WHEN solicitud_tickets.id_estado = 2 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 3)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
             WHEN solicitud_tickets.id_estado = 4 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 4)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
+            WHEN solicitud_tickets.id_estado = 2 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 5)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
             WHEN solicitud_tickets.id_estado = 6 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 6)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
             WHEN solicitud_tickets.id_estado = 7 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 7)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
             END) AS porcentaje"))
