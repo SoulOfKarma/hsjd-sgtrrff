@@ -155,11 +155,11 @@
         <div class="vx-row">
             <!--<div class="vx-col w-full lg:w-1/4 mb-base"></div>-->
             <div class="vx-col w-full mb-base">
-                <vx-card title="Support Tracker" :key="resetI">
+                <vx-card title="Seguimiento Tickets" :key="resetI">
                     <!-- CARD ACTION -->
-                    <template slot="actions">
+                    <!-- <template slot="actions">
                         <change-time-duration-dropdown />
-                    </template>
+                    </template> -->
 
                     <div slot="no-body" v-if="supportTracker.analyticsData">
                         <div class="vx-row text-center">
@@ -176,7 +176,7 @@
                                                 .openTickets
                                         }}
                                     </h1>
-                                    <small>Tickets</small>
+                                    <small>Total de Tickets</small>
                                 </div>
                             </div>
 
@@ -216,11 +216,11 @@
                 </vx-card>
             </div>
             <div class="vx-col w-full mb-base">
-                <vx-card title="Product Orders" :key="resetI">
+                <vx-card title="Porcentaje Avance Tickets" :key="resetI">
                     <!-- CARD ACTION -->
-                    <template slot="actions">
+                    <!-- <template slot="actions">
                         <change-time-duration-dropdown />
-                    </template>
+                    </template> -->
 
                     <!-- Chart -->
                     <div slot="no-body">
