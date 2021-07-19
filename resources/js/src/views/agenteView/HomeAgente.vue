@@ -468,23 +468,22 @@ export default {
                         // console.log(list);
                         let b = [];
                         let obj = {};
+                        let label = [];
                         let contador = 0;
+                        let objData = {};
                         list.forEach((value, index) => {
                             obj = {};
                             obj = parseInt(value.porcentaje);
+                            objData = {};
+                            objData = value.orderType;
+                            label.push(objData);
                             contador = contador + value.counts;
                             b.push(obj);
                         });
-
+                        console.log(label);
                         this.productOrdersRadialBar = {
                             chartOptions: {
-                                labels: [
-                                    "Enviado",
-                                    "En Proceso",
-                                    "Pendiente",
-                                    "Finalizado",
-                                    "Eliminado"
-                                ],
+                                labels: label,
                                 plotOptions: {
                                     radialBar: {
                                         size: 165,
