@@ -245,7 +245,12 @@ class SolicitudUsuarioController extends Controller
     public function getTicketsKPI(){
         try {
             $get_all = SolicitudTickets::select('estado_solicituds.descripcionEstado as orderType',
-            DB::raw("COUNT(solicitud_tickets.id_estado) AS counts"),
+            DB::raw("(CASE WHEN solicitud_tickets.id_estado = 1 THEN COUNT(solicitud_tickets.id_estado)
+                          WHEN solicitud_tickets.id_estado = 2 THEN COUNT(solicitud_tickets.id_estado)
+                          WHEN solicitud_tickets.id_estado = 4 THEN COUNT(solicitud_tickets.id_estado)
+                          WHEN solicitud_tickets.id_estado = 6 THEN (select COUNT(solicitud_tickets.id_estado) from solicitud_tickets where solicitud_tickets.id_estado BETWEEN 5 AND 6)
+                          WHEN solicitud_tickets.id_estado = 7 THEN COUNT(solicitud_tickets.id_estado)
+                          END) AS counts"),
             DB::raw("(CASE WHEN solicitud_tickets.id_estado = 1 THEN 'primary'
                           WHEN solicitud_tickets.id_estado = 2 THEN 'warning'
                           WHEN solicitud_tickets.id_estado = 4 THEN 'danger'
