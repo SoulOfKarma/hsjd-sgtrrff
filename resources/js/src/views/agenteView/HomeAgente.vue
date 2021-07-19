@@ -583,6 +583,7 @@ export default {
                             analyticsData: list,
                             series: b
                         };
+                        console.log(dat);
                         this.productsOrder = dat;
                         this.resetI += 1;
                     });

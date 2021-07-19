@@ -254,13 +254,13 @@ class SolicitudUsuarioController extends Controller
                           WHEN solicitud_tickets.id_estado = 6 THEN 'success'
                           WHEN solicitud_tickets.id_estado = 7 THEN 'dark'
                           END) AS color"),
-            DB::raw("(CASE WHEN solicitud_tickets.id_estado = 1 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 1)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
-            WHEN solicitud_tickets.id_estado = 2 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 2)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
-            WHEN solicitud_tickets.id_estado = 2 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 3)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
-            WHEN solicitud_tickets.id_estado = 4 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 4)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
-            WHEN solicitud_tickets.id_estado = 2 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 5)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
-            WHEN solicitud_tickets.id_estado = 6 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 6)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
-            WHEN solicitud_tickets.id_estado = 7 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 7)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
+            DB::raw("(CASE WHEN solicitud_tickets.id_estado = 1 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 1)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1),0)
+            WHEN solicitud_tickets.id_estado = 2 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 2)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1),0)
+            WHEN solicitud_tickets.id_estado = 3 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 3)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1),0)
+            WHEN solicitud_tickets.id_estado = 4 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 4)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1),0)
+            WHEN solicitud_tickets.id_estado = 5 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 5)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1),0)
+            WHEN solicitud_tickets.id_estado = 6 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 6)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1),0)
+            WHEN solicitud_tickets.id_estado = 7 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 7)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1),0)
             END) AS porcentaje"))
             ->join('estado_solicituds','solicitud_tickets.id_estado','=','estado_solicituds.id')
             ->groupby('estado_solicituds.id')
