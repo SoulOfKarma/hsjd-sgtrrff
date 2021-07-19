@@ -471,12 +471,17 @@ export default {
                         let label = [];
                         let contador = 0;
                         let objData = {};
+                        let codcolors = [];
+                        let objcolor = {};
                         list.forEach((value, index) => {
                             obj = {};
                             obj = parseInt(value.porcentaje);
                             objData = {};
                             objData = value.orderType;
                             label.push(objData);
+                            objcolor = {};
+                            objcolor = value.codcolor;
+                            codcolors.push(objcolor);
                             contador = contador + value.counts;
                             b.push(obj);
                         });
@@ -536,13 +541,7 @@ export default {
                                         }
                                     }
                                 ],
-                                colors: [
-                                    "#7961F9",
-                                    "#FF9F43",
-                                    "#EA5455",
-                                    "#1fcd39",
-                                    "#000000"
-                                ],
+                                colors: codcolors,
                                 fill: {
                                     type: "gradient",
                                     gradient: {
@@ -582,7 +581,6 @@ export default {
                             analyticsData: list,
                             series: b
                         };
-                        console.log(dat);
                         this.productsOrder = dat;
                         this.resetI += 1;
                     });
