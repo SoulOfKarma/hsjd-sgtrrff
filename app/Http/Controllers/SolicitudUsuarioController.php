@@ -269,7 +269,7 @@ class SolicitudUsuarioController extends Controller
             DB::raw("(SELECT COUNT(solicitud_tickets.id_estado) FROM solicitud_tickets WHERE solicitud_tickets.id_estado = 1) AS NewTickets"),
             DB::raw("(SELECT COUNT(solicitud_tickets.id_estado) FROM solicitud_tickets WHERE solicitud_tickets.id_estado BETWEEN 2 AND 4) AS OpenTickets"),
             DB::raw("(SELECT COUNT(solicitud_tickets.id_estado) FROM solicitud_tickets WHERE solicitud_tickets.id_estado BETWEEN 5 AND 6) AS FinalTicket"),
-            DB::raw("ROUND((SELECT COUNT(solicitud_tickets.id_estado) FROM solicitud_tickets WHERE solicitud_tickets.id_estado BETWEEN 1 AND 4)/(SELECT COUNT(solicitud_tickets.id_estado) FROM solicitud_tickets WHERE solicitud_tickets.id_estado BETWEEN 5 AND 6)) AS Porcentaje"))
+            DB::raw("ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado BETWEEN 5 AND 6)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado BETWEEN 1 AND 4),2) AS Porcentaje"))
             ->join('estado_solicituds','solicitud_tickets.id_estado','=','estado_solicituds.id')
             ->get();
             return $get_all;
