@@ -257,7 +257,13 @@ class SolicitudUsuarioController extends Controller
                           WHEN solicitud_tickets.id_estado = 4 THEN '#EA5455'
                           WHEN solicitud_tickets.id_estado = 6 THEN '#1fcd39'
                           WHEN solicitud_tickets.id_estado = 7 THEN '#000000'
-                          END) AS codcolor"),              
+                          END) AS codcolor"),        
+            DB::raw("(CASE WHEN solicitud_tickets.id_estado = 1 THEN '#9c8cfc'
+                          WHEN solicitud_tickets.id_estado = 2 THEN '#FFC085'
+                          WHEN solicitud_tickets.id_estado = 4 THEN '#f29292'
+                          WHEN solicitud_tickets.id_estado = 6 THEN '#1fcd39'
+                          WHEN solicitud_tickets.id_estado = 7 THEN '#000000'
+                          END) AS gradcolor"),                    
             DB::raw("(CASE WHEN solicitud_tickets.id_estado = 1 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 1)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1),0)
             WHEN solicitud_tickets.id_estado = 2 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 2)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1),0)
             WHEN solicitud_tickets.id_estado = 4 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 4)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1),0)
