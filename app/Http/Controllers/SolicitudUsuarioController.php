@@ -307,6 +307,71 @@ class SolicitudUsuarioController extends Controller
         }
     }
 
+    public function getKPIServicio(){
+        try {
+            $get_all = solicitudTickets::select("servicios.descripcionServicio",DB::raw("COUNT(servicios.descripcionServicio) AS serviciomassolicitado"))
+            ->join("servicios",'solicitud_tickets.id_servicio','=','servicios.id')
+            ->groupby("servicios.id")
+            ->orderBy('serviciomassolicitado', 'desc')
+            ->limit(1)
+            ->get();
+
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getKPIUsuario(){
+        try {
+            $get_all = solicitudTickets::select("users.id",DB::raw("CONCAT(users.nombre,' ',users.apellido) AS usuariosolicitante"),
+            DB::raw("COUNT(solicitud_tickets.id_user) massolicitante"))
+            ->join("users",'solicitud_tickets.id_user','=','users.id')
+            ->groupby("users.id")
+            ->orderBy('users.id', 'asc')
+            ->limit(1)
+            ->get();
+
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getKPICategoria(){
+        try {
+            $get_all = solicitudTickets::select("categorias.des_categoria",DB::raw("COUNT(solicitud_tickets.id_categoria) AS categoriamassol"))
+            ->join("categorias",'solicitud_tickets.id_categoria','=','categorias.id')
+            ->groupby("categorias.id")
+            ->orderBy('categoriamassol', 'DESC')
+            ->limit(1)
+            ->get();
+
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getKPITipoMantencion(){
+        try {
+            $get_all = solicitudTickets::select("tipo_reparacions.descripcionTipoReparacion",DB::raw("COUNT(solicitud_tickets.id_tipoReparacion) AS tipomassol"))
+            ->join("tipo_reparacions",'solicitud_tickets.id_categoria','=','tipo_reparacions.id')
+            ->groupby("tipo_reparacions.id")
+            ->orderBy('tipomassol', 'desc')
+            ->limit(1)
+            ->get();
+
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *

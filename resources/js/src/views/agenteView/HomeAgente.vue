@@ -103,7 +103,7 @@
                         <div
                             class="vx-col w-full md:w-full sm:w-1/2 lg:w-1/2 xl:w-1/2 flex flex-col lg:mb-0 md:mb-base sm:mb-0 mb-base"
                         >
-                            <change-time-duration-dropdown class="self-end" />
+                            <!-- <change-time-duration-dropdown class="self-end" /> -->
                             <vue-apex-charts
                                 type="bar"
                                 height="200"
@@ -116,34 +116,37 @@
                     <vs-divider class="my-6"></vs-divider>
                     <div class="vx-row">
                         <div class="vx-col w-1/2 mb-3">
-                            <p>Goal: $100000</p>
+                            <p>Servicio Mas Solicitante: {{ serviciom }}</p>
                             <vs-progress
                                 class="block mt-1"
-                                :percent="50"
+                                :percent="100"
                                 color="primary"
                             ></vs-progress>
                         </div>
                         <div class="vx-col w-1/2 mb-3">
-                            <p>Users: 100K</p>
+                            <p>Usuario Mas Solicitante: {{ usuariom }}</p>
                             <vs-progress
                                 class="block mt-1"
-                                :percent="60"
+                                :percent="100"
                                 color="warning"
                             ></vs-progress>
                         </div>
                         <div class="vx-col w-1/2 mb-3">
-                            <p>Retention: 90%</p>
+                            <p>Categoria Mas Solicitada: {{ categoriam }}</p>
                             <vs-progress
                                 class="block mt-1"
-                                :percent="70"
+                                :percent="100"
                                 color="danger"
                             ></vs-progress>
                         </div>
                         <div class="vx-col w-1/2 mb-3">
-                            <p>Duration: 1yr</p>
+                            <p>
+                                Tipo de Reparacion Mas Solicitada:
+                                {{ tmantencionm }}
+                            </p>
                             <vs-progress
                                 class="block mt-1"
-                                :percent="90"
+                                :percent="100"
                                 color="success"
                             ></vs-progress>
                         </div>
@@ -417,7 +420,11 @@ export default {
                         }
                     }
                 }
-            }
+            },
+            serviciom: "",
+            usuariom: "",
+            categoriam: "",
+            tmantencionm: ""
         };
     },
     methods: {
@@ -585,11 +592,71 @@ export default {
             } catch (error) {
                 console.log("Error al cargar datos");
             }
+        },
+        cargaMas() {
+            try {
+                axios
+                    .all([
+                        axios.get(
+                            this.localVal + "/api/Agente/TraerServicioKPI",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        ),
+                        axios.get(
+                            this.localVal + "/api/Agente/TraerUsuarioKPI",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        ),
+                        axios.get(
+                            this.localVal + "/api/Agente/TraerCategoriaKPI",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        ),
+                        axios.get(
+                            this.localVal +
+                                "/api/Agente/TraerTipoMantencionKPI",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                    ])
+                    .then(
+                        axios.spread((dat1, dat2, dat3, dat4) => {
+                            this.serviciom = dat1.data[0].descripcionServicio;
+                            this.usuariom = dat2.data[0].usuariosolicitante;
+                            this.categoriam = dat3.data[0].des_categoria;
+                            this.tmantencionm =
+                                dat4.data[0].descripcionTipoReparacion;
+                        })
+                    );
+            } catch (error) {
+                console.log("Error de carga de datos");
+            }
         }
     },
     created() {
         this.cargaST();
         this.cargaSO();
+        this.cargaMas();
     }
 };
 </script>

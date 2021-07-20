@@ -301,6 +301,14 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/TraerKPITickets', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getTicketsKPI']);
             //Traer Tickets Pendientes,Finalizados y Nuevos.
             Route::get('/Agente/TraerKPITicketsTotal', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getTicketsKPITotal']);
+            //Traer Servicio mas solicitado.
+            Route::get('/Agente/TraerServicioKPI', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPIServicio']);
+            //Traer usuario mas solicitante.
+            Route::get('/Agente/TraerUsuarioKPI', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPIUsuario']);
+            //Traer Categoria mas solicitante.
+            Route::get('/Agente/TraerCategoriaKPI', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPICategoria']);
+            //Traer Tipo Mantencion mas solicitante.
+            Route::get('/Agente/TraerTipoMantencionKPI', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPITipoMantencion']);
             
       });
       //Generar Excel	
