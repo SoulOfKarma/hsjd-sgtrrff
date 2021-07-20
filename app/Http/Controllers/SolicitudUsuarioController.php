@@ -329,7 +329,7 @@ class SolicitudUsuarioController extends Controller
             DB::raw("COUNT(solicitud_tickets.id_user) massolicitante"))
             ->join("users",'solicitud_tickets.id_user','=','users.id')
             ->groupby("users.id")
-            ->orderBy('users.id', 'asc')
+            ->orderBy('massolicitante', 'desc')
             ->limit(1)
             ->get();
 
