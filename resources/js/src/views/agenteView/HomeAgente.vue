@@ -7,8 +7,8 @@
             ></div>
         </div>
         <div class="vx-row">
-            <div class="vx-col w-full lg:w-1/4 mb-base"></div>
-            <div class="vx-col w-full lg:w-1/2 mb-base">
+            <!-- <div class="vx-col w-full lg:w-1/4 mb-base"></div> -->
+            <div class="vx-col w-full  mb-base">
                 <vx-card
                     slot="no-body"
                     class="text-center bg-primary-gradient greet-user"
@@ -27,137 +27,73 @@
                     </p>
                 </vx-card>
             </div>
-            <div class="vx-col w-full lg:w-1/4 mb-base"></div>
+            <!-- <div class="vx-col w-full lg:w-1/4 mb-base"></div> -->
         </div>
 
         <div class="vx-row">
-            <div class="vx-col w-full lg:w-1/4 mb-base"></div>
-            <div class="vx-col w-full lg:w-1/2 mb-base">
-                <div class="vx-col w-full lg:w-full mb-base">
-                    <vx-card title="Informacion del Perfil">
-                        <vx-timeline :data="timelineData" />
-                    </vx-card>
-                </div>
-            </div>
-            <div class="vx-col w-full lg:w-1/4 mb-base"></div>
-        </div>
-        <div class="vx-row">
-            <div class="vx-col w-1/2">
-                <vx-card>
-                    <div
-                        class="vx-row flex-col-reverse md:flex-col-reverse sm:flex-row lg:flex-row"
-                    >
-                        <!-- LEFT COL -->
-                        <div
-                            class="vx-col w-full md:w-full sm:w-1/2 lg:w-1/2 xl:w-1/2 flex flex-col justify-between"
-                            v-if="salesBarSession.analyticsData"
-                        >
-                            <div>
-                                <h2 class="mb-1 font-bold">
-                                    {{
-                                        salesBarSession.analyticsData.session
-                                            | k_formatter
-                                    }}
-                                </h2>
-                                <span class="font-medium">Avg Sessions</span>
-
-                                <!-- Previous Data Comparison -->
-                                <p class="mt-2 text-xl font-medium">
-                                    <span
-                                        :class="
-                                            salesBarSession.analyticsData
-                                                .comparison.result >= 0
-                                                ? 'text-success'
-                                                : 'text-danger'
-                                        "
-                                    >
-                                        <span
-                                            v-if="
-                                                salesBarSession.analyticsData
-                                                    .comparison.result > 0
-                                            "
-                                            >+</span
-                                        >
-                                        <span>{{
-                                            salesBarSession.analyticsData
-                                                .comparison.result
-                                        }}</span>
-                                    </span>
-                                    <span> vs </span>
-                                    <span>{{
-                                        salesBarSession.analyticsData.comparison
-                                            .str
-                                    }}</span>
-                                </p>
-                            </div>
-                            <vs-button
-                                icon-pack="feather"
-                                icon="icon-chevrons-right"
-                                icon-after
-                                class="shadow-md w-full lg:mt-0 mt-4"
-                                >View Details</vs-button
-                            >
-                        </div>
-
-                        <!-- RIGHT COL -->
-                        <div
-                            class="vx-col w-full md:w-full sm:w-1/2 lg:w-1/2 xl:w-1/2 flex flex-col lg:mb-0 md:mb-base sm:mb-0 mb-base"
-                        >
-                            <!-- <change-time-duration-dropdown class="self-end" /> -->
-                            <vue-apex-charts
-                                type="bar"
-                                height="200"
-                                :options="analyticsData.salesBar.chartOptions"
-                                :series="salesBarSession.series"
-                                v-if="salesBarSession.series"
-                            />
-                        </div>
-                    </div>
-                    <vs-divider class="my-6"></vs-divider>
-                    <div class="vx-row">
-                        <div class="vx-col w-1/2 mb-3">
-                            <p>Servicio Mas Solicitante: {{ serviciom }}</p>
-                            <vs-progress
-                                class="block mt-1"
-                                :percent="100"
-                                color="primary"
-                            ></vs-progress>
-                        </div>
-                        <div class="vx-col w-1/2 mb-3">
-                            <p>Usuario Mas Solicitante: {{ usuariom }}</p>
-                            <vs-progress
-                                class="block mt-1"
-                                :percent="100"
-                                color="warning"
-                            ></vs-progress>
-                        </div>
-                        <div class="vx-col w-1/2 mb-3">
-                            <p>Categoria Mas Solicitada: {{ categoriam }}</p>
-                            <vs-progress
-                                class="block mt-1"
-                                :percent="100"
-                                color="danger"
-                            ></vs-progress>
-                        </div>
-                        <div class="vx-col w-1/2 mb-3">
-                            <p>
-                                Tipo de Reparacion Mas Solicitada:
-                                {{ tmantencionm }}
-                            </p>
-                            <vs-progress
-                                class="block mt-1"
-                                :percent="100"
-                                color="success"
-                            ></vs-progress>
-                        </div>
-                    </div>
+            <!-- <div class="vx-col w-full lg:w-1/4 mb-base"></div> -->
+            <!-- <div class="vx-col w-full lg:w-1/2 mb-base"> -->
+            <div class="vx-col w-full lg:w-full mb-base">
+                <vx-card title="Informacion del Perfil">
+                    <vx-timeline :data="timelineData" />
                 </vx-card>
+            </div>
+            <!-- </div> -->
+            <!-- <div class="vx-col w-full lg:w-1/4 mb-base"></div> -->
+        </div>
+
+        <div class="vx-row">
+            <div
+                class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base"
+            >
+                <statistics-card-line
+                    icon="UsersIcon"
+                    :statistic="serviciom"
+                    statisticTitle="Servicio Mas Solicitante"
+                    color="primary"
+                    type="area"
+                ></statistics-card-line>
+            </div>
+            <div
+                class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base"
+            >
+                <statistics-card-line
+                    icon="ShoppingBagIcon"
+                    :statistic="usuariom"
+                    statisticTitle="Usuario Mas Solicitante"
+                    color="warning"
+                    type="area"
+                ></statistics-card-line>
+            </div>
+
+            <div
+                class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base"
+            >
+                <statistics-card-line
+                    icon="UsersIcon"
+                    :statistic="categoriam"
+                    statisticTitle="Categoria Mas Solicitada"
+                    color="danger"
+                    type="area"
+                ></statistics-card-line>
+            </div>
+
+            <div
+                class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base"
+            >
+                <statistics-card-line
+                    icon="UsersIcon"
+                    :statistic="tmantencionm"
+                    statisticTitle="Tipo de Reparacion Mas Solicitada"
+                    color="success"
+                    type="area"
+                ></statistics-card-line>
             </div>
         </div>
         <br />
         <div class="vx-row">
             <!--<div class="vx-col w-full lg:w-1/4 mb-base"></div>-->
-            <div class="vx-col w-1/2 mb-base">
+            <div class="vx-col w-full mb-base">
                 <vx-card title="Seguimiento Tickets" :key="resetI">
                     <!-- CARD ACTION -->
                     <!-- <template slot="actions">
@@ -218,7 +154,7 @@
                     </div>
                 </vx-card>
             </div>
-            <div class="vx-col w-1/2 mb-base">
+            <div class="vx-col w-full mb-base">
                 <vx-card title="Porcentaje Avance Tickets" :key="resetI">
                     <!-- CARD ACTION -->
                     <!-- <template slot="actions">
@@ -424,7 +360,11 @@ export default {
             serviciom: "",
             usuariom: "",
             categoriam: "",
-            tmantencionm: ""
+            tmantencionm: "",
+            subscribersGained: {},
+            ordersRecevied: {},
+            quarterlySales: {},
+            revenueGenerated: {}
         };
     },
     methods: {
