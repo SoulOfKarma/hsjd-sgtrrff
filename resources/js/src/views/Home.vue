@@ -7,8 +7,7 @@
             ></div>
         </div>
         <div class="vx-row">
-            <div class="vx-col w-full lg:w-1/4 mb-base"></div>
-            <div class="vx-col w-full lg:w-1/2 mb-base">
+            <div class="vx-col w-full mb-base">
                 <vx-card
                     slot="no-body"
                     class="text-center bg-primary-gradient greet-user"
@@ -27,18 +26,15 @@
                     </p>
                 </vx-card>
             </div>
-            <div class="vx-col w-full lg:w-1/4 mb-base"></div>
         </div>
         <div class="vx-row">
-            <div class="vx-col w-full lg:w-1/4 mb-base"></div>
-            <div class="vx-col w-full lg:w-1/2 mb-base">
+            <div class="vx-col w-full mb-base">
                 <div class="vx-col w-full lg:w-full mb-base">
                     <vx-card title="Informacion del Perfil">
                         <vx-timeline :data="timelineData" />
                     </vx-card>
                 </div>
             </div>
-            <div class="vx-col w-full lg:w-1/4 mb-base"></div>
         </div>
     </div>
 </template>
