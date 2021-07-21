@@ -27,12 +27,6 @@ export default [
                 icon: "SendIcon",
                 submenu: [
                     {
-                        url: "/agenteView/CalendarioSolicitudes",
-                        name: "Calendario",
-                        slug: "CalendarioSolicitudes",
-                        icon: "FileIcon"
-                    },
-                    {
                         url: "/agenteView/ListadoSolicitudes",
                         name: "Listado Tickets",
                         slug: "ListadoSolicitudes",
@@ -58,12 +52,6 @@ export default [
                 slug: "home",
                 icon: "SendIcon",
                 submenu: [
-                    {
-                        url: "/agenteView/CalendarioSolicitudesEM",
-                        name: "Calendario",
-                        slug: "CalendarioSolicitudesEM",
-                        icon: "FileIcon"
-                    },
                     {
                         url: "/agenteView/ListadoTicketsEM",
                         name: "Listado Tickets ",
@@ -91,12 +79,6 @@ export default [
                 icon: "SendIcon",
                 submenu: [
                     {
-                        url: "/agenteView/CalendarioSolicitudesIND",
-                        name: "Calendario",
-                        slug: "CalendarioSolicitudesIND",
-                        icon: "FileIcon"
-                    },
-                    {
                         url: "/agenteView/ListadoTicketsIND",
                         name: "Listado Tickets",
                         slug: "ListadoTicketsIND",
@@ -122,12 +104,6 @@ export default [
                 slug: "home",
                 icon: "SendIcon",
                 submenu: [
-                    {
-                        url: "/agenteView/CalendarioSolicitudesCA",
-                        name: "Calendario",
-                        slug: "CalendarioSolicitudesCA",
-                        icon: "FileIcon"
-                    },
                     {
                         url: "/agenteView/ListadoTicketsCA",
                         name: "Listado Tickets",
