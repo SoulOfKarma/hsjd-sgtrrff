@@ -15,6 +15,9 @@ class CreateGanttObrasTable extends Migration
     {
         Schema::create('gantt_obras', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('resourceId');
+            $table->date('start');
+            $table->date('end');
             $table->string('title');
             $table->string('eventcolor')->nullable();
             $table->timestamps();
