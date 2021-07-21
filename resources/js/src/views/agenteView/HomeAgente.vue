@@ -58,7 +58,7 @@
                 class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base"
             >
                 <statistics-card-line
-                    icon="ShoppingBagIcon"
+                    icon="UsersIcon"
                     :statistic="usuariom"
                     statisticTitle="Usuario Mas Solicitante"
                     color="warning"
