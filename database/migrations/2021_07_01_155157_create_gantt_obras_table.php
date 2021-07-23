@@ -20,6 +20,7 @@ class CreateGanttObrasTable extends Migration
             $table->date('end');
             $table->string('title');
             $table->string('eventcolor')->nullable();
+            $table->bigInteger('resourceAsociado')->nullable();
             $table->timestamps();
         });
     }
