@@ -310,6 +310,15 @@ use App\Mail\AutoRespuesta;
             //Traer Tipo Mantencion mas solicitante.
             Route::get('/Agente/TraerTipoMantencionKPI', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPITipoMantencion']);
             
+            //Datos Calendario 
+            //Traer Obras Existentes
+            Route::get('/Agente/VerificacionIdExistente', ['middleware' => 'cors', 'uses' => 'GanttObrasController@verificacionId']);
+            //Guardar Nueva Obra
+            Route::post('/Agente/GuardarNObra', ['middleware' => 'cors', 'uses' => 'GanttObrasController@PostNObra']);
+            //Traer Obra Recurso Nulo
+            Route::get('/Agente/BuscarObraRANull', ['middleware' => 'cors', 'uses' => 'GanttObrasController@PostNObraRANull']);
+            //Traer Obra Recurso Activo
+            Route::get('/Agente/BuscarObraRActiva', ['middleware' => 'cors', 'uses' => 'GanttObrasController@PostNObraRA']);
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');

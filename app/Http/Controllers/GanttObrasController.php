@@ -4,82 +4,54 @@ namespace App\Http\Controllers;
 
 use App\GanttObras;
 use Illuminate\Http\Request;
+use DB;
+use Illuminate\Support\Facades\Log;
 
 class GanttObrasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function verificacionId(){
+        try {
+            $get_all = GanttObras::all();
+            return $get_all;
+            
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function PostNObra(Request $request){
+      try {
+          $get_all = GanttObras::create($request->all());
+          return true;
+      } catch (\Throwable $th) {
+          log::info($th);
+          return false;
+      }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function PostNObraRANull(){
+        try {
+            $get_all = GanttObras::whereNull("resourceAsociado")
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+      }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\GanttObras  $ganttObras
-     * @return \Illuminate\Http\Response
-     */
-    public function show(GanttObras $ganttObras)
-    {
-        //
-    }
+      public function PostNObraRA(){
+        try {
+            $get_all = GanttObras::select("gantt_obras.*")
+            ->whereNotNull("gantt_obras.resourceAsociado")
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+      }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\GanttObras  $ganttObras
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(GanttObras $ganttObras)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\GanttObras  $ganttObras
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, GanttObras $ganttObras)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\GanttObras  $ganttObras
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(GanttObras $ganttObras)
-    {
-        //
-    }
+    
 }
