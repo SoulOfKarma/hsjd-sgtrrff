@@ -439,17 +439,26 @@ export default {
                     .then(res => {
                         let data = res.data;
                         if (data == true) {
-                            console.log("Guardado correctamente");
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Guardado correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popCrearNObra = false;
+                            this.popCrearSubCatObra = false;
+                            this.cargarRecursos();
                         } else {
-                            console.log(
-                                "Hubo un error al tratar de guardar la obra"
-                            );
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text: "No se pudieron guardar los datos",
+                                color: "success",
+                                position: "top-right"
+                            });
                         }
                     });
-
-                this.popCrearNObra = false;
-                this.popCrearSubCatObra = false;
-                this.cargarRecursos();
             } catch (error) {
                 console.log("Error al Guardar datos");
             }
@@ -481,16 +490,26 @@ export default {
                     .then(res => {
                         let data = res.data;
                         if (data == true) {
-                            console.log("Guardado correctamente");
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Guardado correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popCrearNObra = false;
+                            this.popCrearSubCatObra = false;
+                            this.cargarRecursos();
                         } else {
-                            console.log(
-                                "Hubo un error al tratar de guardar la obra"
-                            );
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text: "No se pudieron guardar los datos",
+                                color: "success",
+                                position: "top-right"
+                            });
                         }
                     });
-                this.popCrearNObra = false;
-                this.popCrearSubCatObra = false;
-                this.cargarRecursos();
             } catch (error) {
                 console.log("Error al Guardar datos");
             }
@@ -570,12 +589,25 @@ export default {
                             this.listadoObras = dat1.data;
                             this.calendarOptions.resources = c;
                             this.calendarOptions.events = dat;
-
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Carga de Datos",
+                                text: "Se llenara Listado",
+                                color: "primary",
+                                position: "top-right"
+                            });
                             this.valCalendar = true;
                             this.resetI += 1;
                         })
                     );
             } catch (error) {
+                this.$vs.notify({
+                    time: 3000,
+                    title: "Error",
+                    text: "No se pudieron cargar Datos",
+                    color: "danger",
+                    position: "top-right"
+                });
                 console.log("Error al recuperar los datos externos");
             }
         }
