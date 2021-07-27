@@ -412,6 +412,13 @@ export default {
             this.popCrearNObra = false;
             this.popCrearSubCatObra = false;
         },
+        limpiar() {
+            this.title = "";
+            this.start = moment(new Date()).format("YYYY-MM-DD");
+            this.end = moment(new Date()).format("YYYY-MM-DD");
+            this.startHour = moment(new Date()).format("H:mm");
+            this.endHour = moment(new Date()).format("H:mm");
+        },
         guardarObra() {
             try {
                 if (this.title == "" || this.title <= 4) {
@@ -471,6 +478,7 @@ export default {
                                     color: "success",
                                     position: "top-right"
                                 });
+                                this.limpiar();
                                 this.popCrearNObra = false;
                                 this.popCrearSubCatObra = false;
                                 this.cargarRecursos();
@@ -527,7 +535,7 @@ export default {
                         start: fechaInicio,
                         end: fechaTermino,
                         eventcolor: "blue",
-                        resourceId: this.resourceAsociado,
+                        resourceId: this.UltimoIDObra,
                         resourceAsociado: this.idObraSeleccionada
                     };
 
@@ -553,6 +561,7 @@ export default {
                                     color: "success",
                                     position: "top-right"
                                 });
+                                this.limpiar();
                                 this.popCrearNObra = false;
                                 this.popCrearSubCatObra = false;
                                 this.cargarRecursos();
@@ -629,9 +638,10 @@ export default {
                                             eventColor: value.eventcolor
                                         };
                                         b.push(obj);
+                                        values.children = b;
                                     }
                                 });
-                                values.children = b;
+
                                 c.push(values);
                             });
                             if (listObraU.length <= 0) {
