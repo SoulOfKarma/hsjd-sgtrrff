@@ -446,6 +446,10 @@ export default {
                             );
                         }
                     });
+
+                this.popCrearNObra = false;
+                this.popCrearSubCatObra = false;
+                this.cargarRecursos();
             } catch (error) {
                 console.log("Error al Guardar datos");
             }
@@ -484,6 +488,9 @@ export default {
                             );
                         }
                     });
+                this.popCrearNObra = false;
+                this.popCrearSubCatObra = false;
+                this.cargarRecursos();
             } catch (error) {
                 console.log("Error al Guardar datos");
             }
@@ -551,13 +558,18 @@ export default {
                                 values.children = b;
                                 c.push(values);
                             });
-                            listObraU.forEach((value, index) => {
-                                d.push(value.id);
-                            });
+                            if (listObraU == []) {
+                                this.UltimoIDObra = 1;
+                            } else {
+                                listObraU.forEach((value, index) => {
+                                    d.push(value.id);
+                                });
+                                this.UltimoIDObra = d[0] + 1;
+                            }
+
                             this.listadoObras = dat1.data;
                             this.calendarOptions.resources = c;
                             this.calendarOptions.events = dat;
-                            this.UltimoIDObra = d[0] + 1;
 
                             this.valCalendar = true;
                             this.resetI += 1;
