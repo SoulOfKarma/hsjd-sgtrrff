@@ -558,7 +558,7 @@ export default {
                                 values.children = b;
                                 c.push(values);
                             });
-                            if (listObraU == []) {
+                            if (listObraU.length <= 0) {
                                 this.UltimoIDObra = 1;
                             } else {
                                 listObraU.forEach((value, index) => {
