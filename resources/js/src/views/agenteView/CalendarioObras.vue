@@ -10,6 +10,7 @@
                 </div>
             </vx-card>
         </div>
+        <!-- Pop Up Para Agregar Nuevas Obras -->
         <vs-popup
             classContent="popup-example"
             title=" "
@@ -31,7 +32,7 @@
                 <vx-card title="2. Ingrese Fechas de Obra">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/2 mt-3">
-                            <h6>1.2 Fecha Inicio</h6>
+                            <h6>2.1 Fecha Inicio</h6>
                             <flat-pickr
                                 class="vx-col w-1/3 mt-5"
                                 :config="configFromdateTimePicker"
@@ -47,7 +48,7 @@
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.3 Fecha Termino</h6>
+                            <h6>2.2 Fecha Termino</h6>
                             <flat-pickr
                                 class="vx-col w-1/3 mt-5"
                                 :config="configTodateTimePicker"
@@ -87,6 +88,99 @@
                 </vx-card>
             </div>
         </vs-popup>
+        <!-- Pop Up Para Agregar Nuevas Categorias a las Obras -->
+        <vs-popup
+            classContent="popup-example"
+            title=" "
+            :active.sync="popCrearSubCatObra"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="1. Seleccione Obra">
+                    <vue-good-table
+                        :columns="columns"
+                        :rows="listadoObras"
+                        :pagination-options="{
+                            enabled: true,
+                            perPage: 10
+                        }"
+                        @on-selected-rows-change="selectionChanged"
+                        :select-options="{ enabled: true }"
+                        :search-options="{ enabled: true }"
+                    >
+                        >
+                    </vue-good-table>
+                </vx-card>
+                <vx-card title="2. Ingrese Datos Sub Categoria">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-3">
+                            <h6>2.1 Nombre Categoria</h6>
+                            <vs-input
+                                class="vx-col w-full mt-3"
+                                v-model="title"
+                            />
+                        </div>
+                        <br />
+                    </div>
+                </vx-card>
+                <vx-card title="3. Ingrese Fechas Sub Categoria">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/2 mt-3">
+                            <h6>3.1 Fecha Inicio</h6>
+                            <flat-pickr
+                                class="vx-col w-1/3 mt-5"
+                                :config="configFromdateTimePicker"
+                                v-model="start"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                            />
+                            <flat-pickr
+                                class="vx-col w-1/3 mt-5"
+                                :config="configdateTimePicker"
+                                v-model="startHour"
+                                placeholder="Seleccione Hora"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>3.2 Fecha Termino</h6>
+                            <flat-pickr
+                                class="vx-col w-1/3 mt-5"
+                                :config="configTodateTimePicker"
+                                v-model="end"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                            />
+                            <flat-pickr
+                                class="vx-col w-1/3 mt-5"
+                                :config="configdateTimePicker"
+                                v-model="endHour"
+                                placeholder="Seleccione Hora"
+                            />
+                        </div>
+                    </div>
+                    <div class="vx-col md:w-full w-full mb-base">
+                        <div class="vx-row mb-12">
+                            <div class="vx-col w-1/2 mt-5">
+                                <vs-button
+                                    class="mb-2 w-full"
+                                    @click="volver"
+                                    color="primary"
+                                    >Volver
+                                </vs-button>
+                            </div>
+
+                            <div class="vx-col w-1/2 mt-5">
+                                <vs-button
+                                    class="mb-2 w-full"
+                                    @click="guardarSubObra"
+                                    color="success"
+                                    >Enviar</vs-button
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+        </vs-popup>
     </div>
 </template>
 <script>
@@ -102,6 +196,10 @@ import "flatpickr/dist/flatpickr.css";
 import moment from "moment";
 import router from "@/router";
 import axios from "axios";
+import Vue from "vue";
+import "vue-good-table/dist/vue-good-table.css";
+import VueGoodTablePlugin from "vue-good-table";
+Vue.use(VueGoodTablePlugin);
 
 export default {
     components: {
@@ -112,25 +210,69 @@ export default {
         return {
             format: "d MMMM yyyy",
             resetI: 0,
+            listadoObras: [],
+            columns: [
+                {
+                    label: "Obra",
+                    field: "title",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Fecha Inicio",
+                    field: "starts",
+                    type: "date",
+                    dateInputFormat: "dd/MM/yyyy",
+                    dateOutputFormat: "dd/MM/yyyy",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Fecha Termino",
+                    field: "ends",
+                    type: "date",
+                    dateInputFormat: "dd/MM/yyyy",
+                    dateOutputFormat: "dd/MM/yyyy",
+                    filterOptions: {
+                        enabled: true
+                    }
+                }
+            ],
+            idObraSeleccionada: 0,
+            UltimoIDObra: 0,
+            listadoObUl: [],
             popCrearNObra: false,
             valCalendar: false,
+            popCrearSubCatObra: false,
             title: "",
             resourceAsociado: "",
             calendarOptions: {
+                customButtons: {
+                    NObra: {
+                        text: "Nueva Obra",
+                        click: () => this.$set(this, "popCrearNObra", true)
+                    },
+                    NSubObra: {
+                        text: "Asignar Sub-Categoria Obras",
+                        click: () => this.$set(this, "popCrearSubCatObra", true)
+                    }
+                },
                 plugins: [
                     dayGridPlugin,
                     interactionPlugin,
                     resourceTimelinePlugin
                 ],
                 headerToolbar: {
-                    left: "today prev,next",
+                    left: "today prev,next NObra NSubObra",
                     center: "title",
                     right:
                         "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth"
                 },
-                dateClick: this.handleDateClick,
+                //dateClick: this.handleDateClick,
                 locale: esLocale,
-                selectable: true,
+                //selectable: true,
                 resourceAreaHeaderContent: "Calendario de Obras",
                 resources: {},
                 events: {},
@@ -257,8 +399,8 @@ export default {
         };
     },
     methods: {
-        handleDateClick: function(arg) {
-            this.popCrearNObra = true;
+        selectionChanged(params) {
+            this.idObraSeleccionada = params.selectedRows[0].id;
         },
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
@@ -268,6 +410,7 @@ export default {
         },
         volver() {
             this.popCrearNObra = false;
+            this.popCrearSubCatObra = false;
         },
         guardarObra() {
             try {
@@ -282,12 +425,50 @@ export default {
                     start: fechaInicio,
                     end: fechaTermino,
                     eventcolor: "green",
-                    resourceId: 1,
-                    resourceAsociado: this.resourceAsociado
+                    resourceId: this.UltimoIDObra,
+                    resourceAsociado: null
                 };
 
                 axios
                     .post(this.localVal + "/api/Agente/GuardarNObra", obj, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        let data = res.data;
+                        if (data == true) {
+                            console.log("Guardado correctamente");
+                        } else {
+                            console.log(
+                                "Hubo un error al tratar de guardar la obra"
+                            );
+                        }
+                    });
+            } catch (error) {
+                console.log("Error al Guardar datos");
+            }
+        },
+        guardarSubObra() {
+            try {
+                let fechaInicio = moment(
+                    this.start + " " + this.startHour
+                ).format("YYYY-MM-DD H:mm");
+                let fechaTermino = moment(this.end + " " + this.endHour).format(
+                    "YYYY-MM-DD H:mm"
+                );
+                let obj = {
+                    title: this.title,
+                    start: fechaInicio,
+                    end: fechaTermino,
+                    eventcolor: "blue",
+                    resourceId: this.resourceAsociado,
+                    resourceAsociado: this.idObraSeleccionada
+                };
+
+                axios
+                    .post(this.localVal + "/api/Agente/GuardarNSubObra", obj, {
                         headers: {
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")
@@ -331,23 +512,26 @@ export default {
                                 }
                             }
                         ),
-                        axios.get(
-                            this.localVal +
-                                "/api/Agente/VerificacionIdExistente",
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
+                        axios.get(this.localVal + "/api/Agente/ListadoObras", {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
                             }
-                        )
+                        }),
+                        axios.get(this.localVal + "/api/Agente/UltimoIDObra", {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        })
                     ])
                     .then(
-                        axios.spread((dat1, dat2, dat3) => {
+                        axios.spread((dat1, dat2, dat3, dat4) => {
                             let listNull = dat1.data;
                             let listRA = dat2.data;
                             let dat = dat3.data;
+                            let listObraU = dat4.data;
+                            let d = [];
                             let b = [];
                             let c = [];
                             let a = 0;
@@ -367,11 +551,14 @@ export default {
                                 values.children = b;
                                 c.push(values);
                             });
-
-                            console.log(c);
-
+                            listObraU.forEach((value, index) => {
+                                d.push(value.id);
+                            });
+                            this.listadoObras = dat1.data;
                             this.calendarOptions.resources = c;
                             this.calendarOptions.events = dat;
+                            this.UltimoIDObra = d[0] + 1;
+
                             this.valCalendar = true;
                             this.resetI += 1;
                         })

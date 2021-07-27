@@ -273,9 +273,9 @@ export default [
         icon: "CalendarIcon"
     },
     {
-        url: "/agenteView/CalendarioPruebas",
-        name: "Calendario P.",
-        slug: "CalendarioPruebas",
+        url: "/agenteView/CalendarioObras",
+        name: "Obras.",
+        slug: "CalendarioObras",
         icon: "CalendarIcon"
     }
 ];

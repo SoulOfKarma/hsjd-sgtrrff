@@ -311,10 +311,14 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/TraerTipoMantencionKPI', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPITipoMantencion']);
             
             //Datos Calendario 
+            //Traer ultimo ID Ingresado
+            Route::get('/Agente/UltimoIDObra', ['middleware' => 'cors', 'uses' => 'GanttObrasController@GetLastIdObras']);
             //Traer Obras Existentes
-            Route::get('/Agente/VerificacionIdExistente', ['middleware' => 'cors', 'uses' => 'GanttObrasController@verificacionId']);
+            Route::get('/Agente/ListadoObras', ['middleware' => 'cors', 'uses' => 'GanttObrasController@GetObras']);
             //Guardar Nueva Obra
             Route::post('/Agente/GuardarNObra', ['middleware' => 'cors', 'uses' => 'GanttObrasController@PostNObra']);
+            //Guardar Nueva Sub Categoria Obra
+            Route::post('/Agente/GuardarNSubObra', ['middleware' => 'cors', 'uses' => 'GanttObrasController@PostNSubObra']);
             //Traer Obra Recurso Nulo
             Route::get('/Agente/BuscarObraRANull', ['middleware' => 'cors', 'uses' => 'GanttObrasController@PostNObraRANull']);
             //Traer Obra Recurso Activo

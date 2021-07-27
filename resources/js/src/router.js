@@ -471,10 +471,10 @@ const router = new Router({
                 },
 
                 {
-                    path: "/agenteView/CalendarioPruebas",
-                    name: "CalendarioPruebas",
+                    path: "/agenteView/CalendarioObras",
+                    name: "CalendarioObras",
                     component: () =>
-                        import("./views/agenteView/CalendarioPruebas.vue")
+                        import("./views/agenteView/CalendarioObras.vue")
                 }
             ]
         },
