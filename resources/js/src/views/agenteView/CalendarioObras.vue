@@ -535,7 +535,7 @@ export default {
                         start: fechaInicio,
                         end: fechaTermino,
                         eventcolor: "blue",
-                        resourceId: this.resourceAsociado,
+                        resourceId: this.UltimoIDObra,
                         resourceAsociado: this.idObraSeleccionada
                     };
 
@@ -638,9 +638,10 @@ export default {
                                             eventColor: value.eventcolor
                                         };
                                         b.push(obj);
+                                        values.children = b;
                                     }
                                 });
-                                values.children = b;
+
                                 c.push(values);
                             });
                             if (listObraU.length <= 0) {
