@@ -414,102 +414,159 @@ export default {
         },
         guardarObra() {
             try {
-                let fechaInicio = moment(
-                    this.start + " " + this.startHour
-                ).format("YYYY-MM-DD H:mm");
-                let fechaTermino = moment(this.end + " " + this.endHour).format(
-                    "YYYY-MM-DD H:mm"
-                );
-                let obj = {
-                    title: this.title,
-                    start: fechaInicio,
-                    end: fechaTermino,
-                    eventcolor: "green",
-                    resourceId: this.UltimoIDObra,
-                    resourceAsociado: null
-                };
-
-                axios
-                    .post(this.localVal + "/api/Agente/GuardarNObra", obj, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        let data = res.data;
-                        if (data == true) {
-                            this.$vs.notify({
-                                time: 3000,
-                                title: "Guardado correctamente",
-                                text: "Se Recargara Listado",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popCrearNObra = false;
-                            this.popCrearSubCatObra = false;
-                            this.cargarRecursos();
-                        } else {
-                            this.$vs.notify({
-                                time: 3000,
-                                title: "Error",
-                                text: "No se pudieron guardar los datos",
-                                color: "success",
-                                position: "top-right"
-                            });
-                        }
+                if (this.title == "" || this.title <= 4) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "Campo Titulo Vacio o Menor a 4 Caracteres",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.start == null) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "Fecha Inicial No Seleccionada",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.end == null) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "Fecha Termino No Seleccionada",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let fechaInicio = moment(
+                        this.start + " " + this.startHour
+                    ).format("YYYY-MM-DD H:mm");
+                    let fechaTermino = moment(
+                        this.end + " " + this.endHour
+                    ).format("YYYY-MM-DD H:mm");
+                    let obj = {
+                        title: this.title,
+                        start: fechaInicio,
+                        end: fechaTermino,
+                        eventcolor: "green",
+                        resourceId: this.UltimoIDObra,
+                        resourceAsociado: null
+                    };
+
+                    axios
+                        .post(this.localVal + "/api/Agente/GuardarNObra", obj, {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        })
+                        .then(res => {
+                            let data = res.data;
+                            if (data == true) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Guardado correctamente",
+                                    text: "Se Recargara Listado",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popCrearNObra = false;
+                                this.popCrearSubCatObra = false;
+                                this.cargarRecursos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error",
+                                    text: "No se pudieron guardar los datos",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log("Error al Guardar datos");
             }
         },
         guardarSubObra() {
             try {
-                let fechaInicio = moment(
-                    this.start + " " + this.startHour
-                ).format("YYYY-MM-DD H:mm");
-                let fechaTermino = moment(this.end + " " + this.endHour).format(
-                    "YYYY-MM-DD H:mm"
-                );
-                let obj = {
-                    title: this.title,
-                    start: fechaInicio,
-                    end: fechaTermino,
-                    eventcolor: "blue",
-                    resourceId: this.resourceAsociado,
-                    resourceAsociado: this.idObraSeleccionada
-                };
-
-                axios
-                    .post(this.localVal + "/api/Agente/GuardarNSubObra", obj, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        let data = res.data;
-                        if (data == true) {
-                            this.$vs.notify({
-                                time: 3000,
-                                title: "Guardado correctamente",
-                                text: "Se Recargara Listado",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popCrearNObra = false;
-                            this.popCrearSubCatObra = false;
-                            this.cargarRecursos();
-                        } else {
-                            this.$vs.notify({
-                                time: 3000,
-                                title: "Error",
-                                text: "No se pudieron guardar los datos",
-                                color: "success",
-                                position: "top-right"
-                            });
-                        }
+                if (this.title == "" || this.title <= 4) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "Campo Titulo Vacio o Menor a 4 Caracteres",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.start == null) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "Fecha Inicial No Seleccionada",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.end == null) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "Fecha Termino No Seleccionada",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let fechaInicio = moment(
+                        this.start + " " + this.startHour
+                    ).format("YYYY-MM-DD H:mm");
+                    let fechaTermino = moment(
+                        this.end + " " + this.endHour
+                    ).format("YYYY-MM-DD H:mm");
+                    let obj = {
+                        title: this.title,
+                        start: fechaInicio,
+                        end: fechaTermino,
+                        eventcolor: "blue",
+                        resourceId: this.resourceAsociado,
+                        resourceAsociado: this.idObraSeleccionada
+                    };
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/GuardarNSubObra",
+                            obj,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let data = res.data;
+                            if (data == true) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Guardado correctamente",
+                                    text: "Se Recargara Listado",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popCrearNObra = false;
+                                this.popCrearSubCatObra = false;
+                                this.cargarRecursos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error",
+                                    text: "No se pudieron guardar los datos",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log("Error al Guardar datos");
             }
