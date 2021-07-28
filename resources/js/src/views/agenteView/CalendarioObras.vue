@@ -281,12 +281,13 @@ export default {
                     "CC-Attribution-NonCommercial-NoDerivatives"
             },
             start: moment(new Date()).format("YYYY-MM-DD"),
-            end: moment(new Date()).format("YYYY-MM-DD"),
+            end: null,
             startHour: moment(new Date()).format("H:mm"),
-            endHour: moment(new Date()).format("H:mm"),
+            endHour: null,
             configFromdateTimePicker: {
                 minDate: null,
                 maxDate: null,
+                defaultDate: moment().format("YYYY-MM-DD"),
                 locale: {
                     firstDayOfWeek: 1,
                     weekdays: {
@@ -415,9 +416,9 @@ export default {
         limpiar() {
             this.title = "";
             this.start = moment(new Date()).format("YYYY-MM-DD");
-            this.end = moment(new Date()).format("YYYY-MM-DD");
+            this.end = null;
             this.startHour = moment(new Date()).format("H:mm");
-            this.endHour = moment(new Date()).format("H:mm");
+            this.endHour = null;
         },
         guardarObra() {
             try {
