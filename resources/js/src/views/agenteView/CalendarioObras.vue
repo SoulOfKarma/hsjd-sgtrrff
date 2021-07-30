@@ -645,7 +645,7 @@ export default {
                         title: this.title,
                         start: fechaInicio,
                         end: fechaTermino,
-                        eventcolor: "blue",
+                        eventcolor: "red",
                         resourceId: this.UltimoIDObra,
                         resourceAsociado: this.idObraSeleccionada
                     };
@@ -729,7 +729,7 @@ export default {
                         title: this.title,
                         start: fechaInicio,
                         end: fechaTermino,
-                        eventcolor: "green",
+                        eventcolor: "red",
                         resourceId: this.resourceId,
                         resourceAsociado: this.resourceAsociado
                     };
@@ -837,7 +837,7 @@ export default {
                                         values.children = b;
                                     }
                                 });
-
+                                b = [];
                                 c.push(values);
                             });
                             if (listObraU.length <= 0) {
