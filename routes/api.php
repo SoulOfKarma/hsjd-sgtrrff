@@ -323,6 +323,8 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/BuscarObraRANull', ['middleware' => 'cors', 'uses' => 'GanttObrasController@PostNObraRANull']);
             //Traer Obra Recurso Activo
             Route::get('/Agente/BuscarObraRActiva', ['middleware' => 'cors', 'uses' => 'GanttObrasController@PostNObraRA']);
+            //Modificar Obra 
+            Route::post('/Agente/ModificarObra', ['middleware' => 'cors', 'uses' => 'GanttObrasController@PutObra']);
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');
