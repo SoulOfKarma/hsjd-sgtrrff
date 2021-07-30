@@ -13,7 +13,7 @@
         <!-- Pop Up Para Agregar Nuevas Obras -->
         <vs-popup
             classContent="popup-example"
-            title=" "
+            title="Nueva Obra"
             :active.sync="popCrearNObra"
         >
             <div class="vx-col md:w-1/1 w-full mb-base">
@@ -91,7 +91,7 @@
         <!-- Pop Up Para Agregar Nuevas Categorias a las Obras -->
         <vs-popup
             classContent="popup-example"
-            title=" "
+            title="Agregar SubCategoria Obra"
             :active.sync="popCrearSubCatObra"
         >
             <div class="vx-col md:w-1/1 w-full mb-base">
@@ -181,6 +181,84 @@
                 </vx-card>
             </div>
         </vs-popup>
+        <!-- Pop Up Para Modificar Obras -->
+        <vs-popup
+            classContent="popModObra"
+            title="Modificar Obra"
+            :active.sync="popModificarObras"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="1. Ingrese Datos de Obra">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-3">
+                            <h6>1.1 Nombre Obra</h6>
+                            <vs-input
+                                class="vx-col w-full mt-3"
+                                v-model="title"
+                            />
+                        </div>
+                        <br />
+                    </div>
+                </vx-card>
+                <vx-card title="2. Ingrese Fechas de Obra">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/2 mt-3">
+                            <h6>2.1 Fecha Inicio</h6>
+                            <flat-pickr
+                                class="vx-col w-1/3 mt-5"
+                                :config="configFromdateTimePicker"
+                                v-model="start"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                            />
+                            <flat-pickr
+                                class="vx-col w-1/3 mt-5"
+                                :config="configdateTimePicker"
+                                v-model="startHour"
+                                placeholder="Seleccione Hora"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>2.2 Fecha Termino</h6>
+                            <flat-pickr
+                                class="vx-col w-1/3 mt-5"
+                                :config="configTodateTimePicker"
+                                v-model="end"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                            />
+                            <flat-pickr
+                                class="vx-col w-1/3 mt-5"
+                                :config="configdateTimePicker"
+                                v-model="endHour"
+                                placeholder="Seleccione Hora"
+                            />
+                        </div>
+                    </div>
+                    <div class="vx-col md:w-full w-full mb-base">
+                        <div class="vx-row mb-12">
+                            <div class="vx-col w-1/2 mt-5">
+                                <vs-button
+                                    class="mb-2 w-full"
+                                    @click="volver"
+                                    color="primary"
+                                    >Volver
+                                </vs-button>
+                            </div>
+
+                            <div class="vx-col w-1/2 mt-5">
+                                <vs-button
+                                    class="mb-2 w-full"
+                                    @click="modificarObra"
+                                    color="success"
+                                    >Enviar</vs-button
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+        </vs-popup>
     </div>
 </template>
 <script>
@@ -211,6 +289,7 @@ export default {
             format: "d MMMM yyyy",
             resetI: 0,
             listadoObras: [],
+            listObrasFull: [],
             columns: [
                 {
                     label: "Obra",
@@ -244,9 +323,11 @@ export default {
             UltimoIDObra: 0,
             listadoObUl: [],
             popCrearNObra: false,
+            popModificarObras: false,
             valCalendar: false,
             popCrearSubCatObra: false,
             title: "",
+            id: 0,
             resourceAsociado: "",
             calendarOptions: {
                 customButtons: {
@@ -271,6 +352,7 @@ export default {
                         "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth"
                 },
                 //dateClick: this.handleDateClick,
+                eventClick: this.eventModificar,
                 locale: esLocale,
                 //selectable: true,
                 resourceAreaHeaderContent: "Calendario de Obras",
@@ -280,9 +362,9 @@ export default {
                 schedulerLicenseKey:
                     "CC-Attribution-NonCommercial-NoDerivatives"
             },
-            start: moment(new Date()).format("YYYY-MM-DD"),
+            start: moment().format("YYYY-MM-DD"),
             end: null,
-            startHour: moment(new Date()).format("H:mm"),
+            startHour: moment().format("H:mm"),
             endHour: null,
             configFromdateTimePicker: {
                 minDate: null,
@@ -400,8 +482,34 @@ export default {
         };
     },
     methods: {
+        eventModificar(params) {
+            try {
+                let id = parseInt(params.event._def.publicId);
+                let list = this.listObrasFull;
+
+                list.forEach((value, index) => {
+                    if (id == value.resourceId) {
+                        this.id = value.id;
+                        this.resourceId = value.resourceId;
+                        this.title = value.title;
+                        this.eventcolor = value.eventcolor;
+                        this.start = value.start;
+                        this.end = value.end;
+                        this.resourceAsociado = value.resourceAsociado;
+                    }
+                });
+
+                this.popModificarObras = true;
+            } catch (error) {
+                console.log("Error");
+            }
+        },
         selectionChanged(params) {
-            this.idObraSeleccionada = params.selectedRows[0].id;
+            try {
+                this.idObraSeleccionada = params.selectedRows[0].id;
+            } catch (error) {
+                this.idObraSeleccionada = 0;
+            }
         },
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
@@ -412,12 +520,14 @@ export default {
         volver() {
             this.popCrearNObra = false;
             this.popCrearSubCatObra = false;
+            this.popModificarObras = false;
+            this.limpiar();
         },
         limpiar() {
             this.title = "";
-            this.start = moment(new Date()).format("YYYY-MM-DD");
+            this.start = moment().format("YYYY-MM-DD");
             this.end = null;
-            this.startHour = moment(new Date()).format("H:mm");
+            this.startHour = moment().format("H:mm");
             this.endHour = null;
         },
         guardarObra() {
@@ -581,6 +691,91 @@ export default {
                 console.log("Error al Guardar datos");
             }
         },
+        modificarObra() {
+            try {
+                if (this.title == "" || this.title <= 4) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "Campo Titulo Vacio o Menor a 4 Caracteres",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.start == null) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "Fecha Inicial No Seleccionada",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.end == null) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "Fecha Termino No Seleccionada",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let fechaInicio = moment(
+                        this.start + " " + this.startHour
+                    ).format("YYYY-MM-DD H:mm");
+                    let fechaTermino = moment(
+                        this.end + " " + this.endHour
+                    ).format("YYYY-MM-DD H:mm");
+                    let obj = {
+                        id: this.id,
+                        title: this.title,
+                        start: fechaInicio,
+                        end: fechaTermino,
+                        eventcolor: "green",
+                        resourceId: this.resourceId,
+                        resourceAsociado: this.resourceAsociado
+                    };
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/ModificarObra",
+                            obj,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let data = res.data;
+                            if (data == true) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Modificado correctamente",
+                                    text: "Se Recargara Listado",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.limpiar();
+                                this.popCrearNObra = false;
+                                this.popCrearSubCatObra = false;
+                                this.popModificarObras = false;
+                                this.cargarRecursos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error",
+                                    text: "No se pudieron guardar los datos",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
+            } catch (error) {
+                console.log("Error al Guardar datos");
+            }
+        },
         cargarRecursos() {
             try {
                 axios
@@ -657,6 +852,7 @@ export default {
                             this.listadoObras = dat1.data;
                             this.calendarOptions.resources = c;
                             this.calendarOptions.events = dat;
+                            this.listObrasFull = dat;
                             this.$vs.notify({
                                 time: 3000,
                                 title: "Carga de Datos",

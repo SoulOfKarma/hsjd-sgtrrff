@@ -79,5 +79,21 @@ class GanttObrasController extends Controller
         }
       }
 
+      public function PutObra(Request $request){
+          try {
+            $resp = GanttObras::where('id', $request->id)
+                    ->update([
+                     'title' => $request->title,'start' => $request->start,'end' => $request->end,
+                     'eventcolor' => $request->eventcolor, 'resourceId' => $request->resourceId,
+                     'resourceAsociado' => $request->resourceAsociado
+                    ]);
+
+            return true;
+          } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+          }
+      }
+
     
 }
