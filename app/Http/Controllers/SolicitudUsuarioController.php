@@ -372,6 +372,35 @@ class SolicitudUsuarioController extends Controller
         }
     }
 
+    public function getNotificaciones(){
+        try {
+            $get_all = solicitudTickets::select(DB::raw("fnStripTags(solicitud_tickets.descripcionP) as msg"),'solicitud_tickets.id')
+            ->where("solicitud_tickets.id_estado","=",2)
+            ->limit(5)
+            ->orderBy('solicitud_tickets.id', 'desc')
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getNotificacionesN(){
+        try {
+            $get_all = solicitudTickets::select(DB::raw("fnStripTags(solicitud_tickets.descripcionP) as msg"),'solicitud_tickets.id')
+            ->where("solicitud_tickets.id_estado","=",1)
+            ->limit(5)
+            ->orderBy('solicitud_tickets.id', 'desc')
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *

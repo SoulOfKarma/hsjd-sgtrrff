@@ -325,6 +325,14 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/BuscarObraRActiva', ['middleware' => 'cors', 'uses' => 'GanttObrasController@PostNObraRA']);
             //Modificar Obra 
             Route::post('/Agente/ModificarObra', ['middleware' => 'cors', 'uses' => 'GanttObrasController@PutObra']);
+            //Traer Color Cargo
+            Route::post('/Agente/TraerColorCargo', ['middleware' => 'cors', 'uses' => 'GanttObrasController@GetColorCargo']);
+
+            //Datos Notificaciones
+            //Traer Ultimas 5 Notificaciones en Proceso
+            Route::get('/Agente/TraerNotificaciones', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getNotificaciones']);
+            //Traer Ultimas 5 Notificaciones nuevas
+            Route::get('/Agente/TraerNotificacionesN', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getNotificacionesN']);
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');
