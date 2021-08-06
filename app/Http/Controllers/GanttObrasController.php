@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\GanttObras;
+use App\Users;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\Log;
@@ -90,6 +91,20 @@ class GanttObrasController extends Controller
 
             return true;
           } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+          }
+      }
+
+      public function GetColorCargo(Request $request){
+          try {
+              $get_all = Users::select('users.id_cargo','cargo_usuarios.descripcionCargo')
+              ->join('cargo_usuarios','users.id_cargo','=', 'cargo_usuarios.id')
+              ->where('users.run',$request->run)
+              ->get();
+              return $get_all;
+            }
+            catch (\Throwable $th) {
             log::info($th);
             return false;
           }

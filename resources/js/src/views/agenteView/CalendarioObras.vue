@@ -326,6 +326,7 @@ export default {
             popModificarObras: false,
             valCalendar: false,
             popCrearSubCatObra: false,
+            eventcolor: "",
             title: "",
             id: 0,
             resourceAsociado: "",
@@ -351,6 +352,7 @@ export default {
                     right:
                         "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth"
                 },
+                //eventColor: "#378006",
                 //dateClick: this.handleDateClick,
                 eventClick: this.eventModificar,
                 locale: esLocale,
@@ -567,7 +569,7 @@ export default {
                         title: this.title,
                         start: fechaInicio,
                         end: fechaTermino,
-                        eventcolor: "green",
+                        eventcolor: this.eventcolor,
                         resourceId: this.UltimoIDObra,
                         resourceAsociado: null
                     };
@@ -645,7 +647,7 @@ export default {
                         title: this.title,
                         start: fechaInicio,
                         end: fechaTermino,
-                        eventcolor: "red",
+                        eventcolor: this.eventcolor,
                         resourceId: this.UltimoIDObra,
                         resourceAsociado: this.idObraSeleccionada
                     };
@@ -729,7 +731,7 @@ export default {
                         title: this.title,
                         start: fechaInicio,
                         end: fechaTermino,
-                        eventcolor: "red",
+                        eventcolor: this.eventcolor,
                         resourceId: this.resourceId,
                         resourceAsociado: this.resourceAsociado
                     };
@@ -831,9 +833,11 @@ export default {
                                         obj = {
                                             id: value.resourceId,
                                             title: value.title,
-                                            eventColor: value.eventcolor
+                                            eventColor: value.eventcolor,
+                                            color: value.eventcolor
                                         };
                                         b.push(obj);
+                                        values.color = value.eventcolor;
                                         values.children = b;
                                     }
                                 });
@@ -874,10 +878,36 @@ export default {
                 });
                 console.log("Error al recuperar los datos externos");
             }
+        },
+        cargarEventColor() {
+            try {
+                let obj = { run: sessionStorage.getItem("run") };
+                axios
+                    .post(this.localVal + "/api/Agente/TraerColorCargo", obj, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        let data = res.data;
+                        let idCargo = data[0].id_cargo;
+                        if (idCargo == 9) {
+                            this.eventcolor = "#e67e22";
+                        } else if (idCargo == 10) {
+                            this.eventcolor = "#148f77";
+                        } else {
+                            this.eventcolor = "#5dade2";
+                        }
+                    });
+            } catch (error) {
+                console.log("Error al recuperar datos");
+            }
         }
     },
     created() {
         this.cargarRecursos();
+        this.cargarEventColor();
     }
 };
 </script>
