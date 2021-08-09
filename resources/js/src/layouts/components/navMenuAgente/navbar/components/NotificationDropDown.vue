@@ -34,7 +34,7 @@
                             v-for="ntf in unreadNotificationsN"
                             :key="ntf.index"
                             class="flex justify-between px-4 py-4 notification cursor-pointer"
-                            @click="abrirNotificacion(ntf.id)"
+                            @click="abrirNotificacionP(ntf.id, ntf.uuid)"
                         >
                             <div class="flex items-start">
                                 <feather-icon
@@ -92,7 +92,9 @@
                             v-for="ntf in unreadNotifications"
                             :key="ntf.index"
                             class="flex justify-between px-4 py-4 notification cursor-pointer"
-                            @click="abrirNotificacionP(ntf.id)"
+                            @click="
+                                abrirNotificacion(ntf.id, ntf.uuid, ntf.id_user)
+                            "
                         >
                             <div class="flex items-start">
                                 <feather-icon
@@ -191,12 +193,58 @@ export default {
 
             return date;
         },
-        abrirNotificacionP(item) {
+        abrirNotificacionP(id, uuid, id_user) {
             try {
+                const path = {
+                    name: "AsignarSolicitudAgente",
+                    params: {
+                        id: `${id}`,
+                        uuid: `${uuid}`,
+                        id_user: `${id_user}`
+                    }
+                };
                 axios
                     .get(
                         this.localVal +
-                            `/api/Agente/ValidarTicketAsignadoMod/${item}`,
+                            `/api/Agente/ValidarTicketAsignado/${id}`,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data == 2) {
+                            this.$vs.notify({
+                                title: "Ticket ya asignado ",
+                                text:
+                                    "Si necesita modificarlo vaya a Modificar Ticket ",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (this.$route.path !== path) {
+                            this.$router.push(path).catch(err => {});
+                        }
+                    });
+            } catch (error) {
+                console.log("Error al capturar datos");
+            }
+        },
+        abrirNotificacion(id, uuid, id_user) {
+            try {
+                const path = {
+                    name: "ModificarSolicitudAgente",
+                    params: {
+                        id: `${id}`,
+                        uuid: `${uuid}`,
+                        id_user: `${id_user}`
+                    }
+                };
+                axios
+                    .get(
+                        this.localVal +
+                            `/api/Agente/ValidarTicketAsignadoMod/${id}`,
                         {
                             headers: {
                                 Authorization:
@@ -213,22 +261,10 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
-                        } else {
-                            this.$router.push({
-                                name: "ModificarSolicitudAgente",
-                                params: {
-                                    id: `${item}`
-                                }
-                            });
+                        } else if (this.$route.path !== path) {
+                            this.$router.push(path).catch(err => {});
                         }
                     });
-            } catch (error) {
-                console.log("Error al capturar datos");
-            }
-        },
-        abrirNotificacion(item) {
-            try {
-                console.log(item);
             } catch (error) {
                 console.log("Error al capturar datos");
             }
@@ -250,6 +286,8 @@ export default {
                             obj = {};
                             obj = {
                                 id: value.id,
+                                uuid: value.uuid,
+                                id_user: value.id_user,
                                 index: index,
                                 title: "Tickets en proceso",
                                 msg: value.msg,
@@ -281,6 +319,8 @@ export default {
                             obj = {};
                             obj = {
                                 id: value.id,
+                                uuid: value.uuid,
+                                id_user: value.id_user,
                                 index: index,
                                 title: "Tickets en proceso",
                                 msg: value.msg,

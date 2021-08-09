@@ -374,7 +374,8 @@ class SolicitudUsuarioController extends Controller
 
     public function getNotificaciones(){
         try {
-            $get_all = solicitudTickets::select(DB::raw("fnStripTags(solicitud_tickets.descripcionP) as msg"),'solicitud_tickets.id')
+            $get_all = solicitudTickets::select(DB::raw("fnStripTags(solicitud_tickets.descripcionP) as msg"),'solicitud_tickets.id',
+            'solicitud_tickets.uuid','solicitud_tickets.id_user')
             ->where("solicitud_tickets.id_estado","=",2)
             ->limit(5)
             ->orderBy('solicitud_tickets.id', 'desc')
@@ -388,7 +389,8 @@ class SolicitudUsuarioController extends Controller
 
     public function getNotificacionesN(){
         try {
-            $get_all = solicitudTickets::select(DB::raw("fnStripTags(solicitud_tickets.descripcionP) as msg"),'solicitud_tickets.id')
+            $get_all = solicitudTickets::select(DB::raw("fnStripTags(solicitud_tickets.descripcionP) as msg"),'solicitud_tickets.id',
+            'solicitud_tickets.uuid','solicitud_tickets.id_user')
             ->where("solicitud_tickets.id_estado","=",1)
             ->limit(5)
             ->orderBy('solicitud_tickets.id', 'desc')
