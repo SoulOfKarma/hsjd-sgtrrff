@@ -22,14 +22,14 @@
                     </p>
                 </div>
 
-                <component
+                <vs-dropdown-group
                     :is="scrollbarTag"
                     ref="mainSidebarPs"
                     class="scroll-area--nofications-dropdown p-0 mb-10"
                     :settings="settings"
                     :key="$vs.rtl"
                 >
-                    <ul class="bordered-items">
+                    <vs-dropdown-item class="bordered-items">
                         <li
                             v-for="ntf in unreadNotificationsN"
                             :key="ntf.index"
@@ -54,8 +54,8 @@
                                 </div>
                             </div>
                         </li>
-                    </ul>
-                </component>
+                    </vs-dropdown-item>
+                </vs-dropdown-group>
             </vs-dropdown-menu>
         </vs-dropdown>
         <!-- NOTIFICATIONS -->
@@ -80,14 +80,14 @@
                     </p>
                 </div>
 
-                <component
+                <vs-dropdown-group
                     :is="scrollbarTag"
                     ref="mainSidebarPs"
                     class="scroll-area--nofications-dropdown p-0 mb-10"
                     :settings="settings"
                     :key="$vs.rtl"
                 >
-                    <ul class="bordered-items">
+                    <vs-dropdown-item class="bordered-items">
                         <li
                             v-for="ntf in unreadNotifications"
                             :key="ntf.index"
@@ -114,8 +114,8 @@
                                 </div>
                             </div>
                         </li>
-                    </ul>
-                </component>
+                    </vs-dropdown-item>
+                </vs-dropdown-group>
             </vs-dropdown-menu>
         </vs-dropdown>
     </div>
@@ -289,7 +289,7 @@ export default {
                                 uuid: value.uuid,
                                 id_user: value.id_user,
                                 index: index,
-                                title: "Tickets en proceso",
+                                title: value.descripcionTipoReparacion,
                                 msg: value.msg,
                                 icon: "MessageSquareIcon",
                                 category: "danger"
@@ -322,7 +322,7 @@ export default {
                                 uuid: value.uuid,
                                 id_user: value.id_user,
                                 index: index,
-                                title: "Tickets en proceso",
+                                title: value.descripcionTipoReparacion,
                                 msg: value.msg,
                                 icon: "MessageSquareIcon",
                                 category: "danger"
