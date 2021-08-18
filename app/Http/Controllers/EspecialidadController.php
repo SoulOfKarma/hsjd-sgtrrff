@@ -17,6 +17,15 @@ class EspecialidadController extends Controller
         return  $get_all;
     }
 
+    public function TraerdatossinI()
+    {
+        $dataFiltro = [23];
+        $get_all = especialidades::select('especialidades.*')
+        ->whereNotIn('id',$dataFiltro)
+        ->get();
+        return  $get_all;
+    }
+
     public function agregarEspecialidad(Request $request){
         especialidades::create($request->all());
 

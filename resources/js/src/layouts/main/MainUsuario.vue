@@ -165,6 +165,7 @@ import BackToTop from "vue-backtotop";
 import HNavMenu from "@/layouts/components/horizontal-nav-menu/HorizontalNavMenu.vue";
 import navMenuItems from "@/layouts/components/vertical-nav-menu/navMenuItems.js";
 import navMenuItemsAdmin from "@/layouts/components/vertical-nav-menu/navMenuItemsAdmin.js";
+import navMenuItemsInformatica from "@/layouts/components/vertical-nav-menu/navMenuItemsInformatica.js";
 import navMenuItemsTrabajador from "@/layouts/components/vertical-nav-menu/navMenuItemsTrabajador.js";
 import TheNavbarHorizontal from "@/layouts/components/navbar/TheNavbarHorizontal.vue";
 import TheNavbarVertical from "@/layouts/components/navbar/TheNavbarVertical.vue";
@@ -312,11 +313,11 @@ export default {
         var aux2 = sessionStorage.getItem("permiso_usuario");
 
         if (aux2 == 2) {
-            console.log("Acceso Correcto Usuario");
             this.navMenuItems = navMenuItems;
         } else if (aux2 == 3) {
-            console.log("Acceso Correcto Trabajador");
             this.navMenuItems = navMenuItemsTrabajador;
+        } else if (aux2 == 4) {
+            this.navMenuItems = navMenuItemsInformatica;
         } else {
             router.push("/pages/login").catch(err => {});
         }

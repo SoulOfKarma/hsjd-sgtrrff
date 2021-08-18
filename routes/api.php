@@ -187,6 +187,10 @@ use App\Mail\AutoRespuesta;
 
             //Guardar Nuevo Usuario
             Route::post('/Agente/GuardarUsuarioJefe', ['middleware' => 'cors', 'uses' => 'UsersController@registrarUsuario']);
+            //Traer Usuarios Con su estado
+            Route::get('/Agente/TraerUsuariosPermisos', ['middleware' => 'cors', 'uses' => 'UsersController@GetUsuariosPermisos']);
+            //Desabilitar Usuario
+            Route::post('/Agente/desabilitarHabilitarUsuario', ['middleware' => 'cors', 'uses' => 'UsersController@PutDesabilitarHabilitarUsuario']);
             //Modificar Usuario Jefatura
             Route::post('/Agente/ModificarUsuarioJefe', ['middleware' => 'cors', 'uses' => 'UsersController@modificarUsuarioJefe']);
             //Guardar Nuevo Usuario Sub
@@ -203,6 +207,8 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/getTrabajadoresRRFF', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloTrabajadoresRRFF']);
             //Traer Especialidades
             Route::get('/Agente/getEspecialidad', ['middleware' => 'cors', 'uses' => 'EspecialidadController@index']);
+            //Traer Especialidades Sin Informatica
+            Route::get('/Agente/getEspecialidadI', ['middleware' => 'cors', 'uses' => 'EspecialidadController@TraerdatossinI']);
             //Guardar Nuevo Edificio
             Route::post('/Agente/PostEdificios', ['middleware' => 'cors', 'uses' => 'EdificioController@create']);
             //Guardar Nuevo Servicio
@@ -333,6 +339,10 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/TraerNotificaciones', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getNotificaciones']);
             //Traer Ultimas 5 Notificaciones nuevas
             Route::get('/Agente/TraerNotificacionesN', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getNotificacionesN']);
+
+            //Seccion de Informatica
+            //Traer Tickets con sus usuarios - Informatica
+            Route::get('/Agente/GetSolicitudTicketsI', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getSolicitudUsuariosJoinI']);
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');

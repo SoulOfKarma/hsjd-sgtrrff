@@ -195,7 +195,6 @@ export default {
         listadoServiciosData: [],
         listadoUsuarios: [],
         localVal: process.env.MIX_APP_URL,
-        apiInformatica: "http://10.4.237.33:80/ticket",
         uuidC: "",
 
         solicitud: {
@@ -216,25 +215,6 @@ export default {
             uuid: "",
             descripcionSeguimiento: "Solicitud creada",
             descripcionCorreo: ""
-        },
-
-        solicitudInformatica: {
-            api_key: process.env.MIX_API_KEY_CREATE,
-            user_id: sessionStorage.getItem("id"),
-            subject: "",
-            body: "",
-            helptopic: 1,
-            sla: 1,
-            priority: 1,
-            dept: "",
-            token: "",
-            first_name: "",
-            last_name: "",
-            phone: 0,
-            code: 91,
-            mobile: 0,
-            duedate: moment().fromNow(),
-            email: ""
         },
         datosCorreo: {
             nombre: "",
@@ -501,91 +481,7 @@ export default {
         },
         async guardarSolicitud() {
             try {
-                if (this.seleccionCategoria.id == 5) {
-                    //Json de Login de faveo
-
-                    let data = {
-                        username: "ricardo.soto.g@redsalud.gov.cl",
-                        password: "Darkzero25"
-                    };
-
-                    //Variable para guardar token retornado
-                    let tokenI = "";
-                    //Hacer la peticion para recuperar token
-                    await axios
-                        .post(
-                            this.apiInformatica + "/public/api/v1/authenticate",
-                            data
-                        )
-                        .then(res => {
-                            const infoToken = res.data;
-                            tokenI = infoToken.token;
-                            console.log(tokenI);
-                        })
-                        .catch(function(error) {
-                            if (error.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
-                                console.log(error);
-                            } else if (error.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
-                                console.log(error);
-                            } else {
-                                // Something happened in setting up the request that triggered an Error
-                                console.log("Error", error);
-                            }
-                            console.log(error);
-                        });
-                    //Llenando los campos para guardar el ticket en faveo
-                    this.solicitudInformatica.first_name = sessionStorage.getItem(
-                        "nombre"
-                    );
-                    this.solicitudInformatica.last_name = sessionStorage.getItem(
-                        "apellido"
-                    );
-                    this.solicitudInformatica.subject = this.solicitud.tituloP;
-                    this.solicitudInformatica.body = this.solicitud.descripcionP;
-                    this.solicitudInformatica.email = this.listadoUsuarios.email;
-                    this.solicitudInformatica.phone = this.listadoUsuarios.anexo;
-                    this.solicitudInformatica.token = tokenI;
-
-                    const solicitudNueva = this.solicitudInformatica;
-                    //Haciendo la peticion para crear el ticket
-                    await axios
-                        .post(
-                            this.apiInformatica +
-                                "/public/api/v1/helpdesk/create?apikey=PZe1Mv3VhuLnTXNSEE1si1R0e53DRp8C",
-                            solicitudNueva
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            this.mensajeGuardado();
-                        })
-                        .catch(function(error) {
-                            if (error.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
-                                console.log(error);
-                                console.log(error);
-                                console.log(error);
-                            } else if (error.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
-                                console.log(error.request);
-                            } else {
-                                // Something happened in setting up the request that triggered an Error
-                                console.log("Error", error);
-                            }
-                            console.log(error);
-                        });
-                } else if (
-                    this.image == "" ||
-                    this.image == null ||
-                    this.image == 0
-                ) {
+                if (this.image == "" || this.image == null || this.image == 0) {
                     //Llenando Campos para Guardar Ticket de Mantencion
                     this.solicitud.id_edificio = this.seleccionEdificio[0].id;
                     this.solicitud.id_servicio = this.seleccionServicio[0].id;

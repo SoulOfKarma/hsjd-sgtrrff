@@ -257,6 +257,20 @@ export default [
                         icon: "FileIcon"
                     }
                 ]
+            },
+            {
+                url: null,
+                name: "Habilitar|Desabilitar Usuarios",
+                slug: "home",
+                icon: "PlusCircleIcon",
+                submenu: [
+                    {
+                        url: "/HabilitarDesabilitarUsuarios",
+                        name: "Habilitar|Desabilitar Usuarios",
+                        slug: "HabilitarDesabilitarUsuarios",
+                        icon: "HomeIcon"
+                    }
+                ]
             }
         ]
     },
