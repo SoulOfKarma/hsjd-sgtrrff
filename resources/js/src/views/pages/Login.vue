@@ -407,14 +407,16 @@ export default {
                             //localStorage.setItem('run',response2.data[0].permiso_usuario);
                             router.push("/agenteView/HomeAgente");
                         }
-                        if (pr == 4 || pr == 6) {
-                            console.log("Usuario");
+                        if (pr == 4) {
                             //localStorage.setItem('run',response2.data[0].permiso_usuario);
                             router.push("/home");
                         }
                         if (pr == 5) {
-                            console.log("Trabajador");
                             router.push("/HomeTrabajador");
+                        }
+                        if (pr == 6) {
+                            //localStorage.setItem('run',response2.data[0].permiso_usuario);
+                            router.push("/informaticaView/homeInformatica");
                         } else {
                             this.val_run = true;
                         }

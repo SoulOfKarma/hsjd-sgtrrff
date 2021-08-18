@@ -634,11 +634,12 @@ class UsersController extends Controller
             $idvalmail = $request->idvalmail;
             if($idvalrun == 1){
                 if($idvalmail == 1){
+                    
                     $run = $request->run_usuario;
                     $run = str_replace('.', '', $run);
                     $run = strtoupper($run);
             
-                    Users::where('id',$request->id)
+                    $resp = Users::where('id',$request->id)
                     ->update([
                         'email' => $request->email,
                         'nombre' => $request->nombre,
@@ -652,6 +653,8 @@ class UsersController extends Controller
                         'password' => Hash::make($request->password),
                         'api_token' => Str::random(60),
                     ]);
+
+                    log::info($resp);
             
                     Supervisores::where('sup_run',$run)
                     ->update([
@@ -1113,5 +1116,35 @@ class UsersController extends Controller
         ->whereNotIn('id_cargo',[6])
         ->get();
         return $get_all;
+    }
+
+    public function GetUsuariosPermisos(){
+        try {
+            $get_all = Users::select('Users.run',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreUsuario"),
+            'cargo_usuarios.descripcionCargo','tbl_permiso_usuarios.id','tbl_permiso_usuarios.estado_login',DB::raw("(CASE tbl_permiso_usuarios.estado_login
+            WHEN 1 THEN 'Activo'
+            ELSE 'Desabilitado'
+            end) AS estadoUsuario"))
+            ->join('tbl_permiso_usuarios','users.run', '=', 'tbl_permiso_usuarios.run_usuario')
+            ->join('cargo_usuarios','users.id_cargo', '=', 'cargo_usuarios.id')
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PutDesabilitarHabilitarUsuario(Request $request){
+        try {
+             $res = tblPermisoUsuarios::where('id',$request->idPermiso)
+             ->update([
+               'estado_login' => $request->estado_login
+               //'email' => $request->email,
+              ]);
+              return $res;
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 }

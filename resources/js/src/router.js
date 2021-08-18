@@ -86,22 +86,62 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/informaticaView/GenerarTicketsInf",
-                    name: "Generar Solicitud",
+                    path: "/informaticaView/GenerarTicketI",
+                    name: "GenerarTicketI",
                     component: () =>
-                        import("./views/informaticaView/GenerarTicketsInf.vue")
+                        import("./views/informaticaView/GenerarTicketI.vue")
                 },
                 {
-                    path: "/informaticaView/ListadoTicketsInf",
-                    name: "Listado Solicitudes",
+                    path: "/informaticaView/ListadoTicketsI",
+                    name: "ListadoTicketsI",
                     component: () =>
-                        import("./views/informaticaView/ListadoTicketsInf.vue")
+                        import("./views/informaticaView/ListadoTicketsI.vue")
                 },
                 {
-                    path: "/informaticaView/ModificarTicketInf",
-                    name: "Modificar Solicitud",
+                    path: "/informaticaView/homeInformatica",
+                    name: "homeInformatica",
                     component: () =>
-                        import("./views/informaticaView/ModificarTicketInf.vue")
+                        import("./views/informaticaView/homeInformatica.vue")
+                },
+                {
+                    path: "/informaticaView/AsignarSolicitudAgenteI",
+                    name: "AsignarSolicitudAgenteI",
+                    component: () =>
+                        import(
+                            "./views/informaticaView/AsignarSolicitudAgenteI.vue"
+                        )
+                },
+                {
+                    path: "/informaticaView/InformacionSolicitudAgenteI",
+                    name: "InformacionSolicitudAgenteI",
+                    component: () =>
+                        import(
+                            "./views/informaticaView/InformacionSolicitudAgenteI.vue"
+                        )
+                },
+                {
+                    path: "/informaticaView/InformacionSolicitudEliminadosI",
+                    name: "InformacionSolicitudEliminadosI",
+                    component: () =>
+                        import(
+                            "./views/informaticaView/InformacionSolicitudEliminadosI.vue"
+                        )
+                },
+                {
+                    path: "/informaticaView/InformacionSolicitudFinalizadosI",
+                    name: "InformacionSolicitudFinalizadosI",
+                    component: () =>
+                        import(
+                            "./views/informaticaView/InformacionSolicitudFinalizadosI.vue"
+                        )
+                },
+                {
+                    path: "/informaticaView/ModificarSolicitudAgenteI",
+                    name: "ModificarSolicitudAgenteI",
+                    component: () =>
+                        import(
+                            "./views/informaticaView/ModificarSolicitudAgenteI.vue"
+                        )
                 }
             ]
         },
@@ -185,6 +225,14 @@ const router = new Router({
                     name: "modificarSupervisor",
                     component: () =>
                         import("./views/adminView/ModificarSupervisor.vue")
+                },
+                {
+                    path: "/HabilitarDesabilitarUsuarios",
+                    name: "habilitarDesabilitarUsuarios",
+                    component: () =>
+                        import(
+                            "./views/adminView/HabilitarDesabilitarUsuarios.vue"
+                        )
                 },
                 {
                     path: "/MenuReparacion",

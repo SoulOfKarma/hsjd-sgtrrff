@@ -497,25 +497,25 @@ export default {
                 this.modificarSupervisor.id_especialidad1 = this.seleccionEspecialidad1[0].id;
                 this.modificarSupervisor.id_especialidad2 = this.seleccionEspecialidad2[0].id;
 
-                this.modificarSupervisor.id = this.seleccionSupervisor[0].id;
+                this.modificarSupervisor.id = this.seleccionSupervisor[0].id_user;
                 this.rutUsuario = format(this.rutUsuario);
                 if (
                     this.rutUsuario == 0 ||
                     this.rutUsuario == null ||
                     this.rutUsuario == ""
                 ) {
-                    this.modificarUsuario.idvalRut = 0;
+                    this.modificarSupervisor.idvalRut = 0;
                 } else {
-                    this.modificarUsuario.idvalRut = 1;
+                    this.modificarSupervisor.idvalRut = 1;
                 }
                 if (
                     this.correoUsuario == 0 ||
                     this.correoUsuario == null ||
                     this.correoUsuario == ""
                 ) {
-                    this.modificarUsuario.idvalmail = 0;
+                    this.modificarSupervisor.idvalmail = 0;
                 } else {
-                    this.modificarUsuario.idvalmail = 1;
+                    this.modificarSupervisor.idvalmail = 1;
                 }
                 /*  if (
                     this.modificarSupervisor.run == null ||
@@ -616,7 +616,7 @@ export default {
                         position: "top-right",
                         time: 3000
                     });
-                } else if (
+                } /*  else if (
                     this.modificarSupervisor.id_unidadEspecifica == 0 ||
                     this.modificarSupervisor.id_unidadEspecifica == null
                 ) {
@@ -629,7 +629,7 @@ export default {
                         position: "top-right",
                         time: 3000
                     });
-                } else if (
+                }  */ else if (
                     this.modificarSupervisor.password == null ||
                     this.modificarSupervisor.password == "" ||
                     this.modificarSupervisor.password.length < 4
@@ -683,6 +683,7 @@ export default {
                                 });
                             } else {
                                 this.limpiar();
+                                this.cargarSupervisores();
                                 const ticketServer = res.data;
                                 this.$vs.notify({
                                     title:
@@ -819,7 +820,7 @@ export default {
         },
         cargarEspecialidad() {
             axios
-                .get(this.localVal + "/api/Agente/getEspecialidad", {
+                .get(this.localVal + "/api/Agente/getEspecialidadI", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")

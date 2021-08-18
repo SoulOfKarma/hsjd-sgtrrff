@@ -93,13 +93,6 @@
                             class="custom-class"
                             @click="abrirPop(props.row.id, props.row.uuid)"
                         ></trash-2-icon>
-                        <corner-down-right-icon
-                            size="1.5x"
-                            class="custom-class"
-                            @click="
-                                cambiarCategoria(props.row.id, props.row.uuid)
-                            "
-                        ></corner-down-right-icon>
                         <printer-icon
                             size="1.5x"
                             class="custom-class"
@@ -518,19 +511,15 @@ export default {
     },
     methods: {
         isNumber: function($event) {
-            // console.log($event.keyCode); //keyCodes value
             let keyCode = $event.keyCode ? $event.keyCode : $event.which;
 
-            // only allow number and one dot
             if (
                 (keyCode < 48 || keyCode > 57) &&
                 (keyCode !== 46 || this.price.indexOf(".") != -1)
             ) {
-                // 46 is dot
                 $event.preventDefault();
             }
 
-            // restrict to 2 decimal places
             if (
                 this.price != null &&
                 this.price.indexOf(".") > -1 &&
@@ -539,19 +528,7 @@ export default {
                 $event.preventDefault();
             }
         },
-        /* isNumber: function(evt) {
-            evt = evt ? evt : window.event;
-            var charCode = evt.which ? evt.which : evt.keyCode;
-            if (
-                charCode > 31 &&
-                (charCode < 48 || charCode > 57) &&
-                charCode !== 46
-            ) {
-                evt.preventDefault();
-            } else {
-                return true;
-            }
-        }, */
+
         popCerrarTicket(id, uuid) {
             try {
                 this.popFinTicket = true;
@@ -703,7 +680,7 @@ export default {
         },
         cargarSolicitudes() {
             axios
-                .get(this.localVal + "/api/Agente/GetSolicitudTickets", {
+                .get(this.localVal + "/api/Agente/GetSolicitudTicketsI", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -728,16 +705,7 @@ export default {
         },
         detalleSolicitud(id, uuid) {
             this.$router.push({
-                name: "InformacionSolicitudAgente",
-                params: {
-                    id: `${id}`,
-                    uuid: `${uuid}`
-                }
-            });
-        },
-        cambiarCategoria(id, uuid) {
-            this.$router.push({
-                name: "ModificarCategoriaTicket",
+                name: "InformacionSolicitudAgenteI",
                 params: {
                     id: `${id}`,
                     uuid: `${uuid}`
@@ -781,7 +749,7 @@ export default {
                     } else {
                         const url =
                             this.localVal +
-                            "/api/Agente/imprimirPorTicketINFRA/" +
+                            "/api/Agente/imprimirPorTicketI/" +
                             id;
                         window.open(url, "_blank");
                     }
@@ -789,7 +757,7 @@ export default {
         },
         detalleSolicitudEliminados(id, uuid) {
             this.$router.push({
-                name: "InformacionSolicitudEliminados",
+                name: "InformacionSolicitudEliminadosI",
                 params: {
                     id: `${id}`,
                     uuid: `${uuid}`
@@ -798,7 +766,7 @@ export default {
         },
         detalleSolicitudFinalizados(id, uuid) {
             this.$router.push({
-                name: "InformacionSolicitudFinalizadosINF",
+                name: "InformacionSolicitudFinalizadosI",
                 params: {
                     id: `${id}`,
                     uuid: `${uuid}`
@@ -828,7 +796,7 @@ export default {
                         });
                     } else {
                         this.$router.push({
-                            name: "AsignarSolicitudAgente",
+                            name: "AsignarSolicitudAgenteI",
                             params: {
                                 id: `${id}`,
                                 uuid: `${uuid}`
@@ -861,7 +829,7 @@ export default {
                         });
                     } else {
                         this.$router.push({
-                            name: "ModificarSolicitudAgente",
+                            name: "ModificarSolicitudAgenteI",
                             params: {
                                 id: `${id}`,
                                 uuid: `${uuid}`,
