@@ -40,7 +40,7 @@
                                 taggable
                                 v-model="seleccionUsuario"
                                 placeholder="Seleccione al Usuario"
-                                class="w-full select-large"
+                                class="w-full select-large input-group--focused"
                                 label="nombre"
                                 :options="listadoUsuarios"
                                 @input="agregarNuevoUsuario()"
