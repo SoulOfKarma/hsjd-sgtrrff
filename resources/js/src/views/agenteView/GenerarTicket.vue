@@ -2533,12 +2533,15 @@ export default {
         this.cargarSupervisores();
         this.cargarTrabajadores();
         this.cargarEstado();
-        this.cargarUsuarios();
+
         this.cargarTurnos();
         this.cargarDuracion();
         this.cargarEspecialidad();
         this.cargarCargoUsuarioU();
         this.cargarHoras();
+    },
+    mounted() {
+        this.cargarUsuarios();
     },
     async beforeMount() {},
     components: {
