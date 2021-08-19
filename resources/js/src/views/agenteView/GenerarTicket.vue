@@ -42,10 +42,25 @@
                                 placeholder="Seleccione al Usuario"
                                 class="w-full select-large input-group--focused"
                                 label="nombre"
-                                :options="listadoUsuarios"
                                 @input="agregarNuevoUsuario()"
-                                v-bind:key="listadoUsuarios.id"
-                            ></v-select>
+                                :options="paginated"
+                                :filterable="false"
+                                @search="query => (search = query)"
+                                ><li slot="list-footer" class="pagination">
+                                    <button
+                                        :disabled="!hasPrevPage"
+                                        @click="offset -= 10"
+                                    >
+                                        Prev
+                                    </button>
+                                    <button
+                                        :disabled="!hasNextPage"
+                                        @click="offset += 10"
+                                    >
+                                        Next
+                                    </button>
+                                </li></v-select
+                            >
                         </div>
                     </div>
                 </vx-card>
@@ -656,6 +671,9 @@ import VxCard from "../../components/vx-card/VxCard.vue";
 
 export default {
     data: () => ({
+        search: "",
+        offset: 0,
+        limit: 100,
         editorOption: {
             modules: {
                 toolbar: [
@@ -832,7 +850,7 @@ export default {
             id: 1,
             descripcionTurno: "Dia"
         },
-        listadoUsuarios: [null],
+        listadoUsuarios: [],
         gestionTicket: {
             id_user: 0,
             uuid: "",
@@ -1008,6 +1026,26 @@ export default {
         }
     }),
     computed: {
+        paginated() {
+            return this.listadoUsuarios.slice(
+                this.offset,
+                this.limit + this.offset
+            );
+        },
+        hasNextPage() {
+            const nextOffset = this.offset + 100;
+            return Boolean(
+                this.listadoUsuarios.slice(nextOffset, this.limit + nextOffset)
+                    .length
+            );
+        },
+        hasPrevPage() {
+            const prevOffset = this.offset - 100;
+            return Boolean(
+                this.listadoUsuarios.slice(prevOffset, this.limit + prevOffset)
+                    .length
+            );
+        },
         calcularHorasTrabajo() {
             if (
                 this.gestionTicket.fechaInicio != null &&
