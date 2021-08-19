@@ -44,6 +44,7 @@
                                 :options="listadoUsuarios"
                                 label="nombre"
                                 @input="agregarNuevoUsuario()"
+                                :value="seleccionUsuario"
                             ></v-select>
                         </div>
                     </div>
