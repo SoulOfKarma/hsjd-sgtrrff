@@ -40,11 +40,10 @@
                                 taggable
                                 v-model="seleccionUsuario"
                                 placeholder="Seleccione al Usuario"
-                                class="w-full select-large"
+                                class="w-full select-large input-group--focused"
                                 label="nombre"
                                 :options="listadoUsuarios"
                                 @input="agregarNuevoUsuario()"
-                                :key="listadoUsuarios.id"
                             ></v-select>
                         </div>
                     </div>
@@ -832,7 +831,7 @@ export default {
             id: 1,
             descripcionTurno: "Dia"
         },
-        listadoUsuarios: [],
+        listadoUsuarios: [null],
         gestionTicket: {
             id_user: 0,
             uuid: "",
@@ -2541,6 +2540,7 @@ export default {
         this.cargarCargoUsuarioU();
         this.cargarHoras();
     },
+    mounted() {},
     async beforeMount() {},
     components: {
         flatPickr,
