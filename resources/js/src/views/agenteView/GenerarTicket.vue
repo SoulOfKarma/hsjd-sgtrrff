@@ -1713,6 +1713,7 @@ export default {
                     this.seleccionApoyo2 = value;
                     this.seleccionApoyo3 = value;
                     b.push(value);
+                    id = 0;
                 } else if (a != id) {
                     b.push(value);
                 }
@@ -1741,6 +1742,7 @@ export default {
                 if (id == 1) {
                     this.seleccionApoyo3 = value;
                     b.push(value);
+                    id = 0;
                 } else if (a != id) {
                     b.push(value);
                 }

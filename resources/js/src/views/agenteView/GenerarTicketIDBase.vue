@@ -1741,6 +1741,7 @@ export default {
                 a = value.id;
                 if (id == 1) {
                     b.push(value);
+                    id = 0;
                 } else if (a != id) {
                     b.push(value);
                 }
@@ -1768,6 +1769,7 @@ export default {
                 a = value.id;
                 if (id == 1) {
                     b.push(value);
+                    id = 0;
                 } else if (a != id) {
                     b.push(value);
                 }
