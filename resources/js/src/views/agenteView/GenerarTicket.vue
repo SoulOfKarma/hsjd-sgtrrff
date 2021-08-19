@@ -44,6 +44,7 @@
                                 label="nombre"
                                 :options="listadoUsuarios"
                                 @input="agregarNuevoUsuario()"
+                                v-bind:key="listadoUsuarios.id"
                             ></v-select>
                         </div>
                     </div>
