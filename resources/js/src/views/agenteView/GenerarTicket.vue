@@ -44,17 +44,6 @@
                                 label="nombre"
                                 :options="listadoUsuarios"
                                 @input="agregarNuevoUsuario()"
-                                :filterable="false"
-                                @open="onOpen"
-                                @close="onClose"
-                                @search="query => (search = query)"
-                            >
-                                <template #list-footer>
-                                    <li
-                                        v-show="hasNextPage"
-                                        ref="load"
-                                        class="loader"
-                                    ></li> </template
                             ></v-select>
                         </div>
                     </div>
@@ -681,9 +670,6 @@ export default {
                 ]
             }
         },
-        observer: null,
-        limit: 10,
-        search: "",
         horasCalculadas: 0,
         diaCalculado: 0,
         format: "d MMMM yyyy",
@@ -1021,12 +1007,6 @@ export default {
         }
     }),
     computed: {
-        paginated() {
-            return this.listadoUsuarios.slice(0, this.limit);
-        },
-        hasNextPage() {
-            return this.paginated.length < this.listadoUsuarios.length;
-        },
         calcularHorasTrabajo() {
             if (
                 this.gestionTicket.fechaInicio != null &&
@@ -1074,33 +1054,7 @@ export default {
             }
         }
     },
-    mounted() {
-        /**
-         * You could do this directly in data(), but since these docs
-         * are server side rendered, IntersectionObserver doesn't exist
-         * in that environment, so we need to do it in mounted() instead.
-         */
-        this.observer = new IntersectionObserver(this.infiniteScroll);
-    },
     methods: {
-        async onOpen() {
-            if (this.hasNextPage) {
-                await this.$nextTick();
-                this.observer.observe(this.$refs.load);
-            }
-        },
-        onClose() {
-            this.observer.disconnect();
-        },
-        async infiniteScroll([{ isIntersecting, target }]) {
-            if (isIntersecting) {
-                const ul = target.offsetParent;
-                const scrollTop = target.offsetParent.scrollTop;
-                this.limit += 10;
-                await this.$nextTick();
-                ul.scrollTop = scrollTop;
-            }
-        },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
             var charCode = evt.which ? evt.which : evt.keyCode;
@@ -1128,7 +1082,7 @@ export default {
                     this.popCrearUsuario = true;
                 }
             } catch (error) {
-                console.log("Error al Capturar datos");
+                console.log(error);
             }
         },
         formatear_run() {
