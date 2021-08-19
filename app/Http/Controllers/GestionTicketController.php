@@ -92,7 +92,9 @@ class GestionTicketController extends Controller
     public function getUsuarios()
     {
         //Traer a todos los usuarios
-        $users = Users::select('id',DB::raw("CONCAT(nombre,' ',apellido) as nombre"))
+        $users = Users::select('users.id',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"))
+        ->join('tbl_permiso_usuarios','users.run', '=', 'tbl_permiso_usuarios.run_usuario')
+        ->whereNotIn('tbl_permiso_usuarios.estado_login',[0])
         ->get();
         return  $users;
     }
