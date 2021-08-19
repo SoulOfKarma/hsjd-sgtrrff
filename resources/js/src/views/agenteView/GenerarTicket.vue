@@ -831,7 +831,7 @@ export default {
             id: 0,
             descripcionTurno: "Seleccione Turno"
         },
-        listadoUsuarios: [],
+        listadoUsuarios: [null],
         gestionTicket: {
             id_user: 0,
             uuid: "",
@@ -2533,16 +2533,14 @@ export default {
         this.cargarSupervisores();
         this.cargarTrabajadores();
         this.cargarEstado();
-
+        this.cargarUsuarios();
         this.cargarTurnos();
         this.cargarDuracion();
         this.cargarEspecialidad();
         this.cargarCargoUsuarioU();
         this.cargarHoras();
     },
-    mounted() {
-        this.cargarUsuarios();
-    },
+    mounted() {},
     async beforeMount() {},
     components: {
         flatPickr,
