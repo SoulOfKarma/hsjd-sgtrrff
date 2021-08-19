@@ -37,12 +37,21 @@
                             <h6>1.1 - Seleccione Al usuario</h6>
                             <br />
                             <v-select
+                                :key="resetI"
                                 taggable
                                 v-model="seleccionUsuario"
+                                :hint="
+                                    `${seleccionUsuario.id}, ${seleccionUsuario.nombre}`
+                                "
                                 placeholder="Seleccione al Usuario"
                                 class="w-full select-large input-group--focused"
-                                label="nombre"
                                 :options="listadoUsuarios"
+                                item-text="nombre"
+                                item-value="id"
+                                label="nombre"
+                                persistent-hint
+                                return-object
+                                single-line
                                 @input="agregarNuevoUsuario()"
                             ></v-select>
                         </div>
@@ -655,6 +664,7 @@ import VxCard from "../../components/vx-card/VxCard.vue";
 
 export default {
     data: () => ({
+        resetI: 0,
         editorOption: {
             modules: {
                 toolbar: [
@@ -1807,6 +1817,7 @@ export default {
                 })
                 .then(res => {
                     this.listadoUsuarios = res.data;
+                    this.resetI += 1;
                 });
         },
         cargarServicios() {
