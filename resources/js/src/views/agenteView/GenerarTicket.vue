@@ -44,13 +44,7 @@
                                 :options="listadoUsuarios"
                                 label="nombre"
                                 @input="agregarNuevoUsuario()"
-                                :filter="fuseSearch"
-                                :get-option-label="option => option.nombre"
-                            >
-                                <template #option="{ nombre }">
-                                    {{ nombre }}
-                                </template></v-select
-                            >
+                            ></v-select>
                         </div>
                     </div>
                 </vx-card>
@@ -643,7 +637,6 @@
 </template>
 
 <script>
-import Fuse from "fuse.js";
 import Datepicker from "vuejs-datepicker";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
@@ -662,6 +655,7 @@ import VxCard from "../../components/vx-card/VxCard.vue";
 
 export default {
     data: () => ({
+        resetI: 0,
         editorOption: {
             modules: {
                 toolbar: [
@@ -1062,15 +1056,6 @@ export default {
         }
     },
     methods: {
-        fuseSearch(options, search) {
-            const fuse = new Fuse(options, {
-                keys: ["nombre"],
-                shouldSort: true
-            });
-            return search.length
-                ? fuse.search(search).map(({ item }) => item)
-                : fuse.list;
-        },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
             var charCode = evt.which ? evt.which : evt.keyCode;
@@ -1823,6 +1808,7 @@ export default {
                 })
                 .then(res => {
                     this.listadoUsuarios = res.data;
+                    this.resetI += 1;
                 });
         },
         cargarServicios() {
