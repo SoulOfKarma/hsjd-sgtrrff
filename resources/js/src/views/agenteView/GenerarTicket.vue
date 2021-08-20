@@ -40,7 +40,7 @@
                                 taggable
                                 v-model="seleccionUsuario"
                                 placeholder="Seleccione al Usuario"
-                                class="w-full select-large input-group--focused"
+                                class="w-full select-large"
                                 :options="listadoUsuarios"
                                 label="nombre"
                                 @input="agregarNuevoUsuario()"
@@ -655,7 +655,6 @@ import VxCard from "../../components/vx-card/VxCard.vue";
 
 export default {
     data: () => ({
-        resetI: 0,
         editorOption: {
             modules: {
                 toolbar: [
