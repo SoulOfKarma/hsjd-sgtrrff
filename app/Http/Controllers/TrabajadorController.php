@@ -19,10 +19,10 @@ class TrabajadorController extends Controller
         try {
             //Traer todo de trabajadores
             $get_all = Trabajadores::select('trabajadores.id',DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),'trabajadores.id_especialidad1')
-            ->leftJoin('tbl_permiso_usuarios','trabajadores.tra_run','=','tbl_permiso_usuarios.run_usuario')
+/*             ->leftJoin('tbl_permiso_usuarios','trabajadores.tra_run','=','tbl_permiso_usuarios.run_usuario')
             ->where('tbl_permiso_usuarios.estado_login',[1])
             ->orWhere('trabajadores.tra_run','00000000-0')
-            ->orderBy('trabajadores.id','asc')
+            ->orderBy('trabajadores.id','asc') */
             ->get();
 
         return  $get_all;
