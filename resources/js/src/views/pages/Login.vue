@@ -9,82 +9,96 @@
 
 <template>
     <div
-        class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center"
+        class="h-screen flex w-full  vx-row no-gutter items-center justify-center"
         id="page-login"
     >
-        <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
-            <vx-card>
-                <div slot="no-body" class="full-page-bg-color">
-                    <div class="vx-row no-gutter justify-center items-center">
-                        <div class="vx-col hidden lg:block lg:w-1/2">
+        <vs-row vs-justify="center">
+            <vs-col
+                type="flex"
+                vs-justify="center"
+                vs-align="center"
+                vs-w="25%"
+                class="login-box"
+            >
+                <vx-card
+                    class="text-center"
+                    vs-w="100%"
+                    title=""
+                    title-color="#ffffff"
+                    card-background="#4792f9"
+                    content-color="#ffffff"
+                >
+                    <h3 class="text-white">Bienvenido a SGTRRFF!</h3>
+                </vx-card>
+                <br />
+                <vs-card class="cardx">
+                    <div slot="header">
+                        <h3>
                             <img
                                 src="@assets/images/pages/login.png"
                                 alt="login"
                                 class="mx-auto"
                             />
-                        </div>
+                        </h3>
+                    </div>
+                    <div slot="media"></div>
+                    <div class="vx-card__title mb-4 text-center">
+                        <h4 class="mb-4">
+                            Autenticarse para iniciar sesión
+                        </h4>
+                    </div>
+                    <br />
+                    <div>
+                        <div>
+                            <vs-input
+                                name="run"
+                                icon="icon icon-user"
+                                icon-pack="feather"
+                                label-placeholder="Rut"
+                                v-model="run"
+                                v-on:blur="formatear_run"
+                                class="w-full no-icon-border"
+                            />
+                            <span
+                                style="font-size: 10px; color: red; margin-left: 10px;"
+                                v-if="val_run"
+                                >Run incorrecto</span
+                            >
 
-                        <div
-                            class="vx-col sm:w-full md:w-full lg:w-1/2 d-theme-dark-bg"
-                        >
-                            <div class="p-8 login-tabs-container">
-                                <div class="vx-card__title mb-4">
-                                    <h4 class="mb-4">Inicio de Sesion</h4>
-                                    <p>Bienvenido A SGTRRFF</p>
-                                </div>
-
-                                <div>
-                                    <vs-input
-                                        name="run"
-                                        icon="icon icon-user"
-                                        icon-pack="feather"
-                                        label-placeholder="Run"
-                                        v-model="run"
-                                        v-on:blur="formatear_run"
-                                        class="w-full no-icon-border"
-                                    />
-                                    <span
-                                        style="font-size: 10px; color: red; margin-left: 10px;"
-                                        v-if="val_run"
-                                        >Run incorrecto</span
+                            <vs-input
+                                type="password"
+                                name="password"
+                                icon="icon icon-lock"
+                                icon-pack="feather"
+                                label-placeholder="Contraseña"
+                                v-model="password"
+                                @keyup.native.enter="validarSesion"
+                                class="w-full mt-6 no-icon-border"
+                            />
+                            <br />
+                            <input
+                                type="hidden"
+                                name="_token"
+                                :value="csrf_token"
+                            />
+                            <!-- <router-link to="../Home"> -->
+                            <div slot="footer">
+                                <vs-row vs-justify="flex-end">
+                                    <vs-button
+                                        class="fixedHeight"
+                                        @click="validarSesion"
+                                        icon="home"
+                                        >Ingresar</vs-button
                                     >
-
-                                    <vs-input
-                                        type="password"
-                                        name="password"
-                                        icon="icon icon-lock"
-                                        icon-pack="feather"
-                                        label-placeholder="Contraseña"
-                                        v-model="password"
-                                        @keyup.native.enter="validarSesion"
-                                        class="w-full mt-6 no-icon-border"
-                                    />
-                                    <br />
-                                    <input
-                                        type="hidden"
-                                        name="_token"
-                                        :value="csrf_token"
-                                    />
-                                    <!-- <router-link to="../Home"> -->
-                                    <div slot="footer">
-                                        <vs-row vs-justify="flex-end">
-                                            <vs-button
-                                                class="fixedHeight"
-                                                @click="validarSesion"
-                                                icon="home"
-                                                >Ingresar</vs-button
-                                            >
-                                        </vs-row>
-                                    </div>
-
-                                    <!-- </router-link> -->
-                                </div>
+                                </vs-row>
                             </div>
+
+                            <!-- </router-link> -->
                         </div>
                     </div>
-                </div>
-            </vx-card>
-        </div>
+                </vs-card>
+            </vs-col>
+        </vs-row>
     </div>
 </template>
 
@@ -438,20 +452,10 @@ export default {
 </script>
 
 <style lang="scss">
-#page-login {
-    .social-login {
-        .bg-facebook {
-            background-color: #1551b1;
-        }
-        .bg-twitter {
-            background-color: #00aaff;
-        }
-        .bg-google {
-            background-color: #4285f4;
-        }
-        .bg-github {
-            background-color: #333;
-        }
-    }
+#login-box {
+    width: 360px;
+}
+.h-screen {
+    background-image: linear-gradient(rgb(233, 236, 239), rgb(49, 215, 129));
 }
 </style>
