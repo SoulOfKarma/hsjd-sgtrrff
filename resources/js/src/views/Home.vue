@@ -6,7 +6,7 @@
                 style="margin-left:10px;"
             ></div>
         </div>
-        <div class="vx-row">
+        <div class="vx-row ">
             <div class="vx-col w-full mb-base">
                 <vx-card
                     slot="no-body"
@@ -27,7 +27,7 @@
                 </vx-card>
             </div>
         </div>
-        <div class="vx-row">
+        <div class="vx-row ">
             <div class="vx-col w-full mb-base">
                 <div class="vx-col w-full lg:w-full mb-base">
                     <vx-card title="Informacion del Perfil">
@@ -55,14 +55,14 @@ export default {
                     icon: "UsersIcon",
                     title: "Inicio",
                     desc:
-                        "Encontrarás el acceso a la pantalla de Inicio, el listado de tickets solicitados y el calendario de trabajadores"
+                        "En el Menu Inicio podras ver un pequeño resumen de los botones menu del la izquierda"
                 },
                 {
                     color: "success",
                     icon: "LayoutIcon",
                     title: "Generar Solicitud",
                     desc:
-                        "En esta seccion podra Solicitar los tickets a la Unidad de Mantencion del HSJD"
+                        "En esta seccion podras Generar los tickets a la Unidad de Mantencion del HSJD"
                 },
                 {
                     color: "primary",

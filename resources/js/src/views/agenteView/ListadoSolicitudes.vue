@@ -701,7 +701,7 @@ export default {
         forceRerender() {
             this.componentKey += 1;
         },
-        cargarSolicitudes() {
+        async cargarSolicitudes() {
             axios
                 .get(this.localVal + "/api/Agente/GetSolicitudTickets", {
                     headers: {

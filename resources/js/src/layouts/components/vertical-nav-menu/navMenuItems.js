@@ -16,13 +16,13 @@ export default [
     },
     {
         url: "/GenerarSolicitud",
-        name: "Generar Solicitud",
+        name: "Generar Ticket",
         slug: "GenerarSolicitud",
         icon: "FileIcon"
     },
     {
         url: "/Listadosolicitudes",
-        name: "Listado Solicitudes",
+        name: "Listado Tickets",
         slug: "Listadosolicitudes",
         icon: "FileIcon"
     }
