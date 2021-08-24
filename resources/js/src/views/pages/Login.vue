@@ -62,7 +62,7 @@
                             <span
                                 style="font-size: 10px; color: red; margin-left: 10px;"
                                 v-if="val_run"
-                                >Run incorrecto</span
+                                >Rut incorrecto</span
                             >
 
                             <vs-input

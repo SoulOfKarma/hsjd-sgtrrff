@@ -500,11 +500,11 @@ export default {
                     }
                 },
                 {
-                    label: "Fecha Solicitud",
+                    label: "Fecha Programada",
                     field: "fechaSolicitud",
-                    type: "date",
-                    dateInputFormat: "dd/MM/yyyy",
-                    dateOutputFormat: "dd/MM/yyyy",
+                    // type: "date",
+                    // dateInputFormat: "dd/MM/yyyy",
+                    // dateOutputFormat: "dd/MM/yyyy",
                     filterOptions: {
                         enabled: true
                     }
