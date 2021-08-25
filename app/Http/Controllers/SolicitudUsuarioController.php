@@ -457,15 +457,5 @@ class SolicitudUsuarioController extends Controller
         return true;
     }
 
-    public function getSolicitudTest(){
-        try {
-            $get_all = SolicitudTickets::select('solicitud_tickets.*','gestion_solicitudes.*')
-            ->join('gestion_solicitudes', 'solicitud_tickets.id', '=', 'gestion_solicitudes.id_solicitud')
-            ->get();
-            return $get_all;
-        } catch (\Throwable $th) {
-            log::info($th);
-            return false;
-        }
-    }
+
 }
