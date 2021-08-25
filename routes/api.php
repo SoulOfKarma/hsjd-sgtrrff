@@ -383,3 +383,4 @@ use App\Mail\AutoRespuesta;
     Route::get('/Agente/imprimirPorTicketCA/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketCA']);
 
 
+

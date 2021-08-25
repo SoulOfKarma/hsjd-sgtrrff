@@ -989,7 +989,7 @@ export default {
         },
         registroUsuarioU: {
             run: null,
-            email: "mantencion.hsjd@edsalud.gov.cl",
+            email: "mantencion.hsjd@redsalud.gov.cl",
             nombre: "",
             apellido: "",
             anexo: "",
@@ -1087,7 +1087,6 @@ export default {
         },
         formatear_run() {
             if (this.rutUsuario == "" || this.rutUsuario == null) {
-                console.log("Sin Rut");
                 this.val_run = false;
             } else {
                 this.rutUsuario = format(this.rutUsuario);
