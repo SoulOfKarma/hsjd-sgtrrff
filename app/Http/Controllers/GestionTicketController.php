@@ -504,8 +504,8 @@ class GestionTicketController extends Controller
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions','solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
             ->join('servicios','solicitud_tickets.id_servicio','=','servicios.id')
-            ->leftjoin('gestion_solicitudes', 'solicitud_tickets.id', '=', 'gestion_solicitudes.id_solicitud')
-            ->leftjoin('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->join('gestion_solicitudes', 'solicitud_tickets.id', '=', 'gestion_solicitudes.id_solicitud')
+            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_tickets.id_categoria', 1)
             ->whereNull('gestion_solicitudes.id_solicitud');
             //->orderBy('solicitud_tickets.id', 'desc')
