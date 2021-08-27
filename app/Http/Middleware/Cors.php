@@ -16,6 +16,7 @@ class Cors
         'http://gstc.neuronet.io',
         'http://10.66.248.200:8001',
         'http://10.66.248.200:8002',
+        'http://192.168.0.131:8001',
     ];
 
     // All the headers must be a string
@@ -26,7 +27,8 @@ class Cors
     'https://gstc.neuronet.io',
     'http://gstc.neuronet.io',
     'http://10.66.248.200:8001',
-    'http://10.66.248.200:8002',];
+    'http://10.66.248.200:8002',
+    'http://192.168.0.131:8001',];
 
     private static $allowedMethods = 'OPTIONS, GET, POST, PUT, PATCH, DELETE';
 
