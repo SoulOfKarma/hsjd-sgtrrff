@@ -561,7 +561,7 @@ export default {
                 };
                 axios
                     .post(
-                        this.localVal + "/api/Agente/PostCierreTicket",
+                        this.localVal + "/api/Agente/PostCierreTicketAP",
                         data,
                         {
                             headers: {
@@ -727,7 +727,7 @@ export default {
             axios
                 .get(
                     this.localVal +
-                        `/api/Agente/ValidarTicketAsignadoMod/${id}`,
+                        `/api/Agente/ValidarTicketAsignadoModAP/${id}`,
                     {
                         headers: {
                             Authorization:
@@ -796,7 +796,7 @@ export default {
             // router.push(`/agenteView/FormularioAsignar/${id}`);
             axios
                 .get(
-                    this.localVal + `/api/Agente/ValidarTicketAsignado/${id}`,
+                    this.localVal + `/api/Agente/ValidarTicketAsignadoAP/${id}`,
                     {
                         headers: {
                             Authorization:
@@ -829,7 +829,7 @@ export default {
             axios
                 .get(
                     this.localVal +
-                        `/api/Agente/ValidarTicketAsignadoMod/${id}`,
+                        `/api/Agente/ValidarTicketAsignadoModAP/${id}`,
                     {
                         headers: {
                             Authorization:
@@ -894,7 +894,7 @@ export default {
                     const dataEliminacion = this.dataEliminacion;
                     axios
                         .post(
-                            this.localVal + "/api/Agente/destroyTicket",
+                            this.localVal + "/api/Agente/destroyTicketAP",
                             dataEliminacion,
                             {
                                 headers: {
