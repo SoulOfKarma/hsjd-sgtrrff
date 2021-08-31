@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use App\SolicitudTicketINDs;
+use App\SolicitudTicketsEM;
+use App\SolicitudTicketsAps;
 
 class SolicitudUsuarioController extends Controller
 {
@@ -45,27 +48,72 @@ class SolicitudUsuarioController extends Controller
         return  $get_all;
     }
 
-    public function getSolicitudUsuariosByID(Request $request)
+    public function getSolicitudUsuariosByID(Request $request)//Listado Usuarios - Agregar MultiTablas
     {
         $estadoEliminado = [7];
 
         //$ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre','users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
-        $ticket = SolicitudTickets::select('solicitud_tickets.*', DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
+        $ticketInfra = SolicitudTickets::select('solicitud_tickets.*', DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
          'estado_solicituds.descripcionEstado',DB::raw("DATE_FORMAT(solicitud_tickets.created_at,'%d/%m/%Y') as fechaSolicitud"),
          'servicios.descripcionServicio',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
          DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
          'tipo_reparacions.descripcionTipoReparacion', DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"))
-        ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
-        ->join('tipo_reparacions','solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
-        ->join('servicios','solicitud_tickets.id_servicio','=','servicios.id')
+            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->join('tipo_reparacions','solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
+            ->join('servicios','solicitud_tickets.id_servicio','=','servicios.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->whereNotIn('solicitud_tickets.id_estado',$estadoEliminado)
             ->where('solicitud_tickets.id_servicio', $request->idServicio)
             ->orWhere('solicitud_tickets.id_user',$request->idUser)
-            ->whereNotIn('solicitud_tickets.id_estado',$estadoEliminado)
-            ->orderBy('solicitud_tickets.id', 'desc')
-            ->get(); 
-        return  $ticket;
+            ->whereNotIn('solicitud_tickets.id_estado',$estadoEliminado);
+
+        $ticketEM = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.*', DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
+            'estado_solicituds.descripcionEstado',DB::raw("DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%d/%m/%Y') as fechaSolicitud"),
+            'servicios.descripcionServicio',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_e_m_s.created_at,NOW()) AS Horas'),
+            'tipo_reparacions.descripcionTipoReparacion', DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as desFormat"))
+               ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
+               ->join('tipo_reparacions','solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
+               ->join('servicios','solicitud_tickets_e_m_s.id_servicio','=','servicios.id')
+               ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
+               ->whereNotIn('solicitud_tickets_e_m_s.id_estado',$estadoEliminado)
+               ->where('solicitud_tickets_e_m_s.id_servicio', $request->idServicio)
+               ->orWhere('solicitud_tickets_e_m_s.id_user',$request->idUser)
+               ->whereNotIn('solicitud_tickets_e_m_s.id_estado',$estadoEliminado);
+
+        $ticketIND = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.*', DB::raw("CONCAT(solicitud_ticket_i_n_ds.id) as nticket"),
+               'estado_solicituds.descripcionEstado',DB::raw("DATE_FORMAT(solicitud_ticket_i_n_ds.created_at,'%d/%m/%Y') as fechaSolicitud"),
+               'servicios.descripcionServicio',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+               DB::raw('TIMESTAMPDIFF(HOUR,solicitud_ticket_i_n_ds.created_at,NOW()) AS Horas'),
+               'tipo_reparacions.descripcionTipoReparacion', DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP) as desFormat"))
+                  ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
+                  ->join('tipo_reparacions','solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
+                  ->join('servicios','solicitud_ticket_i_n_ds.id_servicio','=','servicios.id')
+                  ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
+                  ->whereNotIn('solicitud_ticket_i_n_ds.id_estado',$estadoEliminado)
+                  ->where('solicitud_ticket_i_n_ds.id_servicio', $request->idServicio)
+                  ->orWhere('solicitud_ticket_i_n_ds.id_user',$request->idUser)
+                  ->whereNotIn('solicitud_ticket_i_n_ds.id_estado',$estadoEliminado);
+
+        $ticketAP = SolicitudTicketsAps::select('solicitud_tickets_aps.*', DB::raw("CONCAT(solicitud_tickets_aps.id) as nticket"),
+                  'estado_solicituds.descripcionEstado',DB::raw("DATE_FORMAT(solicitud_tickets_aps.created_at,'%d/%m/%Y') as fechaSolicitud"),
+                  'servicios.descripcionServicio',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+                  DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_aps.created_at,NOW()) AS Horas'),
+                  'tipo_reparacions.descripcionTipoReparacion', DB::raw("fnStripTags(solicitud_tickets_aps.descripcionP) as desFormat"))
+                     ->join('users', 'solicitud_tickets_aps.id_user', '=', 'users.id')
+                     ->join('tipo_reparacions','solicitud_tickets_aps.id_tipoReparacion','=','tipo_reparacions.id')
+                     ->join('servicios','solicitud_tickets_aps.id_servicio','=','servicios.id')
+                     ->join('estado_solicituds', 'solicitud_tickets_aps.id_estado', '=', 'estado_solicituds.id')
+                     ->whereNotIn('solicitud_tickets_aps.id_estado',$estadoEliminado)
+                     ->where('solicitud_tickets_aps.id_servicio', $request->idServicio)
+                     ->orWhere('solicitud_tickets_aps.id_user',$request->idUser)
+                     ->whereNotIn('solicitud_tickets_aps.id_estado',$estadoEliminado)
+                     ->union($ticketInfra)
+                     ->union($ticketEM)
+                     ->union($ticketIND)
+                     ->orderBy('created_at', 'desc')
+                     ->get(); 
+        return  $ticketAP;
     }
 
 
@@ -82,7 +130,7 @@ class SolicitudUsuarioController extends Controller
         return  $ticket;
     }
 
-    public function getTicketsAsignadosJoin($id)
+    public function getTicketsAsignadosJoin($id)//Trabajador.
     {
         $ticket = SolicitudTickets::select('solicitud_tickets.*', 
         DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as fechaCreacion"),
@@ -154,40 +202,48 @@ class SolicitudUsuarioController extends Controller
            
             }
 
-            $listContactos = [];
-            $i = 0;
+            if($userMail == [] || $userMail == null){
+                $userMail[0] = 'mantencion.hsjd@redsalud.gov.cl';
+            }
 
+            /* $listContactos = [];
+            $i = 0;
+        
             foreach ($userMail as $key) {
+                if($i == 0){
                 $listContactos[$i] = $key->email;
                 $i++;
-            }
+                }
+            } */
             
             Mail::send('/Mails/SolicitudModificadaUsuario',['nombre' => $nombre, 'id' => $id, 'titulo' => $titulo, 'descripcionTicket' => $descripcionProblema, 'estado' => $desEstado, 'razon' => $razon], function ($message) use($listContactos){
-                $message->setTo($listContactos)->setSubject('Modificacion de ticket');
+                $message->setTo($userMail)->setSubject('Modificacion de ticket');
                 $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return "ok";
         } catch (\Throwable $th) {
             log::info($th);
             return false;
         }
-            
-
-       
-        
+ 
     }
 
     public function indexSeguimiento($uuid)
     {
+       try {
+            $users = DB::table('seguimiento_solicitudes')
+                ->join('users', 'seguimiento_solicitudes.id_user', '=', 'users.id')
+                ->select('seguimiento_solicitudes.*', 'users.nombre')
+                ->where('seguimiento_solicitudes.uuid', '=', $uuid)
+                ->get();
+            return $users;
 
-        $users = DB::table('seguimiento_solicitudes')
-            ->join('users', 'seguimiento_solicitudes.id_user', '=', 'users.id')
-            ->select('seguimiento_solicitudes.*', 'users.nombre')
-            ->where('seguimiento_solicitudes.uuid', '=', $uuid)
-            ->get();
-
-        return  $users;
+       } catch (\Throwable $th) {
+           log::info($th);
+           return false;
+       }
+        
     }
 
     public function indexEspecifico($id)
@@ -195,21 +251,10 @@ class SolicitudUsuarioController extends Controller
         $get_all = SolicitudTickets::select('solicitud_tickets.*',DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
             ->where('solicitud_tickets.id', '=', $id)
             ->get();
-
-        log::info($get_all);    
+  
         return  $get_all;
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+    //Inicio KPI
     public function getTicketsKPI(){
         try {
             $get_all = SolicitudTickets::select('estado_solicituds.descripcionEstado as orderType',
@@ -371,14 +416,7 @@ class SolicitudUsuarioController extends Controller
             return false;
         }
     }
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    //Fin KPI
     public function store(Request $request)
     {
         try {
@@ -402,14 +440,18 @@ class SolicitudUsuarioController extends Controller
                 ->orWhere('id',$ValidarCargo)
                 ->get();
                 }
+
+                if($userMail == [] || $userMail == null){
+                    $userMail[0] = 'mantencion.hsjd@redsalud.gov.cl';
+                }
     
-                $listContactos = [];
+                /* $listContactos = [];
                 $i = 0;
     
                 foreach ($userMail as $key) {
                     $listContactos[$i] = $key->email;
                     $i++;
-                }
+                } */
     
                $nombre = $request->nombre;
                $descripcionP = $request->descripcionCorreo;
@@ -418,9 +460,8 @@ class SolicitudUsuarioController extends Controller
                $validarTicket = 1;
                
                 Mail::send('/Mails/TicketGenerado', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $titulo], function ($message) use($listContactos) {
-                    $message->setTo($listContactos)->setSubject('Nuevo Ticket Generado');
+                    $message->setTo($userMail)->setSubject('Nuevo Ticket Generado');
                     $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                    $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
                    
                   });
                   return true;
@@ -441,12 +482,6 @@ class SolicitudUsuarioController extends Controller
         
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $estadoEliminado = 7;
