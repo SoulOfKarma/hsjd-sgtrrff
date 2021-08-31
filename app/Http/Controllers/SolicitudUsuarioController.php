@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use App\SolicitudTicketINDs;
+use App\SolicitudTicketsEM;
+use App\SolicitudTicketsAps;
 
 class SolicitudUsuarioController extends Controller
 {
@@ -50,7 +53,7 @@ class SolicitudUsuarioController extends Controller
         $estadoEliminado = [7];
 
         //$ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre','users.apellido', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
-        $ticket = SolicitudTickets::select('solicitud_tickets.*', DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
+        $ticketInfra = SolicitudTickets::select('solicitud_tickets.*', DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
          'estado_solicituds.descripcionEstado',DB::raw("DATE_FORMAT(solicitud_tickets.created_at,'%d/%m/%Y') as fechaSolicitud"),
          'servicios.descripcionServicio',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
          DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
@@ -62,10 +65,55 @@ class SolicitudUsuarioController extends Controller
             ->whereNotIn('solicitud_tickets.id_estado',$estadoEliminado)
             ->where('solicitud_tickets.id_servicio', $request->idServicio)
             ->orWhere('solicitud_tickets.id_user',$request->idUser)
-            ->whereNotIn('solicitud_tickets.id_estado',$estadoEliminado)
-            ->orderBy('solicitud_tickets.id', 'desc')
-            ->get(); 
-        return  $ticket;
+            ->whereNotIn('solicitud_tickets.id_estado',$estadoEliminado);
+
+        $ticketEM = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.*', DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
+            'estado_solicituds.descripcionEstado',DB::raw("DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%d/%m/%Y') as fechaSolicitud"),
+            'servicios.descripcionServicio',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_e_m_s.created_at,NOW()) AS Horas'),
+            'tipo_reparacions.descripcionTipoReparacion', DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as desFormat"))
+               ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
+               ->join('tipo_reparacions','solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
+               ->join('servicios','solicitud_tickets_e_m_s.id_servicio','=','servicios.id')
+               ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
+               ->whereNotIn('solicitud_tickets_e_m_s.id_estado',$estadoEliminado)
+               ->where('solicitud_tickets_e_m_s.id_servicio', $request->idServicio)
+               ->orWhere('solicitud_tickets_e_m_s.id_user',$request->idUser)
+               ->whereNotIn('solicitud_tickets_e_m_s.id_estado',$estadoEliminado);
+
+        $ticketIND = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.*', DB::raw("CONCAT(solicitud_ticket_i_n_ds.id) as nticket"),
+               'estado_solicituds.descripcionEstado',DB::raw("DATE_FORMAT(solicitud_ticket_i_n_ds.created_at,'%d/%m/%Y') as fechaSolicitud"),
+               'servicios.descripcionServicio',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+               DB::raw('TIMESTAMPDIFF(HOUR,solicitud_ticket_i_n_ds.created_at,NOW()) AS Horas'),
+               'tipo_reparacions.descripcionTipoReparacion', DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP) as desFormat"))
+                  ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
+                  ->join('tipo_reparacions','solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
+                  ->join('servicios','solicitud_ticket_i_n_ds.id_servicio','=','servicios.id')
+                  ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
+                  ->whereNotIn('solicitud_ticket_i_n_ds.id_estado',$estadoEliminado)
+                  ->where('solicitud_ticket_i_n_ds.id_servicio', $request->idServicio)
+                  ->orWhere('solicitud_ticket_i_n_ds.id_user',$request->idUser)
+                  ->whereNotIn('solicitud_ticket_i_n_ds.id_estado',$estadoEliminado);
+
+        $ticketAP = SolicitudTicketsAps::select('solicitud_tickets_aps.*', DB::raw("CONCAT(solicitud_tickets_aps.id) as nticket"),
+                  'estado_solicituds.descripcionEstado',DB::raw("DATE_FORMAT(solicitud_tickets_aps.created_at,'%d/%m/%Y') as fechaSolicitud"),
+                  'servicios.descripcionServicio',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+                  DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_aps.created_at,NOW()) AS Horas'),
+                  'tipo_reparacions.descripcionTipoReparacion', DB::raw("fnStripTags(solicitud_tickets_aps.descripcionP) as desFormat"))
+                     ->join('users', 'solicitud_tickets_aps.id_user', '=', 'users.id')
+                     ->join('tipo_reparacions','solicitud_tickets_aps.id_tipoReparacion','=','tipo_reparacions.id')
+                     ->join('servicios','solicitud_tickets_aps.id_servicio','=','servicios.id')
+                     ->join('estado_solicituds', 'solicitud_tickets_aps.id_estado', '=', 'estado_solicituds.id')
+                     ->whereNotIn('solicitud_tickets_aps.id_estado',$estadoEliminado)
+                     ->where('solicitud_tickets_aps.id_servicio', $request->idServicio)
+                     ->orWhere('solicitud_tickets_aps.id_user',$request->idUser)
+                     ->whereNotIn('solicitud_tickets_aps.id_estado',$estadoEliminado)
+                     ->union($ticketInfra)
+                     ->union($ticketEM)
+                     ->union($ticketIND)
+                     ->orderBy('created_at', 'desc')
+                     ->get(); 
+        return  $ticketAP;
     }
 
 

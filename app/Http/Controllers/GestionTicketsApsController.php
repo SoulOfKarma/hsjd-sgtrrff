@@ -95,7 +95,7 @@ class GestionTicketsApsController extends Controller
         } finally {
             Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
                 $message->setTo($listContactos)->setSubject('Asignacion de ticket');
-                $message->setFrom('ricardo.soto.g@redsalud.gov', 'Mantencion');
+                $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
                 //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return $response = "Ok";

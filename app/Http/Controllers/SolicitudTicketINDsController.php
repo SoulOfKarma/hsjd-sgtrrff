@@ -3,7 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\SolicitudTicketINDs;
+use App\Mail\TicketGenerado;
+use App\Users;
+use App\SeguimientoSolicitudes;
+use App\EstadoSolicituds;
+use Uuid;
+use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class SolicitudTicketINDsController extends Controller
 {
