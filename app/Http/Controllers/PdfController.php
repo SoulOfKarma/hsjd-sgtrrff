@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\GestionSolicitudes;
+use App\GestionTicketEMS;
+use App\GestionTicketsAps;
+use App\GestionTicketsINDs;
 use App\Trabajadores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -243,8 +246,8 @@ class PdfController extends Controller
 
     public function imprimirPorTicketEM($id)
     {
-        $data = GestionSolicitudes::select(
-            'gestion_solicitudes.*',
+        $data = GestionTicketEMS::select(
+            'gestion_ticket_e_m_s.*',
             'edificios.descripcionEdificio',
             'servicios.descripcionServicio',
             'unidad_esps.descripcionUnidadEsp',
@@ -256,24 +259,24 @@ class PdfController extends Controller
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
-            DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
-            DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
-            DB::raw("IF (gestion_solicitudes.fechaCambiada IS NULL ,DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y'), DATE_FORMAT(gestion_solicitudes.fechaCambiada, '%d/%m/%Y')) as nfechaI"),
-            DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat")
+            DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
+            DB::raw("DATE_FORMAT(solicitud_tickets_e_m_s.created_at, '%d/%m/%Y') as nfechaS"),
+            DB::raw("IF (gestion_ticket_e_m_s.fechaCambiada IS NULL ,DATE_FORMAT(gestion_ticket_e_m_s.fechaInicio, '%d/%m/%Y'), DATE_FORMAT(gestion_solicitudes.fechaCambiada, '%d/%m/%Y')) as nfechaI"),
+            DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as desFormat")
 
         )
-            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
-            ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
-            ->join('solicitud_tickets', 'gestion_solicitudes.id_solicitud', '=', 'solicitud_tickets.id')
-            ->join('edificios', 'solicitud_tickets.id_edificio', '=', 'edificios.id')
-            ->join('servicios', 'solicitud_tickets.id_servicio', '=', 'servicios.id')
-            ->join('unidad_esps', 'solicitud_tickets.id_ubicacionEx', '=', 'unidad_esps.id')
-            ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
-            ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
-            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
-            ->join('turnos', 'gestion_solicitudes.idTurno', '=', 'turnos.id')
-            ->join('duracion_solicitudes', 'gestion_solicitudes.idDuracion', '=', 'duracion_solicitudes.id')
-            ->where('gestion_solicitudes.id_solicitud', $id)
+            ->join('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
+            ->join('supervisores', 'gestion_ticket_e_m_s.id_supervisor', '=', 'supervisores.id')
+            ->join('solicitud_tickets_e_m_s', 'gestion_ticket_e_m_s.id_solicitud', '=', 'solicitud_tickets_e_m_s.id')
+            ->join('edificios', 'solicitud_tickets_e_m_s.id_edificio', '=', 'edificios.id')
+            ->join('servicios', 'solicitud_tickets_e_m_s.id_servicio', '=', 'servicios.id')
+            ->join('unidad_esps', 'solicitud_tickets_e_m_s.id_ubicacionEx', '=', 'unidad_esps.id')
+            ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
+            ->join('tipo_reparacions', 'solicitud_tickets_e_m_s.id_tipoReparacion', '=', 'tipo_reparacions.id')
+            ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
+            ->join('turnos', 'gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
+            ->join('duracion_solicitudes', 'gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
+            ->where('gestion_ticket_e_m_s.id_solicitud', $id)
             ->first();
 
         $idApoyo1 = $data->idApoyo1;
@@ -372,8 +375,8 @@ class PdfController extends Controller
 
     public function imprimirPorTicketIND($id)
     {
-        $data = GestionSolicitudes::select(
-            'gestion_solicitudes.*',
+        $data = GestionTicketsINDs::select(
+            'gestion_tickets_i_n_ds.*',
             'edificios.descripcionEdificio',
             'servicios.descripcionServicio',
             'unidad_esps.descripcionUnidadEsp',
@@ -385,24 +388,24 @@ class PdfController extends Controller
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
-            DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
-            DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
-            DB::raw("IF (gestion_solicitudes.fechaCambiada IS NULL ,DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y'), DATE_FORMAT(gestion_solicitudes.fechaCambiada, '%d/%m/%Y')) as nfechaI"),
-            DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat")
+            DB::raw("CONCAT(solicitud_ticket_i_n_ds.id) as nticket"),
+            DB::raw("DATE_FORMAT(solicitud_ticket_i_n_ds.created_at, '%d/%m/%Y') as nfechaS"),
+            DB::raw("IF (gestion_tickets_i_n_ds.fechaCambiada IS NULL ,DATE_FORMAT(gestion_tickets_i_n_ds.fechaInicio, '%d/%m/%Y'), DATE_FORMAT(gestion_solicitudes.fechaCambiada, '%d/%m/%Y')) as nfechaI"),
+            DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP) as desFormat")
 
         )
-            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
-            ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
-            ->join('solicitud_tickets', 'gestion_solicitudes.id_solicitud', '=', 'solicitud_tickets.id')
-            ->join('edificios', 'solicitud_tickets.id_edificio', '=', 'edificios.id')
-            ->join('servicios', 'solicitud_tickets.id_servicio', '=', 'servicios.id')
-            ->join('unidad_esps', 'solicitud_tickets.id_ubicacionEx', '=', 'unidad_esps.id')
-            ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
-            ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
-            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
-            ->join('turnos', 'gestion_solicitudes.idTurno', '=', 'turnos.id')
-            ->join('duracion_solicitudes', 'gestion_solicitudes.idDuracion', '=', 'duracion_solicitudes.id')
-            ->where('gestion_solicitudes.id_solicitud', $id)
+            ->join('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
+            ->join('supervisores', 'gestion_tickets_i_n_ds.id_supervisor', '=', 'supervisores.id')
+            ->join('solicitud_ticket_i_n_ds', 'gestion_tickets_i_n_ds.id_solicitud', '=', 'solicitud_ticket_i_n_ds.id')
+            ->join('edificios', 'solicitud_ticket_i_n_ds.id_edificio', '=', 'edificios.id')
+            ->join('servicios', 'solicitud_ticket_i_n_ds.id_servicio', '=', 'servicios.id')
+            ->join('unidad_esps', 'solicitud_ticket_i_n_ds.id_ubicacionEx', '=', 'unidad_esps.id')
+            ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
+            ->join('tipo_reparacions', 'solicitud_ticket_i_n_ds.id_tipoReparacion', '=', 'tipo_reparacions.id')
+            ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
+            ->join('turnos', 'gestion_tickets_i_n_ds.idTurno', '=', 'turnos.id')
+            ->join('duracion_solicitudes', 'gestion_tickets_i_n_ds.idDuracion', '=', 'duracion_solicitudes.id')
+            ->where('gestion_tickets_i_n_ds.id_solicitud', $id)
             ->first();
 
         $idApoyo1 = $data->idApoyo1;
@@ -501,8 +504,8 @@ class PdfController extends Controller
 
     public function imprimirPorTicketCA($id)
     {
-        $data = GestionSolicitudes::select(
-            'gestion_solicitudes.*',
+        $data = GestionTicketsAps::select(
+            'gestion_tickets_aps.*',
             'edificios.descripcionEdificio',
             'servicios.descripcionServicio',
             'unidad_esps.descripcionUnidadEsp',
@@ -514,24 +517,24 @@ class PdfController extends Controller
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
-            DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
-            DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
-            DB::raw("IF (gestion_solicitudes.fechaCambiada IS NULL ,DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y'), DATE_FORMAT(gestion_solicitudes.fechaCambiada, '%d/%m/%Y')) as nfechaI"),
-            DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat")
+            DB::raw("CONCAT(solicitud_tickets_aps.id) as nticket"),
+            DB::raw("DATE_FORMAT(solicitud_tickets_aps.created_at, '%d/%m/%Y') as nfechaS"),
+            DB::raw("IF (gestion_tickets_aps.fechaCambiada IS NULL ,DATE_FORMAT(gestion_tickets_aps.fechaInicio, '%d/%m/%Y'), DATE_FORMAT(gestion_solicitudes.fechaCambiada, '%d/%m/%Y')) as nfechaI"),
+            DB::raw("fnStripTags(solicitud_tickets_aps.descripcionP) as desFormat")
 
         )
-            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
-            ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
-            ->join('solicitud_tickets', 'gestion_solicitudes.id_solicitud', '=', 'solicitud_tickets.id')
-            ->join('edificios', 'solicitud_tickets.id_edificio', '=', 'edificios.id')
-            ->join('servicios', 'solicitud_tickets.id_servicio', '=', 'servicios.id')
-            ->join('unidad_esps', 'solicitud_tickets.id_ubicacionEx', '=', 'unidad_esps.id')
-            ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
-            ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
-            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
-            ->join('turnos', 'gestion_solicitudes.idTurno', '=', 'turnos.id')
-            ->join('duracion_solicitudes', 'gestion_solicitudes.idDuracion', '=', 'duracion_solicitudes.id')
-            ->where('gestion_solicitudes.id_solicitud', $id)
+            ->join('trabajadores', 'gestion_tickets_aps.id_trabajador', '=', 'trabajadores.id')
+            ->join('supervisores', 'gestion_tickets_aps.id_supervisor', '=', 'supervisores.id')
+            ->join('solicitud_tickets_aps', 'gestion_tickets_aps.id_solicitud', '=', 'solicitud_tickets_aps.id')
+            ->join('edificios', 'solicitud_tickets_aps.id_edificio', '=', 'edificios.id')
+            ->join('servicios', 'solicitud_tickets_aps.id_servicio', '=', 'servicios.id')
+            ->join('unidad_esps', 'solicitud_tickets_aps.id_ubicacionEx', '=', 'unidad_esps.id')
+            ->join('estado_solicituds', 'solicitud_tickets_aps.id_estado', '=', 'estado_solicituds.id')
+            ->join('tipo_reparacions', 'solicitud_tickets_aps.id_tipoReparacion', '=', 'tipo_reparacions.id')
+            ->join('users', 'solicitud_tickets_aps.id_user', '=', 'users.id')
+            ->join('turnos', 'gestion_tickets_aps.idTurno', '=', 'turnos.id')
+            ->join('duracion_solicitudes', 'gestion_tickets_aps.idDuracion', '=', 'duracion_solicitudes.id')
+            ->where('gestion_tickets_aps.id_solicitud', $id)
             ->first();
 
         $idApoyo1 = $data->idApoyo1;
