@@ -34,8 +34,8 @@ class GestionTicketsINDsController extends Controller
         $users = GestionTicketsINDs::select('gestion_tickets_i_n_ds.id', 'gestion_tickets_i_n_ds.id_trabajador', 'trabajadores.tra_nombre','trabajadores.tra_apellido', 'gestion_tickets_i_n_ds.id_solicitud')
             ->join('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
             ->join('solicitud_ticket_i_n_ds', 'gestion_tickets_i_n_ds.id_solicitud', '=', 'solicitud_ticket_i_n_ds.id')
-            ->where('solicitud_tickets.id_categoria', 3)
-            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado)
+            ->where('solicitud_ticket_i_n_ds.id_categoria', 3)
+            ->where('solicitud_ticket_i_n_ds.id_estado', '!=', $estadoEliminado)
             ->get();
         return $users;
     }
