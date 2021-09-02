@@ -261,7 +261,7 @@ class PdfController extends Controller
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets_e_m_s.created_at, '%d/%m/%Y') as nfechaS"),
-            DB::raw("IF (gestion_ticket_e_m_s.fechaCambiada IS NULL ,DATE_FORMAT(gestion_ticket_e_m_s.fechaInicio, '%d/%m/%Y'), DATE_FORMAT(gestion_solicitudes.fechaCambiada, '%d/%m/%Y')) as nfechaI"),
+            DB::raw("IF (gestion_ticket_e_m_s.fechaCambiada IS NULL ,DATE_FORMAT(gestion_ticket_e_m_s.fechaInicio, '%d/%m/%Y'), DATE_FORMAT(gestion_ticket_e_m_s.fechaCambiada, '%d/%m/%Y')) as nfechaI"),
             DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as desFormat")
 
         )
@@ -390,7 +390,7 @@ class PdfController extends Controller
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("CONCAT(solicitud_ticket_i_n_ds.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_ticket_i_n_ds.created_at, '%d/%m/%Y') as nfechaS"),
-            DB::raw("IF (gestion_tickets_i_n_ds.fechaCambiada IS NULL ,DATE_FORMAT(gestion_tickets_i_n_ds.fechaInicio, '%d/%m/%Y'), DATE_FORMAT(gestion_solicitudes.fechaCambiada, '%d/%m/%Y')) as nfechaI"),
+            DB::raw("IF (gestion_tickets_i_n_ds.fechaCambiada IS NULL ,DATE_FORMAT(gestion_tickets_i_n_ds.fechaInicio, '%d/%m/%Y'), DATE_FORMAT(gestion_tickets_i_n_ds.fechaCambiada, '%d/%m/%Y')) as nfechaI"),
             DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP) as desFormat")
 
         )
@@ -519,7 +519,7 @@ class PdfController extends Controller
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("CONCAT(solicitud_tickets_aps.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets_aps.created_at, '%d/%m/%Y') as nfechaS"),
-            DB::raw("IF (gestion_tickets_aps.fechaCambiada IS NULL ,DATE_FORMAT(gestion_tickets_aps.fechaInicio, '%d/%m/%Y'), DATE_FORMAT(gestion_solicitudes.fechaCambiada, '%d/%m/%Y')) as nfechaI"),
+            DB::raw("IF (gestion_tickets_aps.fechaCambiada IS NULL ,DATE_FORMAT(gestion_tickets_aps.fechaInicio, '%d/%m/%Y'), DATE_FORMAT(gestion_tickets_aps.fechaCambiada, '%d/%m/%Y')) as nfechaI"),
             DB::raw("fnStripTags(solicitud_tickets_aps.descripcionP) as desFormat")
 
         )

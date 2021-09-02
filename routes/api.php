@@ -133,11 +133,11 @@ use App\Mail\AutoRespuesta;
             //Validar Existencia de ticket asignado Para modificar
             Route::get('/Agente/ValidarTicketAsignadoMod/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ValidarTicketAsignadoMod']);
             //Validar Existencia de ticket asignado Para modificar
-            Route::get('/Agente/ValidarTicketAsignadoModEM/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketControllerEMS@ValidarTicketAsignadoMod']);
+            Route::get('/Agente/ValidarTicketAsignadoModEM/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketEMSController@ValidarTicketAsignadoMod']);
             //Validar Existencia de ticket asignado Para modificar
-            Route::get('/Agente/ValidarTicketAsignadoModIND/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketControllerINDs@ValidarTicketAsignadoMod']);
+            Route::get('/Agente/ValidarTicketAsignadoModIND/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@ValidarTicketAsignadoMod']);
             //Validar Existencia de ticket asignado Para modificar
-            Route::get('/Agente/ValidarTicketAsignadoModAP/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketControllerAps@ValidarTicketAsignadoMod']);
+            Route::get('/Agente/ValidarTicketAsignadoModAP/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketsApsController@ValidarTicketAsignadoMod']);
             //Guardar Ticket
             Route::post('/Agente/PutTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@modificarTicket']);
             //Guardar Ticket
