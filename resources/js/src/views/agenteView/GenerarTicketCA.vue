@@ -42,6 +42,7 @@
                             <v-select
                                 taggable
                                 v-model="seleccionUsuario"
+                                :filter="fuseSearch"
                                 placeholder="Seleccione al Usuario"
                                 class="w-full select-large"
                                 label="nombre"
@@ -646,6 +647,7 @@ import "vue-form-wizard/dist/vue-form-wizard.min.css";
 import moment from "moment";
 import axios from "axios";
 import vSelect from "vue-select";
+import Fuse from "fuse.js";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
@@ -1053,6 +1055,15 @@ export default {
         }
     },
     methods: {
+        fuseSearch(options, search) {
+            const fuse = new Fuse(options, {
+                keys: ["id", "nombre"],
+                shouldSort: true
+            });
+            return search.length
+                ? fuse.search(search).map(({ item }) => item)
+                : fuse.list;
+        },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
             var charCode = evt.which ? evt.which : evt.keyCode;
