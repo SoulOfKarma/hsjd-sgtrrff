@@ -1087,7 +1087,7 @@ class UsersController extends Controller
 
     public function getSoloSupervisoresRRFF()
     {
-        $getall = Users::select('Users.*','users.id as id_user','supervisores.*',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreSupervisor"))
+        $getall = Users::select('users.*','users.id as id_user','supervisores.*',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombreSupervisor"))
         ->join('supervisores','users.run','=','supervisores.sup_run')
         ->where('id_cargo',[5])
         ->get();
@@ -1095,7 +1095,7 @@ class UsersController extends Controller
     }
 
     public function getSoloTrabajadoresRRFF(){
-        $get_all = Users::select('Users.*','trabajadores.*',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreTrabajador"))
+        $get_all = Users::select('users.*','trabajadores.*',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombreTrabajador"))
         ->join('trabajadores','users.run','=','trabajadores.tra_run')
         ->where('id_cargo',[6])
         ->get();
@@ -1103,14 +1103,14 @@ class UsersController extends Controller
     }
 
     public function getSoloJefatura(){
-        $get_all = Users::select('Users.*',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreUsuario"))
+        $get_all = Users::select('users.*',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombreUsuario"))
         ->where('id_cargo',[1])
         ->get();
         return $get_all;
     }
 
     public function getSoloSubrogantes(){
-        $get_all = Users::select('Users.*',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreUsuario"))
+        $get_all = Users::select('users.*',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombreUsuario"))
         ->whereNotIn('id_cargo',[1])
         ->whereNotIn('id_cargo',[5])
         ->whereNotIn('id_cargo',[6])
@@ -1120,7 +1120,7 @@ class UsersController extends Controller
 
     public function GetUsuariosPermisos(){
         try {
-            $get_all = Users::select('Users.run',DB::raw("CONCAT(Users.nombre,' ',Users.apellido) as nombreUsuario"),
+            $get_all = Users::select('users.run',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombreUsuario"),
             'cargo_usuarios.descripcionCargo','tbl_permiso_usuarios.id','tbl_permiso_usuarios.estado_login',DB::raw("(CASE tbl_permiso_usuarios.estado_login
             WHEN 1 THEN 'Activo'
             ELSE 'Desabilitado'
