@@ -592,7 +592,7 @@
     <body>
         <div class="container">
             <div class="row">
-              <div class="col-xs-2"> <img src="http://localhost:8001/sgtrrff/resources/assets/images/logo/1.png"></div>
+              <div class="col-xs-2"> <img src="http://10.4.237.120:8001/Documentos/1.png"></div>
                 <div class="col-xs-10">
                   <h3 id="tituloOrd"><b>Orden de Trabajo</b> </h3>
                   <h4 id="subOrd"><b>Unidad de Mantenimiento - Equipo Medico</b> </h4>
