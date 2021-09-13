@@ -183,6 +183,10 @@ import HNavMenu from "@/layouts/components/navMenuAgente/horizontal-nav-menu/Hor
 import navMenuItems from "@/layouts/components/navMenuAgente/vertical-nav-menu/navMenuItems.js";
 import TheNavbarHorizontal from "@/layouts/components/navMenuAgente/navbar/TheNavbarHorizontal.vue";
 import TheNavbarVertical from "@/layouts/components/navMenuAgente/navbar/TheNavbarVertical.vue";
+import navMenuItemsMantencion from "@/layouts/components/navMenuAgente/vertical-nav-menu/navMenuItemsMantencion.js";
+import navMenuItemsEquiposMedicos from "@/layouts/components/navMenuAgente/vertical-nav-menu/navMenuItemsEquiposMedicos.js";
+import navMenuItemsIndustrial from "@/layouts/components/navMenuAgente/vertical-nav-menu/navMenuItemsIndustrial.js";
+import navMenuItemsApoyoClinico from "@/layouts/components/navMenuAgente/vertical-nav-menu/navMenuItemsApoyoClinico.js";
 import TheFooter from "@/layouts/components/TheFooter.vue";
 import themeConfig from "@/../themeConfig.js";
 import VNavMenu from "@/layouts/components/navMenuAgente/vertical-nav-menu/VerticalNavMenu.vue";
@@ -331,7 +335,15 @@ export default {
 
         var aux2 = sessionStorage.getItem("permiso_usuario");
         if (aux2 == 1) {
-            console.log("Acceso Correcto");
+            this.navMenuItems = navMenuItems;
+        } else if (aux2 == 5) {
+            this.navMenuItems = navMenuItemsMantencion;
+        } else if (aux2 == 6) {
+            this.navMenuItems = navMenuItemsEquiposMedicos;
+        } else if (aux2 == 7) {
+            this.navMenuItems = navMenuItemsIndustrial;
+        } else if (aux2 == 8) {
+            this.navMenuItems = navMenuItemsApoyoClinico;
         } else {
             router.push("/pages/login").catch(err => {});
         }
