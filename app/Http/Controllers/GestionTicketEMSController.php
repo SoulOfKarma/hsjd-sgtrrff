@@ -28,6 +28,16 @@ class GestionTicketEMSController extends Controller
         }
     }
 
+    public function ValidarTicketAsignado($id)
+    {
+        $users = GestionTicketEMS::firstWhere('id_solicitud', $id);
+        if ($users === null) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
     public function ticketsCategoriaEM()
     {
         $estadoEliminado = 7;

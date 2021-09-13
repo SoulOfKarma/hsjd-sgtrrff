@@ -28,6 +28,16 @@ class GestionTicketsApsController extends Controller
         }
     }
 
+    public function ValidarTicketAsignado($id)
+    {
+        $users = GestionTicketsAps::firstWhere('id_solicitud', $id);
+        if ($users === null) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
     public function ticketsCategoriaCA()
     {
         $estadoEliminado = 7;

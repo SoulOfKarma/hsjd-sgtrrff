@@ -28,6 +28,16 @@ class GestionTicketsINDsController extends Controller
         }
     }
 
+    public function ValidarTicketAsignado($id)
+    {
+        $users = GestionTicketsINDs::firstWhere('id_solicitud', $id);
+        if ($users === null) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
     public function ticketsCategoriaIND()
     {
         $estadoEliminado = 7;
