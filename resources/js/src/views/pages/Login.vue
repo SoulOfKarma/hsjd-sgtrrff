@@ -395,6 +395,18 @@ export default {
                                             ) {
                                                 pr = 6;
                                             }
+                                            if (
+                                                response2.data[0]
+                                                    .permiso_usuario == 5 ||
+                                                response2.data[0]
+                                                    .permiso_usuario == 6 ||
+                                                response2.data[0]
+                                                    .permiso_usuario == 7 ||
+                                                response2.data[0]
+                                                    .permiso_usuario == 8
+                                            ) {
+                                                pr = 3;
+                                            }
                                             //router.push('/home');
                                             //pr = 3;
                                         } else {
