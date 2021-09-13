@@ -40,6 +40,21 @@ class GestionTicketsINDsController extends Controller
         return $users;
     }
 
+    public function GetTicketAsignado($id)
+    {
+        try {
+            $users = GestionTicketsINDs::select('gestion_tickets_i_n_ds.*','solicitud_ticket_i_n_ds.*',)
+        ->join('solicitud_ticket_i_n_ds','gestion_tickets_i_n_ds.id_solicitud','=','solicitud_ticket_i_n_ds.id')
+        ->where('gestion_tickets_i_n_ds.id_solicitud',$id)
+        ->get();
+        return $users;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+        
+    }
+
     public function AsignarTicketIND(Request $request)
     {
         try {

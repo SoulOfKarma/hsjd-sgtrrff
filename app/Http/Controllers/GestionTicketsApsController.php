@@ -40,6 +40,21 @@ class GestionTicketsApsController extends Controller
         return $users;
     }
 
+    public function GetTicketAsignado($id)
+    {
+        try {
+            $users = GestionTicketsAps::select('gestion_tickets_aps.*','solicitud_tickets_aps.*',)
+        ->join('solicitud_tickets_aps','gestion_tickets_aps.id_solicitud','=','solicitud_tickets_aps.id')
+        ->where('gestion_tickets_aps.id_solicitud',$id)
+        ->get();
+        return $users;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+        
+    }
+
     public function AsignarTicketCA(Request $request)
     {
         try {

@@ -40,6 +40,21 @@ class GestionTicketEMSController extends Controller
         return $users;
     }
 
+    public function GetTicketAsignado($id)
+    {
+        try {
+            $users = GestionTicketEMS::select('gestion_ticket_e_m_s.*','solicitud_tickets_e_m_s.*',)
+        ->join('solicitud_tickets_e_m_s','gestion_ticket_e_m_s.id_solicitud','=','solicitud_tickets_e_m_s.id')
+        ->where('gestion_ticket_e_m_s.id_solicitud',$id)
+        ->get();
+        return $users;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+        
+    }
+
     public function AsignarTicketEM(Request $request)
     {
         try {

@@ -481,101 +481,37 @@ export default {
         },
         async guardarSolicitud() {
             try {
-                if (this.image == "" || this.image == null || this.image == 0) {
-                    //Llenando Campos para Guardar Ticket de Mantencion
-                    this.solicitud.id_edificio = this.seleccionEdificio[0].id;
-                    this.solicitud.id_servicio = this.seleccionServicio[0].id;
-                    this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
-                    this.solicitud.id_categoria = this.seleccionCategoria.id;
-                    var newElement = document.createElement("div");
-                    newElement.innerHTML = this.solicitud.descripcionP;
-                    this.solicitud.descripcionCorreo = newElement.textContent;
-                    const solicitudNueva = this.solicitud;
-                    this.openLoadingColor();
-                    this.solicitud = {
-                        descripcionP: "",
-                        tituloP: "",
-                        id_user: sessionStorage.getItem("id"),
-                        id_estado: 1,
-                        id_edificio: 0,
-                        id_servicio: 0,
-                        id_ubicacionEx: 42,
-                        id_tipoReparacion: 0,
-                        id_categoria: 0
-                    };
-                    //Enviando Datos para crear ticket
-                    await axios
-                        .post(
-                            this.localVal + "/api/Usuario/PostSolicitud",
-                            solicitudNueva,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-
-                            if (solicitudServer == true) {
-                                this.mensajeGuardado();
-
-                                this.limpiar();
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible crear el ticket, revise los campos e intente nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            }
-                        });
-                } else {
-                    var data = new FormData();
-                    //Añadimos la imagen seleccionada
-                    data.append("avatar", this.image);
-                    data.append("id", this.lastID + 1);
-
-                    //Llenando Campos para Guardar Ticket de Mantencion
-                    this.solicitud.id_edificio = this.seleccionEdificio[0].id;
-                    this.solicitud.id_servicio = this.seleccionServicio[0].id;
-                    this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
-                    this.solicitud.id_categoria = this.seleccionCategoria.id;
-                    var newElement = document.createElement("div");
-                    newElement.innerHTML = this.solicitud.descripcionP;
-                    this.solicitud.descripcionCorreo = newElement.textContent;
-                    const solicitudNueva = this.solicitud;
-                    this.openLoadingColor();
-                    this.solicitud = {
-                        descripcionP: "",
-                        tituloP: "",
-                        id_user: sessionStorage.getItem("id"),
-                        id_estado: 1,
-                        id_edificio: 0,
-                        id_servicio: 0,
-                        id_ubicacionEx: 42,
-                        id_tipoReparacion: 0,
-                        id_categoria: 0
-                    };
-                    //Enviando Datos para crear ticket
-                    await axios
-                        .all([
-                            axios.post(
-                                this.localVal + "/api/Agente/PostDocumentoF",
-                                data,
-                                {
-                                    headers: {
-                                        Authorization:
-                                            `Bearer ` +
-                                            sessionStorage.getItem("token")
-                                    }
-                                }
-                            ),
-                            axios.post(
+                if (this.seleccionCategoria.id == 1) {
+                    if (
+                        this.image == "" ||
+                        this.image == null ||
+                        this.image == 0
+                    ) {
+                        //Llenando Campos para Guardar Ticket de Mantencion
+                        this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                        this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                        this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                        this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.solicitud.descripcionP;
+                        this.solicitud.descripcionCorreo =
+                            newElement.textContent;
+                        const solicitudNueva = this.solicitud;
+                        this.openLoadingColor();
+                        this.solicitud = {
+                            descripcionP: "",
+                            tituloP: "",
+                            id_user: sessionStorage.getItem("id"),
+                            id_estado: 1,
+                            id_edificio: 0,
+                            id_servicio: 0,
+                            id_ubicacionEx: 42,
+                            id_tipoReparacion: 0,
+                            id_categoria: 0
+                        };
+                        //Enviando Datos para crear ticket
+                        await axios
+                            .post(
                                 this.localVal + "/api/Usuario/PostSolicitud",
                                 solicitudNueva,
                                 {
@@ -586,16 +522,12 @@ export default {
                                     }
                                 }
                             )
-                        ])
-                        .then(
-                            axios.spread((res1, res2) => {
-                                let data1 = res1.data;
-                                let data2 = res2.data;
-                                if (data1 == true && data2 == true) {
+                            .then(res => {
+                                const solicitudServer = res.data;
+
+                                if (solicitudServer == true) {
                                     this.mensajeGuardado();
-                                    setTimeout(() => {
-                                        router.back();
-                                    }, 4000);
+
                                     this.limpiar();
                                 } else {
                                     this.$vs.notify({
@@ -607,8 +539,651 @@ export default {
                                         position: "top-right"
                                     });
                                 }
-                            })
-                        );
+                            });
+                    } else {
+                        var data = new FormData();
+                        //Añadimos la imagen seleccionada
+                        data.append("avatar", this.image);
+                        data.append("id", this.lastID + 1);
+                        data.append("id_categoria", this.seleccionCategoria.id);
+
+                        //Llenando Campos para Guardar Ticket de Mantencion
+                        this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                        this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                        this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                        this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.solicitud.descripcionP;
+                        this.solicitud.descripcionCorreo =
+                            newElement.textContent;
+                        const solicitudNueva = this.solicitud;
+                        this.openLoadingColor();
+                        this.solicitud = {
+                            descripcionP: "",
+                            tituloP: "",
+                            id_user: sessionStorage.getItem("id"),
+                            id_estado: 1,
+                            id_edificio: 0,
+                            id_servicio: 0,
+                            id_ubicacionEx: 42,
+                            id_tipoReparacion: 0,
+                            id_categoria: 0
+                        };
+                        //Enviando Datos para crear ticket
+                        await axios
+                            .all([
+                                axios.post(
+                                    this.localVal +
+                                        "/api/Agente/PostDocumentoF",
+                                    data,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                ),
+                                axios.post(
+                                    this.localVal +
+                                        "/api/Usuario/PostSolicitud",
+                                    solicitudNueva,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                )
+                            ])
+                            .then(
+                                axios.spread((res1, res2) => {
+                                    let data1 = res1.data;
+                                    let data2 = res2.data;
+                                    if (data1 == true && data2 == true) {
+                                        this.mensajeGuardado();
+                                        setTimeout(() => {
+                                            router.back();
+                                        }, 4000);
+                                        this.limpiar();
+                                    } else {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Error",
+                                            text:
+                                                "No fue posible crear el ticket, revise los campos e intente nuevamente",
+                                            color: "danger",
+                                            position: "top-right"
+                                        });
+                                    }
+                                })
+                            );
+                    }
+                } else if (this.seleccionCategoria.id == 2) {
+                    if (
+                        this.image == "" ||
+                        this.image == null ||
+                        this.image == 0
+                    ) {
+                        //Llenando Campos para Guardar Ticket de Mantencion
+                        this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                        this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                        this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                        this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.solicitud.descripcionP;
+                        this.solicitud.descripcionCorreo =
+                            newElement.textContent;
+                        const solicitudNueva = this.solicitud;
+                        this.openLoadingColor();
+                        this.solicitud = {
+                            descripcionP: "",
+                            tituloP: "",
+                            id_user: sessionStorage.getItem("id"),
+                            id_estado: 1,
+                            id_edificio: 0,
+                            id_servicio: 0,
+                            id_ubicacionEx: 42,
+                            id_tipoReparacion: 0,
+                            id_categoria: 0
+                        };
+                        //Enviando Datos para crear ticket
+                        await axios
+                            .post(
+                                this.localVal + "/api/Usuario/PostSolicitudEM",
+                                solicitudNueva,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+
+                                if (solicitudServer == true) {
+                                    this.mensajeGuardado();
+
+                                    this.limpiar();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible crear el ticket, revise los campos e intente nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    } else {
+                        var data = new FormData();
+                        //Añadimos la imagen seleccionada
+                        data.append("avatar", this.image);
+                        data.append("id", this.lastID + 1);
+                        data.append("id_categoria", this.seleccionCategoria.id);
+
+                        //Llenando Campos para Guardar Ticket de Mantencion
+                        this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                        this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                        this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                        this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.solicitud.descripcionP;
+                        this.solicitud.descripcionCorreo =
+                            newElement.textContent;
+                        const solicitudNueva = this.solicitud;
+                        this.openLoadingColor();
+                        this.solicitud = {
+                            descripcionP: "",
+                            tituloP: "",
+                            id_user: sessionStorage.getItem("id"),
+                            id_estado: 1,
+                            id_edificio: 0,
+                            id_servicio: 0,
+                            id_ubicacionEx: 42,
+                            id_tipoReparacion: 0,
+                            id_categoria: 0
+                        };
+                        //Enviando Datos para crear ticket
+                        await axios
+                            .all([
+                                axios.post(
+                                    this.localVal +
+                                        "/api/Agente/PostDocumentoF",
+                                    data,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                ),
+                                axios.post(
+                                    this.localVal +
+                                        "/api/Usuario/PostSolicitudEM",
+                                    solicitudNueva,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                )
+                            ])
+                            .then(
+                                axios.spread((res1, res2) => {
+                                    let data1 = res1.data;
+                                    let data2 = res2.data;
+                                    if (data1 == true && data2 == true) {
+                                        this.mensajeGuardado();
+                                        setTimeout(() => {
+                                            router.back();
+                                        }, 4000);
+                                        this.limpiar();
+                                    } else {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Error",
+                                            text:
+                                                "No fue posible crear el ticket, revise los campos e intente nuevamente",
+                                            color: "danger",
+                                            position: "top-right"
+                                        });
+                                    }
+                                })
+                            );
+                    }
+                } else if (this.seleccionCategoria.id == 3) {
+                    if (
+                        this.image == "" ||
+                        this.image == null ||
+                        this.image == 0
+                    ) {
+                        //Llenando Campos para Guardar Ticket de Mantencion
+                        this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                        this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                        this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                        this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.solicitud.descripcionP;
+                        this.solicitud.descripcionCorreo =
+                            newElement.textContent;
+                        const solicitudNueva = this.solicitud;
+                        this.openLoadingColor();
+                        this.solicitud = {
+                            descripcionP: "",
+                            tituloP: "",
+                            id_user: sessionStorage.getItem("id"),
+                            id_estado: 1,
+                            id_edificio: 0,
+                            id_servicio: 0,
+                            id_ubicacionEx: 42,
+                            id_tipoReparacion: 0,
+                            id_categoria: 0
+                        };
+                        //Enviando Datos para crear ticket
+                        await axios
+                            .post(
+                                this.localVal + "/api/Usuario/PostSolicitudIND",
+                                solicitudNueva,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+
+                                if (solicitudServer == true) {
+                                    this.mensajeGuardado();
+
+                                    this.limpiar();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible crear el ticket, revise los campos e intente nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    } else {
+                        var data = new FormData();
+                        //Añadimos la imagen seleccionada
+                        data.append("avatar", this.image);
+                        data.append("id", this.lastID + 1);
+                        data.append("id_categoria", this.seleccionCategoria.id);
+
+                        //Llenando Campos para Guardar Ticket de Mantencion
+                        this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                        this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                        this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                        this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.solicitud.descripcionP;
+                        this.solicitud.descripcionCorreo =
+                            newElement.textContent;
+                        const solicitudNueva = this.solicitud;
+                        this.openLoadingColor();
+                        this.solicitud = {
+                            descripcionP: "",
+                            tituloP: "",
+                            id_user: sessionStorage.getItem("id"),
+                            id_estado: 1,
+                            id_edificio: 0,
+                            id_servicio: 0,
+                            id_ubicacionEx: 42,
+                            id_tipoReparacion: 0,
+                            id_categoria: 0
+                        };
+                        //Enviando Datos para crear ticket
+                        await axios
+                            .all([
+                                axios.post(
+                                    this.localVal +
+                                        "/api/Agente/PostDocumentoF",
+                                    data,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                ),
+                                axios.post(
+                                    this.localVal +
+                                        "/api/Usuario/PostSolicitudIND",
+                                    solicitudNueva,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                )
+                            ])
+                            .then(
+                                axios.spread((res1, res2) => {
+                                    let data1 = res1.data;
+                                    let data2 = res2.data;
+                                    if (data1 == true && data2 == true) {
+                                        this.mensajeGuardado();
+                                        setTimeout(() => {
+                                            router.back();
+                                        }, 4000);
+                                        this.limpiar();
+                                    } else {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Error",
+                                            text:
+                                                "No fue posible crear el ticket, revise los campos e intente nuevamente",
+                                            color: "danger",
+                                            position: "top-right"
+                                        });
+                                    }
+                                })
+                            );
+                    }
+                } else if (this.seleccionCategoria.id == 4) {
+                    if (
+                        this.image == "" ||
+                        this.image == null ||
+                        this.image == 0
+                    ) {
+                        //Llenando Campos para Guardar Ticket de Mantencion
+                        this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                        this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                        this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                        this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.solicitud.descripcionP;
+                        this.solicitud.descripcionCorreo =
+                            newElement.textContent;
+                        const solicitudNueva = this.solicitud;
+                        this.openLoadingColor();
+                        this.solicitud = {
+                            descripcionP: "",
+                            tituloP: "",
+                            id_user: sessionStorage.getItem("id"),
+                            id_estado: 1,
+                            id_edificio: 0,
+                            id_servicio: 0,
+                            id_ubicacionEx: 42,
+                            id_tipoReparacion: 0,
+                            id_categoria: 0
+                        };
+                        //Enviando Datos para crear ticket
+                        await axios
+                            .post(
+                                this.localVal + "/api/Usuario/PostSolicitudAP",
+                                solicitudNueva,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+
+                                if (solicitudServer == true) {
+                                    this.mensajeGuardado();
+
+                                    this.limpiar();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible crear el ticket, revise los campos e intente nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    } else {
+                        var data = new FormData();
+                        //Añadimos la imagen seleccionada
+                        data.append("avatar", this.image);
+                        data.append("id", this.lastID + 1);
+                        data.append("id_categoria", this.seleccionCategoria.id);
+
+                        //Llenando Campos para Guardar Ticket de Mantencion
+                        this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                        this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                        this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                        this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.solicitud.descripcionP;
+                        this.solicitud.descripcionCorreo =
+                            newElement.textContent;
+                        const solicitudNueva = this.solicitud;
+                        this.openLoadingColor();
+                        this.solicitud = {
+                            descripcionP: "",
+                            tituloP: "",
+                            id_user: sessionStorage.getItem("id"),
+                            id_estado: 1,
+                            id_edificio: 0,
+                            id_servicio: 0,
+                            id_ubicacionEx: 42,
+                            id_tipoReparacion: 0,
+                            id_categoria: 0
+                        };
+                        //Enviando Datos para crear ticket
+                        await axios
+                            .all([
+                                axios.post(
+                                    this.localVal +
+                                        "/api/Agente/PostDocumentoF",
+                                    data,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                ),
+                                axios.post(
+                                    this.localVal +
+                                        "/api/Usuario/PostSolicitudAP",
+                                    solicitudNueva,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                )
+                            ])
+                            .then(
+                                axios.spread((res1, res2) => {
+                                    let data1 = res1.data;
+                                    let data2 = res2.data;
+                                    if (data1 == true && data2 == true) {
+                                        this.mensajeGuardado();
+                                        setTimeout(() => {
+                                            router.back();
+                                        }, 4000);
+                                        this.limpiar();
+                                    } else {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Error",
+                                            text:
+                                                "No fue posible crear el ticket, revise los campos e intente nuevamente",
+                                            color: "danger",
+                                            position: "top-right"
+                                        });
+                                    }
+                                })
+                            );
+                    }
+                } else if (this.seleccionCategoria.id == 5) {
+                    if (
+                        this.image == "" ||
+                        this.image == null ||
+                        this.image == 0
+                    ) {
+                        //Llenando Campos para Guardar Ticket de Mantencion
+                        this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                        this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                        this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                        this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.solicitud.descripcionP;
+                        this.solicitud.descripcionCorreo =
+                            newElement.textContent;
+                        const solicitudNueva = this.solicitud;
+                        this.openLoadingColor();
+                        this.solicitud = {
+                            descripcionP: "",
+                            tituloP: "",
+                            id_user: sessionStorage.getItem("id"),
+                            id_estado: 1,
+                            id_edificio: 0,
+                            id_servicio: 0,
+                            id_ubicacionEx: 42,
+                            id_tipoReparacion: 0,
+                            id_categoria: 0
+                        };
+                        //Enviando Datos para crear ticket
+                        await axios
+                            .post(
+                                this.localVal + "/api/Usuario/PostSolicitud",
+                                solicitudNueva,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+
+                                if (solicitudServer == true) {
+                                    this.mensajeGuardado();
+
+                                    this.limpiar();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible crear el ticket, revise los campos e intente nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    } else {
+                        var data = new FormData();
+                        //Añadimos la imagen seleccionada
+                        data.append("avatar", this.image);
+                        data.append("id", this.lastID + 1);
+                        data.append("id_categoria", this.seleccionCategoria.id);
+
+                        //Llenando Campos para Guardar Ticket de Mantencion
+                        this.solicitud.id_edificio = this.seleccionEdificio[0].id;
+                        this.solicitud.id_servicio = this.seleccionServicio[0].id;
+                        this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                        this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.solicitud.descripcionP;
+                        this.solicitud.descripcionCorreo =
+                            newElement.textContent;
+                        const solicitudNueva = this.solicitud;
+                        this.openLoadingColor();
+                        this.solicitud = {
+                            descripcionP: "",
+                            tituloP: "",
+                            id_user: sessionStorage.getItem("id"),
+                            id_estado: 1,
+                            id_edificio: 0,
+                            id_servicio: 0,
+                            id_ubicacionEx: 42,
+                            id_tipoReparacion: 0,
+                            id_categoria: 0
+                        };
+                        //Enviando Datos para crear ticket
+                        await axios
+                            .all([
+                                axios.post(
+                                    this.localVal +
+                                        "/api/Agente/PostDocumentoF",
+                                    data,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                ),
+                                axios.post(
+                                    this.localVal +
+                                        "/api/Usuario/PostSolicitud",
+                                    solicitudNueva,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                )
+                            ])
+                            .then(
+                                axios.spread((res1, res2) => {
+                                    let data1 = res1.data;
+                                    let data2 = res2.data;
+                                    if (data1 == true && data2 == true) {
+                                        this.mensajeGuardado();
+                                        setTimeout(() => {
+                                            router.back();
+                                        }, 4000);
+                                        this.limpiar();
+                                    } else {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Error",
+                                            text:
+                                                "No fue posible crear el ticket, revise los campos e intente nuevamente",
+                                            color: "danger",
+                                            position: "top-right"
+                                        });
+                                    }
+                                })
+                            );
+                    }
+                } else {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una categoria",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 }
             } catch (error) {
                 console.log(error);

@@ -18,8 +18,7 @@ class Trabajadores extends Migration
             $table->string('tra_run')->nullable();
             $table->string('tra_nombre');
             $table->string('tra_apellido');
-            $table->bigInteger('id_especialidad1')->unsigned();
-            $table->foreign('id_especialidad1')->references('id')->on('especialidades');
+            $table->bigInteger('id_especialidad1');
             $table->timestamps();
         });
     }

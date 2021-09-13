@@ -279,10 +279,11 @@ export default {
                         }
                     })
                     .then(res => {
-                        let data = res.data;
+                        let listado = [];
+                        listado = res.data;
                         let b = [];
                         let obj = {};
-                        data.forEach((value, index) => {
+                        listado.forEach((value, index) => {
                             obj = {};
                             obj = {
                                 id: value.id,
@@ -312,10 +313,11 @@ export default {
                         }
                     })
                     .then(res => {
-                        let data = res.data;
+                        let listado = [];
+                        listado = res.data;
                         let b = [];
                         let obj = {};
-                        data.forEach((value, index) => {
+                        listado.forEach((value, index) => {
                             obj = {};
                             obj = {
                                 id: value.id,

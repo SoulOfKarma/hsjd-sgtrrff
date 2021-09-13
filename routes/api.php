@@ -60,8 +60,20 @@ use App\Mail\AutoRespuesta;
             Route::get('/Usuario/correo', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@correo']);
             //Traer datos especificos
             Route::get('/Usuario/TraerSolicitud/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexEspecifico']);
+            //Traer datos especificos
+            Route::get('/Usuario/TraerSolicitudEM/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexEspecificoEM']);
+            //Traer datos especificos
+            Route::get('/Usuario/TraerSolicitudIND/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexEspecificoIND']);
+            //Traer datos especificos
+            Route::get('/Usuario/TraerSolicitudAP/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexEspecificoAP']);
             //Guardar Solicitud
             Route::post('/Usuario/PostSolicitud', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@store']);
+            //Guardar Solicitud EM
+            Route::post('/Usuario/PostSolicitudEM', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioControllerEM@store']);
+            //Guardar Solicitud IND
+            Route::post('/Usuario/PostSolicitudIND', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioControllerINDs@store']);
+            //Guardar Solicitud AP
+            Route::post('/Usuario/PostSolicitudAP', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioControllerAps@store']);
             //Modificar Solicitud
             Route::post('/Usuario/PutSolicitud', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@ModificarSolicitud']);
             //Traer seguimiento
@@ -180,6 +192,12 @@ use App\Mail\AutoRespuesta;
             Route::post('/Agente/FinalizarTicketAP', ['middleware' => 'cors', 'uses' => 'GestionTicketsApsController@FinalizarTicket']);
             //Traer ticket asignado
             Route::get('/Agente/GetTicketAsignado/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetTicketAsignado']);
+            //Traer ticket asignado
+            Route::get('/Agente/GetTicketAsignadoEM/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketEMSController@GetTicketAsignado']);
+            //Traer ticket asignado
+            Route::get('/Agente/GetTicketAsignadoIND/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@GetTicketAsignado']);
+            //Traer ticket asignado
+            Route::get('/Agente/GetTicketAsignadoAP/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketsApsController@GetTicketAsignado']);
             //Validar Existencia de ticket asignado para asignar
             Route::get('/Agente/ValidarTicketAsignado/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ValidarTicketAsignado']);
             //Validar Existencia de ticket asignado para asignar

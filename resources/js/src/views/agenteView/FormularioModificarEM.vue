@@ -1575,7 +1575,7 @@ export default {
         cargaSolicitudEspecifica() {
             let id = this.$route.params.id;
             axios
-                .get(this.localVal + `/api/Usuario/TraerSolicitud/${id}`, {
+                .get(this.localVal + `/api/Usuario/TraerSolicitudEM/${id}`, {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -1899,7 +1899,7 @@ export default {
         cargaTicketAsignado() {
             let id = this.$route.params.id;
             axios
-                .get(this.localVal + `/api/Agente/GetTicketAsignado/${id}`, {
+                .get(this.localVal + `/api/Agente/GetTicketAsignadoEM/${id}`, {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")

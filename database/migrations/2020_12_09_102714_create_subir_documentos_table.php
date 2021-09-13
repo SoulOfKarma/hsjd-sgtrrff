@@ -17,6 +17,7 @@ class CreateSubirDocumentosTable extends Migration
             $table->id();
             $table->bigInteger('id_solicitud');
             $table->string('nombre_documento');
+            $table->bigInteger('id_categoria')->nullable();
             $table->timestamps();
         });
     }

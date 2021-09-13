@@ -8,5 +8,6 @@ class DuracionSolicitudes extends Model
 {
     protected $fillable = [
         'descripcion_duracion',
+        'id_categoria',
     ];
 }

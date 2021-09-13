@@ -21,6 +21,7 @@ class DocumentosFController extends Controller
        $SubirDocumentos = new SubirDocumentos;
        $SubirDocumentos->id_solicitud = $request->id;
        $SubirDocumentos->nombre_documento = $url;
+       $SubirDocumentos->id_categoria = $request->id_categoria;
        $SubirDocumentos->save();
        return true;
     }
