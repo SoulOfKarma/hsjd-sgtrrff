@@ -197,18 +197,6 @@ export default [
         ]
     },
     {
-        url: "/agenteView/CalendarioAscensores",
-        name: "Ascensoristas",
-        slug: "CalendarioAscensores",
-        icon: "CalendarIcon"
-    },
-    {
-        url: "/agenteView/CalendarioCTelefonica",
-        name: "C. Telefonica",
-        slug: "CalendarioCTelefonica",
-        icon: "CalendarIcon"
-    },
-    {
         url: "/agenteView/CalendarioObras",
         name: "Obras.",
         slug: "CalendarioObras",
