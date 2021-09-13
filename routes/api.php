@@ -201,11 +201,11 @@ use App\Mail\AutoRespuesta;
             //Validar Existencia de ticket asignado para asignar
             Route::get('/Agente/ValidarTicketAsignado/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ValidarTicketAsignado']);
             //Validar Existencia de ticket asignado para asignar
-            Route::get('/Agente/ValidarTicketAsignadoEM/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketControllerEMS@ValidarTicketAsignado']);
+            Route::get('/Agente/ValidarTicketAsignadoEM/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketEMSController@ValidarTicketAsignado']);
             //Validar Existencia de ticket asignado para asignar
-            Route::get('/Agente/ValidarTicketAsignadoIND/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketsControllerINDs@ValidarTicketAsignado']);
+            Route::get('/Agente/ValidarTicketAsignadoIND/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@ValidarTicketAsignado']);
             //Validar Existencia de ticket asignado para asignar
-            Route::get('/Agente/ValidarTicketAsignadoAP/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketsControllerAps@ValidarTicketAsignado']);
+            Route::get('/Agente/ValidarTicketAsignadoAP/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketsApsController@ValidarTicketAsignado']);
 
 
             //Traer Dato Join Calendario
