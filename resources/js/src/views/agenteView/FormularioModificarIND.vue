@@ -505,7 +505,7 @@ export default {
         hora1: moment("8:32", "HH:mm"),
         hora2: moment("12:32", "HH:mm"),
         configFromdateTimePicker: {
-            minDate: new Date(),
+            minDate: null,
             maxDate: null,
             locale: {
                 firstDayOfWeek: 1,
