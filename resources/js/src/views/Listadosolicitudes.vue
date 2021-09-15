@@ -86,7 +86,8 @@
                                     @click="
                                         detalleSolicitud(
                                             props.row.id,
-                                            props.row.uuid
+                                            props.row.uuid,
+                                            props.row.id_categoria
                                         )
                                     "
                                 ></plus-circle-icon>
@@ -96,7 +97,8 @@
                                     @click="
                                         modificarSolicitud(
                                             props.row.id,
-                                            props.row.uuid
+                                            props.row.uuid,
+                                            props.row.id_categoria
                                         )
                                     "
                                 ></upload-icon>
@@ -104,7 +106,11 @@
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
-                                        abrirPop(props.row.id, props.row.uuid)
+                                        abrirPop(
+                                            props.row.id,
+                                            props.row.uuid,
+                                            props.row.id_categoria
+                                        )
                                     "
                                 ></trash-2-icon>
                             </div>
@@ -115,7 +121,8 @@
                                     @click="
                                         detalleSolicitud(
                                             props.row.id,
-                                            props.row.uuid
+                                            props.row.uuid,
+                                            props.row.id_categoria
                                         )
                                     "
                                 ></plus-circle-icon>
@@ -125,7 +132,8 @@
                                     @click="
                                         modificarSolicitud(
                                             props.row.id,
-                                            props.row.uuid
+                                            props.row.uuid,
+                                            props.row.id_categoria
                                         )
                                     "
                                 ></upload-icon>
@@ -137,7 +145,8 @@
                                     @click="
                                         detalleSolicitud(
                                             props.row.id,
-                                            props.row.uuid
+                                            props.row.uuid,
+                                            props.row.id_categoria
                                         )
                                     "
                                 ></plus-circle-icon>
@@ -149,7 +158,8 @@
                                     @click="
                                         detalleSolicitud(
                                             props.row.id,
-                                            props.row.uuid
+                                            props.row.uuid,
+                                            props.row.id_categoria
                                         )
                                     "
                                 ></plus-circle-icon>
@@ -386,12 +396,13 @@ export default {
                     this.solicitudes = res.data;
                 });
         },
-        detalleSolicitud(id, uuid) {
+        detalleSolicitud(id, uuid, id_categoria) {
             this.$router.push({
                 name: "InformacionSolicitud",
                 params: {
                     id: `${id}`,
-                    uuid: `${uuid}`
+                    uuid: `${uuid}`,
+                    id_categoria: `${id_categoria}`
                 }
             });
         },
@@ -401,26 +412,25 @@ export default {
             this.value2 = uuid;
             this.popupActive2 = true;
         },
-        modificarSolicitud(id, uuid) {
-            //router.push(`/agenteView/FormularioModificar/${id}`);
-            axios
-                .get(this.localVal + `/api/Usuario/GetSolicitudCreada/${id}`, {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    if (res.data) {
-                        this.$router.push({
-                            name: "ModificarTicketUsuario",
-                            params: {
-                                id: `${id}`,
-                                uuid: `${uuid}`
-                            }
-                        });
+        modificarSolicitud(id, uuid, id_categoria) {
+            try {
+                this.$router.push({
+                    name: "ModificarTicketUsuario",
+                    params: {
+                        id: `${id}`,
+                        uuid: `${uuid}`,
+                        id_categoria: `${id_categoria}`
                     }
                 });
+            } catch (error) {
+                this.$vs.notify({
+                    title: "Error",
+                    text: "No es posible ir a modificar el Ticket",
+                    color: "danger",
+                    position: "top-right",
+                    fixed: true
+                });
+            }
         },
         eliminarSolicitud(id, uuid, eliminar) {
             if (eliminar) {

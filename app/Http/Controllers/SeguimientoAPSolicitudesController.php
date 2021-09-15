@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\SeguimientoSolicitudes;
-use App\Mail\AutoRespuesta;
-use App\SolicitudTickets;
+use App\seguimientoAPSolicitudes;
 use App\Users;
+use App\Mail\TicketGenerado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use DB;
 use Illuminate\Support\Facades\Log;
+use App\SolicitudTicketsAps;
 
-
-class SeguimientoController extends Controller
+class SeguimientoAPSolicitudesController extends Controller
 {
     public function store(Request $request, $uuid)
     {
-        SeguimientoSolicitudes::create($request->all());
+        seguimientoAPSolicitudes::create($request->all());
         $descripcionSeguimiento = $request->descripcionCorreo;
         $id_solicitud = $request->id;
         $nombre = $request->nombre;
@@ -59,7 +58,7 @@ class SeguimientoController extends Controller
     public function seguimientoExternoBodega(Request $request)
     {
         try {
-            SeguimientoSolicitudes::create($request->all());
+            seguimientoAPSolicitudes::create($request->all());
             return true;
         } catch (\Throwable $th) {
             return false;
@@ -69,7 +68,7 @@ class SeguimientoController extends Controller
 
     public function seguimientoTrabajador(Request $request, $uuid)
     {
-        SeguimientoSolicitudes::create($request->all());
+        seguimientoAPSolicitudes::create($request->all());
         $descripcionSeguimiento = $request->descripcionCorreo;
         $id_solicitud = $request->id;
         $nombre = $request->nombre;
@@ -113,7 +112,7 @@ class SeguimientoController extends Controller
     {
         try {
             //Creando Seguimiento Final y Cambiando estado a Resuelto
-            SeguimientoSolicitudes::create($request->all());
+            seguimientoAPSolicitudes::create($request->all());
             $descripcionSeguimiento = $request->descripcionCorreo;
             $id_solicitud = $request->id_solicitud;
             $nombre = $request->nombre;
@@ -121,7 +120,7 @@ class SeguimientoController extends Controller
 
             $idEstado = 5;
 
-            SolicitudTickets::where('id',$id_solicitud)
+            SolicitudTicketsAps::where('id',$id_solicitud)
             ->where('uuid',$uuid)
             ->update(['id_estado'=> $idEstado,]);
 
@@ -152,7 +151,7 @@ class SeguimientoController extends Controller
             }
 
 
-            SolicitudTickets::where('id', $id_solicitud)
+            SolicitudTicketsAps::where('id', $id_solicitud)
             ->where('uuid', $uuid)
             ->update(['id_estado' => 5]);
 
@@ -172,10 +171,10 @@ class SeguimientoController extends Controller
 
     public function indexSeguimiento($uuid)
     {
-        $users = SeguimientoSolicitudes::select('seguimiento_solicitudes.*', 'users.nombre', 'users.apellido')
-            ->join('users', 'seguimiento_solicitudes.id_user', '=', 'users.id')
-            ->where('seguimiento_solicitudes.uuid', '=', $uuid)
-            ->orderBy('seguimiento_solicitudes.id', 'desc')
+        $users = seguimientoAPSolicitudes::select('seguimiento_a_p_solicitudes.*', 'users.nombre', 'users.apellido')
+            ->join('users', 'seguimiento_a_p_solicitudes.id_user', '=', 'users.id')
+            ->where('seguimiento_a_p_solicitudes.uuid', '=', $uuid)
+            ->orderBy('seguimiento_a_p_solicitudes.id', 'desc')
             ->get();
 
         return  $users;
@@ -184,13 +183,13 @@ class SeguimientoController extends Controller
     public function indexEspecifico($id)
     {
 
-        $users = DB::table('solicitud_tickets')
-            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
-            ->join('edificios', 'solicitud_tickets.id_edificio', '=', 'edificios.id')
-            ->join('servicios', 'solicitud_tickets.id_servicio', '=', 'servicios.id')
-            ->join('unidad_esps', 'solicitud_tickets.id_ubicacionEx', '=', 'unidad_esps.id')
-            ->select('solicitud_tickets.*', 'users.nombre','users.apellido', 'edificios.descripcionEdificio', 'servicios.descripcionServicio', 'unidad_esps.descripcionUnidadEsp',DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
-            ->where('solicitud_tickets.uuid', '=', $id)
+        $users = DB::table('solicitud_tickets_aps')
+            ->join('users', 'solicitud_tickets_aps.id_user', '=', 'users.id')
+            ->join('edificios', 'solicitud_tickets_aps.id_edificio', '=', 'edificios.id')
+            ->join('servicios', 'solicitud_tickets_aps.id_servicio', '=', 'servicios.id')
+            ->join('unidad_esps', 'solicitud_tickets_aps.id_ubicacionEx', '=', 'unidad_esps.id')
+            ->select('solicitud_tickets_aps.*', 'users.nombre','users.apellido', 'edificios.descripcionEdificio', 'servicios.descripcionServicio', 'unidad_esps.descripcionUnidadEsp',DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_aps.created_at, '%d%m%Y'),'-',solicitud_tickets_aps.id,'-',solicitud_tickets_aps.id_user) as nticket"))
+            ->where('solicitud_tickets_aps.uuid', '=', $id)
             ->get();
 
         return  $users;

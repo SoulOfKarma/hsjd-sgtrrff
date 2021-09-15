@@ -67,18 +67,19 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/InformacionSolicitud/:id,:uuid",
+                    path: "/InformacionSolicitud/:id,:uuid,:id_categoria",
                     name: "InformacionSolicitud",
                     component: () => import("./views/InformacionSolicitud.vue")
                 },
                 {
-                    path: "/ModificarTicketUsuario/:id,:uuid",
+                    path: "/ModificarTicketUsuario/:id,:uuid,:id_categoria",
                     name: "ModificarTicketUsuario",
                     component: () =>
                         import("./views/ModificarTicketUsuario.vue")
                 },
                 {
-                    path: "/trabajadorView/InformacionSolicitud/:id,:uuid",
+                    path:
+                        "/trabajadorView/InformacionSolicitud/:id,:uuid,:id_categoria",
                     name: "InformacionSolicitudTrabajador",
                     component: () =>
                         import(

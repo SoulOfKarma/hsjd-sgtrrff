@@ -523,26 +523,116 @@ export default {
                     uuid: "",
                     descripcionSeguimiento: ""
                 };
-                axios
-                    .post(
-                        this.localVal + "/api/Usuario/PutSolicitud",
-                        solicitudNueva,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        //console.log(res.data);
-                        this.mensajeGuardado();
-                        setTimeout(() => {
-                            router.back();
-                        }, 5000);
-                        this.limpiar();
+                let id_categoria = this.$route.params.id_categoria;
+                try {
+                    if (id_categoria == 1) {
+                        axios
+                            .post(
+                                this.localVal + "/api/Usuario/PutSolicitud",
+                                solicitudNueva,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                //console.log(res.data);
+                                this.mensajeGuardado();
+                                setTimeout(() => {
+                                    router.back();
+                                }, 5000);
+                                this.limpiar();
+                            });
+                    } else if (id_categoria == 2) {
+                        axios
+                            .post(
+                                this.localVal + "/api/Usuario/PutSolicitudEM",
+                                solicitudNueva,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                //console.log(res.data);
+                                this.mensajeGuardado();
+                                setTimeout(() => {
+                                    router.back();
+                                }, 5000);
+                                this.limpiar();
+                            });
+                    } else if (id_categoria == 3) {
+                        axios
+                            .post(
+                                this.localVal + "/api/Usuario/PutSolicitudIND",
+                                solicitudNueva,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                //console.log(res.data);
+                                this.mensajeGuardado();
+                                setTimeout(() => {
+                                    router.back();
+                                }, 5000);
+                                this.limpiar();
+                            });
+                    } else if (id_categoria == 4) {
+                        axios
+                            .post(
+                                this.localVal + "/api/Usuario/PutSolicitudAP",
+                                solicitudNueva,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                //console.log(res.data);
+                                this.mensajeGuardado();
+                                setTimeout(() => {
+                                    router.back();
+                                }, 5000);
+                                this.limpiar();
+                            });
+                    } else {
+                        this.$vs.notify({
+                            title: "Error",
+                            text:
+                                "No es posible modificar los datos del ticket, Intente Nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            fixed: true
+                        });
+                    }
+                } catch (error) {
+                    this.$vs.notify({
+                        title: "Error",
+                        text:
+                            "No es posible modificar los datos del ticket, Intente Nuevamente",
+                        color: "danger",
+                        position: "top-right",
+                        fixed: true
                     });
+                }
             }
         },
         openLoadingColor() {
@@ -553,17 +643,101 @@ export default {
         },
         cargarDatosSolicitud() {
             let id = this.$route.params.id;
-            axios
-                .get(this.localVal + `/api/Usuario/GetSolicitudCreada/${id}`, {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.datosSolicitud = res.data;
-                    this.cargarTodo();
+            let id_categoria = this.$route.params.id_categoria;
+            let obj = {
+                id: id,
+                id_categoria: id_categoria
+            };
+            try {
+                if (id_categoria == 1) {
+                    axios
+                        .post(
+                            this.localVal + "/api/Usuario/GetSolicitudCreada",
+                            obj,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.datosSolicitud = res.data;
+                            this.cargarTodo();
+                        });
+                } else if (id_categoria == 2) {
+                    axios
+                        .post(
+                            this.localVal + "/api/Usuario/GetSolicitudCreadaEM",
+                            obj,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.datosSolicitud = res.data;
+                            this.cargarTodo();
+                        });
+                } else if (id_categoria == 3) {
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Usuario/GetSolicitudCreadaIND",
+                            obj,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.datosSolicitud = res.data;
+                            this.cargarTodo();
+                        });
+                } else if (id_categoria == 4) {
+                    axios
+                        .post(
+                            this.localVal + "/api/Usuario/GetSolicitudCreadaAP",
+                            obj,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.datosSolicitud = res.data;
+                            this.cargarTodo();
+                        });
+                } else {
+                    this.$vs.notify({
+                        title: "Error",
+                        text:
+                            "No es posible cargar los datos del ticket, Intente Nuevamente",
+                        color: "danger",
+                        position: "top-right",
+                        fixed: true
+                    });
+                }
+            } catch (error) {
+                this.$vs.notify({
+                    title: "Error",
+                    text:
+                        "No es posible cargar los datos del ticket, Intente Nuevamente",
+                    color: "danger",
+                    position: "top-right",
+                    fixed: true
                 });
+            }
         },
         cargaUSE() {
             var datoidServicio = this.datosSolicitud.id_servicio;

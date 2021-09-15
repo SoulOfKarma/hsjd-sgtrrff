@@ -61,27 +61,51 @@ use App\Mail\AutoRespuesta;
             //Traer datos especificos
             Route::get('/Usuario/TraerSolicitud/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexEspecifico']);
             //Traer datos especificos
-            Route::get('/Usuario/TraerSolicitudEM/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexEspecificoEM']);
+            Route::get('/Usuario/TraerSolicitudEM/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@indexEspecifico']);
             //Traer datos especificos
-            Route::get('/Usuario/TraerSolicitudIND/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexEspecificoIND']);
+            Route::get('/Usuario/TraerSolicitudIND/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@indexEspecifico']);
             //Traer datos especificos
-            Route::get('/Usuario/TraerSolicitudAP/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexEspecificoAP']);
+            Route::get('/Usuario/TraerSolicitudAP/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@indexEspecifico']);
             //Guardar Solicitud
             Route::post('/Usuario/PostSolicitud', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@store']);
             //Guardar Solicitud EM
-            Route::post('/Usuario/PostSolicitudEM', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioControllerEM@store']);
+            Route::post('/Usuario/PostSolicitudEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@store']);
             //Guardar Solicitud IND
-            Route::post('/Usuario/PostSolicitudIND', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioControllerINDs@store']);
+            Route::post('/Usuario/PostSolicitudIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@store']);
             //Guardar Solicitud AP
-            Route::post('/Usuario/PostSolicitudAP', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioControllerAps@store']);
+            Route::post('/Usuario/PostSolicitudAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@store']);
             //Modificar Solicitud
             Route::post('/Usuario/PutSolicitud', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@ModificarSolicitud']);
+            //Modificar Solicitud
+            Route::post('/Usuario/PutSolicitudEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@ModificarSolicitud']);
+            //Modificar Solicitud
+            Route::post('/Usuario/PutSolicitudIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@ModificarSolicitud']);
+            //Modificar Solicitud
+            Route::post('/Usuario/PutSolicitudAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@ModificarSolicitud']);
             //Traer seguimiento
             Route::get('/Usuario/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexSeguimiento']);
+            //Traer seguimiento
+            Route::get('/Usuario/TraerSeguimientoEM/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoEMSolicitudesController@indexSeguimiento']);
+            //Traer seguimiento
+            Route::get('/Usuario/TraerSeguimientoIND/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoINDSolicitudesController@indexSeguimiento']);
+            //Traer seguimiento
+            Route::get('/Usuario/TraerSeguimientoAP/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoAPSolicitudesController@indexSeguimiento']);
             //Guardar Seguimiento
             Route::post('/Usuario/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);
+            //Guardar Seguimiento
+            Route::post('/Usuario/GuardarSeguimientoEM/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoEMSolicitudesController@store']);
+            //Guardar Seguimiento
+            Route::post('/Usuario/GuardarSeguimientoIND/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoINDSolicitudesController@store']);
+            //Guardar Seguimiento
+            Route::post('/Usuario/GuardarSeguimientoAP/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoAPSolicitudesController@store']);
             //Traer Datos para el listado de tickets
-            Route::get('/Usuario/GetSolicitudCreada/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@GetSolicitudCreada']);
+            Route::get('/Usuario/GetSolicitudCreada', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@GetSolicitudCreada']);
+            //Traer Datos para el listado de tickets
+            Route::get('/Usuario/GetSolicitudCreadaEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@GetSolicitudCreada']);
+            //Traer Datos para el listado de tickets
+            Route::get('/Usuario/GetSolicitudCreadaIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@GetSolicitudCreada']);
+            //Traer Datos para el listado de tickets
+            Route::get('/Usuario/GetSolicitudCreadaAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@GetSolicitudCreada']);
             //Eliminar Ticket
             Route::get('/Usuario/destroyTicket/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@destroy']);
                         /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/

@@ -138,34 +138,201 @@ export default {
             }, 2000);
         },
         cargaSolicitudEspecifica() {
-            let id = this.$route.params.id;
-            axios
-                .get(this.localVal + `/api/Usuario/TraerSolicitud/${id}`, {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.solicitudes = res.data;
-                    this.titulo =
-                        "1. Seguimiento Ticket N°" + this.solicitudes[0].id;
-                    this.tituloProblema = this.solicitudes[0].tituloP;
-                    this.descripcionProblema = this.solicitudes[0].descripcionP;
+            try {
+                let id = this.$route.params.id;
+                let id_categoria = this.$route.params.id_categoria;
+                if (id_categoria == 1) {
+                    axios
+                        .get(
+                            this.localVal + `/api/Usuario/TraerSolicitud/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.solicitudes = res.data;
+                            this.titulo =
+                                "1. Seguimiento Ticket N°" +
+                                this.solicitudes[0].id;
+                            this.tituloProblema = this.solicitudes[0].tituloP;
+                            this.descripcionProblema = this.solicitudes[0].descripcionP;
+                        });
+                } else if (id_categoria == 2) {
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Usuario/TraerSolicitudEM/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.solicitudes = res.data;
+                            this.titulo =
+                                "1. Seguimiento Ticket N°" +
+                                this.solicitudes[0].id;
+                            this.tituloProblema = this.solicitudes[0].tituloP;
+                            this.descripcionProblema = this.solicitudes[0].descripcionP;
+                        });
+                } else if (id_categoria == 3) {
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Usuario/TraerSolicitudIND/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.solicitudes = res.data;
+                            this.titulo =
+                                "1. Seguimiento Ticket N°" +
+                                this.solicitudes[0].id;
+                            this.tituloProblema = this.solicitudes[0].tituloP;
+                            this.descripcionProblema = this.solicitudes[0].descripcionP;
+                        });
+                } else if (id_categoria == 4) {
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Usuario/TraerSolicitudAP/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.solicitudes = res.data;
+                            this.titulo =
+                                "1. Seguimiento Ticket N°" +
+                                this.solicitudes[0].id;
+                            this.tituloProblema = this.solicitudes[0].tituloP;
+                            this.descripcionProblema = this.solicitudes[0].descripcionP;
+                        });
+                } else {
+                    this.$vs.notify({
+                        title: "Error",
+                        text:
+                            "No es posible cargar el ticket, regrese a la pagina anterior",
+                        color: "danger",
+                        position: "top-right",
+                        fixed: true
+                    });
+                }
+            } catch (error) {
+                this.$vs.notify({
+                    title: "Error",
+                    text:
+                        "No es posible cargar el ticket, regrese a la pagina anterior",
+                    color: "danger",
+                    position: "top-right",
+                    fixed: true
                 });
+            }
         },
         cargaSeguimiento() {
-            let uuid = this.$route.params.uuid;
-            axios
-                .get(this.localVal + `/api/Usuario/TraerSeguimiento/${uuid}`, {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.seguimiento = res.data;
+            try {
+                let uuid = this.$route.params.uuid;
+                let id_categoria = this.$route.params.id_categoria;
+                if (id_categoria == 1) {
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Usuario/TraerSeguimiento/${uuid}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.seguimiento = res.data;
+                        });
+                } else if (id_categoria == 2) {
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Usuario/TraerSeguimientoEM/${uuid}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.seguimiento = res.data;
+                        });
+                } else if (id_categoria == 3) {
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Usuario/TraerSeguimientoIND/${uuid}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.seguimiento = res.data;
+                        });
+                } else if (id_categoria == 4) {
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Usuario/TraerSeguimientoAP/${uuid}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.seguimiento = res.data;
+                        });
+                } else {
+                    this.$vs.notify({
+                        title: "Error",
+                        text:
+                            "No es posible cargar el seguimiento, regrese a la pagina anterior",
+                        color: "danger",
+                        position: "top-right",
+                        fixed: true
+                    });
+                }
+            } catch (error) {
+                this.$vs.notify({
+                    title: "Error",
+                    text:
+                        "No es posible cargar el seguimiento, regrese a la pagina anterior",
+                    color: "danger",
+                    position: "top-right",
+                    fixed: true
                 });
+            }
         },
         mensajeGuardado() {
             this.$vs.notify({
@@ -179,59 +346,255 @@ export default {
         },
         guardarSeguimiento() {
             let uuid = this.$route.params.uuid;
+            let id_categoria = this.$route.params.id_categoria;
+            try {
+                if (id_categoria == 1) {
+                    if (
+                        this.seguimientos.descripcionSeguimiento.trim() ===
+                            "" ||
+                        this.seguimientos.descripcionSeguimiento < 15
+                    ) {
+                        this.$vs.notify({
+                            title: "Error en la descripcion",
+                            text: "Esta vacio o no supera los 15 caracteres",
+                            color: "danger",
+                            position: "top-right",
+                            fixed: true
+                        });
+                        return;
+                    } else {
+                        /* var aux = localStorage.getItem("nombre");
+        this.seguimientos.nombre = aux; */
+                        this.seguimientos.id_usuarioEspecifico = this.solicitudes[0].id_user;
+                        var id = this.solicitudes[0].id;
+                        this.seguimientos.id = id;
+                        this.seguimientos.uuid = uuid;
+                        this.seguimientos.id_solicitud = id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
+                        this.seguimientos.descripcionCorreo =
+                            newElement.textContent;
+                        /* var iduser = localStorage.getItem("id");
+        this.seguimientos.id_user = iduser; */
+                        const seguimientoNuevo = this.seguimientos;
 
-            if (
-                this.seguimientos.descripcionSeguimiento.trim() === "" ||
-                this.seguimientos.descripcionSeguimiento < 15
-            ) {
+                        this.openLoadingColor();
+                        this.seguimientos = {
+                            descripcionSeguimiento: "",
+                            id_solicitud: 0,
+                            uuid: this.$route.params.uuid,
+                            nombre: sessionStorage.getItem("nombre"),
+                            id_user: sessionStorage.getItem("id")
+                        };
+                        axios
+                            .post(
+                                this.localVal +
+                                    `/api/Usuario/GuardarSeguimiento/${uuid}`,
+                                seguimientoNuevo,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.mensajeGuardado();
+                                const seguimientoServer = res.data;
+                                this.cargaSeguimiento();
+                            });
+                    }
+                } else if (id_categoria == 2) {
+                    if (
+                        this.seguimientos.descripcionSeguimiento.trim() ===
+                            "" ||
+                        this.seguimientos.descripcionSeguimiento < 15
+                    ) {
+                        this.$vs.notify({
+                            title: "Error en la descripcion",
+                            text: "Esta vacio o no supera los 15 caracteres",
+                            color: "danger",
+                            position: "top-right",
+                            fixed: true
+                        });
+                        return;
+                    } else {
+                        /* var aux = localStorage.getItem("nombre");
+        this.seguimientos.nombre = aux; */
+                        this.seguimientos.id_usuarioEspecifico = this.solicitudes[0].id_user;
+                        var id = this.solicitudes[0].id;
+                        this.seguimientos.id = id;
+                        this.seguimientos.uuid = uuid;
+                        this.seguimientos.id_solicitud = id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
+                        this.seguimientos.descripcionCorreo =
+                            newElement.textContent;
+                        /* var iduser = localStorage.getItem("id");
+        this.seguimientos.id_user = iduser; */
+                        const seguimientoNuevo = this.seguimientos;
+
+                        this.openLoadingColor();
+                        this.seguimientos = {
+                            descripcionSeguimiento: "",
+                            id_solicitud: 0,
+                            uuid: this.$route.params.uuid,
+                            nombre: sessionStorage.getItem("nombre"),
+                            id_user: sessionStorage.getItem("id")
+                        };
+                        axios
+                            .post(
+                                this.localVal +
+                                    `/api/Usuario/GuardarSeguimientoEM/${uuid}`,
+                                seguimientoNuevo,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.mensajeGuardado();
+                                const seguimientoServer = res.data;
+                                this.cargaSeguimiento();
+                            });
+                    }
+                } else if (id_categoria == 3) {
+                    if (
+                        this.seguimientos.descripcionSeguimiento.trim() ===
+                            "" ||
+                        this.seguimientos.descripcionSeguimiento < 15
+                    ) {
+                        this.$vs.notify({
+                            title: "Error en la descripcion",
+                            text: "Esta vacio o no supera los 15 caracteres",
+                            color: "danger",
+                            position: "top-right",
+                            fixed: true
+                        });
+                        return;
+                    } else {
+                        /* var aux = localStorage.getItem("nombre");
+        this.seguimientos.nombre = aux; */
+                        this.seguimientos.id_usuarioEspecifico = this.solicitudes[0].id_user;
+                        var id = this.solicitudes[0].id;
+                        this.seguimientos.id = id;
+                        this.seguimientos.uuid = uuid;
+                        this.seguimientos.id_solicitud = id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
+                        this.seguimientos.descripcionCorreo =
+                            newElement.textContent;
+                        /* var iduser = localStorage.getItem("id");
+        this.seguimientos.id_user = iduser; */
+                        const seguimientoNuevo = this.seguimientos;
+
+                        this.openLoadingColor();
+                        this.seguimientos = {
+                            descripcionSeguimiento: "",
+                            id_solicitud: 0,
+                            uuid: this.$route.params.uuid,
+                            nombre: sessionStorage.getItem("nombre"),
+                            id_user: sessionStorage.getItem("id")
+                        };
+                        axios
+                            .post(
+                                this.localVal +
+                                    `/api/Usuario/GuardarSeguimientoIND/${uuid}`,
+                                seguimientoNuevo,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.mensajeGuardado();
+                                const seguimientoServer = res.data;
+                                this.cargaSeguimiento();
+                            });
+                    }
+                } else if (id_categoria == 4) {
+                    if (
+                        this.seguimientos.descripcionSeguimiento.trim() ===
+                            "" ||
+                        this.seguimientos.descripcionSeguimiento < 15
+                    ) {
+                        this.$vs.notify({
+                            title: "Error en la descripcion",
+                            text: "Esta vacio o no supera los 15 caracteres",
+                            color: "danger",
+                            position: "top-right",
+                            fixed: true
+                        });
+                        return;
+                    } else {
+                        /* var aux = localStorage.getItem("nombre");
+        this.seguimientos.nombre = aux; */
+                        this.seguimientos.id_usuarioEspecifico = this.solicitudes[0].id_user;
+                        var id = this.solicitudes[0].id;
+                        this.seguimientos.id = id;
+                        this.seguimientos.uuid = uuid;
+                        this.seguimientos.id_solicitud = id;
+                        var newElement = document.createElement("div");
+                        newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
+                        this.seguimientos.descripcionCorreo =
+                            newElement.textContent;
+                        /* var iduser = localStorage.getItem("id");
+        this.seguimientos.id_user = iduser; */
+                        const seguimientoNuevo = this.seguimientos;
+
+                        this.openLoadingColor();
+                        this.seguimientos = {
+                            descripcionSeguimiento: "",
+                            id_solicitud: 0,
+                            uuid: this.$route.params.uuid,
+                            nombre: sessionStorage.getItem("nombre"),
+                            id_user: sessionStorage.getItem("id")
+                        };
+                        axios
+                            .post(
+                                this.localVal +
+                                    `/api/Usuario/GuardarSeguimientoAP/${uuid}`,
+                                seguimientoNuevo,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.mensajeGuardado();
+                                const seguimientoServer = res.data;
+                                this.cargaSeguimiento();
+                            });
+                    }
+                } else {
+                    this.$vs.notify({
+                        title: "Error",
+                        text:
+                            "No es posible guardar el seguimiento, Intente Nuevamente",
+                        color: "danger",
+                        position: "top-right",
+                        fixed: true
+                    });
+                }
+            } catch (error) {
                 this.$vs.notify({
-                    title: "Error en la descripcion",
-                    text: "Esta vacio o no supera los 15 caracteres",
+                    title: "Error",
+                    text:
+                        "No es posible guardar el seguimiento, Intente Nuevamente",
                     color: "danger",
                     position: "top-right",
                     fixed: true
                 });
-                return;
-            } else {
-                /* var aux = localStorage.getItem("nombre");
-        this.seguimientos.nombre = aux; */
-                this.seguimientos.id_usuarioEspecifico = this.solicitudes[0].id_user;
-                var id = this.solicitudes[0].id;
-                this.seguimientos.id = id;
-                this.seguimientos.uuid = uuid;
-                this.seguimientos.id_solicitud = id;
-                var newElement = document.createElement("div");
-                newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
-                this.seguimientos.descripcionCorreo = newElement.textContent;
-                /* var iduser = localStorage.getItem("id");
-        this.seguimientos.id_user = iduser; */
-                const seguimientoNuevo = this.seguimientos;
-
-                this.openLoadingColor();
-                this.seguimientos = {
-                    descripcionSeguimiento: "",
-                    id_solicitud: 0,
-                    uuid: this.$route.params.uuid,
-                    nombre: sessionStorage.getItem("nombre"),
-                    id_user: sessionStorage.getItem("id")
-                };
-                axios
-                    .post(
-                        this.localVal +
-                            `/api/Usuario/GuardarSeguimiento/${uuid}`,
-                        seguimientoNuevo,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        this.mensajeGuardado();
-                        const seguimientoServer = res.data;
-                        this.cargaSeguimiento();
-                    });
             }
         }
     },

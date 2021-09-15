@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\SolicitudTicketINDs;
 use App\Mail\TicketGenerado;
 use App\Users;
-use App\SeguimientoSolicitudes;
+use App\seguimientoINDSolicitudes;
 use App\EstadoSolicituds;
 use Uuid;
 use DB;
@@ -27,8 +27,13 @@ class SolicitudTicketINDsController extends Controller
 
     public function GetSolicitudCreada($id)
     {
-        $get_all = SolicitudTicketINDs::find($id);
+        try {
+            $get_all = SolicitudTicketINDs::find($id);
         return  $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+        }
+        
     }
 
     public function ModificarSolicitud(Request $request)
@@ -42,7 +47,7 @@ class SolicitudTicketINDsController extends Controller
                 'id_estado' => $request->id_estado, 'descripcionP' => $request->descripcionP, 'tituloP' => $request->tituloP
             ]);
 
-         $response = SeguimientoSolicitudes::create($request->all());
+         $response = seguimientoINDSolicitudes::create($request->all());
 
          $nombre = $request->nombre;
          $id = $request->id_user;
@@ -105,10 +110,10 @@ class SolicitudTicketINDsController extends Controller
     public function indexSeguimiento($uuid)
     {
        try {
-            $users = DB::table('seguimiento_solicitudes')
-                ->join('users', 'seguimiento_solicitudes.id_user', '=', 'users.id')
-                ->select('seguimiento_solicitudes.*', 'users.nombre')
-                ->where('seguimiento_solicitudes.uuid', '=', $uuid)
+            $users = DB::table('seguimiento_i_n_d_solicitudes')
+                ->join('users', 'seguimiento_i_n_d_solicitudes.id_user', '=', 'users.id')
+                ->select('seguimiento_i_n_d_solicitudes.*', 'users.nombre')
+                ->where('seguimiento_i_n_d_solicitudes.uuid', '=', $uuid)
                 ->get();
             return $users;
 
@@ -133,7 +138,7 @@ class SolicitudTicketINDsController extends Controller
         try {
             $uuid = Uuid::generate()->string;
             $response = SolicitudTicketINDs::create(array_merge($request->all(), ['uuid' => $uuid]));
-            SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $response->id, 'descripcionSeguimiento' => 'Ticket creado']));
+            seguimientoINDSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $response->id, 'descripcionSeguimiento' => 'Ticket creado']));
             $id = $request->id_user;
             $userSearch = Users::where('id',$id)->first();
                 $ValidarCargo = $userSearch->id_cargo_asociado;     

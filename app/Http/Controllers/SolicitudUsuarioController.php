@@ -44,8 +44,13 @@ class SolicitudUsuarioController extends Controller
 
     public function GetSolicitudCreada($id)
     {
-        $get_all = SolicitudTickets::find($id);
-        return  $get_all;
+        try {
+            $get_all = SolicitudTickets::find($id);
+            return  $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+        }
+        
     }
 
     public function getSolicitudUsuariosByID(Request $request)//Listado Usuarios - Agregar MultiTablas
@@ -255,32 +260,6 @@ class SolicitudUsuarioController extends Controller
         return  $get_all;
     }
 
-    public function indexEspecificoEM($id)
-    {
-        $get_all = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.*',DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_e_m_s.created_at, '%d%m%Y'),'-',solicitud_tickets_e_m_s.id,'-',solicitud_tickets_e_m_s.id_user) as nticket"))
-            ->where('solicitud_tickets_e_m_s.id', '=', $id)
-            ->get();
-  
-        return  $get_all;
-    }
-
-    public function indexEspecificoIND($id)
-    {
-        $get_all = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.*',DB::raw("CONCAT(DATE_FORMAT(solicitud_ticket_i_n_ds.created_at, '%d%m%Y'),'-',solicitud_ticket_i_n_ds.id,'-',solicitud_ticket_i_n_ds.id_user) as nticket"))
-            ->where('solicitud_ticket_i_n_ds.id', '=', $id)
-            ->get();
-  
-        return  $get_all;
-    }
-
-    public function indexEspecificoAP($id)
-    {
-        $get_all = SolicitudTicketsAps::select('solicitud_tickets_aps.*',DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_aps.created_at, '%d%m%Y'),'-',solicitud_tickets_aps.id,'-',solicitud_tickets_aps.id_user) as nticket"))
-            ->where('solicitud_tickets_aps.id', '=', $id)
-            ->get();
-  
-        return  $get_all;
-    }
     //Inicio KPI
     public function getTicketsKPI(){
         try {
