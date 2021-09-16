@@ -829,7 +829,6 @@ export default {
         },
         formatear_run() {
             if (this.rutUsuario == "" || this.rutUsuario == null) {
-                console.log("Sin Rut");
                 this.val_run = false;
             } else {
                 this.rutUsuario = format(this.rutUsuario);
@@ -904,7 +903,8 @@ export default {
                 if (
                     this.rutUsuario == 0 ||
                     this.rutUsuario == null ||
-                    this.rutUsuario == ""
+                    this.rutUsuario == "" ||
+                    this.rutUsuario.length < 7
                 ) {
                     this.registroUsuario.run = null;
                     this.rutUsuario = null;
@@ -922,7 +922,7 @@ export default {
                 } else {
                     this.registroUsuario.idvalmail = 1;
                 }
-                this.rutUsuario = format(this.rutUsuario);
+                //this.rutUsuario = format(this.rutUsuario);
                 /* if (
                     this.registroUsuario.run == null ||
                     this.registroUsuario.run < 9 ||

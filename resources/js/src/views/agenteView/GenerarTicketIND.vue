@@ -1077,7 +1077,6 @@ export default {
         },
         formatear_run() {
             if (this.rutUsuario == "" || this.rutUsuario == null) {
-                console.log("Sin Rut");
                 this.val_run = false;
             } else {
                 this.rutUsuario = format(this.rutUsuario);
@@ -1166,7 +1165,8 @@ export default {
                 if (
                     this.rutUsuario == 0 ||
                     this.rutUsuario == null ||
-                    this.rutUsuario == ""
+                    this.rutUsuario == "" ||
+                    this.rutUsuario.length < 7
                 ) {
                     this.registroUsuario.run = null;
                     this.rutUsuario = null;
@@ -1184,7 +1184,7 @@ export default {
                 } else {
                     this.registroUsuario.idvalmail = 1;
                 }
-                this.rutUsuario = format(this.rutUsuario);
+                //this.rutUsuario = format(this.rutUsuario);
                 /* if (
                     this.registroUsuario.run == null ||
                     this.registroUsuario.run < 9 ||
@@ -2265,7 +2265,6 @@ export default {
         },
         formatear_runU() {
             if (this.rutUsuarioU == "" || this.rutUsuarioU == null) {
-                console.log("Sin Rut");
                 this.val_runU = false;
             } else {
                 this.rutUsuarioU = format(this.rutUsuarioU);
@@ -2388,7 +2387,8 @@ export default {
                 if (
                     this.rutUsuarioU == 0 ||
                     this.rutUsuarioU == null ||
-                    this.rutUsuarioU == ""
+                    this.rutUsuarioU == "" ||
+                    this.rutUsuarioU.length < 7
                 ) {
                     this.registroUsuarioU.run = null;
                     this.rutUsuarioU = null;
