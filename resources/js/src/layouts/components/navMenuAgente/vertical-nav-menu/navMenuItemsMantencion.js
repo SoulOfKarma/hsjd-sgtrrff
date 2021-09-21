@@ -197,6 +197,18 @@ export default [
         ]
     },
     {
+        url: "/agenteView/CalendarioElectricos",
+        name: "Electricos",
+        slug: "CalendarioElectricos",
+        icon: "CalendarIcon"
+    },
+    {
+        url: "/agenteView/CalendarioTGasfiter",
+        name: "Gasfiter",
+        slug: "CalendarioTGasfiter",
+        icon: "CalendarIcon"
+    },
+    {
         url: "/agenteView/CalendarioObras",
         name: "Obras.",
         slug: "CalendarioObras",

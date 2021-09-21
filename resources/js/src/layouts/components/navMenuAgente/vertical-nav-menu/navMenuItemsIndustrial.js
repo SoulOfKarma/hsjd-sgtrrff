@@ -195,5 +195,17 @@ export default [
                 ]
             }
         ]
+    },
+    {
+        url: "/agenteView/CalendarioOxigenistas",
+        name: "Oxigenistas",
+        slug: "CalendarioOxigenistas",
+        icon: "CalendarIcon"
+    },
+    {
+        url: "/agenteView/CalendarioCalderas",
+        name: "Calderas",
+        slug: "CalendarioCalderas",
+        icon: "CalendarIcon"
     }
 ];

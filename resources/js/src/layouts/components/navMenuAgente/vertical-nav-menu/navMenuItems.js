@@ -275,6 +275,30 @@ export default [
         ]
     },
     {
+        url: "/agenteView/CalendarioElectricos",
+        name: "Electricos",
+        slug: "CalendarioElectricos",
+        icon: "CalendarIcon"
+    },
+    {
+        url: "/agenteView/CalendarioTGasfiter",
+        name: "Gasfiter",
+        slug: "CalendarioTGasfiter",
+        icon: "CalendarIcon"
+    },
+    {
+        url: "/agenteView/CalendarioOxigenistas",
+        name: "Oxigenistas",
+        slug: "CalendarioOxigenistas",
+        icon: "CalendarIcon"
+    },
+    {
+        url: "/agenteView/CalendarioCalderas",
+        name: "Calderas",
+        slug: "CalendarioCalderas",
+        icon: "CalendarIcon"
+    },
+    {
         url: "/agenteView/CalendarioAscensores",
         name: "Ascensoristas",
         slug: "CalendarioAscensores",

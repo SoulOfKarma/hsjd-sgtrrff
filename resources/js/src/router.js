@@ -168,6 +168,30 @@ const router = new Router({
                         import("./views/agenteView/CalendarioAscensores.vue")
                 },
                 {
+                    path: "/agenteView/CalendarioCalderas",
+                    name: "CalendarioCalderas",
+                    component: () =>
+                        import("./views/agenteView/CalendarioCalderas.vue")
+                },
+                {
+                    path: "/agenteView/CalendarioElectricos",
+                    name: "CalendarioElectricos",
+                    component: () =>
+                        import("./views/agenteView/CalendarioElectricos.vue")
+                },
+                {
+                    path: "/agenteView/CalendarioOxigenistas",
+                    name: "CalendarioOxigenistas",
+                    component: () =>
+                        import("./views/agenteView/CalendarioOxigenistas.vue")
+                },
+                {
+                    path: "/agenteView/CalendarioTGasfiter",
+                    name: "CalendarioTGasfiter",
+                    component: () =>
+                        import("./views/agenteView/CalendarioTGasfiter.vue")
+                },
+                {
                     path: "/agenteView/CalendarioCTelefonica",
                     name: "CalendarioCTelefonica",
                     component: () =>
@@ -269,12 +293,6 @@ const router = new Router({
                     name: "agregarSubroganteJefe",
                     component: () =>
                         import("./views/adminView/AgregarSubroganteJefe.vue")
-                },
-                {
-                    path: "/agenteView/CalendarioSolicitudes",
-                    name: "Calendario Solicitudes",
-                    component: () =>
-                        import("./views/agenteView/CalendarioSolicitudes.vue")
                 },
                 {
                     path: "/agenteView/ListadoSolicitudes",
@@ -383,12 +401,6 @@ const router = new Router({
                         import("./views/agenteView/GenerarTicketEM.vue")
                 },
                 {
-                    path: "/agenteView/CalendarioSolicitudesEM",
-                    name: "CalendarioSolicitudesEM",
-                    component: () =>
-                        import("./views/agenteView/CalendarioSolicitudesEM.vue")
-                },
-                {
                     path: "/agenteView/ListadoTicketsIND",
                     name: "ListadoTicketsIND",
                     component: () =>
@@ -417,20 +429,6 @@ const router = new Router({
                     name: "GenerarTicketCA",
                     component: () =>
                         import("./views/agenteView/GenerarTicketCA.vue")
-                },
-                {
-                    path: "/agenteView/CalendarioSolicitudesIND",
-                    name: "CalendarioSolicitudesIND",
-                    component: () =>
-                        import(
-                            "./views/agenteView/CalendarioSolicitudesIND.vue"
-                        )
-                },
-                {
-                    path: "/agenteView/CalendarioSolicitudesCA",
-                    name: "CalendarioSolicitudesCA",
-                    component: () =>
-                        import("./views/agenteView/CalendarioSolicitudesCA.vue")
                 },
                 {
                     path: "/agenteView/ModificarCategoriaTicket/:id,:uuid",
