@@ -273,7 +273,7 @@ class GestionTicketsINDsController extends Controller
                 ->update([
                     'id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
                     'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
-                    'id_estado' => $request->id_estado
+                    'id_estado' => $request->id_estado,'descripcionP' => $request->descripcionPFormat
                 ]);
             $response = GestionTicketsINDs::where('uuid', $request->uuid)
                 ->where('id_solicitud', $request->id_solicitud)

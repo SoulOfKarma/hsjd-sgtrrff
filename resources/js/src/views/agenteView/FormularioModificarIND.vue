@@ -1762,7 +1762,7 @@ export default {
                 this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
                 this.gestionTicket.tituloP = this.datosSolicitud.tituloP;
                 var newElement = document.createElement("div");
-                newElement.innerHTML = this.datosSolicitud.descripcionP;
+                newElement.innerHTML = this.descripcionP;
                 this.gestionTicket.descripcionP = newElement.textContent;
                 this.gestionTicket.nombre = this.nombre;
                 var fechaCreacionT = moment(this.datosSolicitud.created_at)

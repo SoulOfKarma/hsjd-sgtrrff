@@ -177,11 +177,11 @@ use App\Mail\AutoRespuesta;
             //Guardar Ticket
             Route::post('/Agente/PutTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@modificarTicket']);
             //Guardar Ticket
-            Route::post('/Agente/PutTicketCA', ['middleware' => 'cors', 'uses' => 'GestionTicketApsController@modificarTicketCA']);
+            Route::post('/Agente/PutTicketCA', ['middleware' => 'cors', 'uses' => 'GestionTicketsApsController@modificarTicketCA']);
             //Guardar Ticket
             Route::post('/Agente/PutTicketEM', ['middleware' => 'cors', 'uses' => 'GestionTicketEMSController@modificarTicketEM']);
             //Guardar Ticket
-            Route::post('/Agente/PutTicketIND', ['middleware' => 'cors', 'uses' => 'GestionTicketINDsController@modificarTicketIND']);
+            Route::post('/Agente/PutTicketIND', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@modificarTicketIND']);
             //Guardar Nuevo Ticket
             Route::post('/Agente/PostNuevoTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@NuevoTicket']);
             //Guardar Nuevo Ticket

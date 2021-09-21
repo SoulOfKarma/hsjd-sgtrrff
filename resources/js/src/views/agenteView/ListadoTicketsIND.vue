@@ -484,6 +484,7 @@ export default {
                 {
                     label: "Descripcion Problema",
                     field: "desFormat",
+                    html: true,
                     filterOptions: {
                         enabled: true
                     }

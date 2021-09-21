@@ -24,7 +24,12 @@
                         class="text-nowrap"
                     >
                     </span>
-
+                    <span
+                        v-if="props.column.field === 'descripcionP'"
+                        class="text-nowrap"
+                    >
+                        <div v-html="props.row.descripcionP"></div>
+                    </span>
                     <span
                         v-if="props.column.field == 'descripcionEstado'"
                         class="text-nowrap"

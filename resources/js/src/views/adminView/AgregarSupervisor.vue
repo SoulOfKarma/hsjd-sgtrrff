@@ -114,6 +114,18 @@
                                 @input="arrayEspecialidad2"
                             ></v-select>
                         </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>1.10 - Categoria</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionCategoria"
+                                placeholder="Seleccione Categoria"
+                                class="w-full select-large"
+                                label="des_categoria"
+                                :options="listadoCategoria"
+                            ></v-select>
+                            <br />
+                        </div>
                     </div>
                 </vx-card>
             </div>
@@ -216,6 +228,11 @@ export default {
                 id: 0,
                 descripcionServicio: "Seleccione Servicio"
             },
+            seleccionCategoria: {
+                id: 0,
+                des_categoria: "Seleccione Categoria"
+            },
+            listadoCategoria: [],
             dataUsuarioCreador: {
                 nombre:
                     sessionStorage.getItem("nombre") +
@@ -245,7 +262,8 @@ export default {
                 id_especialidad1: 0,
                 id_especialidad2: 0,
                 idvalRut: 0,
-                idvalmail: 0
+                idvalmail: 0,
+                id_categoria: 0
             },
             value1: "",
             validaEliminar: false,
@@ -346,12 +364,35 @@ export default {
                 id: 0,
                 descripcionEspecialidad: "Selecione Especialidad"
             };
+
             this.nombreUsuario = "";
             this.apellidoUsuario = "";
             this.anexoUsuario = 0;
             this.correoUsuario = "";
             this.rutUsuario = "";
             this.passUsuario = "";
+        },
+        cargarCategoria() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Usuario/GetCategoria", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoCategoria = res.data;
+                    });
+            } catch (error) {
+                this.$vs.notify({
+                    title: "Error ",
+                    text: "No se pueden cargar las categorias",
+                    color: "danger",
+                    position: "top-right",
+                    time: 3000
+                });
+            }
         },
         guardar() {
             if (
@@ -407,6 +448,19 @@ export default {
                     position: "top-right",
                     time: 3000
                 });
+            } else if (
+                this.seleccionCategoria == null ||
+                this.seleccionCategoria.id == 0 ||
+                this.seleccionCategoria.id == null
+            ) {
+                this.$vs.notify({
+                    title: "Error en Seleccionar el Servicio",
+                    text:
+                        "Debe seleccionar a un Servicio para realizar cambios",
+                    color: "danger",
+                    position: "top-right",
+                    time: 3000
+                });
             } else {
                 this.registroUsuario.run = this.rutUsuario;
                 this.registroUsuario.email = this.correoUsuario;
@@ -425,6 +479,7 @@ export default {
                 this.registroUsuario.sup_apellido = this.apellidoUsuario;
                 this.registroUsuario.id_especialidad1 = this.seleccionEspecialidad1[0].id;
                 this.registroUsuario.id_especialidad2 = this.seleccionEspecialidad2[0].id;
+                this.registroUsuario.id_categoria = this.seleccionCategoria.id;
                 if (
                     this.rutUsuario == 0 ||
                     this.rutUsuario == null ||
@@ -753,6 +808,7 @@ export default {
         }
     },
     created() {
+        this.cargarCategoria();
         this.cargarEdificios();
         this.cargarServicios();
         this.cargarEspecialidad();
