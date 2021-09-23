@@ -355,6 +355,75 @@ use App\Mail\AutoRespuesta;
             Route::get('/Usuario/GetEdificiosAsc', ['middleware' => 'cors', 'uses' => 'EdificioController@GetEdificiosAsc']);
             //Traer Turno Sin Libre
             Route::get('/Agente/getTurnoSL', ['middleware' => 'cors', 'uses' => 'TurnoController@getTurnoSL']);
+
+            //Agregar Nuevo Calendario Calderas
+            Route::post('/Agente/PostCalendarioCal', ['middleware' => 'cors', 'uses' => 'CalendarioCalderasController@postNuevoTCalendario']);
+            //Traer Todo Calendario Calderas
+            Route::get('/Agente/GetCalendarioCal', ['middleware' => 'cors', 'uses' => 'CalendarioCalderasController@getTodoCalendario']);
+            //Modificar o Agregar Items Calendario Calderas
+            Route::post('/Agente/PutCalendarioCal', ['middleware' => 'cors', 'uses' => 'CalendarioCalderasController@PutNuevoTCalendario']);
+            //Get Dia Administrativo Calderas
+            Route::get('/Agente/DAdminCal', ['middleware' => 'cors', 'uses' => 'DiaAdministrativoCalderasController@get_dia_adm']);
+            //Get Reemplazos Calderas
+            Route::get('/Agente/RCalderas', ['middleware' => 'cors', 'uses' => 'ReemplazoCalderasController@get_reemplazo']);
+            //Get Turno Extra Calderas
+            Route::get('/Agente/TurExtCalderas', ['middleware' => 'cors', 'uses' => 'TurnoExtraCalderasController@get_turnoExtra']);
+            //Get Vacaciones Calderas
+            Route::get('/Agente/VCalderas', ['middleware' => 'cors', 'uses' => 'VacacionesCalderasController@get_vacaciones']);
+            //Traer data especifica Calderas
+            Route::post('/Agente/GetDataCalenCal', ['middleware' => 'cors', 'uses' => 'CalendarioCalderasController@get_data_esp_asc']);
+
+            //Agregar Nuevo Calendario Electricos
+            Route::post('/Agente/PostCalendarioElec', ['middleware' => 'cors', 'uses' => 'CalendarioElectricosController@postNuevoTCalendario']);
+            //Traer Todo Calendario Electricos
+            Route::get('/Agente/GetCalendarioElec', ['middleware' => 'cors', 'uses' => 'CalendarioElectricosController@getTodoCalendario']);
+            //Modificar o Agregar Items Calendario Electricos
+            Route::post('/Agente/PutCalendarioElec', ['middleware' => 'cors', 'uses' => 'CalendarioElectricosController@PutNuevoTCalendario']);
+            //Get Dia Administrativo Electricos
+            Route::get('/Agente/DAdminElec', ['middleware' => 'cors', 'uses' => 'DiaAdministrativoElectricosController@get_dia_adm']);
+            //Get Reemplazos Electricos
+            Route::get('/Agente/RElectricos', ['middleware' => 'cors', 'uses' => 'ReemplazoElectricosController@get_reemplazo']);
+            //Get Turno Extra Electricos
+            Route::get('/Agente/TurExtElectricos', ['middleware' => 'cors', 'uses' => 'TurnoExtraElectricosController@get_turnoExtra']);
+            //Get Vacaciones Electricos
+            Route::get('/Agente/VElectricos', ['middleware' => 'cors', 'uses' => 'VacacionesElectricosController@get_vacaciones']);
+            //Traer data especifica Electricos
+            Route::post('/Agente/GetDataCalenElec', ['middleware' => 'cors', 'uses' => 'CalendarioElectricosController@get_data_esp_asc']);
+
+            //Agregar Nuevo Calendario Gasfiters
+            Route::post('/Agente/PostCalendarioGasf', ['middleware' => 'cors', 'uses' => 'CalendarioGasfitersController@postNuevoTCalendario']);
+            //Traer Todo Calendario Gasfiters
+            Route::get('/Agente/GetCalendarioGasf', ['middleware' => 'cors', 'uses' => 'CalendarioGasfitersController@getTodoCalendario']);
+            //Modificar o Agregar Items Calendario Gasfiters
+            Route::post('/Agente/PutCalendarioGasf', ['middleware' => 'cors', 'uses' => 'CalendarioGasfitersController@PutNuevoTCalendario']);
+            //Get Dia Administrativo Gasfiters
+            Route::get('/Agente/DAdminGasfiters', ['middleware' => 'cors', 'uses' => 'DiaAdministrativoGasfitersController@get_dia_adm']);
+            //Get Reemplazos Gasfiters
+            Route::get('/Agente/RGasfiters', ['middleware' => 'cors', 'uses' => 'ReemplazoGasfitersController@get_reemplazo']);
+            //Get Turno Extra Gasfiters
+            Route::get('/Agente/TurExtGasfiters', ['middleware' => 'cors', 'uses' => 'TurnoExtraGasfitersController@get_turnoExtra']);
+            //Get Vacaciones Gasfiters
+            Route::get('/Agente/VGasfiters', ['middleware' => 'cors', 'uses' => 'VacacionesGasfitersController@get_vacaciones']);
+            //Traer data especifica Gasfiters
+            Route::post('/Agente/GetDataCalenGasf', ['middleware' => 'cors', 'uses' => 'CalendarioGasfitersController@get_data_esp_asc']);
+
+            //Agregar Nuevo Calendario Oxigenistas
+            Route::post('/Agente/PostCalendarioOxi', ['middleware' => 'cors', 'uses' => 'CalendarioOxigenistasController@postNuevoTCalendario']);
+            //Traer Todo Calendario Gasfiters
+            Route::get('/Agente/GetCalendarioOxi', ['middleware' => 'cors', 'uses' => 'CalendarioOxigenistasController@getTodoCalendario']);
+            //Modificar o Agregar Items Calendario Gasfiters
+            Route::post('/Agente/PutCalendarioOxi', ['middleware' => 'cors', 'uses' => 'CalendarioOxigenistasController@PutNuevoTCalendario']);
+            //Get Dia Administrativo Gasfiters
+            Route::get('/Agente/DAdminOxigenistas', ['middleware' => 'cors', 'uses' => 'DiaAdministrativoOxigenistasController@get_dia_adm']);
+            //Get Reemplazos Gasfiters
+            Route::get('/Agente/ROxigenistas', ['middleware' => 'cors', 'uses' => 'ReemplazoOxigenistasController@get_reemplazo']);
+            //Get Turno Extra Gasfiters
+            Route::get('/Agente/TurExtOxigenistas', ['middleware' => 'cors', 'uses' => 'TurnoExtraOxigenistasController@get_turnoExtra']);
+            //Get Vacaciones Gasfiters
+            Route::get('/Agente/VOxigenistas', ['middleware' => 'cors', 'uses' => 'VacacionesOxigenistasController@get_vacaciones']);
+            //Traer data especifica Gasfiters
+            Route::post('/Agente/GetDataCalenOxigenistas', ['middleware' => 'cors', 'uses' => 'CalendarioOxigenistasController@get_data_esp_asc']);
+
             //Retorna Categorias Sin Informatica
             Route::get('/Usuario/getCategoriaSI', ['middleware' => 'cors', 'uses' => 'CategoriaController@getCategoriaSI']);
             //Retorna Tipo Reparacion

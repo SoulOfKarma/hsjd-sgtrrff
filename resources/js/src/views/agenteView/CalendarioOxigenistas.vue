@@ -121,7 +121,7 @@
                     ref="calendar"
                     :displayPeriodUom="calendarView"
                     :show-date="showDate"
-                    :events="listadoCalendarioAsc"
+                    :events="listadoCalendarioOxigenistas"
                     :eventTop="windowWidth <= 400 ? '2rem' : '3rem'"
                     eventBorderHeight="0px"
                     eventContentHeight="1.65rem"
@@ -138,7 +138,7 @@
                             >
                                 <span
                                     class="mx-3 text-xl font-medium whitespace-no-wrap"
-                                    >Turno Ascensoristas</span
+                                    >Turno Oxigenistas</span
                                 >
                                 <!-- Add new event button -->
                             </div>
@@ -244,7 +244,7 @@
                         v-validate="'required'"
                         class="w-full"
                         label-placeholder="Descripcion"
-                        v-model="descripcion_ascensores"
+                        v-model="descripcion_oxigenistas"
                     ></vs-input>
                 </div>
             </div>
@@ -414,7 +414,7 @@
                         name="event-name"
                         v-validate="'required'"
                         class="w-full"
-                        v-model="descripcion_ascensores"
+                        v-model="descripcion_oxigenistas"
                     ></vs-input>
                 </div>
             </div>
@@ -763,9 +763,11 @@
                                 </vs-td>
 
                                 <vs-td
-                                    :data="data[indextr].descripcion_ascensores"
+                                    :data="
+                                        data[indextr].descripcion_oxigenistas
+                                    "
                                 >
-                                    {{ data[indextr].descripcion_ascensores }}
+                                    {{ data[indextr].descripcion_oxigenistas }}
                                 </vs-td>
 
                                 <vs-td
@@ -1155,7 +1157,7 @@ export default {
             startDate: null,
             endDate: null,
             label: "none",
-            descripcion_ascensores: "",
+            descripcion_oxigenistas: "",
             id_trabajador: 0,
             id_turno: 0,
             id_edificio: 0,
@@ -1186,7 +1188,7 @@ export default {
             id_vacaciones: null,
             id_reemplazo: null,
             id_turno_extra: null,
-            id_calendario: 0,
+            id_calendario_oxigenistas: 0,
             classes: "",
             estado_turno_extra: true,
             estado_reemplazo: true,
@@ -1198,7 +1200,7 @@ export default {
                 startDate: null,
                 endDate: null,
                 label: "none",
-                descripcion_ascensores: "",
+                descripcion_oxigenistas: "",
                 id_trabajador: 0,
                 id_turno: 0,
                 id_edificio: 0,
@@ -1229,7 +1231,7 @@ export default {
                 id_vacaciones: null,
                 id_reemplazo: null,
                 id_turno_extra: null,
-                id_calendario: null,
+                id_calendario_oxigenistas: null,
                 classes: "",
                 estado_turno_extra: true,
                 estado_reemplazo: true,
@@ -1375,7 +1377,7 @@ export default {
                 }
             ],
 
-            listadoCalendarioAsc: [],
+            listadoCalendarioOxigenistas: [],
 
             listadoDataDAdministrativo: [],
             listadoDataVacaciones: [],
@@ -1463,7 +1465,7 @@ export default {
                 startDate: null,
                 endDate: null,
                 label: "none",
-                descripcion_ascensores: "",
+                descripcion_oxigenistas: "",
                 id_trabajador: 0,
                 id_turno: 0,
                 id_edificio: 0,
@@ -1494,7 +1496,7 @@ export default {
                 id_vacaciones: null,
                 id_reemplazo: null,
                 id_turno_extra: null,
-                id_calendario: null,
+                id_calendario_oxigenistas: null,
                 classes: "",
                 estado_turno_extra: true,
                 estado_reemplazo: true,
@@ -1511,12 +1513,16 @@ export default {
 
                 const dat = data;
                 axios
-                    .post(this.localVal + "/api/Agente/GetDataCalenAsc", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                    .post(
+                        this.localVal + "/api/Agente/GetDataCalenOxigenistas",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
                         }
-                    })
+                    )
                     .then(res => {
                         //this.listadoDet = res.data;
                         let a = [];
@@ -1540,10 +1546,10 @@ export default {
             }
         },
         infoDetallada() {
-            let listadoInfo = this.listadoCalendarioAsc;
+            let listadoInfo = this.listadoCalendarioOxigenistas;
             let a = [];
             listadoInfo.forEach((value, index) => {
-                if (value.id == this.id_calendario) {
+                if (value.id == this.id_calendario_oxigenistas) {
                     a.push(value);
                 }
             });
@@ -1670,20 +1676,20 @@ export default {
         //Carga Calendario
         simpleCalendarEvents() {
             axios
-                .get(this.localVal + "/api/Agente/GetCalendarioAsc", {
+                .get(this.localVal + "/api/Agente/GetCalendarioOxi", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
                     }
                 })
                 .then(res => {
-                    this.listadoCalendarioAsc = res.data;
+                    this.listadoCalendarioOxigenistas = res.data;
                 });
         },
         //Carga de los edificios
         cargarEdificios() {
             axios
-                .get(this.localVal + "/api/Usuario/GetEdificiosAsc", {
+                .get(this.localVal + "/api/Usuario/GetEdificios", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -1709,7 +1715,7 @@ export default {
         //Carga de trabajadores
         cargarTrabajadores() {
             axios
-                .get(this.localVal + "/api/Agente/GetTrabajadoresEspAsc", {
+                .get(this.localVal + "/api/Agente/GetTrabajadores", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -1720,9 +1726,9 @@ export default {
                 });
         },
         //Carga de los dias Administrativos
-        cargaDAdminAsc() {
+        cargaDAdminOxi() {
             axios
-                .get(this.localVal + "/api/Agente/DAdminAsc", {
+                .get(this.localVal + "/api/Agente/DAdminOxigenistas", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -1733,9 +1739,9 @@ export default {
                 });
         },
         //Carga de las Vacaciones
-        cargaVacAsc() {
+        cargaVacOxi() {
             axios
-                .get(this.localVal + "/api/Agente/VAscensoristas", {
+                .get(this.localVal + "/api/Agente/VOxigenistas", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -1746,9 +1752,9 @@ export default {
                 });
         },
         //Carga de Reemplazos
-        cargaRemAsc() {
+        cargaRemOxi() {
             axios
-                .get(this.localVal + "/api/Agente/RAscensoristas", {
+                .get(this.localVal + "/api/Agente/ROxigenistas", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -1759,9 +1765,9 @@ export default {
                 });
         },
         //Carga de los Turnos Extras
-        cargaTurExtAsc() {
+        cargaTurExtOxi() {
             axios
-                .get(this.localVal + "/api/Agente/TurExtAscensoristas", {
+                .get(this.localVal + "/api/Agente/TurExtOxigenistas", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -1804,8 +1810,8 @@ export default {
                         position: "top-right"
                     });
                 } else if (
-                    this.descripcion_ascensores == "" ||
-                    this.descripcion_ascensores.length < 5
+                    this.descripcion_oxigenistas == "" ||
+                    this.descripcion_oxigenistas.length < 5
                 ) {
                     this.$vs.notify({
                         time: 3000,
@@ -1865,7 +1871,7 @@ export default {
                     });
                 } else {
                     this.events.title = this.title;
-                    this.events.descripcion_ascensores = this.descripcion_ascensores;
+                    this.events.descripcion_oxigenistas = this.descripcion_oxigenistas;
                     this.events.startDate = this.startDate;
                     this.events.endDate = this.endDate;
                     this.events.id_turno = this.seleccionTurno[0].id;
@@ -1892,7 +1898,7 @@ export default {
                     this.limpiar();
                     axios
                         .post(
-                            this.localVal + "/api/Agente/PostCalendarioAsc",
+                            this.localVal + "/api/Agente/PostCalendarioOxi",
                             newevent,
                             {
                                 headers: {
@@ -1924,7 +1930,7 @@ export default {
         },
         clearFields() {
             this.title = this.endDate = this.url = "";
-            this.id_calendario = 0;
+            this.id_calendario_oxigenistas = 0;
             this.labelLocal = "none";
         },
         promptAddNewEvent(date) {
@@ -1943,7 +1949,7 @@ export default {
         },
         openEditEvent(event) {
             try {
-                let calen = this.listadoCalendarioAsc;
+                let calen = this.listadoCalendarioOxigenistas;
                 let b = [];
                 let a = 0;
 
@@ -1955,11 +1961,11 @@ export default {
                 });
 
                 const e = b;
-                this.id_calendario = e[0].id;
+                this.id_calendario_oxigenistas = e[0].id;
                 this.title = e[0].title;
                 this.startDate = e[0].startDate;
                 this.endDate = e[0].endDate;
-                this.descripcion_ascensores = e[0].descripcion_ascensores;
+                this.descripcion_oxigenistas = e[0].descripcion_oxigenistas;
                 this.labelLocal = e[0].label;
                 this.hora_inicio = e[0].hora_inicio;
                 this.hora_termino = e[0].hora_termino;
@@ -2060,7 +2066,7 @@ export default {
                     let bb = 0;
 
                     dataDiaAdm.forEach((value, index) => {
-                        bb = value.id_calendario_ascensores;
+                        bb = value.id_calendario_oxigenistas;
                         if (bb == e[0].id) {
                             aa.push(value);
                         }
@@ -2091,7 +2097,7 @@ export default {
                     let a = [];
                     let b = 0;
                     dataVacaciones.forEach((value, index) => {
-                        b = value.id_calendario_ascensores;
+                        b = value.id_calendario_oxigenistas;
                         if (b == e[0].id) {
                             a.push(value);
                         }
@@ -2108,7 +2114,7 @@ export default {
                     let a = [];
                     let b = 0;
                     dataReemplazo.forEach((value, index) => {
-                        b = value.id_calendario_ascensores;
+                        b = value.id_calendario_oxigenistas;
                         if (b == e[0].id) {
                             a.push(value);
                         }
@@ -2136,7 +2142,7 @@ export default {
                     let a = [];
                     let b = 0;
                     dataTurnoExtra.forEach((value, index) => {
-                        b = value.id_calendario_ascensores;
+                        b = value.id_calendario_oxigenistas;
                         if (b == e[0].id) {
                             a.push(value);
                         }
@@ -2164,8 +2170,8 @@ export default {
                         position: "top-right"
                     });
                 } else if (
-                    this.descripcion_ascensores == "" ||
-                    this.descripcion_ascensores.length < 5
+                    this.descripcion_oxigenistas == "" ||
+                    this.descripcion_oxigenistas.length < 5
                 ) {
                     this.$vs.notify({
                         time: 3000,
@@ -2356,7 +2362,8 @@ export default {
                             startDate: this.startDate,
                             endDate: this.endDate,
                             label: this.labelLocal,
-                            descripcion_ascensores: this.descripcion_ascensores,
+                            descripcion_oxigenistas: this
+                                .descripcion_oxigenistas,
                             id_trabajador: this.seleccionTrabajador[0].id,
                             id_turno: this.seleccionTurno[0].id,
                             id_edificio: this.seleccionEdificio[0].id,
@@ -2397,7 +2404,8 @@ export default {
                             id_vacaciones: this.id_vacaciones,
                             id_reemplazo: this.id_reemplazo,
                             id_turno_extra: this.id_turno_extra,
-                            id_calendario_ascensores: this.id_calendario,
+                            id_calendario_oxigenistas: this
+                                .id_calendario_oxigenistas,
                             classes: `event-${this.labelColor(
                                 this.labelLocal
                             )}`,
@@ -2411,7 +2419,7 @@ export default {
 
                         axios
                             .post(
-                                this.localVal + "/api/Agente/PutCalendarioAsc",
+                                this.localVal + "/api/Agente/PutCalendarioOxi",
                                 events,
                                 {
                                     headers: {
@@ -2435,7 +2443,7 @@ export default {
                                             color: "success",
                                             position: "top-right"
                                         });
-                                        this.cargaDAdminAsc();
+                                        this.cargaDAdminOxi();
                                     } else if (events.id_val_vacaciones == 1) {
                                         console.log("Re-Cargando Data");
                                         this.$vs.notify({
@@ -2446,7 +2454,7 @@ export default {
                                             color: "success",
                                             position: "top-right"
                                         });
-                                        this.cargaVacAsc();
+                                        this.cargaVacOxi();
                                     } else if (events.id_val_reemplazo == 1) {
                                         console.log("Re-Cargando Data");
                                         this.$vs.notify({
@@ -2457,7 +2465,7 @@ export default {
                                             color: "success",
                                             position: "top-right"
                                         });
-                                        this.cargaRemAsc();
+                                        this.cargaRemOxi();
                                     } else if (events.id_val_turno_extra == 1) {
                                         console.log("Re-Cargando Data");
                                         this.$vs.notify({
@@ -2468,7 +2476,7 @@ export default {
                                             color: "success",
                                             position: "top-right"
                                         });
-                                        this.cargaTurExtAsc();
+                                        this.cargaTurExtOxi();
                                     }
                                 } else {
                                     console.log("Error");
@@ -2514,10 +2522,10 @@ export default {
         this.cargarTurnos();
         this.cargarEdificios();
         this.simpleCalendarEvents();
-        this.cargaDAdminAsc();
-        this.cargaRemAsc();
-        this.cargaVacAsc();
-        this.cargaTurExtAsc();
+        this.cargaDAdminOxi();
+        this.cargaRemOxi();
+        this.cargaVacOxi();
+        this.cargaTurExtOxi();
     },
     mounted() {
         this.$emit("setAppClasses", "simple-calendar-app");

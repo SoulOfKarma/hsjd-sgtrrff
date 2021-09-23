@@ -16,14 +16,9 @@ class EdificioController extends Controller
      */
     public function index()
     {
-
-
         $get_all = Edificios::all();
-
         return  $get_all;
-
         //Retorna Todo del listado de Edificios
-
     }
 
     public function GetEdificiosAsc()
