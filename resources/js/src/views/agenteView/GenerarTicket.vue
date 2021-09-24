@@ -222,6 +222,14 @@
                 <vx-card title="5. Informacion del problema">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
+                            <h6>Turno?</h6>
+                            <h6>
+                                <vs-checkbox v-model="esturno"
+                                    >Marque si es un turno, Sino desmarquelo
+                                </vs-checkbox>
+                            </h6>
+
+                            <br />
                             <h6>5.1 - Tipo de Reparacion</h6>
                             <br />
                             <v-select
@@ -814,6 +822,7 @@ export default {
             id: 0,
             descripcionEspecialidad: "Seleccion Especialidad"
         },
+        esturno: false,
         listadoEdificios: [],
         datosSolicitud: [],
         listadoServicios: [],
@@ -2067,6 +2076,14 @@ export default {
             this.gestionTicket.tituloP = "Sin Titulo";
             this.gestionTicket.id_categoria = 1;
             this.gestionTicket.nombre = this.seleccionUsuario.nombre;
+            let turnoDesc = "";
+            if (this.esturno == true) {
+                if (this.seleccionTurno.id == 1) {
+                    turnoDesc = "tdia";
+                } else if (this.seleccionTurno.id == 2) {
+                    turnoDesc = "tnoche";
+                }
+            }
 
             const ticket = this.gestionTicket;
             this.openLoadingColor();
