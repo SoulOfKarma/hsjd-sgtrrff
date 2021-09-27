@@ -16,14 +16,25 @@ class CalendarioCalderasController extends Controller
 {
     public function getTodoCalendario()
     {
-        $getall = CalendarioCalderas::all();
+        try {
+            $getall = CalendarioCalderas::all();
         return $getall;
+        } catch (\Throwable $th) {
+            log::error($th);
+            return false;
+        }
+        
     }
 
     public function postNuevoTCalendario(Request $request){
-        $res = CalendarioCalderas::create($request->all());
-
-        return $res;
+        try {
+            $res = CalendarioCalderas::create($request->all());
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+        
     }
 
     public function PutNuevoTCalendario(Request $request){

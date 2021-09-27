@@ -16,14 +16,25 @@ class CalendarioGasfitersController extends Controller
 {
     public function getTodoCalendario()
     {
-        $getall = CalendarioGasfiters::all();
-        return $getall;
+        try {
+            $getall = CalendarioGasfiters::all();
+            return $getall;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+        
     }
 
     public function postNuevoTCalendario(Request $request){
-        $res = CalendarioGasfiters::create($request->all());
-
-        return $res;
+        try {
+            $res = CalendarioGasfiters::create($request->all());
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+        
     }
 
     public function PutNuevoTCalendario(Request $request){

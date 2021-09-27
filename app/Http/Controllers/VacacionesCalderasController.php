@@ -4,82 +4,12 @@ namespace App\Http\Controllers;
 
 use App\VacacionesCalderas;
 use Illuminate\Http\Request;
+use DB;
 
 class VacacionesCalderasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\VacacionesCalderas  $vacacionesCalderas
-     * @return \Illuminate\Http\Response
-     */
-    public function show(VacacionesCalderas $vacacionesCalderas)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\VacacionesCalderas  $vacacionesCalderas
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(VacacionesCalderas $vacacionesCalderas)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\VacacionesCalderas  $vacacionesCalderas
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, VacacionesCalderas $vacacionesCalderas)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\VacacionesCalderas  $vacacionesCalderas
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(VacacionesCalderas $vacacionesCalderas)
-    {
-        //
+    public function get_vacaciones(){
+        $get_all = VacacionesCalderas::all();
+        return $get_all;
     }
 }

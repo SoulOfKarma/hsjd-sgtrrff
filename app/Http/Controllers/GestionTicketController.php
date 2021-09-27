@@ -342,7 +342,8 @@ class GestionTicketController extends Controller
     }
 
     public function NuevoTicket(Request $request)
-    {
+    {   
+        $validador = false;
         //Insertando Ticket
         try {
             $uuid = Uuid::uuid4();
@@ -357,6 +358,8 @@ class GestionTicketController extends Controller
             $fecha = $request->fechaInicio;
             $tituloP = $request->tituloP;
             $id_user = $request->id_user;
+
+            $validador = true;
     
             $userSearch = Users::where('id',$id_user)->first();
                 $ValidarCargo = $userSearch->id_cargo_asociado;     
@@ -393,7 +396,7 @@ class GestionTicketController extends Controller
     
             $nombreTrabajador = $trabajador->tra_nombre . " " .$trabajador->tra_apellido;
             $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_apellido;
-    
+            
             SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
     
              Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
@@ -402,10 +405,16 @@ class GestionTicketController extends Controller
                 //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             }); 
 
-            return $response;
+            return true;
         } catch (\Throwable $th) {
-            log::info($th);
+            if($validador == true){
+              log::info($th);
+              return true;
+            }else{
+                log::info($th);
             return false;
+            }
+            
         }
         
     }

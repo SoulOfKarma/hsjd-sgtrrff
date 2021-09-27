@@ -17,14 +17,25 @@ class CalendarioOxigenistasController extends Controller
 {
     public function getTodoCalendario()
     {
-        $getall = CalendarioOxigenistas::all();
-        return $getall;
+        try {
+            $getall = CalendarioOxigenistas::all();
+            return $getall;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+        
     }
 
     public function postNuevoTCalendario(Request $request){
-        $res = CalendarioOxigenistas::create($request->all());
-
-        return $res;
+        try {
+            $res = CalendarioOxigenistas::create($request->all());
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+        
     }
 
     public function PutNuevoTCalendario(Request $request){

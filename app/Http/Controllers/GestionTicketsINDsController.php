@@ -177,6 +177,7 @@ class GestionTicketsINDsController extends Controller
 
     public function NuevoTicketIND(Request $request)
     {
+        $validador = false;
         //Insertando Ticket
         try {
             $uuid = Uuid::uuid4();
@@ -191,6 +192,8 @@ class GestionTicketsINDsController extends Controller
         $fecha = $request->fechaInicio;
         $tituloP = $request->tituloP;
         $id_user = $request->id_user;
+
+        $validador = true;
 
         $userSearch = Users::where('id',$id_user)->first();
             $ValidarCargo = $userSearch->id_cargo_asociado;     
@@ -236,10 +239,15 @@ class GestionTicketsINDsController extends Controller
             //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
         });
 
-        return $response;
+        return true;
         } catch (\Throwable $th) {
-            log::info($th);
-            return false;
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
         }
         
     }

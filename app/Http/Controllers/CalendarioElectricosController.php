@@ -16,14 +16,25 @@ class CalendarioElectricosController extends Controller
 {
     public function getTodoCalendario()
     {
-        $getall = CalendarioElectricos::all();
+        try {
+            $getall = CalendarioElectricos::all();
         return $getall;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+        
     }
 
     public function postNuevoTCalendario(Request $request){
-        $res = CalendarioElectricos::create($request->all());
-
-        return $res;
+        try {
+            $res = CalendarioElectricos::create($request->all());
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+        
     }
 
     public function PutNuevoTCalendario(Request $request){

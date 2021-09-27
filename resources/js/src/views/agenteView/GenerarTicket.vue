@@ -228,8 +228,20 @@
                                     >Marque si es un turno, Sino desmarquelo
                                 </vs-checkbox>
                             </h6>
-
                             <br />
+                            <h6 v-show="esturno">
+                                Seleccione Categoria del turno
+                            </h6>
+                            <v-select
+                                v-show="esturno"
+                                v-model="SeleccionTipoTurnoCal"
+                                placeholder="Seleccione Categoria Turno"
+                                class="w-full select-large"
+                                label="descripcionTurCal"
+                                :options="listadoTipoCal"
+                                @input="textoTurno(seleccionTurno.id)"
+                            ></v-select
+                            ><br />
                             <h6>5.1 - Tipo de Reparacion</h6>
                             <br />
                             <v-select
@@ -1015,7 +1027,12 @@ export default {
             estado_login: 1,
             idvalRut: 0,
             idvalmail: 0
-        }
+        },
+        SeleccionTipoTurnoCal: { id: 1, descripcionTurCal: "Electrico" },
+        listadoTipoCal: [
+            { id: 1, descripcionTurCal: "Electrico" },
+            { id: 2, descripcionTurCal: "Gasfiter" }
+        ]
     }),
     computed: {
         calcularHorasTrabajo() {
@@ -1063,6 +1080,15 @@ export default {
                 return this.gestionTicket.diasEjecucion;
                 // this.diaCalculado = this.fromDate - this.toDate;
             }
+        },
+        labelColor() {
+            return label => {
+                if (label === "sadicionales") return "dark";
+                else if (label === "tnoche") return "warning";
+                else if (label === "tdia") return "success";
+                else if (label === "libre") return "danger";
+                else if (label === "none") return "primary";
+            };
         }
     },
     methods: {
@@ -1074,6 +1100,29 @@ export default {
             return search.length
                 ? fuse.search(search).map(({ item }) => item)
                 : fuse.list;
+        },
+        textoTurno(id) {
+            try {
+                if (this.SeleccionTipoTurnoCal.id == 1) {
+                    if (id == 1) {
+                        this.gestionTicket.descripcionP = "Cubrir Turno Dia";
+                        this.arrayTipoReparacion(1);
+                    } else if (id == 2) {
+                        this.gestionTicket.descripcionP = "Cubrir Turno Noche";
+                        this.arrayTipoReparacion(1);
+                    }
+                } else if (this.SeleccionTipoTurnoCal.id == 2) {
+                    if (id == 1) {
+                        this.gestionTicket.descripcionP = "Cubrir Turno Dia";
+                        this.arrayTipoReparacion(4);
+                    } else if (id == 2) {
+                        this.gestionTicket.descripcionP = "Cubrir Turno Noche";
+                        this.arrayTipoReparacion(4);
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
         },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
@@ -2076,28 +2125,200 @@ export default {
             this.gestionTicket.tituloP = "Sin Titulo";
             this.gestionTicket.id_categoria = 1;
             this.gestionTicket.nombre = this.seleccionUsuario.nombre;
-            let turnoDesc = "";
-            if (this.esturno == true) {
-                if (this.seleccionTurno.id == 1) {
-                    turnoDesc = "tdia";
-                } else if (this.seleccionTurno.id == 2) {
-                    turnoDesc = "tnoche";
-                }
-            }
-
+            let events = {
+                title: "",
+                startDate: null,
+                endDate: null,
+                label: "none",
+                descripcion_gasfiters: "",
+                descripcion_electricos: "",
+                id_trabajador: 0,
+                id_turno: 0,
+                id_edificio: 0,
+                id_val_dia_administrativo: 2,
+                id_val_vacaciones: 2,
+                id_val_reemplazo: 2,
+                id_val_turno_extra: 2,
+                id_tipo_dia_administrativo: 0,
+                fecha_dia_administrativo: null,
+                fecha_inicio_vacaciones: null,
+                fecha_termino_vacaciones: null,
+                dias_vacaciones: 0,
+                id_trabajador_reemplazo: 0,
+                fecha_inicio_reemplazo: null,
+                fecha_termino_reemplazo: null,
+                dias_reemplazo: 0,
+                fecha_inicio_turno_extra: null,
+                fecha_termino_turno_extra: null,
+                dias_ejecucion_turno_extra: null,
+                horas_ejecucion_turno_extra: null,
+                hora_termino_turno_extra: null,
+                hora_inicio_turno_extra: null,
+                hora_inicio: null,
+                hora_termino: null,
+                dias_ejecucion: 0,
+                horas_ejecucion: 0,
+                id_dia_administrativo: null,
+                id_vacaciones: null,
+                id_reemplazo: null,
+                id_turno_extra: null,
+                id_calendario_gasfiter: null,
+                classes: "",
+                estado_turno_extra: true,
+                estado_reemplazo: true,
+                estado_dia_administrativo: true,
+                estado_vacaciones: true
+            };
+            const newevent = events;
             const ticket = this.gestionTicket;
             this.openLoadingColor();
-            axios
-                .post(this.localVal + "/api/Agente/PostNuevoTicket", ticket, {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
+            if (this.esturno == true) {
+                if (this.SeleccionTipoTurnoCal.id == 1) {
+                    events.title = this.gestionTicket.descripcionCorreo;
+                    events.descripcion_electricos = this.gestionTicket.descripcionCorreo;
+                    events.startDate = this.gestionTicket.fechaInicio;
+                    events.endDate = this.gestionTicket.fechaTermino;
+                    events.id_turno = this.seleccionTurno.id;
+                    events.id_trabajador = this.seleccionTrabajador[0].id;
+                    events.id_edificio = this.seleccionEdificio[0].id;
+                    events.hora_inicio = this.gestionTicket.horaInicio;
+                    events.hora_termino = this.gestionTicket.horaTermino;
+                    if (this.seleccionTurno.id == 1) {
+                        events.label = "tdia";
+                    } else if (this.seleccionTurno.id == 2) {
+                        events.label = "tnoche";
                     }
-                })
-                .then(res => {
-                    const ticketServer = res.data;
-                    this.mensajeGuardado();
-                });
+                    events.classes = `event-${this.labelColor(events.label)}`;
+                    axios
+                        .all([
+                            axios.post(
+                                this.localVal + "/api/Agente/PostNuevoTicket",
+                                ticket,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.post(
+                                this.localVal +
+                                    "/api/Agente/PostCalendarioElec",
+                                newevent,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                        ])
+                        .then(
+                            axios.spread((res1, res2) => {
+                                let ticketServer = res1.data;
+                                let calen2 = res2.data;
+                                if (ticketServer == true && calen2 == true) {
+                                    this.mensajeGuardado();
+                                    setTimeout(() => {
+                                        router.back();
+                                    }, 4000);
+                                    this.limpiar();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible crear el ticket o agregar al calendario, revise los campos e intente nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            })
+                        );
+                } else if (this.SeleccionTipoTurnoCal.id == 2) {
+                    events.title = this.gestionTicket.descripcionCorreo;
+                    events.descripcion_gasfiters = this.gestionTicket.descripcionCorreo;
+                    events.startDate = this.gestionTicket.fechaInicio;
+                    events.endDate = this.gestionTicket.fechaTermino;
+                    events.id_turno = this.seleccionTurno.id;
+                    events.id_trabajador = this.seleccionTrabajador[0].id;
+                    events.id_edificio = this.seleccionEdificio[0].id;
+                    events.hora_inicio = this.gestionTicket.horaInicio;
+                    events.hora_termino = this.gestionTicket.horaTermino;
+                    if (this.seleccionTurno.id == 1) {
+                        events.label = "tdia";
+                    } else if (this.seleccionTurno.id == 2) {
+                        events.label = "tnoche";
+                    }
+                    events.classes = `event-${this.labelColor(events.label)}`;
+                    axios
+                        .all([
+                            axios.post(
+                                this.localVal + "/api/Agente/PostNuevoTicket",
+                                ticket,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.post(
+                                this.localVal +
+                                    "/api/Agente/PostCalendarioGasf",
+                                newevent,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                        ])
+                        .then(
+                            axios.spread((res1, res2) => {
+                                let ticketServer = res1.data;
+                                let calen2 = res2.data;
+                                if (ticketServer == true && calen2 == true) {
+                                    this.mensajeGuardado();
+                                    setTimeout(() => {
+                                        router.back();
+                                    }, 4000);
+                                    this.limpiar();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible crear el ticket o agregar al calendario, revise los campos e intente nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            })
+                        );
+                }
+            } else {
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PostNuevoTicket",
+                        ticket,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        const ticketServer = res.data;
+                        this.mensajeGuardado();
+                    });
+            }
         },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
