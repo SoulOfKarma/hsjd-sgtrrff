@@ -315,5 +315,11 @@ export default [
         name: "Obras.",
         slug: "CalendarioObras",
         icon: "CalendarIcon"
+    },
+    {
+        url: "/agenteView/CalendarioGIndustrial",
+        name: "C. Industrial",
+        slug: "CalendarioGIndustrial",
+        icon: "CalendarIcon"
     }
 ];

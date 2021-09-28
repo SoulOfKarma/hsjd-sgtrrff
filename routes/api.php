@@ -475,6 +475,24 @@ use App\Mail\AutoRespuesta;
             //Traer Color Cargo
             Route::post('/Agente/TraerColorCargo', ['middleware' => 'cors', 'uses' => 'GanttObrasController@GetColorCargo']);
 
+            //Datos Calendario Industrial
+            //Traer ultimo ID Ingresado
+            Route::get('/Agente/UltimoIDMantencionI', ['middleware' => 'cors', 'uses' => 'GanttIndustrialController@GetLastIdObras']);
+            //Traer Obras Existentes
+            Route::get('/Agente/ListadoMantencionI', ['middleware' => 'cors', 'uses' => 'GanttIndustrialController@GetObras']);
+            //Guardar Nueva Obra
+            Route::post('/Agente/GuardarNMantencionI', ['middleware' => 'cors', 'uses' => 'GanttIndustrialController@PostNObra']);
+            //Guardar Nueva Sub Categoria Obra
+            Route::post('/Agente/GuardarNSubMantencionI', ['middleware' => 'cors', 'uses' => 'GanttIndustrialController@PostNSubObra']);
+            //Traer Obra Recurso Nulo
+            Route::get('/Agente/BuscarMantencionRANullI', ['middleware' => 'cors', 'uses' => 'GanttIndustrialController@PostNObraRANull']);
+            //Traer Obra Recurso Activo
+            Route::get('/Agente/BuscarMantencionRActivaI', ['middleware' => 'cors', 'uses' => 'GanttIndustrialController@PostNObraRA']);
+            //Modificar Obra 
+            Route::post('/Agente/ModificarMantencionI', ['middleware' => 'cors', 'uses' => 'GanttIndustrialController@PutObra']);
+            //Traer Color Cargo
+            Route::post('/Agente/TraerColorCargoI', ['middleware' => 'cors', 'uses' => 'GanttIndustrialController@GetColorCargo']);
+
             //Datos Notificaciones
             //Traer Ultimas 5 Notificaciones en Proceso
             Route::get('/Agente/TraerNotificaciones', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getNotificaciones']);

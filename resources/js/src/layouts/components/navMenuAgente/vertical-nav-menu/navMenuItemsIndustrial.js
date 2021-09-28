@@ -207,5 +207,11 @@ export default [
         name: "Calderas",
         slug: "CalendarioCalderas",
         icon: "CalendarIcon"
+    },
+    {
+        url: "/agenteView/CalendarioGIndustrial",
+        name: "C. Industrial",
+        slug: "CalendarioGIndustrial",
+        icon: "CalendarIcon"
     }
 ];

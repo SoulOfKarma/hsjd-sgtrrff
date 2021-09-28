@@ -516,12 +516,17 @@ const router = new Router({
                     component: () =>
                         import("./views/agenteView/ReporteExDiaCA.vue")
                 },
-
                 {
                     path: "/agenteView/CalendarioObras",
                     name: "CalendarioObras",
                     component: () =>
                         import("./views/agenteView/CalendarioObras.vue")
+                },
+                {
+                    path: "/agenteView/CalendarioGIndustrial",
+                    name: "CalendarioGIndustrial",
+                    component: () =>
+                        import("./views/agenteView/CalendarioGIndustrial.vue")
                 }
             ]
         },
