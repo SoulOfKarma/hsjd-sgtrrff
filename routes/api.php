@@ -502,6 +502,9 @@ use App\Mail\AutoRespuesta;
             //Seccion de Informatica
             //Traer Tickets con sus usuarios - Informatica
             Route::get('/Agente/GetSolicitudTicketsI', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getSolicitudUsuariosJoinI']);
+
+            //Busqueda Ticket Cadena
+            Route::post('/Agente/GetTicketCadena', ['middleware' => 'cors', 'uses' => 'TicketCadenasController@BuscarExistenciaCadena']);
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');

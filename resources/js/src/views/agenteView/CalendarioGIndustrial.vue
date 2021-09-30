@@ -13,7 +13,7 @@
         <!-- Pop Up Para Agregar Nuevas Obras -->
         <vs-popup
             classContent="popup-example"
-            title="Nueva Obra"
+            title="Nueva Mantencion"
             :active.sync="popCrearNMantencion"
         >
             <div class="vx-col md:w-1/1 w-full mb-base">
@@ -29,7 +29,7 @@
                         <br />
                     </div>
                 </vx-card>
-                <vx-card title="2. Ingrese Fechas de Obra">
+                <vx-card title="2. Ingrese Fechas de Mantencion">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/2 mt-3">
                             <h6>2.1 Fecha Inicio</h6>
@@ -91,11 +91,11 @@
         <!-- Pop Up Para Agregar Nuevas Categorias a las Obras -->
         <vs-popup
             classContent="popup-example"
-            title="Agregar SubCategoria Obra"
+            title="Agregar SubCategoria Mantencion"
             :active.sync="popCrearSubCatMantencion"
         >
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="1. Seleccione Obra">
+                <vx-card title="1. Seleccione Mantencion">
                     <vue-good-table
                         :columns="columns"
                         :rows="listadoObras"
@@ -183,12 +183,12 @@
         </vs-popup>
         <!-- Pop Up Para Modificar Obras -->
         <vs-popup
-            classContent="popModObra"
-            title="Modificar Obra"
+            classContent="popModMantencion"
+            title="Modificar Mantencion"
             :active.sync="popModificarMantencion"
         >
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="1. Ingrese Datos de Obra">
+                <vx-card title="1. Ingrese Datos de Mantencion">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-3">
                             <h6>1.1 Nombre Obra</h6>
@@ -200,7 +200,7 @@
                         <br />
                     </div>
                 </vx-card>
-                <vx-card title="2. Ingrese Fechas de Obra">
+                <vx-card title="2. Ingrese Fechas de Mantencion">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/2 mt-3">
                             <h6>2.1 Fecha Inicio</h6>
@@ -332,13 +332,13 @@ export default {
             resourceAsociado: "",
             calendarOptions: {
                 customButtons: {
-                    NObra: {
-                        text: "Nueva Obra",
+                    NMantencion: {
+                        text: "Nueva Mantencion",
                         click: () =>
                             this.$set(this, "popCrearNMantencion", true)
                     },
-                    NSubObra: {
-                        text: "Asignar Sub-Categoria Obras",
+                    NSubMantencion: {
+                        text: "Asignar Sub-Categoria Mantencion",
                         click: () =>
                             this.$set(this, "popCrearSubCatMantencion", true)
                     }
@@ -349,7 +349,7 @@ export default {
                     resourceTimelinePlugin
                 ],
                 headerToolbar: {
-                    left: "today prev,next NObra NSubObra",
+                    left: "today prev,next NMantencion NSubMantencion",
                     center: "title",
                     right:
                         "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth"

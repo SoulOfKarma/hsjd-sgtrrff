@@ -6,6 +6,7 @@ use App\GestionSolicitudes;
 use App\Mail\TicketAsignado;
 use App\SeguimientoSolicitudes;
 use App\SolicitudTickets;
+use App\TicketCadenas;
 use App\Mail\AutoRespuesta;
 use App\Supervisores;
 use App\Trabajadores;
@@ -256,12 +257,25 @@ class GestionTicketController extends Controller
 
     public function PostCierreTicket(Request $request){
         try {
-            $res = GestionSolicitudes::where('id_solicitud',$request->id_solicitud)
-            ->where('uuid', $request->uuid)
-            ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
-            $res2 = SolicitudTickets::where('id',$request->id)
-            ->where('uuid', $request->uuid)
-            ->update(['id_estado' => $request->id_estado]);
+            $res3 = TicketCadenas::where('ticket_cadenas.idTicketNuevo',$request->id_solicitud)
+            ->first();
+
+            $res4 = TicketCadenas::select("ticket_cadenas.*")
+            ->where('ticket_cadenas.idTicketPrincipal',$res3->idTicketPrincipal)
+            ->get();
+            log::info($res4);
+            foreach ($res4 as $key => $ticketCadena) {
+                GestionSolicitudes::where('id_solicitud',$ticketCadena->idTicketNuevo)
+                ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
+                SolicitudTickets::where('id',$ticketCadena->idTicketNuevo)
+                ->update(['id_estado' => $request->id_estado]);
+            }
+
+             $res = GestionSolicitudes::where('id_solicitud',$res3->idTicketPrincipal)
+             ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
+             $res2 = SolicitudTickets::where('id',$res3->idTicketPrincipal)
+             ->update(['id_estado' => $request->id_estado]);
+            
             return true;
         } catch (\Throwable $th) {
             log::info($th);
@@ -348,9 +362,10 @@ class GestionTicketController extends Controller
         try {
             $uuid = Uuid::uuid4();
             $id = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]))->id;
-    
             $response = GestionSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
-    
+            if($request->esCadena == true){
+                TicketCadenas::create(array_merge($request->all(),['idTicketNuevo' => $id]));
+            };
     
             $nombre = $request->nombre;
             $descripcionP = $request->descripcionCorreo;

@@ -223,6 +223,17 @@
                 <vx-card title="5. Informacion del problema">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
+                            <h6>Ticket Repetido?</h6>
+                            <h6>
+                                <vs-checkbox
+                                    v-model="esRepetido"
+                                    @input="validarExistenciaRepetido"
+                                    >Marque si es un Ticket Repetido, Sino
+                                    desmarquelo
+                                </vs-checkbox>
+                            </h6>
+                            <br />
+
                             <h6>5.1 - Tipo de Reparacion</h6>
                             <br />
                             <v-select
@@ -861,7 +872,9 @@ export default {
             id_categoria: 1,
             nombre: "",
             descripcionCorreo: "",
-            idDuracion: 0
+            idDuracion: 0,
+            esCadena: false,
+            idTicketPrincipal: 0
         },
         registroUsuario: {
             run: null,
@@ -1008,7 +1021,9 @@ export default {
             idvalRut: 0,
             idvalmail: 0
         },
-        listadoTicketByID: []
+        listadoTicketByID: [],
+        esRepetido: false,
+        listadoTicketPrincipal: []
     }),
     computed: {
         calcularHorasTrabajo() {
@@ -1083,6 +1098,38 @@ export default {
         },
         volverTra() {
             this.popCrearTrabajador = false;
+        },
+        validarExistenciaRepetido() {
+            try {
+                if (this.esRepetido == true) {
+                    let obj = { idTicket: this.$route.params.id };
+                    console.log(obj);
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/GetTicketCadena",
+                            obj,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.listadoTicketPrincipal = res.data;
+                            if (
+                                this.listadoTicketPrincipal == null ||
+                                this.listadoTicketPrincipal.length < 1
+                            ) {
+                                this.listadoTicketPrincipal = [];
+                            }
+                            console.log(this.listadoTicketPrincipal);
+                        });
+                }
+            } catch (error) {
+                console.log(error);
+            }
         },
         agregarNuevoUsuario() {
             try {
@@ -2139,6 +2186,15 @@ export default {
                 this.gestionTicket.tituloP = "Sin Titulo";
                 this.gestionTicket.id_categoria = 1;
                 this.gestionTicket.nombre = this.seleccionUsuario.nombre;
+                this.gestionTicket.esCadena = this.esRepetido;
+
+                if (this.esRepetido == true) {
+                    if (this.listadoTicketPrincipal.idTicketPrincipal > 0) {
+                        this.gestionTicket.idTicketPrincipal = this.listadoTicketPrincipal.idTicketPrincipal;
+                    } else {
+                        this.gestionTicket.idTicketPrincipal = this.$route.params.id;
+                    }
+                }
 
                 const ticket = this.gestionTicket;
                 this.openLoadingColor();
