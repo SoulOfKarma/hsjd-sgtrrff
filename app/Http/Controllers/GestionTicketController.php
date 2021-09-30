@@ -258,24 +258,33 @@ class GestionTicketController extends Controller
     public function PostCierreTicket(Request $request){
         try {
             $res3 = TicketCadenas::where('ticket_cadenas.idTicketNuevo',$request->id_solicitud)
-            ->first();
-
-            $res4 = TicketCadenas::select("ticket_cadenas.*")
-            ->where('ticket_cadenas.idTicketPrincipal',$res3->idTicketPrincipal)
             ->get();
-            log::info($res4);
-            foreach ($res4 as $key => $ticketCadena) {
-                GestionSolicitudes::where('id_solicitud',$ticketCadena->idTicketNuevo)
-                ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
-                SolicitudTickets::where('id',$ticketCadena->idTicketNuevo)
-                ->update(['id_estado' => $request->id_estado]);
-            }
+            $count = $res3->count();
+            if($count < 1){
+                $res = GestionSolicitudes::where('id_solicitud',$request->id_solicitud)
+                 ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
+                 $res2 = SolicitudTickets::where('id',$request->id_solicitud)
+                 ->update(['id_estado' => $request->id_estado]);
+                
+            }else{
+                $res4 = [];
+                foreach ($res3 as $key => $list) {
+                $res4 = TicketCadenas::select("ticket_cadenas.*")
+                ->where('ticket_cadenas.idTicketPrincipal',$list->idTicketPrincipal)
+                ->get();
 
-             $res = GestionSolicitudes::where('id_solicitud',$res3->idTicketPrincipal)
-             ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
-             $res2 = SolicitudTickets::where('id',$res3->idTicketPrincipal)
-             ->update(['id_estado' => $request->id_estado]);
-            
+                $res = GestionSolicitudes::where('id_solicitud',$list->idTicketPrincipal)
+                 ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
+                 $res2 = SolicitudTickets::where('id',$list->idTicketPrincipal)
+                 ->update(['id_estado' => $request->id_estado]);
+                }
+                foreach ($res4 as $key => $ticketCadena) {
+                    GestionSolicitudes::where('id_solicitud',$ticketCadena->idTicketNuevo)
+                    ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
+                    SolicitudTickets::where('id',$ticketCadena->idTicketNuevo)
+                    ->update(['id_estado' => $request->id_estado]);
+                }
+            }
             return true;
         } catch (\Throwable $th) {
             log::info($th);
