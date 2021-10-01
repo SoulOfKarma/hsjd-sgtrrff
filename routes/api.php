@@ -521,7 +521,7 @@ use App\Mail\AutoRespuesta;
       //Generar Excel	
       Route::get('/Agente/generarExcelTodoI', 'ExcelController@generarExcelTodoI');
       //Generar Excel	Por Fechas
-      Route::get('/Agente/generarExcelByFechaI/{fechaInicio}/{fechaTermino}', 'ExcelController@GestionExportByFechasI');
+      Route::get('/Agente/generarExcelByFechaI/{fechaInicio}/{fechaTermino}', 'ExcelController@generarExcelByFechaI');
 
     Route::post('/auth/login', 'LoginController@login');
     Route::post('/auth/check', 'LoginController@checkToken');
