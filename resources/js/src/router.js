@@ -527,6 +527,12 @@ const router = new Router({
                     name: "CalendarioGIndustrial",
                     component: () =>
                         import("./views/agenteView/CalendarioGIndustrial.vue")
+                },
+                {
+                    path: "/agenteView/CalendarioMIndustrial",
+                    name: "CalendarioMIndustrial",
+                    component: () =>
+                        import("./views/agenteView/CalendarioMIndustrial.vue")
                 }
             ]
         },

@@ -505,6 +505,21 @@ use App\Mail\AutoRespuesta;
 
             //Busqueda Ticket Cadena
             Route::post('/Agente/GetTicketCadena', ['middleware' => 'cors', 'uses' => 'TicketCadenasController@BuscarExistenciaCadena']);
+
+            //Guardar Calendario
+            Route::post('/Agente/PostCalendarioMIndustrial', ['middleware' => 'cors', 'uses' => 'MantencionProgramadasController@PostCalMantencionI']);
+
+            Route::post('/Agente/PostAnios', ['middleware' => 'cors', 'uses' => 'CalendarioaniosController@PostAnio']);
+
+            Route::get('/Agente/GetAnios', ['middleware' => 'cors', 'uses' => 'CalendarioaniosController@GetAnio']);
+
+            Route::post('/Agente/GetMantencionesAnio', ['middleware' => 'cors', 'uses' => 'MantencionProgramadasController@GetListadoMantencion']);
+
+            Route::post('/Agente/PostDocumentoF', ['middleware' => 'cors', 'uses' => 'DocumentacionIndustrialsController@PostDocumentoIND']);
+
+            Route::post('/Agente/GetDocumentosMIND', ['middleware' => 'cors', 'uses' => 'DocumentacionIndustrialsController@showRegistroEspecifico']);
+
+            Route::get('/Agente/GetTMantencion', ['middleware' => 'cors', 'uses' => 'TipoMantencionesController@GetTipoMantenciones']);
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');
