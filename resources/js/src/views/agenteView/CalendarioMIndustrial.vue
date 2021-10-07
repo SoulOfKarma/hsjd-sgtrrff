@@ -70,6 +70,48 @@
                 </template></vue-good-table
             >
         </vx-card>
+
+        <!-- KPI Industrial -->
+        <div class="vx-col w-full mb-base">
+            <vx-card
+                title="Porcentaje Avance Mantenciones por Equipo"
+                :key="resetI"
+            >
+                <!-- CARD ACTION -->
+                <!-- <template slot="actions">
+                        <change-time-duration-dropdown />
+                    </template> -->
+
+                <!-- Chart -->
+                <div slot="no-body">
+                    <vue-apex-charts
+                        type="radialBar"
+                        height="420"
+                        :options="productOrdersRadialBar.chartOptions"
+                        :series="productsOrder.series"
+                    />
+                </div>
+
+                <ul>
+                    <li
+                        v-for="orderData in productsOrder.analyticsData"
+                        :key="orderData.orderType"
+                        class="flex mb-3 justify-between"
+                    >
+                        <span class="flex items-center">
+                            <span
+                                class="inline-block h-4 w-4 rounded-full mr-2 bg-white border-3 border-solid"
+                                :class="`border-${orderData.color}`"
+                            ></span>
+                            <span class="font-semibold">{{
+                                orderData.orderType
+                            }}</span>
+                        </span>
+                        <span>{{ orderData.counts }}</span>
+                    </li>
+                </ul>
+            </vx-card>
+        </div>
         <vs-popup
             classContent="popup-example"
             title="Ingresar Datos Tabla Mantencion Industrial"
@@ -387,13 +429,22 @@ import Vue from "vue";
 import "vue-good-table/dist/vue-good-table.css";
 import { PlusCircleIcon } from "vue-feather-icons";
 import VueGoodTablePlugin from "vue-good-table";
+import VueApexCharts from "vue-apexcharts";
+import StatisticsCardLine from "@/components/statistics-cards/StatisticsCardLine.vue";
+import analyticsData from "../ui-elements/card/analyticsData.js";
+import ChangeTimeDurationDropdown from "@/components/ChangeTimeDurationDropdown.vue";
+import VxTimeline from "@/components/timeline/VxTimeline";
 Vue.use(VueGoodTablePlugin);
 import vSelect from "vue-select";
 export default {
     components: {
         flatPickr,
         "v-select": vSelect,
-        PlusCircleIcon
+        PlusCircleIcon,
+        VxTimeline,
+        VueApexCharts,
+        StatisticsCardLine,
+        ChangeTimeDurationDropdown
     },
     data() {
         return {
@@ -486,6 +537,114 @@ export default {
             image: "",
             desDoc: "",
             idParam: 0,
+            resetI: 0,
+            supportTracker: {},
+            productsOrder: {},
+            salesBarSession: {},
+            analyticsData,
+            productOrdersRadialBar: {
+                chartOptions: {
+                    labels: [
+                        "Enviado",
+                        "En Proceso",
+                        "Pendiente",
+                        "Finalizado",
+                        "Eliminado"
+                    ],
+                    plotOptions: {
+                        radialBar: {
+                            size: 165,
+                            offsetY: -5,
+                            hollow: {
+                                size: "20%"
+                            },
+                            track: {
+                                background: "#ebebeb",
+                                strokeWidth: "100%",
+                                margin: 15
+                            },
+                            dataLabels: {
+                                show: true,
+                                name: {
+                                    fontSize: "18px"
+                                },
+                                value: {
+                                    fontSize: "16px",
+                                    color: "#636a71",
+                                    offsetY: 11
+                                },
+                                total: {
+                                    show: true,
+                                    label: "Total",
+                                    formatter() {
+                                        return 36;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    responsive: [
+                        {
+                            breakpoint: 576,
+                            options: {
+                                plotOptions: {
+                                    radialBar: {
+                                        size: 150,
+                                        hollow: {
+                                            size: "20%"
+                                        },
+                                        track: {
+                                            background: "#ebebeb",
+                                            strokeWidth: "100%",
+                                            margin: 15
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    colors: [
+                        "#7961F9",
+                        "#FF9F43",
+                        "#EA5455",
+                        "#1fcd39",
+                        "#000000"
+                    ],
+                    fill: {
+                        type: "gradient",
+                        gradient: {
+                            // enabled: true,
+                            shade: "dark",
+                            type: "vertical",
+                            shadeIntensity: 0.5,
+                            gradientToColors: [
+                                "#9c8cfc",
+                                "#FFC085",
+                                "#f29292",
+                                "#1fcd39",
+                                "#000000"
+                            ],
+                            inverseColors: false,
+                            opacityFrom: 1,
+                            opacityTo: 1,
+                            stops: [0, 100]
+                        }
+                    },
+                    stroke: {
+                        lineCap: "round"
+                    },
+                    chart: {
+                        height: 355,
+                        dropShadow: {
+                            enabled: true,
+                            blur: 3,
+                            left: 1,
+                            top: 1,
+                            opacity: 0.1
+                        }
+                    }
+                }
+            },
             localVal: process.env.MIX_APP_URL,
             urlDocumentos: process.env.MIX_APP_URL_DOCUMENTOS
         };
@@ -1188,6 +1347,140 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+        //KPI
+        cargaSO() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Agente/TraerKPITickets", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        //this.productsOrder = res.data;
+                        let list = res.data;
+                        // console.log(list);
+                        let b = [];
+                        let obj = {};
+                        let label = [];
+                        let contador = 0;
+                        let objData = {};
+                        let codcolors = [];
+                        let objcolor = {};
+                        let gradcolors = [];
+                        let objgragcolor = {};
+                        list.forEach((value, index) => {
+                            obj = {};
+                            obj = parseInt(value.porcentaje);
+                            objData = {};
+                            objData = value.orderType;
+                            label.push(objData);
+                            objcolor = {};
+                            objcolor = value.codcolor;
+                            codcolors.push(objcolor);
+                            objgragcolor = {};
+                            objgragcolor = value.codcolor;
+                            gradcolors.push(objgragcolor);
+                            contador = contador + value.counts;
+                            b.push(obj);
+                        });
+                        this.productOrdersRadialBar = {
+                            chartOptions: {
+                                labels: label,
+                                plotOptions: {
+                                    radialBar: {
+                                        size: 165,
+                                        offsetY: -5,
+                                        hollow: {
+                                            size: "20%"
+                                        },
+                                        track: {
+                                            background: "#ebebeb",
+                                            strokeWidth: "100%",
+                                            margin: 15
+                                        },
+                                        dataLabels: {
+                                            show: true,
+                                            name: {
+                                                fontSize: "18px"
+                                            },
+                                            value: {
+                                                fontSize: "16px",
+                                                color: "#636a71",
+                                                offsetY: 11
+                                            },
+                                            total: {
+                                                show: true,
+                                                label: "Total",
+                                                formatter() {
+                                                    return contador;
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                responsive: [
+                                    {
+                                        breakpoint: 576,
+                                        options: {
+                                            plotOptions: {
+                                                radialBar: {
+                                                    size: 150,
+                                                    hollow: {
+                                                        size: "20%"
+                                                    },
+                                                    track: {
+                                                        background: "#ebebeb",
+                                                        strokeWidth: "100%",
+                                                        margin: 15
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ],
+                                colors: codcolors,
+                                fill: {
+                                    type: "gradient",
+                                    gradient: {
+                                        // enabled: true,
+                                        shade: "dark",
+                                        type: "vertical",
+                                        shadeIntensity: 0.5,
+                                        gradientToColors: gradcolors,
+                                        inverseColors: false,
+                                        opacityFrom: 1,
+                                        opacityTo: 1,
+                                        stops: [0, 100]
+                                    }
+                                },
+                                stroke: {
+                                    lineCap: "round"
+                                },
+                                chart: {
+                                    height: 355,
+                                    dropShadow: {
+                                        enabled: true,
+                                        blur: 3,
+                                        left: 1,
+                                        top: 1,
+                                        opacity: 0.1
+                                    }
+                                }
+                            }
+                        };
+                        let dat = {
+                            analyticsData: list,
+                            series: b
+                        };
+                        this.productsOrder = dat;
+                        this.resetI += 1;
+                    });
+            } catch (error) {
+                console.log("Error al cargar datos");
+            }
         }
     },
     created() {
@@ -1195,6 +1488,7 @@ export default {
         this.cargarAnios();
         this.cargarEdificios();
         this.cargarTMantencion();
+        this.cargaSO();
     }
 };
 </script>
