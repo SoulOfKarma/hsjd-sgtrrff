@@ -520,6 +520,13 @@ use App\Mail\AutoRespuesta;
             Route::post('/Agente/GetDocumentosMIND', ['middleware' => 'cors', 'uses' => 'DocumentacionIndustrialsController@showRegistroEspecifico']);
 
             Route::get('/Agente/GetTMantencion', ['middleware' => 'cors', 'uses' => 'TipoMantencionesController@GetTipoMantenciones']);
+
+            Route::get('/Agente/GetEstadoMIndustrial', ['middleware' => 'cors', 'uses' => 'EstadoCodMIndustrialesController@GetEstadoCodMInd']);
+
+            //KPI Mantencion Industrial
+
+             //Traer Estados Tickets
+             Route::get('/Agente/TraerKPIMProgramada', ['middleware' => 'cors', 'uses' => 'MantencionProgramadasController@getTicketsKPI']);
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');

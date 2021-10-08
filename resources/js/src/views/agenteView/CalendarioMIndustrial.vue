@@ -246,7 +246,7 @@
                             :options="listadoAnios"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-full">
+                    <div class="vx-col w-1/2">
                         <h6>Tipo Mantencion</h6>
                         <v-select
                             v-model="seleccionTMantencion"
@@ -254,6 +254,17 @@
                             class="w-full select-large"
                             label="descripcionTMantencion"
                             :options="listadoTMantencion"
+                        ></v-select>
+                        <br />
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <h6>Estado Mantencion</h6>
+                        <v-select
+                            v-model="seleccionEstadoMIndustrial"
+                            placeholder="No Asignado"
+                            class="w-full select-large"
+                            label="descripcion_estadoI"
+                            :options="listadoEstadoMIndustrial"
                         ></v-select>
                         <br />
                     </div>
@@ -510,9 +521,14 @@ export default {
             listadoEdificios: [],
             listadoAnios: [],
             listadoTMantencion: [],
+            listadoEstadoMIndustrial: [],
             seleccionEdificio: {
                 id: 0,
                 descripcionEdificio: "Seleccione Edificio"
+            },
+            seleccionEstadoMIndustrial: {
+                id: 0,
+                descripcion_estadoI: "Seleccione Estado Mantencion"
             },
             codManEne: 0,
             codManFeb: 0,
@@ -545,11 +561,10 @@ export default {
             productOrdersRadialBar: {
                 chartOptions: {
                     labels: [
-                        "Enviado",
+                        "No Asignado",
                         "En Proceso",
                         "Pendiente",
-                        "Finalizado",
-                        "Eliminado"
+                        "Realizado"
                     ],
                     plotOptions: {
                         radialBar: {
@@ -603,13 +618,7 @@ export default {
                             }
                         }
                     ],
-                    colors: [
-                        "#7961F9",
-                        "#FF9F43",
-                        "#EA5455",
-                        "#1fcd39",
-                        "#000000"
-                    ],
+                    colors: ["#7961F9", "#FF9F43", "#EA5455", "#1fcd39"],
                     fill: {
                         type: "gradient",
                         gradient: {
@@ -621,8 +630,7 @@ export default {
                                 "#9c8cfc",
                                 "#FFC085",
                                 "#f29292",
-                                "#1fcd39",
-                                "#000000"
+                                "#1fcd39"
                             ],
                             inverseColors: false,
                             opacityFrom: 1,
@@ -1217,7 +1225,8 @@ export default {
                     codManDic: parseInt(this.codManDic),
                     desFrecuencia: this.desFrecuencia,
                     id_anio: this.seleccionAnio.id,
-                    id_tmantencion: this.seleccionTMantencion.id
+                    id_tmantencion: this.seleccionTMantencion.id,
+                    idEstadoManI: this.seleccionEstadoMIndustrial.id
                 };
                 axios
                     .post(
@@ -1263,6 +1272,18 @@ export default {
                 })
                 .then(res => {
                     this.listadoEdificios = res.data;
+                });
+        },
+        cargarEstadoMIndustrial() {
+            axios
+                .get(this.localVal + "/api/Agente/GetEstadoMIndustrial", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoEstadoMIndustrial = res.data;
                 });
         },
         cargarTMantencion() {
@@ -1352,7 +1373,7 @@ export default {
         cargaSO() {
             try {
                 axios
-                    .get(this.localVal + "/api/Agente/TraerKPITickets", {
+                    .get(this.localVal + "/api/Agente/TraerKPIMProgramada", {
                         headers: {
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")
@@ -1371,21 +1392,24 @@ export default {
                         let objcolor = {};
                         let gradcolors = [];
                         let objgragcolor = {};
-                        list.forEach((value, index) => {
-                            obj = {};
-                            obj = parseInt(value.porcentaje);
-                            objData = {};
-                            objData = value.orderType;
-                            label.push(objData);
-                            objcolor = {};
-                            objcolor = value.codcolor;
-                            codcolors.push(objcolor);
-                            objgragcolor = {};
-                            objgragcolor = value.codcolor;
-                            gradcolors.push(objgragcolor);
-                            contador = contador + value.counts;
-                            b.push(obj);
-                        });
+                        if (list.length > 0) {
+                            list.forEach((value, index) => {
+                                obj = {};
+                                obj = parseInt(value.porcentaje);
+                                objData = {};
+                                objData = value.orderType;
+                                label.push(objData);
+                                objcolor = {};
+                                objcolor = value.codcolor;
+                                codcolors.push(objcolor);
+                                objgragcolor = {};
+                                objgragcolor = value.codcolor;
+                                gradcolors.push(objgragcolor);
+                                contador = contador + value.counts;
+                                b.push(obj);
+                            });
+                        }
+
                         this.productOrdersRadialBar = {
                             chartOptions: {
                                 labels: label,
@@ -1489,6 +1513,7 @@ export default {
         this.cargarEdificios();
         this.cargarTMantencion();
         this.cargaSO();
+        this.cargarEstadoMIndustrial();
     }
 };
 </script>
