@@ -134,7 +134,7 @@ class MantencionProgramadasController extends Controller
 
     public function getTicketsKPI(){
         try {
-            $get_all = mantencionProgramadas::select('estado_cod_m_industriales.descripcion_estadoI as orderType',
+            $get_all = estadoMantenciones::select('estado_cod_m_industriales.descripcion_estadoI as orderType',
             DB::raw("(CASE WHEN estado_mantenciones.idEstadoManI = 1 THEN COUNT(estado_mantenciones.idEstadoManI)
                           WHEN estado_mantenciones.idEstadoManI = 2 THEN COUNT(estado_mantenciones.idEstadoManI)
                           WHEN estado_mantenciones.idEstadoManI = 3 THEN COUNT(estado_mantenciones.idEstadoManI)
@@ -160,12 +160,7 @@ class MantencionProgramadasController extends Controller
             WHEN estado_mantenciones.idEstadoManI = 3 THEN COALESCE(ROUND(((SELECT COUNT(idEstadoManI) FROM estado_mantenciones WHERE idEstadoManI = 3)*100)/(SELECT COUNT(idEstadoManI) FROM estado_mantenciones),1),0)
             WHEN estado_mantenciones.idEstadoManI = 4 THEN ROUND(((SELECT COUNT(idEstadoManI) FROM estado_mantenciones WHERE idEstadoManI = 4)*100)/(SELECT COUNT(idEstadoManI) FROM estado_mantenciones),1)
             END) AS porcentaje"))
-            ->join('estado_mantenciones','mantencion_programadas.id_tmantencion', '=', 'estado_mantenciones.id')
             ->join('estado_cod_m_industriales','estado_mantenciones.idEstadoManI','=','estado_cod_m_industriales.id')
-            ->where('estado_cod_m_industriales.id','=','1')
-            ->orWhere('estado_cod_m_industriales.id','=','2')
-            ->orWhere('estado_cod_m_industriales.id','=','3')
-            ->orWhere('estado_cod_m_industriales.id','=','4')
             ->groupby('estado_cod_m_industriales.id')
             ->get();
             //log::info($get_all);
