@@ -586,6 +586,299 @@
                       height: 2em;
                         width: 90%;
                     }
+
+                    
+table {
+  max-width: 100%;
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  line-height: 20px;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid #dddddd;
+}
+
+.table th {
+  font-weight: bold;
+}
+
+.table thead th {
+  vertical-align: bottom;
+}
+
+.table caption + thead tr:first-child th,
+.table caption + thead tr:first-child td,
+.table colgroup + thead tr:first-child th,
+.table colgroup + thead tr:first-child td,
+.table thead:first-child tr:first-child th,
+.table thead:first-child tr:first-child td {
+  border-top: 0;
+}
+
+.table tbody + tbody {
+  border-top: 2px solid #dddddd;
+}
+
+.table .table {
+  background-color: #ffffff;
+}
+
+.table-condensed th,
+.table-condensed td {
+  padding: 4px 5px;
+}
+
+.table-bordered {
+  border: 1px solid #dddddd;
+  border-collapse: separate;
+  *border-collapse: collapse;
+  border-left: 0;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border-left: 1px solid #dddddd;
+}
+
+.table-bordered caption + thead tr:first-child th,
+.table-bordered caption + tbody tr:first-child th,
+.table-bordered caption + tbody tr:first-child td,
+.table-bordered colgroup + thead tr:first-child th,
+.table-bordered colgroup + tbody tr:first-child th,
+.table-bordered colgroup + tbody tr:first-child td,
+.table-bordered thead:first-child tr:first-child th,
+.table-bordered tbody:first-child tr:first-child th,
+.table-bordered tbody:first-child tr:first-child td {
+  border-top: 0;
+}
+
+.table-bordered thead:first-child tr:first-child > th:first-child,
+.table-bordered tbody:first-child tr:first-child > td:first-child,
+.table-bordered tbody:first-child tr:first-child > th:first-child {
+  -webkit-border-top-left-radius: 4px;
+          border-top-left-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+}
+
+.table-bordered thead:first-child tr:first-child > th:last-child,
+.table-bordered tbody:first-child tr:first-child > td:last-child,
+.table-bordered tbody:first-child tr:first-child > th:last-child {
+  -webkit-border-top-right-radius: 4px;
+          border-top-right-radius: 4px;
+  -moz-border-radius-topright: 4px;
+}
+
+.table-bordered thead:last-child tr:last-child > th:first-child,
+.table-bordered tbody:last-child tr:last-child > td:first-child,
+.table-bordered tbody:last-child tr:last-child > th:first-child,
+.table-bordered tfoot:last-child tr:last-child > td:first-child,
+.table-bordered tfoot:last-child tr:last-child > th:first-child {
+  -webkit-border-bottom-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+}
+
+.table-bordered thead:last-child tr:last-child > th:last-child,
+.table-bordered tbody:last-child tr:last-child > td:last-child,
+.table-bordered tbody:last-child tr:last-child > th:last-child,
+.table-bordered tfoot:last-child tr:last-child > td:last-child,
+.table-bordered tfoot:last-child tr:last-child > th:last-child {
+  -webkit-border-bottom-right-radius: 4px;
+          border-bottom-right-radius: 4px;
+  -moz-border-radius-bottomright: 4px;
+}
+
+.table-bordered tfoot + tbody:last-child tr:last-child td:first-child {
+  -webkit-border-bottom-left-radius: 0;
+          border-bottom-left-radius: 0;
+  -moz-border-radius-bottomleft: 0;
+}
+
+.table-bordered tfoot + tbody:last-child tr:last-child td:last-child {
+  -webkit-border-bottom-right-radius: 0;
+          border-bottom-right-radius: 0;
+  -moz-border-radius-bottomright: 0;
+}
+
+.table-bordered caption + thead tr:first-child th:first-child,
+.table-bordered caption + tbody tr:first-child td:first-child,
+.table-bordered colgroup + thead tr:first-child th:first-child,
+.table-bordered colgroup + tbody tr:first-child td:first-child {
+  -webkit-border-top-left-radius: 4px;
+          border-top-left-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+}
+
+.table-bordered caption + thead tr:first-child th:last-child,
+.table-bordered caption + tbody tr:first-child td:last-child,
+.table-bordered colgroup + thead tr:first-child th:last-child,
+.table-bordered colgroup + tbody tr:first-child td:last-child {
+  -webkit-border-top-right-radius: 4px;
+          border-top-right-radius: 4px;
+  -moz-border-radius-topright: 4px;
+}
+
+.table-striped tbody > tr:nth-child(odd) > td,
+.table-striped tbody > tr:nth-child(odd) > th {
+  background-color: #f9f9f9;
+}
+
+.table-hover tbody tr:hover > td,
+.table-hover tbody tr:hover > th {
+  background-color: #f5f5f5;
+}
+
+table td[class*="span"],
+table th[class*="span"],
+.row-fluid table td[class*="span"],
+.row-fluid table th[class*="span"] {
+  display: table-cell;
+  float: none;
+  margin-left: 0;
+}
+
+.table td.span1,
+.table th.span1 {
+  float: none;
+  width: 44px;
+  margin-left: 0;
+}
+
+.table td.span2,
+.table th.span2 {
+  float: none;
+  width: 124px;
+  margin-left: 0;
+}
+
+.table td.span3,
+.table th.span3 {
+  float: none;
+  width: 204px;
+  margin-left: 0;
+}
+
+.table td.span4,
+.table th.span4 {
+  float: none;
+  width: 284px;
+  margin-left: 0;
+}
+
+.table td.span5,
+.table th.span5 {
+  float: none;
+  width: 364px;
+  margin-left: 0;
+}
+
+.table td.span6,
+.table th.span6 {
+  float: none;
+  width: 444px;
+  margin-left: 0;
+}
+
+.table td.span7,
+.table th.span7 {
+  float: none;
+  width: 524px;
+  margin-left: 0;
+}
+
+.table td.span8,
+.table th.span8 {
+  float: none;
+  width: 604px;
+  margin-left: 0;
+}
+
+.table td.span9,
+.table th.span9 {
+  float: none;
+  width: 684px;
+  margin-left: 0;
+}
+
+.table td.span10,
+.table th.span10 {
+  float: none;
+  width: 764px;
+  margin-left: 0;
+}
+
+.table td.span11,
+.table th.span11 {
+  float: none;
+  width: 844px;
+  margin-left: 0;
+}
+
+.table td.span12,
+.table th.span12 {
+  float: none;
+  width: 924px;
+  margin-left: 0;
+}
+
+.table tbody tr.success > td {
+  background-color: #dff0d8;
+}
+
+.table tbody tr.error > td {
+  background-color: #f2dede;
+}
+
+.table tbody tr.warning > td {
+  background-color: #fcf8e3;
+}
+
+.table tbody tr.info > td {
+  background-color: #d9edf7;
+}
+
+.table-hover tbody tr.success:hover > td {
+  background-color: #d0e9c6;
+}
+
+.table-hover tbody tr.error:hover > td {
+  background-color: #ebcccc;
+}
+
+.table-hover tbody tr.warning:hover > td {
+  background-color: #faf2cc;
+}
+
+.table-hover tbody tr.info:hover > td {
+  background-color: #c4e3f3;
+}
+table.table-bordered{
+    border:1px dark;
+    margin-top:20px;
+  }
+
+  table.table-bordered > thead > tr > th{
+    border:1px dark;
+}
+table.table-bordered > tbody > tr > td{
+    border:1px dark;
+}
+
+
         </style>
 
     </head>
@@ -602,102 +895,75 @@
             
             </div>
             <div class="row">
-              <div class="col-xs-2"><label>N°OT</label></div>
-              <div class="col-xs-2"><small>{{$idSolicitud}}</small></div>
-              <div class="col-xs-1"></div>
-              <div class="col-xs-2"><label>Fecha Solicitud</label> </div>
-              <div class="col-xs-2"><small>{{$fechaS}}</small></div>
-              <div class="col-xs-1"></div>
+              <table class="table table-bordered">
+               <tbody>
+                 <tr>
+                   <td>N°OT</td>
+                   <td>{{$idSolicitud}}</td>
+                 </tr>
+                 <tr>
+                   <td>Fecha Solicitud</td>
+                   <td>{{$fechaS}}</td>
+                 </tr>
+                 <tr>
+                   <td>Fecha Ejecucion OT</td>
+                   <td>{{$fechaI}}</td>
+                 </tr>
+                 <tr>
+                   <td>Estado OT</td>
+                   <td>{{$desEstado}}</td>
+                 </tr>
+                 
+               </tbody>
+              </table>
             </div>
             <div class="row">
-              <div class="col-xs-2"><label>Edificio</label></div>
-              <div class="col-xs-2"><small>{{$desEdificio}}</small></div>
-              <div class="col-xs-1"></div>
-              <div class="col-xs-2"><label>Servicio</label></div>
-              <div class="col-xs-2"><small>{{$desServicio}}</small></div>
-              <div class="col-xs-1"></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-2"><label>Estado</label></div>
-              <div class="col-xs-2"><small>{{$desEstado}}</small></div>
-              <div class="col-xs-1"></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-2"><label>Responsable</label></div>
-              <div class="col-xs-2"><small>{{$nombreTra}}</smail> </div>
-              <div class="col-xs-1"></div>
-              <div class="col-xs-2"><label>Supervisor</label> </div>
-              <div class="col-xs-2"><small>{{$nombreSup}}</small></div>
-              <div class="col-xs-1"></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-2"><label>Apoyo 1</label></div>
-              <div class="col-xs-2"><small>{{$nomApoyo1}} {{$apeApoyo1}} <small></div>
-              <div class="col-xs-1"></div>
-              <div class="col-xs-2"><label>Apoyo 2</label> </div>
-              <div class="col-xs-2"><small>{{$nomApoyo2}} {{$apeApoyo2}}</small></div>
-              <div class="col-xs-1"></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-2"><label>Apoyo 3</label></div>
-              <div class="col-xs-2"><small>{{$nomApoyo3}} {{$apeApoyo3}}</small></div>
-              <div class="col-xs-1"></div>
-              <div class="col-xs-2"><label>Especialidad</label> </div>
-              <div class="col-xs-2"><small>{{$desTipoRep}}</small></div>
-              <div class="col-xs-1"></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-2"><label>Fecha Programada</label></div>
-              <div class="col-xs-2"><small>{{$fechaI}}</small> </div>
-              <div class="col-xs-1"></div>
-              <div class="col-xs-2"><label>Dias Ejecucion</label></div>
-              <div class="col-xs-2"><small>{{$diasEjecucion}}</small></div>
-              <div class="col-xs-1"></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-2"><label>Horas Ejecucion</label></div>
-              <div class="col-xs-2"><small>{{$horasEjecucion}}</small> </div>
-              <div class="col-xs-1"></div>
-              <div class="col-xs-2"><label>Turno</label></div>
-              <div class="col-xs-2"><small>{{$descripcionTurno}}</small></div>
-              <div class="col-xs-1"></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-2"><label>Anexo</label></div>
-              <div class="col-xs-2"><small>{{$anexo}}</small> </div>
-              <div class="col-xs-1"></div>
-              <div class="col-xs-2"><label>Duracion</label></div>
-              <div class="col-xs-2"><small>{{$duracionSolicitudes}}</small></div>
-              <div class="col-xs-1"></div>
-            </div><br>
-            <div class="row">
-              <div class="col-xs-12">
-                <div class="panel panel-primary">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Solicitud realizada por el servicio de {{$desServicio}} - {{$desEdificio}}</h3>
-                  </div>
-                  <br>
-                  <!-- <div class="panel-body" id="descripcion">
-                  </div>  -->
-                  
-                  <?php
+              <table class="table table-bordered ">
+               <tbody>
+                 <tr>
+                   <td>Servicio</td>
+                   <td colspan="1">{{$desServicio}}</td>
+                   <td>Edificio</td>
+                   <td colspan="1">{{$desEdificio}}</td>
+                 </tr>
+                 <tr>
+                 <td >Responsable</td>
+                   <td >{{$nombreTra}}</td>
+                   <td >Supervisor</td>
+                   <td >{{$nombreSup}}</td>
+                 </tr>
+                 <tr>
+                   <td>Apoyo 1</td>
+                   <td colspan="1">{{$nomApoyo1}} {{$apeApoyo1}}</td>
+                   <td>Apoyo 2</td>
+                   <td colspan="1">{{$nomApoyo2}} {{$apeApoyo2}}</td>
+                 </tr>
+                 <tr>
+                   <td>Apoyo 3</td>
+                   <td colspan="1">{{$nomApoyo3}} {{$apeApoyo3}}</td>
+                   <td>Especialidad</td>
+                   <td colspan="1">{{$desTipoRep}}</td>
+                 </tr>
+                 <tr>
+                   <td >Turno</td>
+                   <td colspan="1">{{$descripcionTurno}}</td>
+                   <td >Duracion</td>
+                   <td colspan="1">{{$duracionSolicitudes}}</td>
+                 </tr>
+                 <tr>
+                   <td >Descripcion Falla</td>
+                   <td  colspan="3"><?php
                     echo "<ul>$descripcionPro </ul>";
-                  ?>  
-                </div>
-              </div>
-            </div><br>
-            <div class="row">
-              <div class="col-xs-12">    
-                <div class="panel panel-primary">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Trabajo realizado por la unidad de Mantencion</h3>
-                  </div>
-                  <div class="panel-body">
-                    
-                  </div>
-                </div>
-              </div>
+                  ?></td>
+                 </tr>
+                 <tr>
+                   <td rowspan="3" >Observaciones</td>
+                   <td rowspan="3" colspan="3"></td>
+                 </tr>
+               </tbody>
+              </table>
             </div>
+            
             <br>
             <div class="row">
               <div class="col-xs-1"></div>

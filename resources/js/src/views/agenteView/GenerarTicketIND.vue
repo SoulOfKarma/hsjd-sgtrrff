@@ -223,14 +223,22 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="5. Informacion del problema">
                     <div class="vx-row mb-12">
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-1/2 mt-5">
                             <h6>Turno?</h6>
-                            <h6>
-                                <vs-checkbox v-model="esturno"
-                                    >Marque si es un turno, Sino desmarquelo
-                                </vs-checkbox>
-                            </h6>
-                            <br />
+
+                            <vs-checkbox v-model="esturno"
+                                >Marque si es un turno, Sino desmarquelo
+                            </vs-checkbox>
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>Cilindros?</h6>
+                            <vs-checkbox v-model="escilindro"
+                                >Marque si se hara entrega y recepcion de
+                                Cilindros, Sino desmarquelo
+                            </vs-checkbox>
+                        </div>
+                        <br />
+                        <div class="vx-col w-full mt-5">
                             <h6 v-show="esturno">
                                 Seleccione Categoria del turno
                             </h6>
@@ -242,8 +250,23 @@
                                 label="descripcionTurCal"
                                 :options="listadoTipoCal"
                                 @input="textoTurno(seleccionTurno.id)"
-                            ></v-select
-                            ><br />
+                            ></v-select>
+                            <br />
+                            <h6 v-show="escilindro">
+                                Seleccione Categoria del turno
+                            </h6>
+                            <v-select
+                                v-show="escilindro"
+                                v-model="SeleccionTipoTurnoCal"
+                                placeholder="Seleccione Categoria Turno"
+                                class="w-full select-large"
+                                label="descripcionTurCal"
+                                :options="listadoTipoCal"
+                                @input="textoTurno(seleccionTurno.id)"
+                            ></v-select>
+                        </div>
+                        <br />
+                        <div class="vx-col w-full mt-5">
                             <h6>5.1 - Tipo de Reparacion</h6>
                             <br />
                             <v-select
@@ -256,7 +279,9 @@
                                     arrayTipoReparacion(seleccionReparacion.id)
                                 "
                             ></v-select>
-                            <br />
+                        </div>
+                        <br />
+                        <div class="vx-col w-full mt-5">
                             <h6>5.2 - Estado Ticket</h6>
                             <br />
                             <v-select
@@ -267,7 +292,9 @@
                                 :options="listadoEstado"
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
-                            <br />
+                        </div>
+                        <br />
+                        <div class="vx-col w-full mt-5">
                             <h6>5.3 - Duracion</h6>
                             <br />
                             <v-select
@@ -278,8 +305,9 @@
                                 :options="listadoDuracion"
                                 @input="arrayDuracion(seleccionDuracion.id)"
                             ></v-select>
-                            <br />
-                            <!-- <h6>5.4 - Titulo del problema</h6>
+                        </div>
+                        <br />
+                        <!-- <h6>5.4 - Titulo del problema</h6>
                             <br />
                             <vs-input
                                 placeholder="Ej. Falla de red en equipo x"
@@ -287,6 +315,7 @@
                                 class="w-full"
                             />
                             <br /> -->
+                        <div class="vx-col w-full mt-5">
                             <h6>5.4 - Descripcion del problema</h6>
                             <br />
                             <quill-editor
@@ -1028,6 +1057,7 @@ export default {
             idvalmail: 0
         },
         esturno: false,
+        escilindro: false,
         SeleccionTipoTurnoCal: { id: 1, descripcionTurCal: "Oxigenistas" },
         listadoTipoCal: [
             { id: 1, descripcionTurCal: "Oxigenistas" },
