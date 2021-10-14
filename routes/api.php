@@ -527,6 +527,10 @@ use App\Mail\AutoRespuesta;
 
              //Traer Estados Tickets
              Route::get('/Agente/TraerKPIMProgramada', ['middleware' => 'cors', 'uses' => 'MantencionProgramadasController@getTicketsKPI']);
+
+             //Cilindros
+              //Traer Estados Tickets
+              Route::get('/Agente/GetCilindros', ['middleware' => 'cors', 'uses' => 'CilindrosController@GetCilindros']);
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');

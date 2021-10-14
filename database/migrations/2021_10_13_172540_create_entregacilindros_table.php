@@ -15,9 +15,10 @@ class CreateEntregacilindrosTable extends Migration
     {
         Schema::create('entregacilindros', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('idTicket');
             $table->bigInteger('idCilindro');
-            $table->bigInteger('cantVacio')->nullable();
-            $table->bigInteger('cantLleno')->nullable();
+            $table->bigInteger('cantRecepcion')->nullable();
+            $table->bigInteger('cantEntrega')->nullable();
             $table->timestamps();
         });
     }

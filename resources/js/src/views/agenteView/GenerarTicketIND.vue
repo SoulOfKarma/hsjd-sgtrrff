@@ -253,16 +253,15 @@
                             ></v-select>
                             <br />
                             <h6 v-show="escilindro">
-                                Seleccione Categoria del turno
+                                Seleccione Cilindro
                             </h6>
                             <v-select
                                 v-show="escilindro"
-                                v-model="SeleccionTipoTurnoCal"
-                                placeholder="Seleccione Categoria Turno"
+                                v-model="SeleccionCilindro"
+                                placeholder="Seleccione Cilindro"
                                 class="w-full select-large"
-                                label="descripcionTurCal"
-                                :options="listadoTipoCal"
-                                @input="textoTurno(seleccionTurno.id)"
+                                label="descripcionCilindro"
+                                :options="listadoCilindro"
                             ></v-select>
                         </div>
                         <br />
@@ -1062,7 +1061,12 @@ export default {
         listadoTipoCal: [
             { id: 1, descripcionTurCal: "Oxigenistas" },
             { id: 2, descripcionTurCal: "Calderero" }
-        ]
+        ],
+        SeleccionCilindro: {
+            id: 1,
+            descripcionCilindro: "Oxigeno Medico 0.4m³"
+        },
+        listadoCilindro: []
     }),
     computed: {
         calcularHorasTrabajo() {
@@ -2796,6 +2800,18 @@ export default {
                     this.listadoCargoU = b;
                 });
         },
+        cargarCilindros() {
+            axios
+                .get(this.localVal + "/api/Agente/GetCilindros", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoCilindro = res.data;
+                });
+        },
         filtroSegunEdificioU() {
             if (
                 this.seleccionEdificioU == null ||
@@ -2857,6 +2873,7 @@ export default {
         this.cargarEspecialidad();
         this.cargarCargoUsuarioU();
         this.cargarHoras();
+        this.cargarCilindros();
     },
     async beforeMount() {},
     components: {
