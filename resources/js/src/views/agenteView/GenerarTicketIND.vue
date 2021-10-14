@@ -223,48 +223,6 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="5. Informacion del problema">
                     <div class="vx-row mb-12">
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>Turno?</h6>
-
-                            <vs-checkbox v-model="esturno"
-                                >Marque si es un turno, Sino desmarquelo
-                            </vs-checkbox>
-                        </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>Cilindros?</h6>
-                            <vs-checkbox v-model="escilindro"
-                                >Marque si se hara entrega y recepcion de
-                                Cilindros, Sino desmarquelo
-                            </vs-checkbox>
-                        </div>
-                        <br />
-                        <div class="vx-col w-full mt-5">
-                            <h6 v-show="esturno">
-                                Seleccione Categoria del turno
-                            </h6>
-                            <v-select
-                                v-show="esturno"
-                                v-model="SeleccionTipoTurnoCal"
-                                placeholder="Seleccione Categoria Turno"
-                                class="w-full select-large"
-                                label="descripcionTurCal"
-                                :options="listadoTipoCal"
-                                @input="textoTurno(seleccionTurno.id)"
-                            ></v-select>
-                            <br />
-                            <h6 v-show="escilindro">
-                                Seleccione Cilindro
-                            </h6>
-                            <v-select
-                                v-show="escilindro"
-                                v-model="SeleccionCilindro"
-                                placeholder="Seleccione Cilindro"
-                                class="w-full select-large"
-                                label="descripcionCilindro"
-                                :options="listadoCilindro"
-                            ></v-select>
-                        </div>
-                        <br />
                         <div class="vx-col w-full mt-5">
                             <h6>5.1 - Tipo de Reparacion</h6>
                             <br />
@@ -323,6 +281,118 @@
                             >
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="6. Adicional">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>Turno?</h6>
+
+                            <vs-checkbox v-model="esturno"
+                                >Marque si es un turno, Sino desmarquelo
+                            </vs-checkbox>
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>Cilindros?</h6>
+                            <vs-checkbox v-model="escilindro"
+                                >Marque si se hara entrega y recepcion de
+                                Cilindros, Sino desmarquelo
+                            </vs-checkbox>
+                        </div>
+                        <br />
+                        <div class="vx-col w-full mt-5">
+                            <h6 v-show="esturno">
+                                Seleccione Categoria del turno
+                            </h6>
+                            <v-select
+                                v-show="esturno"
+                                v-model="SeleccionTipoTurnoCal"
+                                placeholder="Seleccione Categoria Turno"
+                                class="w-full select-large"
+                                label="descripcionTurCal"
+                                :options="listadoTipoCal"
+                                @input="textoTurno(seleccionTurno.id)"
+                            ></v-select>
+                        </div>
+                        <br />
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6 v-show="escilindro">
+                                Seleccione Cilindro
+                            </h6>
+                            <v-select
+                                v-show="escilindro"
+                                v-model="SeleccionCilindro"
+                                placeholder="Seleccione Cilindro"
+                                class="w-full select-large"
+                                label="descripcionCilindro"
+                                :options="listadoCilindro"
+                            ></v-select>
+                        </div>
+                        <br />
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6 v-show="escilindro">
+                                Cilindros Recepcionados Vacios
+                            </h6>
+                            <vs-input
+                                v-show="escilindro"
+                                v-model="ncilindrosvacios"
+                                class="w-full"
+                                type="number"
+                            />
+                        </div>
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6 v-show="escilindro">
+                                Cilindros Entregados Llenos
+                            </h6>
+                            <vs-input
+                                v-show="escilindro"
+                                v-model="ncilindrosllenos"
+                                class="w-full"
+                                type="number"
+                            />
+                        </div>
+                        <div class="vx-col w-1/4 mt-5">
+                            <br />
+                            <vs-button
+                                v-show="escilindro"
+                                class="mr-3 mb-2"
+                                color="success"
+                                @click="agregarCilindro"
+                                >Agregar Al Listado</vs-button
+                            >
+                        </div>
+                        <br />
+                        <div class="vx-col w-full mt-5">
+                            <h6 v-show="escilindro">
+                                Listado Cilindros Agregados
+                            </h6>
+                            <br />
+                            <vue-good-table
+                                v-show="escilindro"
+                                :columns="cCilindro"
+                                :rows="listadoTCilindro"
+                            >
+                                <template slot="table-row" slot-scope="props">
+                                    <!-- Column: Name -->
+                                    <span
+                                        v-if="props.column.field === 'fullName'"
+                                        class="text-nowrap"
+                                    ></span
+                                    ><span
+                                        v-else-if="
+                                            props.column.field === 'action'
+                                        "
+                                    >
+                                        <trash-2-icon
+                                            size="1.5x"
+                                            class="custom-class"
+                                            @click="eliminarItem()"
+                                        ></trash-2-icon
+                                    ></span> </template
+                            ></vue-good-table>
                         </div>
                     </div>
                 </vx-card>
@@ -702,6 +772,11 @@ import { quillEditor } from "vue-quill-editor";
 import router from "@/router";
 import { validate, clean, format } from "rut.js";
 import VxCard from "../../components/vx-card/VxCard.vue";
+import { Trash2Icon } from "vue-feather-icons";
+import Vue from "vue";
+import "vue-good-table/dist/vue-good-table.css";
+import VueGoodTablePlugin from "vue-good-table";
+Vue.use(VueGoodTablePlugin);
 
 export default {
     data: () => ({
@@ -1066,7 +1141,37 @@ export default {
             id: 1,
             descripcionCilindro: "Oxigeno Medico 0.4m³"
         },
-        listadoCilindro: []
+        listadoCilindro: [],
+        ncilindrosvacios: 0,
+        ncilindrosllenos: 0,
+        cCilindro: [
+            {
+                label: "Cilindro",
+                field: "descripcionCilindro",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Vacios",
+                field: "ncilindrosvacios",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Llenos",
+                field: "ncilindrosllenos",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Opciones",
+                field: "action"
+            }
+        ],
+        listadoTCilindro: []
     }),
     computed: {
         calcularHorasTrabajo() {
@@ -1119,6 +1224,46 @@ export default {
         }
     },
     methods: {
+        agregarCilindro() {
+            try {
+                if (this.listadoTCilindro.length < 1) {
+                    let obj = {
+                        idCilindro: this.SeleccionCilindro.id,
+                        descripcionCilindro: this.SeleccionCilindro
+                            .descripcionCilindro,
+                        ncilindrosvacios: this.ncilindrosvacios,
+                        ncilindrosllenos: this.ncilindrosllenos
+                    };
+                    let b = [];
+                    b.push(obj);
+                    this.listadoTCilindro = b;
+                } else {
+                    let c = this.listadoTCilindro;
+                    let b = [];
+                    let obj = {
+                        idCilindro: this.SeleccionCilindro.id,
+                        descripcionCilindro: this.SeleccionCilindro
+                            .descripcionCilindro,
+                        ncilindrosvacios: this.ncilindrosvacios,
+                        ncilindrosllenos: this.ncilindrosllenos
+                    };
+                    b.push(obj);
+                    c.forEach((value, index) => {
+                        b.push(value);
+                    });
+                    this.listadoTCilindro = b;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        eliminarItem() {
+            try {
+                console.log("borrando");
+            } catch (error) {
+                console.log(error);
+            }
+        },
         fuseSearch(options, search) {
             const fuse = new Fuse(options, {
                 keys: ["id", "nombre"],
@@ -2878,6 +3023,7 @@ export default {
     async beforeMount() {},
     components: {
         flatPickr,
+        Trash2Icon,
         "v-select": vSelect,
         quillEditor
     }
