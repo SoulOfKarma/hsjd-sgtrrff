@@ -531,6 +531,8 @@ use App\Mail\AutoRespuesta;
              //Cilindros
               //Traer Estados Tickets
               Route::get('/Agente/GetCilindros', ['middleware' => 'cors', 'uses' => 'CilindrosController@GetCilindros']);
+
+              Route::post('/Agente/PostECilindros', ['middleware' => 'cors', 'uses' => 'EntregacilindrosController@PostECilindros']);
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');

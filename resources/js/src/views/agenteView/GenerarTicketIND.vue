@@ -374,23 +374,14 @@
                                 v-show="escilindro"
                                 :columns="cCilindro"
                                 :rows="listadoTCilindro"
+                                @on-row-click="popEliminarCilindro"
                             >
+                                >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
                                     <span
                                         v-if="props.column.field === 'fullName'"
                                         class="text-nowrap"
-                                    ></span
-                                    ><span
-                                        v-else-if="
-                                            props.column.field === 'action'
-                                        "
-                                    >
-                                        <trash-2-icon
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="eliminarItem()"
-                                        ></trash-2-icon
                                     ></span> </template
                             ></vue-good-table>
                         </div>
@@ -417,6 +408,34 @@
                 </div>
             </div>
         </vs-row>
+        <vs-popup
+            classContent="popup-example"
+            title="Desea Eliminar Cilindro del listado?"
+            :active.sync="popEC"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="eliminarCilindro()"
+                            >Eliminar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popEC = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
         <vs-popup
             classContent="popup-example"
             title="Guardar Nuevo Trabajador"
@@ -1165,13 +1184,11 @@ export default {
                 filterOptions: {
                     enabled: true
                 }
-            },
-            {
-                label: "Opciones",
-                field: "action"
             }
         ],
-        listadoTCilindro: []
+        listadoTCilindro: [],
+        popEC: false,
+        parametrosEC: []
     }),
     computed: {
         calcularHorasTrabajo() {
@@ -1257,9 +1274,18 @@ export default {
                 console.log(error);
             }
         },
-        eliminarItem() {
+        popEliminarCilindro(params) {
             try {
-                console.log("borrando");
+                this.popEC = true;
+                this.parametrosEC = params;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        eliminarCilindro() {
+            try {
+                this.listadoTCilindro.splice(this.parametrosEC.pageIndex, 1);
+                this.popEC = false;
             } catch (error) {
                 console.log(error);
             }
@@ -2530,6 +2556,48 @@ export default {
                             })
                         );
                 }
+            } else if (this.escilindro == true) {
+                axios
+                    .all([
+                        axios.post(
+                            this.localVal + "/api/Agente/PostNuevoTicketIND",
+                            ticket,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        ),
+                        axios.post(
+                            this.localVal + "/api/Agente/PostECilindros",
+                            this.listadoTCilindro,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                    ])
+                    .then(
+                        axios.spread((res1, res2) => {
+                            if (res1 == true && res2 == true) {
+                                this.mensajeGuardado();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible crear el ticket o guardar los cilindros, revise los campos e intente nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        })
+                    );
             } else {
                 axios
                     .post(
