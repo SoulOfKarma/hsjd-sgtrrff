@@ -19,7 +19,6 @@ class EntregacilindrosController extends Controller
            $data = $request->all();
 
            $count = count($data);
-           log::info($count);
 
             $i = 0;
             foreach ($request as $key) {
