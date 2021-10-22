@@ -126,6 +126,7 @@ class MantencionProgramadasController extends Controller
        try {
            mantencionProgramadas::where('id',$request->id)
            ->update([$request->codMan => $request->codMantencionNuevo]);
+           return true;
        } catch (\Throwable $th) {
            log::info($th);
            return false;

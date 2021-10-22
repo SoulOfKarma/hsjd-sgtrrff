@@ -996,7 +996,36 @@ export default {
                     codMan: this.codMan,
                     codMantencionNuevo: this.codMantencionNuevo
                 };
-                console.log(obj);
+
+                axios
+                    .post(this.localVal + "/api/Agente/PutCodMantencion", obj, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        let response = res.data;
+                        if (response == true) {
+                            this.$vs.notify({
+                                title: "Correcto",
+                                text: "N° guardado correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popFormAgregarSCod = false;
+                            this.codMantencionNuevo = 0;
+                            this.cargarListadoPorAnio();
+                        } else {
+                            this.$vs.notify({
+                                title: "Error al guardar N° ",
+                                text:
+                                    "Verifique los datos y intente nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
             } catch (error) {
                 console.log(error);
             }
@@ -1039,6 +1068,7 @@ export default {
                             position: "top-right"
                         });
                         this.popGuardarDoc = false;
+                        this.recargaDocumentacion();
                     } else {
                         this.$vs.notify({
                             title: "Error al subir el documento ",
@@ -1049,6 +1079,27 @@ export default {
                         });
                     }
                 });
+        },
+        recargaDocumentacion() {
+            try {
+                let obj = { id: this.idParam };
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/GetDocumentosMIND",
+                        obj,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.Documentos = res.data;
+                    });
+            } catch (error) {
+                console.log(error);
+            }
         },
         cargaColumnas() {
             try {

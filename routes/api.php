@@ -523,6 +523,8 @@ use App\Mail\AutoRespuesta;
 
             Route::get('/Agente/GetEstadoMIndustrial', ['middleware' => 'cors', 'uses' => 'EstadoCodMIndustrialesController@GetEstadoCodMInd']);
 
+            Route::post('/Agente/PutCodMantencion', ['middleware' => 'cors', 'uses' => 'MantencionProgramadasController@PostCodMantencionN']);
+
             //KPI Mantencion Industrial
 
              //Traer Estados Tickets
@@ -571,6 +573,10 @@ use App\Mail\AutoRespuesta;
     Route::get('/Agente/imprimirPorTicketIND/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketIND']);
     //Imprimir CA
     Route::get('/Agente/imprimirPorTicketCA/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketCA']);
+    //Imprimir Acta Cilindros
+    //Imprimir Ticket Industrial
+    Route::get('/Agente/imprimirCilindroIND/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirCilindroIND']);
+
 
 
 

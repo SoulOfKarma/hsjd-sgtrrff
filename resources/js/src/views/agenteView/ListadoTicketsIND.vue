@@ -101,6 +101,13 @@
                             class="custom-class"
                             @click="generarTicket(props.row.id, props.row.uuid)"
                         ></printer-icon>
+                        <file-plus-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="
+                                generarCilindro(props.row.id, props.row.uuid)
+                            "
+                        ></file-plus-icon>
                         <save-icon
                             size="1.5x"
                             class="custom-class"
@@ -370,6 +377,7 @@ import { SaveIcon } from "vue-feather-icons";
 import { FileTextIcon } from "vue-feather-icons";
 import { LoaderIcon } from "vue-feather-icons";
 import { AlertTriangleIcon } from "vue-feather-icons";
+import { FilePlusIcon } from "vue-feather-icons";
 import vSelect from "vue-select";
 import moment from "moment";
 import { PrinterIcon } from "vue-feather-icons";
@@ -393,7 +401,8 @@ export default {
         FileTextIcon,
         LoaderIcon,
         AlertTriangleIcon,
-        PrinterIcon
+        PrinterIcon,
+        FilePlusIcon
     },
     data() {
         return {
@@ -755,6 +764,36 @@ export default {
                         const url =
                             this.localVal +
                             "/api/Agente/imprimirPorTicketIND/" +
+                            id;
+                        window.open(url, "_blank");
+                    }
+                });
+        },
+        generarCilindro(id, uuid) {
+            axios
+                .get(
+                    this.localVal +
+                        `/api/Agente/ValidarTicketAsignadoModIND/${id}`,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(res => {
+                    if (res.data == 1) {
+                        this.$vs.notify({
+                            title: "Ticket no ha sido asignado ",
+                            text:
+                                "Ticket necesita ya estar asignado primero para generar el ticket ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    } else {
+                        const url =
+                            this.localVal +
+                            "/api/Agente/imprimirCilindroIND/" +
                             id;
                         window.open(url, "_blank");
                     }

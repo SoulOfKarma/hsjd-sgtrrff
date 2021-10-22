@@ -6,6 +6,7 @@ use App\GestionSolicitudes;
 use App\GestionTicketEMS;
 use App\GestionTicketsAps;
 use App\GestionTicketsINDs;
+use App\Entregacilindros;
 use App\Trabajadores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -627,5 +628,34 @@ class PdfController extends Controller
         $pdf->setOptions(['isRemoteEnabled' => true]);
 
         return $pdf->stream("TicketCA.pdf", array("Attachment" => 0));
+    }
+
+    public function imprimirCilindroIND($id)
+    {
+        $data = Entregacilindros::select(
+            DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) AS trabajador"),
+            'gestion_tickets_i_n_ds.fechaInicio',
+            'servicios.descripcionServicio',
+            DB::raw("CONCAT(users.nombre,' ',users.apellido) AS usuario"),
+            'users.run',
+            'entregacilindros.idCilindro',
+            'entregacilindros.cantRecepcion',
+            'entregacilindros.cantEntrega',
+            'entregacilindros.idTicket'
+        )
+            ->join('solicitud_ticket_i_n_ds', 'entregacilindros.idTicket', '=', 'solicitud_ticket_i_n_ds.id')
+            ->join('gestion_tickets_i_n_ds', 'entregacilindros.idTicket', '=', 'gestion_tickets_i_n_ds.id_solicitud')
+            ->join('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
+            ->join('servicios', 'solicitud_ticket_i_n_ds.id_servicio', '=', 'servicios.id')
+            ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
+            ->where('entregacilindros.idTicket', $id)
+            ->get();
+
+        $pdf = App::make("dompdf.wrapper");
+        $pdf->loadView('ActCilindros', compact ('data'));
+        $pdf->setOptions(['isJavascriptEnabled' => true]);
+        $pdf->setOptions(['isRemoteEnabled' => true]);
+
+        return $pdf->stream("ActCilindros.pdf", array("Attachment" => 0));
     }
 }
