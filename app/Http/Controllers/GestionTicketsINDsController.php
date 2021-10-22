@@ -137,8 +137,11 @@ class GestionTicketsINDsController extends Controller
             DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP) as desFormat"),
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.fechaInicio IS NULL THEN 'PENDIENTE'
             ELSE DATE_FORMAT(gestion_tickets_i_n_ds.fechaInicio,'%d/%m/%Y') END) AS fechaSolicitud"),
+            DB::raw("(CASE WHEN entregacilindros.idTicket IS NULL THEN 0
+            ELSE entregacilindros.idTicket END) AS idTicketCilindro"),
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.id_trabajador IS NULL THEN 'PENDIENTE'
              ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
+            ->join('entregacilindros','solicitud_ticket_i_n_ds.id','=', 'entregacilindros.idTicket')
             ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions','solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
@@ -156,8 +159,11 @@ class GestionTicketsINDsController extends Controller
             DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP) as desFormat"),
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.fechaInicio IS NULL THEN 'PENDIENTE'
             ELSE DATE_FORMAT(gestion_tickets_i_n_ds.fechaInicio,'%d/%m/%Y') END) AS fechaSolicitud"),
+            DB::raw("(CASE WHEN entregacilindros.idTicket IS NULL THEN 0
+            ELSE entregacilindros.idTicket END) AS idTicketCilindro"),
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.id_trabajador IS NULL THEN 'PENDIENTE'
              ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
+            ->leftjoin('entregacilindros','solicitud_ticket_i_n_ds.id','=', 'entregacilindros.idTicket')
             ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions','solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
