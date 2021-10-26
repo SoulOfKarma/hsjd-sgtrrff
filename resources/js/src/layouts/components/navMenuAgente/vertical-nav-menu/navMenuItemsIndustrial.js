@@ -209,9 +209,9 @@ export default [
         icon: "CalendarIcon"
     },
     {
-        url: "/agenteView/CalendarioGIndustrial",
-        name: "C. Industrial",
-        slug: "CalendarioGIndustrial",
+        url: "/agenteView/CalendarioMIndustrial",
+        name: "C. Industrial Tabla",
+        slug: "CalendarioMIndustrial",
         icon: "CalendarIcon"
     }
 ];

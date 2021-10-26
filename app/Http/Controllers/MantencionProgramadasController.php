@@ -26,13 +26,29 @@ class MantencionProgramadasController extends Controller
 
     public function PostEstadoM(Request $request){
         try {
-            // $flight = Flight::updateOrCreate(
-            //     ['departure' => 'Oakland', 'destination' => 'San Diego'],
-            //     ['price' => 99, 'discounted' => 1]
-            // );
+             $data = estadoMantenciones::where('codMan', $request->CodMantencionN)
+             ->get();
+             $dataCount = count($data);
+
+             if($dataCount > 0){
+                estadoMantenciones::where('codMan', $request->CodMantencionN)
+                ->update(
+                   ['id_mantencionIND' => $request->id, 'codMan' => $request->CodMantencionN,
+                   'idEstadoManI' => $request->idEstado]
+                );
+             }else{
+                $estadoMantenciones = new estadoMantenciones;
+                $estadoMantenciones->id_mantencionIND = $request->id;
+                $estadoMantenciones->codMan = $request->CodMantencionN;
+                $estadoMantenciones->idEstadoManI = $request->idEstado;
+                $estadoMantenciones->save();
+             }
+             
+             
             return true;
         } catch (\Throwable $th) {
             log::info($th);
+            return false;
         }
     }
 
