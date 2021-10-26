@@ -24,6 +24,18 @@ class MantencionProgramadasController extends Controller
         }
     }
 
+    public function PostEstadoM(Request $request){
+        try {
+            // $flight = Flight::updateOrCreate(
+            //     ['departure' => 'Oakland', 'destination' => 'San Diego'],
+            //     ['price' => 99, 'discounted' => 1]
+            // );
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+        }
+    }
+
     public function PostCalMantencionI(Request $request){
         try {
             $codManEne = $request->codManEne;

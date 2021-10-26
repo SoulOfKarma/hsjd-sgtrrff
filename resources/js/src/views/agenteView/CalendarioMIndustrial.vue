@@ -330,6 +330,27 @@
         >
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <div class="vx-row">
+                    <div class="vx-col w-1/2">
+                        <h6>Estado Mantencion</h6>
+                        <v-select
+                            v-model="seleccionEstadoMIndustrial"
+                            placeholder="No Asignado"
+                            class="w-full select-large"
+                            label="descripcion_estadoI"
+                            :options="listadoEstadoMIndustrial"
+                        ></v-select>
+                        <br />
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <h6>Estado Mantencion</h6>
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full select-large"
+                            @click="guardarEstadoM()"
+                            >Guardar Estado</vs-button
+                        >
+                    </div>
                     <div class="vx-col w-full mt-5">
                         <vs-input
                             type="file"
@@ -669,6 +690,8 @@ export default {
                         this.descripcionDoc =
                             "Datos Documentacion N°" + params.row.codManEne;
                         this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManEne";
                         this.idParam = params.row.codManEne;
                         let obj = { id: params.row.codManEne };
                         axios
@@ -696,6 +719,8 @@ export default {
                         this.descripcionDoc =
                             "Datos Documentacion N°" + params.row.codManFeb;
                         this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManFeb";
                         this.idParam = params.row.codManFeb;
                         let obj = { id: params.row.codManFeb };
                         axios
@@ -723,6 +748,8 @@ export default {
                         this.descripcionDoc =
                             "Datos Documentacion N°" + params.row.codManMar;
                         this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManMar";
                         this.idParam = params.row.codManMar;
                         let obj = { id: params.row.codManMar };
                         axios
@@ -750,6 +777,8 @@ export default {
                         this.descripcionDoc =
                             "Datos Documentacion N°" + params.row.codManAbr;
                         this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManAbr";
                         this.idParam = params.row.codManAbr;
                         let obj = { id: params.row.codManAbr };
                         axios
@@ -777,6 +806,8 @@ export default {
                         this.descripcionDoc =
                             "Datos Documentacion N°" + params.row.codManMay;
                         this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManMay";
                         this.idParam = params.row.codManMay;
                         let obj = { id: params.row.codManMay };
                         axios
@@ -804,6 +835,8 @@ export default {
                         this.descripcionDoc =
                             "Datos Documentacion N°" + params.row.codManJun;
                         this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManJun";
                         this.idParam = params.row.codManJun;
                         let obj = { id: params.row.codManJun };
                         axios
@@ -831,6 +864,8 @@ export default {
                         this.descripcionDoc =
                             "Datos Documentacion N°" + params.row.codManJul;
                         this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManJul";
                         this.idParam = params.row.codManJul;
                         let obj = { id: params.row.codManJul };
                         axios
@@ -858,6 +893,8 @@ export default {
                         this.descripcionDoc =
                             "Datos Documentacion N°" + params.row.codManAgo;
                         this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManAgo";
                         this.idParam = params.row.codManAgo;
                         let obj = { id: params.row.codManAgo };
                         axios
@@ -885,6 +922,8 @@ export default {
                         this.descripcionDoc =
                             "Datos Documentacion N°" + params.row.codManSep;
                         this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManSep";
                         this.idParam = params.row.codManSep;
                         let obj = { id: params.row.codManSep };
                         axios
@@ -912,6 +951,8 @@ export default {
                         this.descripcionDoc =
                             "Datos Documentacion N°" + params.row.codManOct;
                         this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManOct";
                         this.idParam = params.row.codManOct;
                         let obj = { id: params.row.codManOct };
                         axios
@@ -939,6 +980,8 @@ export default {
                         this.descripcionDoc =
                             "Datos Documentacion N°" + params.row.codManNov;
                         this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManNov";
                         this.idParam = params.row.codManNov;
                         let obj = { id: params.row.codManNov };
                         axios
@@ -966,6 +1009,8 @@ export default {
                         this.descripcionDoc =
                             "Datos Documentacion N°" + params.row.codManDic;
                         this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManDic";
                         this.idParam = params.row.codManDic;
                         let obj = { id: params.row.codManDic };
                         axios
@@ -985,6 +1030,30 @@ export default {
                             });
                     }
                 }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        guardarEstadoM() {
+            try {
+                let obj = {
+                    id: this.idRowModificar,
+                    codMan: this.codMan,
+                    CodMantencionN: this.idParam,
+                    idEstado: this.seleccionEstadoMIndustrial.id
+                };
+                console.log(obj);
+                axios
+                    .post(this.localVal + "/api/Agente/PostEstadoM", obj, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        let dato = res.data;
+                        console.log(dato);
+                    });
             } catch (error) {
                 console.log(error);
             }
