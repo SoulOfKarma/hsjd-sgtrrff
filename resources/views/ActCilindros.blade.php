@@ -1146,28 +1146,33 @@ table.table-bordered > tbody > tr > td{
                </tbody>
               </table>
             </div>
-            
-            <br>
             <div class="row">
               <div class="col-xs-1"></div>
-              <div class="col-xs-5" id="centrarFirmas"><h5><label id="hoverL">Nombre de quien retira:</label></h5></div>
+              <div class="col-xs-5" id="centrarFirmas"><h5><label id="hoverL">Nombre de quien Solicita:</label></h5></div>
               <div class="col-xs-5" id="centrarFirmas"><h5><u><label id="hoverL">{{$usuario}}</label></u></h5><br>
               </div>
               <div class="col-xs-1"></div>
             </div><br>
             <div class="row">
               <div class="col-xs-1"></div>
-              <div class="col-xs-5" id="centrarFirmas">
-              <h5><label id="hoverL" >Rut:</label></h5></div>
-              <div class="col-xs-5" id="centrarFirmas"><h5><u><label id="hoverL">{{$run}}</label></u></h5> <br>
+              <div class="col-xs-5" id="centrarFirmas"><h5><label id="hoverL">Nombre Quien Retira</label></h5></div>
+              <div class="col-xs-5" id="centrarFirmas"><label id="hoverL">_____________________</label><br>
               </div>
               <div class="col-xs-1"></div>
-              
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-xs-1"></div>
+              <div class="col-xs-5" id="centrarFirmas">
+              <h5><label id="hoverL" >Firma quien retira:</label></h5></div>
+              <div class="col-xs-5" id="centrarFirmas"><label id="hoverL">_____________________</label><br>
+              </div>
+              <div class="col-xs-1"></div>
             </div><br>
             <div class="row">
               <div class="col-xs-1"></div>
               <div class="col-xs-5" id="centrarFirmas"><h5><label id="hoverL">Servicio:</label></h5></div>
-              <div class="col-xs-5" id="centrarFirmas"><h5><u><label id="hoverL">{{$descripcionServicio}}</label></u></h5> <br>
+              <div class="col-xs-5" id="centrarFirmas"><label id="hoverL">_____________________</label><br>
               </div>
               <div class="col-xs-1"></div>
               

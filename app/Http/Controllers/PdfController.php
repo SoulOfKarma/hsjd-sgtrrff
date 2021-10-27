@@ -595,6 +595,7 @@ class PdfController extends Controller
         $turno = $data->descripcionTurno;
         $anexo = $data->anexo;
         $duracionSolicitudes = $data->descripcion_duracion;
+        $descripcionTraRealizado = $data->descripcionTraRealizado;
 
         $data = [
             'nombreTra' =>  $nombreTra,
@@ -616,6 +617,7 @@ class PdfController extends Controller
             'nomApoyo3' => $nom3,
             'apeApoyo3' => $ape3,
             'descripcionPro' => $descripcionPro,
+            'descripcionTraRealizado' => $descripcionTraRealizado,
             'nombreUsuario' => $nombreUsuario,
             'descripcionTurno' =>$turno,
             'anexo' => $anexo,

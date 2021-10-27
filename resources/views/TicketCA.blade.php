@@ -692,9 +692,13 @@
                   <div class="panel-heading">
                     <h3 class="panel-title">Trabajo realizado por la unidad de Mantencion</h3>
                   </div>
-                  <div class="panel-body">
+                  <br>
+                  <!-- <div class="panel-body">
                     
-                  </div>
+                  </div> -->
+                  <?php
+                    echo "<ul>$descripcionTraRealizado </ul>";
+                  ?> 
                 </div>
               </div>
             </div>

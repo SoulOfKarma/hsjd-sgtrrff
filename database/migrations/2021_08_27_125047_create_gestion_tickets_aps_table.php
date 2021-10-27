@@ -24,6 +24,7 @@ class CreateGestionTicketsApsTable extends Migration
             $table->bigInteger('idApoyo3');
             $table->bigInteger('idTurno');
             $table->bigInteger('idDuracion')->nullable();
+            $table->string('descripcionTraRealizado')->nullable();
             $table->time('horaInicio');
             $table->time('horaCambiada')->nullable();
             $table->time('horaTermino')->nullable();

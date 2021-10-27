@@ -119,12 +119,12 @@
         >
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <div class="vx-row">
-                    <div class="vx-col w-1/2">
+                    <div class="vx-col w-full">
                         <h6>Seleccione el Edificio</h6>
                         <v-select
                             v-model="seleccionEdificio"
                             placeholder="Edificio"
-                            class="w-full select-large"
+                            class="w-full mb-base"
                             label="descripcionEdificio"
                             :options="listadoEdificios"
                         ></v-select>
@@ -137,100 +137,8 @@
                         />
                     </div>
                     <div class="vx-col w-1/2 mb-base">
-                        <h6>Codigo Enero</h6>
-                        <vs-input
-                            v-model="codManEne"
-                            class="w-full"
-                            type="number"
-                        />
-                    </div>
-                    <div class="vx-col w-1/2 mb-base">
-                        <h6>Codigo Febrero</h6>
-                        <vs-input
-                            v-model="codManFeb"
-                            class="w-full"
-                            type="number"
-                        />
-                    </div>
-                    <div class="vx-col w-1/2 mb-base">
-                        <h6>Codigo Marzo</h6>
-                        <vs-input
-                            v-model="codManMar"
-                            class="w-full"
-                            type="number"
-                        />
-                    </div>
-                    <div class="vx-col w-1/2 mb-base">
-                        <h6>Codigo Abril</h6>
-                        <vs-input
-                            v-model="codManAbr"
-                            class="w-full"
-                            type="number"
-                        />
-                    </div>
-                    <div class="vx-col w-1/2 mb-base">
-                        <h6>Codigo Mayo</h6>
-                        <vs-input
-                            v-model="codManMay"
-                            class="w-full"
-                            type="number"
-                        />
-                    </div>
-                    <div class="vx-col w-1/2 mb-base">
-                        <h6>Codigo Junio</h6>
-                        <vs-input
-                            v-model="codManJun"
-                            class="w-full"
-                            type="number"
-                        />
-                    </div>
-                    <div class="vx-col w-1/2 mb-base">
-                        <h6>Codigo Julio</h6>
-                        <vs-input
-                            v-model="codManJul"
-                            class="w-full"
-                            type="number"
-                        />
-                    </div>
-                    <div class="vx-col w-1/2 mb-base">
-                        <h6>Codigo Agosto</h6>
-                        <vs-input
-                            v-model="codManAgo"
-                            class="w-full"
-                            type="number"
-                        />
-                    </div>
-                    <div class="vx-col w-1/2 mb-base">
-                        <h6>Codigo Septiembre</h6>
-                        <vs-input
-                            v-model="codManSep"
-                            class="w-full"
-                            type="number"
-                        />
-                    </div>
-                    <div class="vx-col w-1/2 mb-base">
-                        <h6>Codigo Octubre</h6>
-                        <vs-input
-                            v-model="codManOct"
-                            class="w-full"
-                            type="number"
-                        />
-                    </div>
-                    <div class="vx-col w-1/2 mb-base">
-                        <h6>Codigo Noviembre</h6>
-                        <vs-input
-                            v-model="codManNov"
-                            class="w-full"
-                            type="number"
-                        />
-                    </div>
-                    <div class="vx-col w-1/2 mb-base">
-                        <h6>Codigo Diciembre</h6>
-                        <vs-input
-                            v-model="codManDic"
-                            class="w-full"
-                            type="number"
-                        />
+                        <h6>Proveedor</h6>
+                        <vs-input v-model="desProveedor" class="w-full" />
                     </div>
                     <div class="vx-col w-1/2 mb-base">
                         <h6>Frecuencia</h6>
@@ -565,6 +473,7 @@ export default {
             codManDic: 0,
             anio: 0,
             desFrecuencia: "",
+            desProveedor: "",
             descripcionDoc: "",
             codMantencionNuevo: 0,
             codMan: "",
@@ -1042,7 +951,6 @@ export default {
                     CodMantencionN: this.idParam,
                     idEstado: this.seleccionEstadoMIndustrial.id
                 };
-                console.log(obj);
                 axios
                     .post(this.localVal + "/api/Agente/PostEstadoM", obj, {
                         headers: {
@@ -1051,8 +959,22 @@ export default {
                         }
                     })
                     .then(res => {
-                        let dato = res.data;
-                        console.log(dato);
+                        if (res.data == true) {
+                            this.$vs.notify({
+                                title: "Correcto",
+                                text: "Estado Cambiado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.cargaSO();
+                        } else {
+                            this.$vs.notify({
+                                title: "Error ",
+                                text: "No se pudo actualizar el estado",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
                     });
             } catch (error) {
                 console.log(error);
@@ -1187,6 +1109,13 @@ export default {
                     {
                         label: "Equipo",
                         field: "descripcion_mantencion",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Proveedor",
+                        field: "descripcion_proveedor",
                         filterOptions: {
                             enabled: true
                         }
@@ -1331,6 +1260,7 @@ export default {
                 let obj = {
                     id_edificio: this.seleccionEdificio.id,
                     descripcion_mantencion: this.descripcion_mantencion,
+                    descripcion_proveedor: this.desProveedor,
                     codManEne: parseInt(this.codManEne),
                     codManFeb: parseInt(this.codManFeb),
                     codManMar: parseInt(this.codManMar),
@@ -1368,6 +1298,7 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.popFormMantencionInd = false;
                         } else {
                             this.$vs.notify({
                                 time: 3000,
@@ -1475,6 +1406,8 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.popFormCalAnio = false;
+                            this.cargarAnios();
                         } else {
                             this.$vs.notify({
                                 time: 3000,

@@ -317,12 +317,6 @@ export default [
         icon: "CalendarIcon"
     },
     {
-        url: "/agenteView/CalendarioGIndustrial",
-        name: "C. Industrial",
-        slug: "CalendarioGIndustrial",
-        icon: "CalendarIcon"
-    },
-    {
         url: "/agenteView/CalendarioMIndustrial",
         name: "C. Industrial Tabla",
         slug: "CalendarioMIndustrial",

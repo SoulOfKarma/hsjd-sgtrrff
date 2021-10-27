@@ -17,6 +17,7 @@ class CreateMantencionProgramadasTable extends Migration
             $table->id();
             $table->bigInteger('id_edificio');
             $table->string('descripcion_mantencion');
+            $table->string('descripcion_proveedor')->nullable();
             $table->bigInteger('codManEne')->nullable();
             $table->bigInteger('codManFeb')->nullable();
             $table->bigInteger('codManMar')->nullable();

@@ -273,6 +273,17 @@
                                 v-model="gestionTicket.descripcionP"
                                 :options="editorOption"
                             >
+                                <div
+                                    id="toolbar"
+                                    slot="toolbar"
+                                ></div> </quill-editor
+                            ><br />
+                            <h6>5.5 - Descripcion Trabajo Realizado</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.descripcionTraRealizado"
+                                :options="editorOption"
+                            >
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
                         </div>
@@ -853,6 +864,7 @@ export default {
             diasEjecucion: 0,
             tituloP: ".",
             descripcionP: "",
+            descripcionTraRealizado: "",
             id_categoria: 0,
             descripcionCorreo: "",
             nombre: "",
