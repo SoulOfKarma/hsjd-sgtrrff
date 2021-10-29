@@ -391,11 +391,7 @@
                 <div class="vx-row">
                     <div class="vx-col w-full">
                         <h6>Ingrese N° Mantencion</h6>
-                        <vs-input
-                            v-model="codMantencionNuevo"
-                            class="w-full"
-                            type="number"
-                        />
+                        <vs-input v-model="codMantencionNuevo" class="w-full" />
                     </div>
                     <div class="vx-col w-1/2">
                         <vs-button
@@ -621,19 +617,19 @@ export default {
                 descripcion_estadoI: "Seleccione Estado Mantencion"
             },
             codManEspecificoMod: "",
-            codManModificar: 0,
-            codManEne: 0,
-            codManFeb: 0,
-            codManMar: 0,
-            codManAbr: 0,
-            codManMay: 0,
-            codManJun: 0,
-            codManJul: 0,
-            codManAgo: 0,
-            codManSep: 0,
-            codManOct: 0,
-            codManNov: 0,
-            codManDic: 0,
+            codManModificar: "",
+            codManEne: "",
+            codManFeb: "",
+            codManMar: "",
+            codManAbr: "",
+            codManMay: "",
+            codManJun: "",
+            codManJul: "",
+            codManAgo: "",
+            codManSep: "",
+            codManOct: "",
+            codManNov: "",
+            codManDic: "",
             idTablaMod: 0,
             idDocDel: 0,
             anio: 0,
