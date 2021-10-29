@@ -62,7 +62,13 @@
                     </span>
 
                     <!-- Column: Action -->
-
+                    <span v-else-if="props.column.field === 'action'">
+                        <plus-circle-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="modificarCodigo(props.row.id)"
+                        ></plus-circle-icon>
+                    </span>
                     <!-- Column: Common -->
                     <span v-else>
                         {{ props.formattedRow[props.column.field] }}
@@ -294,6 +300,11 @@
                                         )
                                     "
                                 ></plus-circle-icon>
+                                <trash-2-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="popEliminarDoc(props.row.id)"
+                                ></trash-2-icon>
                             </span>
                             <!-- Column: Common -->
                             <span v-else>
@@ -313,6 +324,51 @@
                         <vs-button
                             class="w-full m-2"
                             @click="popFormDoc = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Modificar Codigo"
+            :active.sync="popFormModCod"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <vue-good-table
+                        class="w-full m-2"
+                        :columns="columnasMod"
+                        @on-cell-click="RowMantencionMod"
+                        :rows="ListaModificar"
+                        :pagination-options="{
+                            enabled: true,
+                            perPage: 10
+                        }"
+                    >
+                        <template slot="table-row" slot-scope="props">
+                            <!-- Column: Name -->
+                            <span
+                                v-if="props.column.field === 'fullName'"
+                                class="text-nowrap"
+                            >
+                            </span>
+
+                            <!-- Column: Action -->
+
+                            <!-- Column: Common -->
+                            <span v-else>
+                                {{ props.formattedRow[props.column.field] }}
+                            </span>
+                        </template></vue-good-table
+                    >
+                    <div class="vx-col w-full">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popFormModCod = false"
                             color="primary"
                             type="filled"
                             >Volver</vs-button
@@ -357,6 +413,43 @@
                 </div>
             </div>
         </vs-popup>
+
+        <vs-popup
+            classContent="popup-example"
+            title="Modificar Codigo Mantencion"
+            :active.sync="popCodModN"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-full">
+                        <h6>Ingrese codigo a Cambiar</h6>
+                        <vs-input
+                            v-model="codManModificar"
+                            class="w-full"
+                            type="number"
+                        />
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="modificarCodMantencion()"
+                            >Modificar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="volverModCod()"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 <script>
@@ -368,6 +461,7 @@ import axios from "axios";
 import Vue from "vue";
 import "vue-good-table/dist/vue-good-table.css";
 import { PlusCircleIcon } from "vue-feather-icons";
+import { Trash2Icon } from "vue-feather-icons";
 import VueGoodTablePlugin from "vue-good-table";
 import VueApexCharts from "vue-apexcharts";
 import StatisticsCardLine from "@/components/statistics-cards/StatisticsCardLine.vue";
@@ -381,6 +475,7 @@ export default {
         flatPickr,
         "v-select": vSelect,
         PlusCircleIcon,
+        Trash2Icon,
         VxTimeline,
         VueApexCharts,
         StatisticsCardLine,
@@ -429,8 +524,10 @@ export default {
                 }
             ],
             Documentos: [],
+            ListaModificar: [],
             mantenciones: [],
             columns: [],
+            columnasMod: [],
             seleccionFechaMantencion: {
                 id: 0,
                 anio: 0
@@ -444,8 +541,10 @@ export default {
                 descripcionTMantencion: "Correctiva"
             },
             nombreTitulo: "",
+            popCodModN: false,
             popFormMantencionInd: false,
             popFormCalAnio: false,
+            popFormModCod: false,
             descripcion_mantencion: "",
             listadoEdificios: [],
             listadoAnios: [],
@@ -459,6 +558,8 @@ export default {
                 id: 0,
                 descripcion_estadoI: "Seleccione Estado Mantencion"
             },
+            codManEspecificoMod: "",
+            codManModificar: 0,
             codManEne: 0,
             codManFeb: 0,
             codManMar: 0,
@@ -471,6 +572,7 @@ export default {
             codManOct: 0,
             codManNov: 0,
             codManDic: 0,
+            idTablaMod: 0,
             anio: 0,
             desFrecuencia: "",
             desProveedor: "",
@@ -588,6 +690,260 @@ export default {
         };
     },
     methods: {
+        modificarCodigo(id) {
+            try {
+                this.idTablaMod = id;
+                let obj = {
+                    id: id
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/GetListadoEspecifico",
+                        obj,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.ListaModificar = res.data;
+                        this.columnasMod = [
+                            {
+                                label:
+                                    "Ene." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManEne",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Feb." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManFeb",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Mar." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManMar",
+                                html: true,
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Abr." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManAbr",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "May." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManMay",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Jun." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManJun",
+                                // type: "date",
+                                // dateInputFormat: "dd/MM/yyyy",
+                                // dateOutputFormat: "dd/MM/yyyy",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Jul." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManJul",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Ago." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManAgo",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Sep." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManSep",
+                                html: true,
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Oct." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManOct",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Nov." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManNov",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Dic." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManDic",
+                                // type: "date",
+                                // dateInputFormat: "dd/MM/yyyy",
+                                // dateOutputFormat: "dd/MM/yyyy",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            }
+                        ];
+                        this.popFormModCod = true;
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        cargarDocumentacion() {
+            let obj = { id: this.idParam };
+            axios
+                .post(this.localVal + "/api/Agente/GetDocumentosMIND", obj, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.Documentos = res.data;
+                });
+        },
+        popEliminarDoc(id) {
+            try {
+                let obj = { id: id };
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PostDeleteDocumento",
+                        obj,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Documento Eliminado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.cargarDocumentacion();
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "No se pudo Eliminar el documento, intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        modificarCodMantencion() {
+            try {
+                let obj = {
+                    id: this.idTablaMod,
+                    codManModificar: this.codManModificar,
+                    codManEspecificoMod: this.codManEspecificoMod
+                };
+
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PutModificarCodigoM",
+                        obj,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Codigo Modificado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.modificarCodigo(this.idTablaMod);
+                            this.popFormModCod = true;
+                            this.popCodModN = false;
+                            this.cargarListadoPorAnio();
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "No se pudo modificar, verifique los datos e intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         RowMantencion(params) {
             try {
                 if (params.column.field == "codManEne") {
@@ -943,6 +1299,105 @@ export default {
                 console.log(error);
             }
         },
+        volverModCod() {
+            try {
+                this.popCodModN = false;
+                this.popFormModCod = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        RowMantencionMod(params) {
+            try {
+                if (params.column.field == "codManEne") {
+                    if (params.row.codManEne > 0) {
+                        this.codManModificar = params.row.codManEne;
+                        this.codManEspecificoMod = "codManEne";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManFeb") {
+                    if (params.row.codManFeb > 0) {
+                        this.codManModificar = params.row.codManFeb;
+                        this.codManEspecificoMod = "codManFeb";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManMar") {
+                    if (params.row.codManMar > 0) {
+                        this.codManModificar = params.row.codManMar;
+                        this.codManEspecificoMod = "codManMar";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManAbr") {
+                    if (params.row.codManAbr > 0) {
+                        this.codManModificar = params.row.codManAbr;
+                        this.codManEspecificoMod = "codManAbr";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManMay") {
+                    if (params.row.codManMay > 0) {
+                        this.codManModificar = params.row.codManMay;
+                        this.codManEspecificoMod = "codManMay";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManJun") {
+                    if (params.row.codManJun > 0) {
+                        this.codManModificar = params.row.codManJun;
+                        this.codManEspecificoMod = "codManJun";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManJul") {
+                    if (params.row.codManJul > 0) {
+                        this.codManModificar = params.row.codManJul;
+                        this.codManEspecificoMod = "codManJul";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManAgo") {
+                    if (params.row.codManAgo > 0) {
+                        this.codManModificar = params.row.codManAgo;
+                        this.codManEspecificoMod = "codManAgo";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManSep") {
+                    if (params.row.codManSep > 0) {
+                        this.codManModificar = params.row.codManSep;
+                        this.codManEspecificoMod = "codManSep";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManOct") {
+                    if (params.row.codManOct > 0) {
+                        this.codManModificar = params.row.codManOct;
+                        this.codManEspecificoMod = "codManOct";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManNov") {
+                    if (params.row.codManNov > 0) {
+                        this.codManModificar = params.row.codManNov;
+                        this.codManEspecificoMod = "codManNov";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManDic") {
+                    if (params.row.codManDic > 0) {
+                        this.codManModificar = params.row.codManDic;
+                        this.codManEspecificoMod = "codManDic";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
         guardarEstadoM() {
             try {
                 let obj = {
@@ -1243,6 +1698,10 @@ export default {
                         filterOptions: {
                             enabled: true
                         }
+                    },
+                    {
+                        label: "Opciones",
+                        field: "action"
                     }
                 ];
             } catch (error) {

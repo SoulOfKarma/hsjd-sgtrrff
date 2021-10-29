@@ -526,7 +526,12 @@ use App\Mail\AutoRespuesta;
             Route::post('/Agente/PutCodMantencion', ['middleware' => 'cors', 'uses' => 'MantencionProgramadasController@PostCodMantencionN']);
 
             Route::post('/Agente/PostEstadoM', ['middleware' => 'cors', 'uses' => 'MantencionProgramadasController@PostEstadoM']);
+
+            Route::post('/Agente/GetListadoEspecifico', ['middleware' => 'cors', 'uses' => 'MantencionProgramadasController@GetListadoEspecifico']);
             
+            Route::post('/Agente/PutModificarCodigoM', ['middleware' => 'cors', 'uses' => 'MantencionProgramadasController@PutModificarCodigoM']);
+
+            Route::post('/Agente/PostDeleteDocumento', ['middleware' => 'cors', 'uses' => 'DocumentacionIndustrialsController@DestroyDocReg']);
 
             //KPI Mantencion Industrial
 

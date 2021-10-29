@@ -73,6 +73,28 @@ class MantencionProgramadasController extends Controller
        }
     }
 
+    public function GetListadoEspecifico(Request $request){
+        try {
+            $get_all = mantencionProgramadas::where('id',$request->id)
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PutModificarCodigoM(Request $request){
+       try {
+           mantencionProgramadas::where('id',$request->id)
+           ->update([$request->codManEspecificoMod => $request->codManModificar]);
+           return true;
+       } catch (\Throwable $th) {
+           log::info($th);
+           return false;
+       } 
+    }
+
     public function getTicketsKPI(){
         try {
             $get_all = estadoMantenciones::select('estado_cod_m_industriales.descripcion_estadoI as orderType',
