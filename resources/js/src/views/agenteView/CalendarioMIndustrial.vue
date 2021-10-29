@@ -303,7 +303,7 @@
                                 <trash-2-icon
                                     size="1.5x"
                                     class="custom-class"
-                                    @click="popEliminarDoc(props.row.id)"
+                                    @click="ConfirmarDelDoc(props.row.id)"
                                 ></trash-2-icon>
                             </span>
                             <!-- Column: Common -->
@@ -413,7 +413,34 @@
                 </div>
             </div>
         </vs-popup>
-
+        <vs-popup
+            classContent="popup-example"
+            title="Confirmacion Eliminacion Documento"
+            :active.sync="popConfirmarEliminacionDoc"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="EliminarDoc()"
+                            >Eliminar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="VolverListaDoc()"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
         <vs-popup
             classContent="popup-example"
             title="Modificar Codigo Mantencion"
@@ -545,6 +572,7 @@ export default {
             popFormMantencionInd: false,
             popFormCalAnio: false,
             popFormModCod: false,
+            popConfirmarEliminacionDoc: false,
             descripcion_mantencion: "",
             listadoEdificios: [],
             listadoAnios: [],
@@ -573,6 +601,7 @@ export default {
             codManNov: 0,
             codManDic: 0,
             idTablaMod: 0,
+            idDocDel: 0,
             anio: 0,
             desFrecuencia: "",
             desProveedor: "",
@@ -858,9 +887,26 @@ export default {
                     this.Documentos = res.data;
                 });
         },
-        popEliminarDoc(id) {
+        ConfirmarDelDoc(id) {
             try {
-                let obj = { id: id };
+                this.idDocDel = id;
+                this.popConfirmarEliminacionDoc = true;
+                this.popFormDoc = false;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        VolverListaDoc() {
+            try {
+                this.popConfirmarEliminacionDoc = false;
+                this.popFormDoc = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        EliminarDoc() {
+            try {
+                let obj = { id: this.idDocDel };
                 axios
                     .post(
                         this.localVal + "/api/Agente/PostDeleteDocumento",
@@ -882,6 +928,8 @@ export default {
                                 position: "top-right"
                             });
                             this.cargarDocumentacion();
+                            this.popConfirmarEliminacionDoc = false;
+                            this.popFormDoc = true;
                         } else {
                             this.$vs.notify({
                                 time: 3000,
