@@ -479,11 +479,7 @@
                 <div class="vx-row">
                     <div class="vx-col w-full">
                         <h6>Ingrese codigo a Cambiar</h6>
-                        <vs-input
-                            v-model="codManModificar"
-                            class="w-full"
-                            type="number"
-                        />
+                        <vs-input v-model="codManModificar" class="w-full" />
                     </div>
                     <div class="vx-col w-1/2">
                         <vs-button
@@ -636,7 +632,7 @@ export default {
             desFrecuencia: "",
             desProveedor: "",
             descripcionDoc: "",
-            codMantencionNuevo: 0,
+            codMantencionNuevo: "",
             codMan: "",
             idRowModificar: 0,
             popFormDoc: false,
@@ -1442,84 +1438,84 @@ export default {
         RowMantencionMod(params) {
             try {
                 if (params.column.field == "codManEne") {
-                    if (params.row.codManEne > 0) {
+                    if (params.row.codManEne.length > 0) {
                         this.codManModificar = params.row.codManEne;
                         this.codManEspecificoMod = "codManEne";
                         this.popCodModN = true;
                         this.popFormModCod = false;
                     }
                 } else if (params.column.field == "codManFeb") {
-                    if (params.row.codManFeb > 0) {
+                    if (params.row.codManFeb.length > 0) {
                         this.codManModificar = params.row.codManFeb;
                         this.codManEspecificoMod = "codManFeb";
                         this.popCodModN = true;
                         this.popFormModCod = false;
                     }
                 } else if (params.column.field == "codManMar") {
-                    if (params.row.codManMar > 0) {
+                    if (params.row.codManMar.length > 0) {
                         this.codManModificar = params.row.codManMar;
                         this.codManEspecificoMod = "codManMar";
                         this.popCodModN = true;
                         this.popFormModCod = false;
                     }
                 } else if (params.column.field == "codManAbr") {
-                    if (params.row.codManAbr > 0) {
+                    if (params.row.codManAbr.length > 0) {
                         this.codManModificar = params.row.codManAbr;
                         this.codManEspecificoMod = "codManAbr";
                         this.popCodModN = true;
                         this.popFormModCod = false;
                     }
                 } else if (params.column.field == "codManMay") {
-                    if (params.row.codManMay > 0) {
+                    if (params.row.codManMay.length > 0) {
                         this.codManModificar = params.row.codManMay;
                         this.codManEspecificoMod = "codManMay";
                         this.popCodModN = true;
                         this.popFormModCod = false;
                     }
                 } else if (params.column.field == "codManJun") {
-                    if (params.row.codManJun > 0) {
+                    if (params.row.codManJun.length > 0) {
                         this.codManModificar = params.row.codManJun;
                         this.codManEspecificoMod = "codManJun";
                         this.popCodModN = true;
                         this.popFormModCod = false;
                     }
                 } else if (params.column.field == "codManJul") {
-                    if (params.row.codManJul > 0) {
+                    if (params.row.codManJul.length > 0) {
                         this.codManModificar = params.row.codManJul;
                         this.codManEspecificoMod = "codManJul";
                         this.popCodModN = true;
                         this.popFormModCod = false;
                     }
                 } else if (params.column.field == "codManAgo") {
-                    if (params.row.codManAgo > 0) {
+                    if (params.row.codManAgo.length > 0) {
                         this.codManModificar = params.row.codManAgo;
                         this.codManEspecificoMod = "codManAgo";
                         this.popCodModN = true;
                         this.popFormModCod = false;
                     }
                 } else if (params.column.field == "codManSep") {
-                    if (params.row.codManSep > 0) {
+                    if (params.row.codManSep.length > 0) {
                         this.codManModificar = params.row.codManSep;
                         this.codManEspecificoMod = "codManSep";
                         this.popCodModN = true;
                         this.popFormModCod = false;
                     }
                 } else if (params.column.field == "codManOct") {
-                    if (params.row.codManOct > 0) {
+                    if (params.row.codManOct.length > 0) {
                         this.codManModificar = params.row.codManOct;
                         this.codManEspecificoMod = "codManOct";
                         this.popCodModN = true;
                         this.popFormModCod = false;
                     }
                 } else if (params.column.field == "codManNov") {
-                    if (params.row.codManNov > 0) {
+                    if (params.row.codManNov.length > 0) {
                         this.codManModificar = params.row.codManNov;
                         this.codManEspecificoMod = "codManNov";
                         this.popCodModN = true;
                         this.popFormModCod = false;
                     }
                 } else if (params.column.field == "codManDic") {
-                    if (params.row.codManDic > 0) {
+                    if (params.row.codManDic.length > 0) {
                         this.codManModificar = params.row.codManDic;
                         this.codManEspecificoMod = "codManDic";
                         this.popCodModN = true;
