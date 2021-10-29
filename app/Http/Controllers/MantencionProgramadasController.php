@@ -95,6 +95,18 @@ class MantencionProgramadasController extends Controller
        } 
     }
 
+    public function PostDeleteMantencion(Request $request){
+        try {
+            $res = mantencionProgramadas::where('id',$request->id)->delete();
+            if($res){
+                return true;
+            }
+        } catch (\Throwable $th) {
+            log::info($th);
+           return false;
+        }
+    }
+
     public function getTicketsKPI(){
         try {
             $get_all = estadoMantenciones::select('estado_cod_m_industriales.descripcion_estadoI as orderType',

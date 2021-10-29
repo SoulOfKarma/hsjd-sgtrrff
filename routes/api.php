@@ -533,6 +533,8 @@ use App\Mail\AutoRespuesta;
 
             Route::post('/Agente/PostDeleteDocumento', ['middleware' => 'cors', 'uses' => 'DocumentacionIndustrialsController@DestroyDocReg']);
 
+            Route::post('/Agente/PostDeleteMantencion', ['middleware' => 'cors', 'uses' => 'MantencionProgramadasController@PostDeleteMantencion']);
+
             //KPI Mantencion Industrial
 
              //Traer Estados Tickets

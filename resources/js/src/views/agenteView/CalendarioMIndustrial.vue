@@ -68,6 +68,11 @@
                             class="custom-class"
                             @click="modificarCodigo(props.row.id)"
                         ></plus-circle-icon>
+                        <trash-2-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="popEliminarMantencion(props.row.id)"
+                        ></trash-2-icon>
                     </span>
                     <!-- Column: Common -->
                     <span v-else>
@@ -443,6 +448,34 @@
         </vs-popup>
         <vs-popup
             classContent="popup-example"
+            title="Confirmacion Eliminacion Tabla Mantencion"
+            :active.sync="popConfirmarEliminacionMan"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="EliminarMantencion()"
+                            >Eliminar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popConfirmarEliminacionMan = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-example"
             title="Modificar Codigo Mantencion"
             :active.sync="popCodModN"
         >
@@ -573,6 +606,7 @@ export default {
             popFormCalAnio: false,
             popFormModCod: false,
             popConfirmarEliminacionDoc: false,
+            popConfirmarEliminacionMan: false,
             descripcion_mantencion: "",
             listadoEdificios: [],
             listadoAnios: [],
@@ -615,6 +649,7 @@ export default {
             desDoc: "",
             idParam: 0,
             resetI: 0,
+            idListadoMan: 0,
             supportTracker: {},
             productsOrder: {},
             salesBarSession: {},
@@ -870,6 +905,59 @@ export default {
                         ];
                         this.popFormModCod = true;
                     });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popEliminarMantencion(id) {
+            try {
+                this.popConfirmarEliminacionMan = true;
+                this.idListadoMan = id;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        EliminarMantencion() {
+            try {
+                try {
+                    let obj = { id: this.idListadoMan };
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/PostDeleteMantencion",
+                            obj,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Mantencion Eliminada Correctamente",
+                                    text: "Se Recargara Listado",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.cargarListadoPorAnio();
+                                this.popConfirmarEliminacionMan = false;
+                            } else {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error",
+                                    text:
+                                        "No se pudo Eliminar La lista con Mantenciones, intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } catch (error) {
+                    console.log(error);
+                }
             } catch (error) {
                 console.log(error);
             }
