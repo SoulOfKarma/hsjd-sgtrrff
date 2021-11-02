@@ -141,13 +141,13 @@ class GestionTicketsINDsController extends Controller
             ELSE entregacilindros.idTicket END) AS idTicketCilindro"),
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.id_trabajador IS NULL THEN 'PENDIENTE'
              ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
-            ->join('entregacilindros','solicitud_ticket_i_n_ds.id','=', 'entregacilindros.idTicket')
+            ->leftjoin('gestion_tickets_i_n_ds', 'solicitud_ticket_i_n_ds.id', '=', 'gestion_tickets_i_n_ds.id_solicitud')
+            ->leftjoin('entregacilindros','solicitud_ticket_i_n_ds.id','=', 'entregacilindros.idTicket')
             ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions','solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
             ->join('servicios','solicitud_ticket_i_n_ds.id_servicio','=','servicios.id')
-            ->leftjoin('gestion_tickets_i_n_ds', 'solicitud_ticket_i_n_ds.id', '=', 'gestion_tickets_i_n_ds.id_solicitud')
-            ->join('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
+            ->leftjoin('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_ticket_i_n_ds.id_categoria', 3)
             ->whereNull('gestion_tickets_i_n_ds.id_solicitud');
             //->orderBy('solicitud_tickets.id', 'desc')
@@ -163,7 +163,7 @@ class GestionTicketsINDsController extends Controller
             ELSE entregacilindros.idTicket END) AS idTicketCilindro"),
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.id_trabajador IS NULL THEN 'PENDIENTE'
              ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
-            ->leftjoin('entregacilindros','solicitud_ticket_i_n_ds.id','=', 'entregacilindros.idTicket')
+            ->join('entregacilindros','solicitud_ticket_i_n_ds.id','=', 'entregacilindros.idTicket')
             ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions','solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
