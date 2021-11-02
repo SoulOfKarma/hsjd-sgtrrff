@@ -93,7 +93,7 @@
         <br />
         <div class="vx-row">
             <!--<div class="vx-col w-full lg:w-1/4 mb-base"></div>-->
-            <div class="vx-col w-full mb-base">
+            <div class="vx-col w-1/2 mb-base">
                 <vx-card title="Seguimiento Tickets" :key="resetI">
                     <!-- CARD ACTION -->
                     <!-- <template slot="actions">
@@ -154,7 +154,7 @@
                     </div>
                 </vx-card>
             </div>
-            <div class="vx-col w-full mb-base">
+            <div class="vx-col w-1/2 mb-base">
                 <vx-card title="Porcentaje Avance Tickets" :key="resetI">
                     <!-- CARD ACTION -->
                     <!-- <template slot="actions">

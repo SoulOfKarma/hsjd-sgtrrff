@@ -146,7 +146,7 @@ class GestionTicketsINDsController extends Controller
             ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions','solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
             ->join('servicios','solicitud_ticket_i_n_ds.id_servicio','=','servicios.id')
-            ->join('gestion_tickets_i_n_ds', 'solicitud_ticket_i_n_ds.id', '=', 'gestion_tickets_i_n_ds.id_solicitud')
+            ->leftjoin('gestion_tickets_i_n_ds', 'solicitud_ticket_i_n_ds.id', '=', 'gestion_tickets_i_n_ds.id_solicitud')
             ->join('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_ticket_i_n_ds.id_categoria', 3)
             ->whereNull('gestion_tickets_i_n_ds.id_solicitud');
