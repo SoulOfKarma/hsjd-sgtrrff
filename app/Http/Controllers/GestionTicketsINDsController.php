@@ -67,7 +67,9 @@ class GestionTicketsINDsController extends Controller
 
     public function AsignarTicketIND(Request $request)
     {
+        $validador = false;
         try {
+            
             //Gestionando Correo
             $nombre = $request->nombre;
             $descripcionP = $request->descripcionP;
@@ -100,6 +102,7 @@ class GestionTicketsINDsController extends Controller
             ->orWhere('id',$ValidarCargo)
             ->first();
             }
+            $validador = true;
 
             $listContactos = [$userMail->email];
             $i = 0;
@@ -123,8 +126,19 @@ class GestionTicketsINDsController extends Controller
                 $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
                 //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
-            return $response = "Ok";
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
         }
+    }
+
+    public function getTicketCreado($id)
+    {
+        return  SolicitudTicketINDs::where('id', $id)->get();
     }
 
     public function getSolicitudUsuariosJoinIND()

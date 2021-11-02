@@ -132,11 +132,11 @@ use App\Mail\AutoRespuesta;
             //Guardar Ticket
             Route::post('/Agente/PostTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@store']);
             //Guardar Ticket
-            Route::post('/Agente/PostTicketEM', ['middleware' => 'cors', 'uses' => 'GestionTicketController@AsignarTicketEM']);
+            Route::post('/Agente/PostTicketEM', ['middleware' => 'cors', 'uses' => 'GestionTicketEMSController@AsignarTicketEM']);
             //Guardar Ticket
-            Route::post('/Agente/PostTicketIND', ['middleware' => 'cors', 'uses' => 'GestionTicketController@AsignarTicketIND']);
+            Route::post('/Agente/PostTicketIND', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@AsignarTicketIND']);
             //Guardar Ticket
-            Route::post('/Agente/PostTicketCA', ['middleware' => 'cors', 'uses' => 'GestionTicketController@AsignarTicketCA']);
+            Route::post('/Agente/PostTicketCA', ['middleware' => 'cors', 'uses' => 'GestionTicketsApsController@AsignarTicketCA']);
             //Traer Tickets con sus usuarios Infraestructura
             Route::get('/Agente/GetSolicitudTickets', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getSolicitudUsuariosJoin']);
             //Traer Tickets con sus usuarios Equipos Medicos
@@ -194,6 +194,8 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/getUsuarios', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getUsuarios']);
             //Traer el ticket especifico asignado
             Route::get('/Agente/TraerTicket/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getTicketCreado']);
+            //Traer el ticket especifico asignado
+            Route::get('/Agente/TraerTicketIND/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@getTicketCreado']);
             //Traer Dato Join Calendario
             Route::get('/Agente/getDatoCalendario', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetDatoCalendario']);
             //Traer Trabajadores EX
