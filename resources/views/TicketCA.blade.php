@@ -888,7 +888,7 @@ table.table-bordered > tbody > tr > td{
               <div class="col-xs-2"> <img src="http://10.4.237.120:8001/Documentos/1.png"></div>
                 <div class="col-xs-10">
                   <h3 id="tituloOrd"><b>Orden de Trabajo</b> </h3>
-                  <h4 id="subOrd"><b>Unidad de Mantenimiento - Equipo Medico</b> </h4>
+                  <h4 id="subOrd"><b>Unidad de Mantenimiento - Apoyo Clinico</b> </h4>
                   
                 </div>
                 <div class="col-xs-2"></div>
