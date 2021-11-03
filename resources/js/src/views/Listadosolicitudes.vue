@@ -354,6 +354,27 @@ export default {
                     }
                 },
                 {
+                    label: "Hora Solicitud",
+                    field: "horaSolicitud",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Fecha Programacion",
+                    field: "fechaProgramacion",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Hora Programacion",
+                    field: "horaProgramacion",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
                     label: "Opciones",
                     field: "action"
                 }
