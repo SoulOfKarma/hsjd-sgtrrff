@@ -196,6 +196,10 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/TraerTicket/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getTicketCreado']);
             //Traer el ticket especifico asignado
             Route::get('/Agente/TraerTicketIND/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@getTicketCreado']);
+            //Traer el ticket especifico asignado
+            Route::get('/Agente/TraerTicketEM/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketEMSController@getTicketCreado']);
+            //Traer el ticket especifico asignado
+            Route::get('/Agente/TraerTicketCA/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketsApsController@getTicketCreado']);
             //Traer Dato Join Calendario
             Route::get('/Agente/getDatoCalendario', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetDatoCalendario']);
             //Traer Trabajadores EX

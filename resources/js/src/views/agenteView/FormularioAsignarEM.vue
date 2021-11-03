@@ -1521,7 +1521,7 @@ export default {
         cargaTicketAsignado() {
             let id = this.$route.params.id;
             axios
-                .get(this.localVal + `/api/Agente/TraerTicket/${id}`, {
+                .get(this.localVal + `/api/Agente/TraerTicketEM/${id}`, {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")

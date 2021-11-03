@@ -68,6 +68,7 @@ class GestionTicketsINDsController extends Controller
     public function AsignarTicketIND(Request $request)
     {
         $validador = false;
+        $count = 0;
         try {
             
             //Gestionando Correo

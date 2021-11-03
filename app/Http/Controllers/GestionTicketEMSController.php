@@ -65,8 +65,15 @@ class GestionTicketEMSController extends Controller
         
     }
 
+    public function getTicketCreado($id)
+    {
+        return  SolicitudTicketsEM::where('id', $id)->get();
+    }
+
     public function AsignarTicketEM(Request $request)
     {
+        $validador = false;
+        $count = 0;
         try {
             //Gestionando Correo
             $nombre = $request->nombre;
@@ -100,10 +107,11 @@ class GestionTicketEMSController extends Controller
             ->orWhere('id',$ValidarCargo)
             ->first();
             }
+            $validador = true;
 
             $listContactos = [$userMail->email];
             $i = 0;
-
+            $count = count($listContactos);
             /* foreach ($userMail as $key) {
                 $listContactos[$i] = $key->email;
                 $i++;
@@ -117,14 +125,30 @@ class GestionTicketEMSController extends Controller
 
             $response = GestionTicketEMS::create($request->all());
         } catch (\Throwable $th) {
-            log::info($th);
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
         } finally {
-            Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
-                $message->setTo($listContactos)->setSubject('Asignacion de ticket');
-                $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
-            });
-            return $response = "Ok";
+            if($validador == true){
+                if($count == 0){
+                    return true;
+                }else{
+                    log::info($th);
+                    Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
+                        $message->setTo($listContactos)->setSubject('Asignacion de ticket');
+                        $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
+                        //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                    });
+                    return true;
+                }
+              }else{
+                  log::info($th);
+                  return false;
+              }
         }
     }
 
@@ -148,6 +172,24 @@ class GestionTicketEMSController extends Controller
             ->join('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_tickets_e_m_s.id_categoria', 2)
             ->whereNull('gestion_ticket_e_m_s.id_solicitud');
+
+            $ticketN = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_e_m_s.descripcionP','solicitud_tickets_e_m_s.id_estado',
+            'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_e_m_s.created_at,NOW()) AS Horas'),
+            DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
+            DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as desFormat"),
+            DB::raw("(CASE WHEN gestion_ticket_e_m_s.fechaInicio IS NULL THEN DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%d/%m/%Y')
+            ELSE DATE_FORMAT(gestion_ticket_e_m_s.fechaInicio,'%d/%m/%Y') END) AS fechaSolicitud"),
+            DB::raw("(CASE WHEN gestion_ticket_e_m_s.id_trabajador IS NULL THEN 'PENDIENTE'
+             ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
+            ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
+            ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
+            ->join('tipo_reparacions','solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
+            ->join('servicios','solicitud_tickets_e_m_s.id_servicio','=','servicios.id')
+            ->leftjoin('gestion_ticket_e_m_s', 'solicitud_tickets_e_m_s.id', '=', 'gestion_ticket_e_m_s.id_solicitud')
+            ->leftjoin('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
+            ->where('solicitud_tickets_e_m_s.id_categoria', 2)
+            ->whereNull('gestion_ticket_e_m_s.id_solicitud');
             //->orderBy('solicitud_tickets.id', 'desc')
             //->get();
             $uticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
@@ -167,6 +209,7 @@ class GestionTicketEMSController extends Controller
             ->join('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_tickets_e_m_s.id_categoria', 2)
             ->union($ticket)
+            ->union($ticketN)
             ->orderBy('id','desc')
             ->get();
             return $uticket;

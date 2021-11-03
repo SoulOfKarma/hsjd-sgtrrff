@@ -67,6 +67,8 @@ class GestionTicketsApsController extends Controller
 
     public function AsignarTicketCA(Request $request)
     {
+        $validador = false;
+        $count = 0;
         try {
             //Gestionando Correo
             $nombre = $request->nombre;
@@ -100,9 +102,12 @@ class GestionTicketsApsController extends Controller
             ->orWhere('id',$ValidarCargo)
             ->first();
             }
+            $validador = true;
 
             $listContactos = [$userMail->email];
             $i = 0;
+
+            $count = count($listContactos);
 
             /* foreach ($userMail as $key) {
                 $listContactos[$i] = $key->email;
@@ -116,21 +121,42 @@ class GestionTicketsApsController extends Controller
 
             $response = GestionTicketsAps::create($request->all());
         } catch (\Throwable $th) {
-            log::info($th);
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
         } finally {
-            Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
-                $message->setTo($listContactos)->setSubject('Asignacion de ticket');
-                $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-                //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
-            });
-            return $response = "Ok";
+            if($validador == true){
+                if($count == 0){
+                    return true;
+                }else{
+                    log::info($th);
+                    Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
+                        $message->setTo($listContactos)->setSubject('Asignacion de ticket');
+                        $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
+                        //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                    });
+                    return true;
+                }
+              }else{
+                  log::info($th);
+                  return false;
+              }
         }
+    }
+
+    public function getTicketCreado($id)
+    {
+        return  SolicitudTicketsAps::where('id', $id)->get();
     }
 
     public function getSolicitudUsuariosJoinCA()
     {
         try {
-        $ticket = SolicitudTicketsAps::select('solicitud_tickets_aps.id','solicitud_tickets_aps.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            $ticket = SolicitudTicketsAps::select('solicitud_tickets_aps.id','solicitud_tickets_aps.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_aps.descripcionP','solicitud_tickets_aps.id_estado',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_aps.created_at,NOW()) AS Horas'),
             DB::raw("CONCAT(solicitud_tickets_aps.id) as nticket"),
@@ -145,6 +171,24 @@ class GestionTicketsApsController extends Controller
             ->join('servicios','solicitud_tickets_aps.id_servicio','=','servicios.id')
             ->join('gestion_tickets_aps', 'solicitud_tickets_aps.id', '=', 'gestion_tickets_aps.id_solicitud')
             ->join('trabajadores', 'gestion_tickets_aps.id_trabajador', '=', 'trabajadores.id')
+            ->where('solicitud_tickets_aps.id_categoria', 4)
+            ->whereNull('gestion_tickets_aps.id_solicitud');
+
+            $ticketN = SolicitudTicketsAps::select('solicitud_tickets_aps.id','solicitud_tickets_aps.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_aps.descripcionP','solicitud_tickets_aps.id_estado',
+            'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_aps.created_at,NOW()) AS Horas'),
+            DB::raw("CONCAT(solicitud_tickets_aps.id) as nticket"),
+            DB::raw("fnStripTags(solicitud_tickets_aps.descripcionP) as desFormat"),
+            DB::raw("(CASE WHEN gestion_tickets_aps.fechaInicio IS NULL THEN DATE_FORMAT(solicitud_tickets_aps.created_at,'%d/%m/%Y')
+            ELSE DATE_FORMAT(gestion_tickets_aps.fechaInicio,'%d/%m/%Y') END) AS fechaSolicitud"),
+            DB::raw("(CASE WHEN gestion_tickets_aps.id_trabajador IS NULL THEN 'PENDIENTE'
+             ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
+            ->join('users', 'solicitud_tickets_aps.id_user', '=', 'users.id')
+            ->join('estado_solicituds', 'solicitud_tickets_aps.id_estado', '=', 'estado_solicituds.id')
+            ->join('tipo_reparacions','solicitud_tickets_aps.id_tipoReparacion','=','tipo_reparacions.id')
+            ->join('servicios','solicitud_tickets_aps.id_servicio','=','servicios.id')
+            ->leftjoin('gestion_tickets_aps', 'solicitud_tickets_aps.id', '=', 'gestion_tickets_aps.id_solicitud')
+            ->leftjoin('trabajadores', 'gestion_tickets_aps.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_tickets_aps.id_categoria', 4)
             ->whereNull('gestion_tickets_aps.id_solicitud');
             //->orderBy('solicitud_tickets.id', 'desc')
@@ -166,6 +210,7 @@ class GestionTicketsApsController extends Controller
             ->join('trabajadores', 'gestion_tickets_aps.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_tickets_aps.id_categoria', 4)
             ->union($ticket)
+            ->union($ticketN)
             ->orderBy('id','desc')
             ->get();
             return $uticket;
