@@ -160,38 +160,16 @@ class GestionTicketEMSController extends Controller
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_e_m_s.created_at,NOW()) AS Horas'),
             DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
             DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as desFormat"),
-            DB::raw("(CASE WHEN gestion_ticket_e_m_s.fechaInicio IS NULL THEN 'PENDIENTE'
-            ELSE DATE_FORMAT(gestion_ticket_e_m_s.fechaInicio,'%d/%m/%Y') END) AS fechaSolicitud"),
-            DB::raw("(CASE WHEN gestion_ticket_e_m_s.id_trabajador IS NULL THEN 'PENDIENTE'
-             ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
+            DB::raw("(CASE WHEN solicitud_tickets_e_m_s.created_at IS NULL THEN 'PENDIENTE'
+            ELSE DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%d/%m/%Y') END) AS fechaSolicitud"),
+            DB::raw("'PENDIENTE'AS nombreTra"))
             ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions','solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
             ->join('servicios','solicitud_tickets_e_m_s.id_servicio','=','servicios.id')
-            ->join('gestion_ticket_e_m_s', 'solicitud_tickets_e_m_s.id', '=', 'gestion_ticket_e_m_s.id_solicitud')
-            ->join('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_tickets_e_m_s.id_categoria', 2)
-            ->whereNull('gestion_ticket_e_m_s.id_solicitud');
+            ->where('solicitud_tickets_e_m_s.id_estado', 2);
 
-            $ticketN = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
-            'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_e_m_s.descripcionP','solicitud_tickets_e_m_s.id_estado',
-            'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_e_m_s.created_at,NOW()) AS Horas'),
-            DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
-            DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as desFormat"),
-            DB::raw("(CASE WHEN gestion_ticket_e_m_s.fechaInicio IS NULL THEN DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%d/%m/%Y')
-            ELSE DATE_FORMAT(gestion_ticket_e_m_s.fechaInicio,'%d/%m/%Y') END) AS fechaSolicitud"),
-            DB::raw("(CASE WHEN gestion_ticket_e_m_s.id_trabajador IS NULL THEN 'PENDIENTE'
-             ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
-            ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
-            ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
-            ->join('tipo_reparacions','solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
-            ->join('servicios','solicitud_tickets_e_m_s.id_servicio','=','servicios.id')
-            ->leftjoin('gestion_ticket_e_m_s', 'solicitud_tickets_e_m_s.id', '=', 'gestion_ticket_e_m_s.id_solicitud')
-            ->leftjoin('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
-            ->where('solicitud_tickets_e_m_s.id_categoria', 2)
-            ->whereNull('gestion_ticket_e_m_s.id_solicitud');
-            //->orderBy('solicitud_tickets.id', 'desc')
-            //->get();
             $uticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_e_m_s.descripcionP','solicitud_tickets_e_m_s.id_estado',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_e_m_s.created_at,NOW()) AS Horas'),
@@ -209,7 +187,6 @@ class GestionTicketEMSController extends Controller
             ->join('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_tickets_e_m_s.id_categoria', 2)
             ->union($ticket)
-            ->union($ticketN)
             ->orderBy('id','desc')
             ->get();
             return $uticket;
