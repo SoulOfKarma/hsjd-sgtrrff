@@ -168,7 +168,7 @@ class GestionTicketEMSController extends Controller
             ->join('tipo_reparacions','solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
             ->join('servicios','solicitud_tickets_e_m_s.id_servicio','=','servicios.id')
             ->where('solicitud_tickets_e_m_s.id_categoria', 2)
-            ->where('solicitud_tickets_e_m_s.id_estado', 2);
+            ->where('solicitud_tickets_e_m_s.id_estado', 1);
 
             $uticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_e_m_s.descripcionP','solicitud_tickets_e_m_s.id_estado',
