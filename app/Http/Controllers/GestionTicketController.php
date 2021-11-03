@@ -333,19 +333,7 @@ class GestionTicketController extends Controller
             ->where('solicitud_tickets.id_categoria', 1)
             ->whereNull('gestion_solicitudes.id_solicitud');
 
-            $ticketN = SolicitudTickets::select('solicitud_tickets.id','solicitud_tickets.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
-            'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets.descripcionP','solicitud_tickets.id_estado',
-            'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
-            DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
-            DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
-            DB::raw("(CASE WHEN solicitud_tickets.created_at IS NULL THEN  DATE_FORMAT(solicitud_tickets.created_at,'%d/%m/%Y')
-            ELSE DATE_FORMAT(solicitud_tickets.created_at,'%d/%m/%Y') END) AS fechaSolicitud"),
-            DB::raw("'PENDIENTE' AS nombreTra"))
-            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
-            ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
-            ->join('tipo_reparacions','solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
-            ->join('servicios','solicitud_tickets.id_servicio','=','servicios.id')
-            ->where('solicitud_tickets.id_categoria', 1);
+
             //->orderBy('solicitud_tickets.id', 'desc')
             //->get();
             $uticket = SolicitudTickets::select('solicitud_tickets.id','solicitud_tickets.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
@@ -365,7 +353,6 @@ class GestionTicketController extends Controller
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_tickets.id_categoria', 1)
             ->union($ticket)
-            ->union($ticketN)
             ->orderBy('id','desc')
             ->get();
             return $uticket;
