@@ -50,8 +50,7 @@ class SeguimientoAPSolicitudesController extends Controller
 
         Mail::send('/Mails/TicketGeneradoUsuario', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) use($listContactos) {
             $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
-            $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-            $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+            $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
         });
     }
 
@@ -103,8 +102,7 @@ class SeguimientoAPSolicitudesController extends Controller
 
         Mail::send('/Mails/TicketGeneradoUsuario', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) use($listContactos) {
             $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
-            $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-            $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+            $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
         });
     }
 
@@ -157,8 +155,7 @@ class SeguimientoAPSolicitudesController extends Controller
 
             Mail::send('/Mails/TicketResuelto', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) use($listContactos) {
             $message->setTo($listContactos)->setSubject('Seguimiento de ticket');
-            $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
-            $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+            $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
             });
 
             return true;

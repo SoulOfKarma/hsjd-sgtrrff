@@ -82,7 +82,7 @@ class SolicitudTicketINDsController extends Controller
             }
 
             if($userMail == [] || $userMail == null){
-                $userMail[0] = 'mantencion.hsjd@redsalud.gov.cl';
+                $userMail[0] = 'soporte.rrff@redsalud.gov.cl';
             }
 
             /* $listContactos = [];
@@ -97,7 +97,7 @@ class SolicitudTicketINDsController extends Controller
             
             Mail::send('/Mails/SolicitudModificadaUsuario',['nombre' => $nombre, 'id' => $id, 'titulo' => $titulo, 'descripcionTicket' => $descripcionProblema, 'estado' => $desEstado, 'razon' => $razon], function ($message) use($listContactos){
                 $message->setTo($userMail)->setSubject('Modificacion de ticket');
-                $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
+                $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
                 //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
             return "ok";
@@ -158,7 +158,7 @@ class SolicitudTicketINDsController extends Controller
                 }
 
                 if($userMail == [] || $userMail == null){
-                    $userMail[0] = 'mantencion.hsjd@redsalud.gov.cl';
+                    $userMail[0] = 'soporte.rrff@redsalud.gov.cl';
                 }
     
                 /* $listContactos = [];
@@ -177,7 +177,7 @@ class SolicitudTicketINDsController extends Controller
                
                 Mail::send('/Mails/TicketGenerado', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $titulo], function ($message) use($listContactos) {
                     $message->setTo($userMail)->setSubject('Nuevo Ticket Generado');
-                    $message->setFrom('mantencion.hsjd@redsalud.gov.cl', 'Mantencion');
+                    $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
                    
                   });
                   return true;
