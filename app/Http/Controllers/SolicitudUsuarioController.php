@@ -63,8 +63,6 @@ class SolicitudUsuarioController extends Controller
          'servicios.descripcionServicio',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
          DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
          DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at,'%H:%i:%s')) as horaSolicitud"),
-         DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at,'%d/%m/%Y')) as fechaProgramacion"),
-         DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at,'%d/%m/%Y')) as horaProgramacion"),
          'tipo_reparacions.descripcionTipoReparacion', DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('tipo_reparacions','solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
@@ -80,8 +78,6 @@ class SolicitudUsuarioController extends Controller
             'servicios.descripcionServicio',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_e_m_s.created_at,NOW()) AS Horas'),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%H:%i:%s')) as horaSolicitud"),
-            DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%d/%m/%Y')) as fechaProgramacion"),
-            DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%d/%m/%Y')) as horaProgramacion"),
             'tipo_reparacions.descripcionTipoReparacion', DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as desFormat"))
                ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
                ->join('tipo_reparacions','solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
@@ -97,8 +93,6 @@ class SolicitudUsuarioController extends Controller
                'servicios.descripcionServicio',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
                DB::raw('TIMESTAMPDIFF(HOUR,solicitud_ticket_i_n_ds.created_at,NOW()) AS Horas'),
                DB::raw("CONCAT(DATE_FORMAT(solicitud_ticket_i_n_ds.created_at,'%H:%i:%s')) as horaSolicitud"),
-               DB::raw("CONCAT(DATE_FORMAT(solicitud_ticket_i_n_ds.created_at,'%d/%m/%Y')) as fechaProgramacion"),
-               DB::raw("CONCAT(DATE_FORMAT(solicitud_ticket_i_n_ds.created_at,'%d/%m/%Y')) as horaProgramacion"),
                'tipo_reparacions.descripcionTipoReparacion', DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP) as desFormat"))
                   ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
                   ->join('tipo_reparacions','solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
@@ -114,8 +108,6 @@ class SolicitudUsuarioController extends Controller
                   'servicios.descripcionServicio',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
                   DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_aps.created_at,NOW()) AS Horas'),
                   DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_aps.created_at,'%H:%i:%s')) as horaSolicitud"),
-                  DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_aps.created_at,'%d/%m/%Y')) as fechaProgramacion"),
-                  DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_aps.created_at,'%d/%m/%Y')) as horaProgramacion"),
                   'tipo_reparacions.descripcionTipoReparacion', DB::raw("fnStripTags(solicitud_tickets_aps.descripcionP) as desFormat"))
                      ->join('users', 'solicitud_tickets_aps.id_user', '=', 'users.id')
                      ->join('tipo_reparacions','solicitud_tickets_aps.id_tipoReparacion','=','tipo_reparacions.id')
