@@ -24,10 +24,10 @@ class SolicitudTicketsApsController extends Controller
         }
     }
 
-    public function GetSolicitudCreada($id)
+    public function GetSolicitudCreada(Request $request)
     {
         try {
-            $get_all = SolicitudTicketsAps::find($id);
+            $get_all = SolicitudTicketsAps::find($request->id);
             return  $get_all;
         } catch (\Throwable $th) {
             log::info($th);
@@ -42,7 +42,7 @@ class SolicitudTicketsApsController extends Controller
             ->update([
                 'id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
                 'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
-                'id_estado' => $request->id_estado, 'descripcionP' => $request->descripcionP, 'tituloP' => $request->tituloP
+                'id_estado' => $request->id_estado, 'id_prioridad' => $request->id_prioridad, 'descripcionP' => $request->descripcionP, 'tituloP' => $request->tituloP
             ]);
 
          $response = seguimientoAPSolicitudes::create($request->all());

@@ -46,7 +46,8 @@ use App\Mail\AutoRespuesta;
             //Route::get('/Usuario/GetEdificios', 'UnidadExController@index');
             //Retorna Tipo Reparacion
             Route::get('/Usuario/GetTipoRep', ['middleware' => 'cors', 'uses' => 'TipoReparacionController@index']);
-            //Route::get('/Usuario/GetEdificios', 'TipoReparacionController@index');
+            //Retorna Tipo Reparacion
+            Route::get('/Usuario/GetPrioridades', ['middleware' => 'cors', 'uses' => 'PrioridadSolicitudController@GetPrioridades']);
             //Retornar Usuarios Join
             Route::get('/Usuario/GetSolicitudUsuarios/{idservicio}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getSolicitudUsuariosJoin']);
             //Traer Usuario Especifico
@@ -99,13 +100,13 @@ use App\Mail\AutoRespuesta;
             //Guardar Seguimiento
             Route::post('/Usuario/GuardarSeguimientoAP/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoAPSolicitudesController@store']);
             //Traer Datos para el listado de tickets
-            Route::get('/Usuario/GetSolicitudCreada', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@GetSolicitudCreada']);
+            Route::post('/Usuario/GetSolicitudCreada', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@GetSolicitudCreada']);
             //Traer Datos para el listado de tickets
-            Route::get('/Usuario/GetSolicitudCreadaEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@GetSolicitudCreada']);
+            Route::post('/Usuario/GetSolicitudCreadaEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@GetSolicitudCreada']);
             //Traer Datos para el listado de tickets
-            Route::get('/Usuario/GetSolicitudCreadaIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@GetSolicitudCreada']);
+            Route::post('/Usuario/GetSolicitudCreadaIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@GetSolicitudCreada']);
             //Traer Datos para el listado de tickets
-            Route::get('/Usuario/GetSolicitudCreadaAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@GetSolicitudCreada']);
+            Route::post('/Usuario/GetSolicitudCreadaAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@GetSolicitudCreada']);
             //Eliminar Ticket
             Route::get('/Usuario/destroyTicket/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@destroy']);
                         /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/
