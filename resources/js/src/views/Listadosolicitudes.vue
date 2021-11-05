@@ -76,6 +76,12 @@
                             >
                                 {{ props.row.descripcionEstado }}
                             </vs-chip>
+                            <vs-chip
+                                v-if="props.row.id_estado == 8"
+                                color="danger"
+                            >
+                                {{ props.row.descripcionEstado }}
+                            </vs-chip>
                         </span>
                         <!-- Column: Action -->
                         <span v-else-if="props.column.field === 'action'">
@@ -113,6 +119,17 @@
                                         )
                                     "
                                 ></trash-2-icon>
+                                <check-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        abrirPopRecepcionado(
+                                            props.row.id,
+                                            props.row.uuid,
+                                            props.row.id_categoria
+                                        )
+                                    "
+                                ></check-icon>
                             </div>
                             <div v-else-if="props.row.Horas < 8">
                                 <plus-circle-icon
@@ -137,8 +154,43 @@
                                         )
                                     "
                                 ></upload-icon>
+                                <check-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        abrirPopRecepcionado(
+                                            props.row.id,
+                                            props.row.uuid,
+                                            props.row.id_categoria
+                                        )
+                                    "
+                                ></check-icon>
                             </div>
                             <div v-else-if="props.row.id_estado == 5">
+                                <plus-circle-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        detalleSolicitud(
+                                            props.row.id,
+                                            props.row.uuid,
+                                            props.row.id_categoria
+                                        )
+                                    "
+                                ></plus-circle-icon>
+                                <check-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        abrirPopRecepcionado(
+                                            props.row.id,
+                                            props.row.uuid,
+                                            props.row.id_categoria
+                                        )
+                                    "
+                                ></check-icon>
+                            </div>
+                            <div v-else-if="props.row.id_estado == 8">
                                 <plus-circle-icon
                                     size="1.5x"
                                     class="custom-class"
@@ -163,6 +215,17 @@
                                         )
                                     "
                                 ></plus-circle-icon>
+                                <check-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        abrirPopRecepcionado(
+                                            props.row.id,
+                                            props.row.uuid,
+                                            props.row.id_categoria
+                                        )
+                                    "
+                                ></check-icon>
                             </div>
                         </span>
 
@@ -225,43 +288,25 @@
             title="Presione Finalizar si esta conforme con la reparacion realizada"
             :active.sync="popupActive3"
         >
-            <vs-input
-                class="inputx mb-3"
-                placeholder="Placeholder"
-                v-model="value1"
-                hidden
-            />
-            <vs-input
-                disabled
-                class="inputx mb-3"
-                placeholder="Disabled"
-                v-model="value2"
-                hidden
-            />
             <div class="vx-col md:w-1/1 w-full " alignment="fixed">
-                <div class="vx-row ">
-                    <div class="vx-col sm:w-1/3 w-full ">
+                <div class="vx-row mb-12">
+                    <div class="vx-col w-1/2 mt-5 ">
                         <vs-button
+                            class="w-full"
                             @click="popupActive3 = false"
                             color="primary"
                             type="filled"
                             >Volver</vs-button
                         >
                     </div>
-                    <div class="vx-col sm:w-1/3 w-full ">
+                    <br />
+                    <div class="vx-col  w-1/2 mt-5  ">
                         <vs-button
-                            @click="finalizarTicket(value1, value2)"
+                            class="w-full"
+                            @click="finalizarTicket()"
                             color="success"
                             type="filled"
                             >Finalizar</vs-button
-                        >
-                    </div>
-                    <div class="vx-col sm:w-1/3 w-full">
-                        <vs-button
-                            @click="Redirigir(value1, value2)"
-                            color="warning"
-                            type="filled"
-                            >Re-Abrir Solicitud</vs-button
                         >
                     </div>
                 </div>
@@ -370,6 +415,12 @@ export default {
             validaEliminar: false,
             popupActive2: false,
             popupActive3: false,
+            listadoFinalizar: {
+                id: "",
+                uuid: "",
+                id_categoria: 0,
+                id_estado: 8
+            },
             localVal: process.env.MIX_APP_URL,
             nombre:
                 sessionStorage.getItem("nombre") +
@@ -389,6 +440,16 @@ export default {
             setTimeout(() => {
                 this.$vs.loading.close();
             }, 1000);
+        },
+        abrirPopRecepcionado(id, uuid, categoria) {
+            try {
+                this.popupActive3 = true;
+                this.listadoFinalizar.id = id;
+                this.listadoFinalizar.uuid = uuid;
+                this.listadoFinalizar.id_categoria = categoria;
+            } catch (error) {
+                console.log(error);
+            }
         },
         cargarSolicitudes() {
             const data = this.data;
@@ -468,11 +529,202 @@ export default {
             this.value1 = id;
             this.value2 = uuid;
             this.popupActive3 = true;
-        } /* ,
-        finalizarTicket(id, uuid) {
-            console.log(id);
-            console.log(uuid);
         },
+        finalizarTicket() {
+            try {
+                if (this.listadoFinalizar.id_categoria == 1) {
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Usuario/PostFinalizarSolicitud",
+                            this.listadoFinalizar,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == true) {
+                                this.$vs.notify({
+                                    title: "Correcto",
+                                    time: 4000,
+                                    text:
+                                        "Solicitud Recepcionada y Finalizada Correctamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                            } else {
+                                this.$vs.notify({
+                                    title: "Error",
+                                    time: 4000,
+                                    text:
+                                        "No fue posible finalizar la solicitud",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.listadoFinalizar.id_categoria == 2) {
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Usuario/PostFinalizarSolicitud",
+                            this.listadoFinalizar,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == true) {
+                                this.$vs.notify({
+                                    title: "Correcto",
+                                    time: 4000,
+                                    text:
+                                        "Solicitud Recepcionada y Finalizada Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                            } else {
+                                this.$vs.notify({
+                                    title: "Error",
+                                    time: 4000,
+                                    text:
+                                        "No fue posible finalizar la solicitud",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.listadoFinalizar.id_categoria == 3) {
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Usuario/PostFinalizarSolicitud",
+                            this.listadoFinalizar,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == true) {
+                                this.$vs.notify({
+                                    title: "Correcto",
+                                    time: 4000,
+                                    text:
+                                        "Solicitud Recepcionada y Finalizada Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                            } else {
+                                this.$vs.notify({
+                                    title: "Error",
+                                    time: 4000,
+                                    text:
+                                        "No fue posible finalizar la solicitud",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.listadoFinalizar.id_categoria == 4) {
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Usuario/PostFinalizarSolicitud",
+                            this.listadoFinalizar,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == true) {
+                                this.$vs.notify({
+                                    title: "Correcto",
+                                    time: 4000,
+                                    text:
+                                        "Solicitud Recepcionada y Finalizada Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                            } else {
+                                this.$vs.notify({
+                                    title: "Error",
+                                    time: 4000,
+                                    text:
+                                        "No fue posible finalizar la solicitud",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.listadoFinalizar.id_categoria == 5) {
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Usuario/PostFinalizarSolicitud",
+                            this.listadoFinalizar,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == true) {
+                                this.$vs.notify({
+                                    title: "Correcto",
+                                    time: 4000,
+                                    text:
+                                        "Solicitud Recepcionada y Finalizada Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                            } else {
+                                this.$vs.notify({
+                                    title: "Error",
+                                    time: 4000,
+                                    text:
+                                        "No fue posible finalizar la solicitud",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else {
+                    this.$vs.notify({
+                        title: "Error",
+                        time: 4000,
+                        text: "No fue posible finalizar la solicitud",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        } /* ,
         Redirigir(id, uuid) {
             console.log(id);
             console.log(uuid);

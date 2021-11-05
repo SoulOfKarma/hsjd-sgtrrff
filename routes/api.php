@@ -54,6 +54,8 @@ use App\Mail\AutoRespuesta;
             Route::get('/Usuario/getUsuarios/{id}', ['middleware' => 'cors', 'uses' => 'UsersController@buscarUsuarioData']);
             //Traer Data especifica
             Route::post('/Usuario/getDataSolicitudes', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getSolicitudUsuariosByID']);
+            //Usuario Recepcion y finaliza solicitud
+            Route::post('/Usuario/PostFinalizarSolicitud', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@PostFinalizarSolicitud']);
             //Solicitud Usuario
             //Traer Datos para el listado de tickets
             Route::get('/Usuario/GetSolicitud', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@index']);

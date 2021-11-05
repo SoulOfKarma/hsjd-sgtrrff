@@ -85,17 +85,7 @@
                                 :options="listadoCategoria"
                             ></v-select>
                             <br />
-                            <h6>2.3 - Prioridad de la Solicitud</h6>
-                            <br />
-                            <v-select
-                                v-model="seleccionPrioridad"
-                                placeholder="Seleccione la Prioridad"
-                                class="w-full select-large"
-                                label="descripcion_prioridad"
-                                :options="listadoPrioridad"
-                            ></v-select>
-                            <br />
-                            <h6>2.4 - Titulo del Problema</h6>
+                            <h6>2.3 - Titulo del Problema</h6>
                             <br />
                             <vs-input
                                 placeholder="Ej. Falla de red en equipo x"
@@ -105,7 +95,7 @@
                             />
 
                             <br />
-                            <h6>2.5 - Descripcion del Problema</h6>
+                            <h6>2.4 - Descripcion del Problema</h6>
                             <br />
                             <quill-editor
                                 v-model="solicitud.descripcionP"
@@ -222,7 +212,7 @@ export default {
             id_ubicacionEx: 42,
             id_tipoReparacion: 0,
             id_solicitud: 0,
-            id_prioridad: 0,
+            id_prioridad: 2,
             id_categoria: 0,
             uuid: "",
             descripcionSeguimiento: "Solicitud creada",
@@ -236,10 +226,6 @@ export default {
         seleccionEdificio: {
             id: 0,
             descripcionEdificio: "Seleccione Edificio"
-        },
-        seleccionPrioridad: {
-            id: 0,
-            descripcion_prioridad: "Seleccion Prioridad"
         },
         seleccionServicio: {
             id: 0,
@@ -419,23 +405,11 @@ export default {
                     );
                 });
         },
-        cargarPrioridades() {
-            axios
-                .get(this.localVal + "/api/Usuario/GetPrioridades", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoPrioridad = res.data;
-                });
-        },
         cargarCategoria() {
             this.csrf_token;
 
             axios
-                .get(this.localVal + "/api/Usuario/GetCategoria", {
+                .get(this.localVal + "/api/Usuario/getCategoriaSI", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -520,7 +494,6 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
-                        this.solicitud.id_prioridad = this.seleccionPrioridad.id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
@@ -581,7 +554,6 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
-                        this.solicitud.id_prioridad = this.seleccionPrioridad.id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
@@ -661,7 +633,6 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
-                        this.solicitud.id_prioridad = this.seleccionPrioridad.id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
@@ -722,7 +693,6 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
-                        this.solicitud.id_prioridad = this.seleccionPrioridad.id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
@@ -802,7 +772,6 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
-                        this.solicitud.id_prioridad = this.seleccionPrioridad.id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
@@ -863,7 +832,6 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
-                        this.solicitud.id_prioridad = this.seleccionPrioridad.id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
@@ -943,7 +911,6 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
-                        this.solicitud.id_prioridad = this.seleccionPrioridad.id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
@@ -1004,7 +971,6 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
-                        this.solicitud.id_prioridad = this.seleccionPrioridad.id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
@@ -1084,7 +1050,6 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
-                        this.solicitud.id_prioridad = this.seleccionPrioridad.id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
@@ -1145,7 +1110,6 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
-                        this.solicitud.id_prioridad = this.seleccionPrioridad.id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
@@ -1259,9 +1223,6 @@ export default {
             } else if (this.seleccionCategoria.id == 0) {
                 this.mensajeError = "el tipo de categoria";
                 this.errorDrop(this.mensajeError);
-            } else if (this.seleccionPrioridad.id == 0) {
-                this.mensajeError = "la prioridad";
-                this.errorDrop(this.mensajeError);
             } else {
                 axios
                     .get(this.localVal + "/api/Usuario/traerUltimoT", {
@@ -1312,7 +1273,6 @@ export default {
         this.cargarEdificios();
         this.cargarServicios();
         this.cargarCategoria();
-        this.cargarPrioridades();
         this.cargarTipoRep();
     },
     beforeMount() {

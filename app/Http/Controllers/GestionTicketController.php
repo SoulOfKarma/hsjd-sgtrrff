@@ -238,7 +238,9 @@ class GestionTicketController extends Controller
             SeguimientoSolicitudes::create($request->all());
             //Insertando Ticket
             $response2 = SolicitudTickets::where('id', $request->id_solicitud)
-                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion, 'id_estado' => $request->id_estado]);
+                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 
+                'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
+                 'id_estado' => $request->id_estado,'id_prioridad' => $request->id_prioridad]);
 
             $response = GestionSolicitudes::create($request->all());
 
@@ -525,6 +527,7 @@ class GestionTicketController extends Controller
             $descripcionSeguimiento = $request->descripcionSeguimiento;
             $razoncambio = $request->razoncambio;
             $descripcionFormat = $request->descripcionPFormat;
+            $id_prioridad = $request->id_prioridad;
 
             SeguimientoSolicitudes::create($request->all());
 
@@ -534,7 +537,7 @@ class GestionTicketController extends Controller
                 ->update([
                     'id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
                     'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
-                    'id_estado' => $request->id_estado,'descripcionP' => $descripcionFormat
+                    'id_estado' => $request->id_estado,'id_prioridad' => $request->id_prioridad,'descripcionP' => $descripcionFormat
                     ]);
             $response = GestionSolicitudes::where('uuid', $request->uuid)
                 ->where('id_solicitud', $request->id_solicitud)

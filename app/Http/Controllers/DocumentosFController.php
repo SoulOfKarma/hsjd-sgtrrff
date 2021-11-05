@@ -16,7 +16,7 @@ class DocumentosFController extends Controller
     if ($request->hasFile('avatar')) {
         // Si es así , almacenamos en la carpeta public/avatars
         // esta estará dentro de public/defaults/
-       
+       log::info($request);
        $url = $request->avatar->store('users/Documentacion');
        $SubirDocumentos = new SubirDocumentos;
        $SubirDocumentos->id_solicitud = $request->id;

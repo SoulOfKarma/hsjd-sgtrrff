@@ -224,7 +224,17 @@
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
                             <br />
-                            <h6>4.3 - Duracion</h6>
+                            <h6>4.3 - Seleccione Prioridad</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionPrioridad"
+                                placeholder="Seleccione la Prioridad"
+                                class="w-full select-large"
+                                label="descripcion_prioridad"
+                                :options="listadoPrioridad"
+                            ></v-select>
+                            <br />
+                            <h6>4.4 - Duracion</h6>
                             <br />
                             <v-select
                                 v-model="seleccionDuracion"
@@ -608,6 +618,7 @@ export default {
         selectEstado: [],
         listadoServiciosData: [],
         listadoTrabajadoresData: [],
+        listadoPrioridad: [],
         gestionTicket: {
             uuid: "",
             id_solicitud: 0,
@@ -646,7 +657,8 @@ export default {
             id_user: 0,
             descripcionSeguimiento: "",
             id_usuarioSolicitante: 0,
-            idDuracion: 0
+            idDuracion: 0,
+            id_prioridad: 0
         },
         registroUsuario: {
             run: null,
@@ -690,6 +702,10 @@ export default {
         seleccionEstado: {
             id: 0,
             descripcionEstado: "Seleccione Estado"
+        },
+        seleccionPrioridad: {
+            id: 0,
+            descripcion_prioridad: "Seleccione Prioridad"
         },
         seleccionSupervisor: {
             id: 0,
@@ -792,6 +808,18 @@ export default {
         },
         volver() {
             router.back();
+        },
+        cargarPrioridades() {
+            axios
+                .get(this.localVal + "/api/Usuario/GetPrioridades", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoPrioridad = res.data;
+                });
         },
         guardarTrabajador() {
             if (
@@ -1604,6 +1632,9 @@ export default {
                 ) {
                     this.mensajeError = "la fecha de inicio ";
                     this.errorDrop(this.mensajeError);
+                } else if (this.seleccionPrioridad.id == 0) {
+                    this.mensajeError = "la prioridad ";
+                    this.errorDrop(this.mensajeError);
                 } else {
                     this.guardarFormulario();
                 }
@@ -1640,6 +1671,9 @@ export default {
                     this.gestionTicket.fechaInicio < hoy.getDate()
                 ) {
                     this.mensajeError = "la fecha de inicio ";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionPrioridad.id == 0) {
+                    this.mensajeError = "la prioridad ";
                     this.errorDrop(this.mensajeError);
                 } else {
                     this.guardarFormulario();
@@ -1686,6 +1720,9 @@ export default {
             ) {
                 this.mensajeError = "la fecha de inicio ";
                 this.errorDrop(this.mensajeError);
+            } else if (this.seleccionPrioridad.id == 0) {
+                this.mensajeError = "la prioridad ";
+                this.errorDrop(this.mensajeError);
             } else {
                 let uuid = this.$route.params.uuid;
                 this.gestionTicket.uuid = uuid;
@@ -1713,6 +1750,7 @@ export default {
                 this.gestionTicket.desApoyo3 = this.seleccionApoyo3[0].tra_nombre_apellido;
                 this.gestionTicket.idTurno = this.seleccionTurno.id;
                 this.gestionTicket.tituloP = this.datosSolicitud[0].tituloP;
+                this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
                 var newElement = document.createElement("div");
                 newElement.innerHTML = this.datosSolicitud[0].descripcionP;
                 this.gestionTicket.descripcionP = newElement.textContent;
@@ -1939,6 +1977,9 @@ export default {
         this.cargarInicial();
         this.cargaTicketAsignado();
         this.cargarHoras();
+        setTimeout(() => {
+            this.cargarPrioridades();
+        }, 2000);
     },
     components: {
         flatPickr,

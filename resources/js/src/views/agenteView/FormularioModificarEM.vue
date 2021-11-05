@@ -225,7 +225,17 @@
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
                             <br />
-                            <h6>4.3 - Duracion</h6>
+                            <h6>4.3 - Seleccione Prioridad</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionPrioridad"
+                                placeholder="Seleccione la Prioridad"
+                                class="w-full select-large"
+                                label="descripcion_prioridad"
+                                :options="listadoPrioridad"
+                            ></v-select>
+                            <br />
+                            <h6>4.4 - Duracion</h6>
                             <br />
                             <v-select
                                 v-model="seleccionDuracion"
@@ -236,7 +246,7 @@
                                 @input="arrayDuracion(seleccionDuracion.id)"
                             ></v-select>
                             <br />
-                            <h6>4.4 - Descripcion del problema</h6>
+                            <h6>4.5 - Descripcion del problema</h6>
                             <br />
                             <quill-editor
                                 v-model="descripcionP"
@@ -245,7 +255,7 @@
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
                             <br />
-                            <h6>4.5 - Razon de la modificacion</h6>
+                            <h6>4.6 - Razon de la modificacion</h6>
                             <br />
                             <quill-editor
                                 v-model="razoncambio"
@@ -644,6 +654,7 @@ export default {
         listadoCorreo: [],
         listadoServiciosData: [],
         listadoTrabajadoresData: [],
+        listadoPrioridad: [],
         razoncambio: "",
         gestionTicket: {
             uuid: "",
@@ -684,7 +695,8 @@ export default {
             descripcionSeguimiento: "",
             idUsuarioSesion: 0,
             razoncambio: "",
-            idDuracion: 0
+            idDuracion: 0,
+            id_prioridad: 0
         },
         registroUsuario: {
             run: null,
@@ -720,6 +732,10 @@ export default {
         seleccionServicio: {
             id: 0,
             descripcionServicio: "Seleccione Servicio"
+        },
+        seleccionPrioridad: {
+            id: 0,
+            descripcion_prioridad: "Seleccione Prioridad"
         },
         seleccionReparacion: {
             id: 0,
@@ -837,6 +853,18 @@ export default {
         },
         volver() {
             router.back();
+        },
+        cargarPrioridades() {
+            axios
+                .get(this.localVal + "/api/Usuario/GetPrioridades", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoPrioridad = res.data;
+                });
         },
         guardarTrabajador() {
             if (
@@ -1733,6 +1761,9 @@ export default {
             ) {
                 this.mensajeError = "la fecha de inicio ";
                 this.errorDrop(this.mensajeError);
+            } else if (this.seleccionPrioridad.id == 0) {
+                this.mensajeError = "la prioridad ";
+                this.errorDrop(this.mensajeError);
             } else {
                 let uuid = this.$route.params.uuid;
                 this.gestionTicket.uuid = uuid;
@@ -1759,6 +1790,7 @@ export default {
                 this.gestionTicket.idTurno = this.seleccionTurno[0].id;
                 this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
                 this.gestionTicket.tituloP = this.datosSolicitud.tituloP;
+                this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
                 var newElement = document.createElement("div");
                 newElement.innerHTML = this.datosSolicitud.descripcionP;
                 this.gestionTicket.descripcionP = newElement.textContent;
@@ -2142,7 +2174,8 @@ export default {
         setTimeout(() => {
             this.cargaSolicitudEspecifica();
             this.cargaTicketAsignado();
-        }, 1000);
+            this.cargarPrioridades();
+        }, 2000);
         this.cargarHoras();
     },
     async beforeMount() {},

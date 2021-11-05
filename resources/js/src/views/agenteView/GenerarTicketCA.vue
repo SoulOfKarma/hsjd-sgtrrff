@@ -248,7 +248,17 @@
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
                             <br />
-                            <h6>5.3 - Duracion</h6>
+                            <h6>5.3 - Seleccione Prioridad</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionPrioridad"
+                                placeholder="Seleccione la Prioridad"
+                                class="w-full select-large"
+                                label="descripcion_prioridad"
+                                :options="listadoPrioridad"
+                            ></v-select>
+                            <br />
+                            <h6>5.4 - Duracion</h6>
                             <br />
                             <v-select
                                 v-model="seleccionDuracion"
@@ -267,7 +277,7 @@
                                 class="w-full"
                             />
                             <br /> -->
-                            <h6>5.4 - Descripcion del problema</h6>
+                            <h6>5.5 - Descripcion del problema</h6>
                             <br />
                             <quill-editor
                                 v-model="gestionTicket.descripcionP"
@@ -278,7 +288,7 @@
                                     slot="toolbar"
                                 ></div> </quill-editor
                             ><br />
-                            <h6>5.5 - Descripcion Trabajo Realizado</h6>
+                            <h6>5.6 - Descripcion Trabajo Realizado</h6>
                             <br />
                             <quill-editor
                                 v-model="gestionTicket.descripcionTraRealizado"
@@ -841,6 +851,7 @@ export default {
         listadoCategoria: [],
         listadoUsuarios: [],
         listadoServiciosData: [],
+        listadoPrioridad: [],
         gestionTicket: {
             id_user: 0,
             uuid: "",
@@ -868,7 +879,8 @@ export default {
             id_categoria: 0,
             descripcionCorreo: "",
             nombre: "",
-            idDuracion: 0
+            idDuracion: 0,
+            id_prioridad: 0
         },
         registroUsuario: {
             run: null,
@@ -908,6 +920,10 @@ export default {
         seleccionServicio: {
             id: 0,
             descripcionServicio: "Seleccione Servicio"
+        },
+        seleccionPrioridad: {
+            id: 0,
+            descripcion_prioridad: "Seleccione Prioridad"
         },
         seleccionReparacion: {
             id: 0,
@@ -1091,6 +1107,18 @@ export default {
         },
         volverTra() {
             this.popCrearTrabajador = false;
+        },
+        cargarPrioridades() {
+            axios
+                .get(this.localVal + "/api/Usuario/GetPrioridades", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoPrioridad = res.data;
+                });
         },
         formatear_run() {
             if (this.rutUsuario == "" || this.rutUsuario == null) {
@@ -2075,6 +2103,9 @@ export default {
                     this.mensajeError =
                         "La descripcion no puede ser menor a 15 caracteres";
                     this.errorDescripcion(this.mensajeError);
+                } else if (this.seleccionPrioridad.id == 0) {
+                    this.mensajeError = "la prioridad ";
+                    this.errorDrop(this.mensajeError);
                 } else {
                     this.guardarFormulario();
                 }
@@ -2122,6 +2153,9 @@ export default {
                     this.mensajeError =
                         "La descripcion no puede ser menor a 15 caracteres";
                     this.errorDescripcion(this.mensajeError);
+                } else if (this.seleccionPrioridad.id == 0) {
+                    this.mensajeError = "la prioridad ";
+                    this.errorDrop(this.mensajeError);
                 } else {
                     this.guardarFormulario();
                 }
@@ -2140,6 +2174,7 @@ export default {
             this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
             this.gestionTicket.idTurno = this.seleccionTurno.id;
             this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
+            this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
             var newElement = document.createElement("div");
             newElement.innerHTML = this.gestionTicket.descripcionP;
             this.gestionTicket.descripcionCorreo = newElement.textContent;
@@ -2629,6 +2664,9 @@ export default {
         this.cargarEspecialidad();
         this.cargarCargoUsuarioU();
         this.cargarHoras();
+        setTimeout(() => {
+            this.cargarPrioridades();
+        }, 2000);
     },
     async beforeMount() {},
     components: {

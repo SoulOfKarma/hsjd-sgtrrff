@@ -121,7 +121,9 @@ class GestionTicketEMSController extends Controller
             SeguimientoSolicitudes::create($request->all());
             //Insertando Ticket
             $response2 = SolicitudTicketsEM::where('id', $request->id_solicitud)
-                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion, 'id_estado' => $request->id_estado]);
+                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
+                 'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
+                  'id_estado' => $request->id_estado,'id_prioridad' => $request->id_prioridad]);
 
             $response = GestionTicketEMS::create($request->all());
         } catch (\Throwable $th) {
@@ -294,7 +296,7 @@ class GestionTicketEMSController extends Controller
                 ->update([
                     'id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
                     'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
-                    'id_estado' => $request->id_estado
+                    'id_estado' => $request->id_estado,'id_prioridad' => $request->id_prioridad
                 ]);
             $response = GestionTicketEMS::where('uuid', $request->uuid)
                 ->where('id_solicitud', $request->id_solicitud)

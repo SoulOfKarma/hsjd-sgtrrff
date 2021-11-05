@@ -174,7 +174,7 @@ class SolicitudUsuarioController extends Controller
             ->update([
                 'id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
                 'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
-                'id_estado' => $request->id_estado, 'id_prioridad' => $request->id_prioridad, 'descripcionP' => $request->descripcionP, 'tituloP' => $request->tituloP
+                'id_estado' => $request->id_estado, 'descripcionP' => $request->descripcionP, 'tituloP' => $request->tituloP
             ]);
 
          $response = SeguimientoSolicitudes::create($request->all());
@@ -492,6 +492,44 @@ class SolicitudUsuarioController extends Controller
         }
         
         
+    }
+
+    public function PostFinalizarSolicitud(Request $request){
+        try {
+            if($request->id_categoria == 1){
+                SolicitudTickets::where('uuid', $request->uuid)
+                ->where('id', $request->id)
+                ->update([
+                    'id_estado' => $request->id_estado
+                ]);
+                return true;
+            }else if($request->id_categoria == 2){
+                SolicitudTicketsEM::where('uuid', $request->uuid)
+            ->where('id', $request->id)
+            ->update([
+                'id_estado' => $request->id_estado
+            ]);
+            return true;
+            }else if($request->id_categoria == 3){
+                SolicitudTicketINDs::where('uuid', $request->uuid)
+                ->where('id', $request->id)
+                ->update([
+                    'id_estado' => $request->id_estado
+                ]);
+                return true;
+            }else if($request->id_categoria == 4){
+                SolicitudTicketsAps::where('uuid', $request->uuid)
+            ->where('id', $request->id)
+            ->update([
+                'id_estado' => $request->id_estado
+            ]);
+            return true;
+            }
+            
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 
     public function destroy($id)

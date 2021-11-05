@@ -77,16 +77,6 @@
                                 "
                             ></v-select>
                             <br />
-                            <h6>2.2 - Prioridad de la Solicitud</h6>
-                            <br />
-                            <v-select
-                                v-model="seleccionPrioridad"
-                                placeholder="Seleccione la Prioridad"
-                                class="w-full select-large"
-                                label="descripcion_prioridad"
-                                :options="listadoPrioridad"
-                            ></v-select>
-                            <br />
                             <h6>2.3 - Titulo del Problema</h6>
                             <br />
                             <vs-input
@@ -182,7 +172,6 @@ export default {
         listadoUnidadEsp: [],
         listadoTipoRep: [],
         listadoCorreo: [],
-        listadoPrioridad: [],
         localVal: process.env.MIX_APP_URL,
         uuidC: "",
         colorLoading: "#ff8000",
@@ -200,7 +189,6 @@ export default {
             id_servicio: 0,
             id_ubicacionEx: 0,
             id_tipoReparacion: 0,
-            id_prioridad: 0,
             id_solicitud: 0,
             uuid: "",
             descripcionSeguimiento: "",
@@ -222,10 +210,6 @@ export default {
         seleccionReparacion: {
             id: 0,
             descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
-        },
-        seleccionPrioridad: {
-            id: 0,
-            descripcion_prioridad: "Seleccion Prioridad"
         },
         descripcionTitulo: "",
         descripcionProblema: ""
@@ -293,18 +277,6 @@ export default {
                 }
             });
             this.seleccionReparacion = b;
-        },
-        cargarPrioridades() {
-            axios
-                .get(this.localVal + "/api/Usuario/GetPrioridades", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoPrioridad = res.data;
-                });
         },
         cargaSegunUnidadEsp() {
             var idGeneral = this.seleccionUnidadEsp.id;
@@ -496,9 +468,6 @@ export default {
             } else if (this.seleccionReparacion.id == 0) {
                 this.mensajeError = "el tipo de reparacion";
                 this.errorDrop(this.mensajeError);
-            } else if (this.seleccionPrioridad.id == 0) {
-                this.mensajeError = "la prioridad";
-                this.errorDrop(this.mensajeError);
             } else {
                 this.solicitud.id_edificio = this.seleccionEdificio[0].id;
                 this.solicitud.id_servicio = this.seleccionServicio[0].id;
@@ -506,7 +475,6 @@ export default {
                 this.solicitud.id_tipoReparacion = this.seleccionReparacion[0].id;
                 this.solicitud.id = this.datosSolicitud.id;
                 this.solicitud.tituloP = this.descripcionTitulo;
-                this.solicitud.id_prioridad = this.seleccionPrioridad.id;
                 var newElement = document.createElement("div");
                 this.solicitud.descripcionP = this.descripcionProblema;
                 newElement.innerHTML = this.descripcionProblema;
@@ -845,7 +813,6 @@ export default {
         this.cargarServicios();
         this.cargarUnidadEsp();
         this.cargarTipoRep();
-        this.cargarPrioridades();
         this.cargarDatosSolicitud();
     },
     components: {
