@@ -21,7 +21,7 @@ class CargoUsuarioController extends Controller
 
     public function getCargoNoJefatura()
     {
-        $getall = cargoUsuario::select('cargo_Usuarios.*')
+        $getall = cargoUsuario::select('cargo_usuarios.*')
         ->whereNotIn('id',[1])
         ->whereNotIn('id',[5])
         ->whereNotIn('id',[6])
