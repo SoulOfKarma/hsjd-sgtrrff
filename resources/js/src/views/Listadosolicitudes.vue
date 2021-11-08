@@ -375,8 +375,8 @@ export default {
                     }
                 },
                 {
-                    label: "Tipo Reparacion",
-                    field: "descripcionTipoReparacion",
+                    label: "Categoria",
+                    field: "des_categoria",
                     filterOptions: {
                         enabled: true
                     }
@@ -553,7 +553,7 @@ export default {
                                     time: 4000,
                                     text:
                                         "Solicitud Recepcionada y Finalizada Correctamente",
-                                    color: "danger",
+                                    color: "success",
                                     position: "top-right"
                                 });
                                 this.cargarSolicitudes();
@@ -563,7 +563,7 @@ export default {
                                     time: 4000,
                                     text:
                                         "No fue posible finalizar la solicitud",
-                                    color: "success",
+                                    color: "danger",
                                     position: "top-right"
                                 });
                             }
