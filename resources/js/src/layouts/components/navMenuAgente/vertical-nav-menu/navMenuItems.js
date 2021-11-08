@@ -275,6 +275,12 @@ export default [
         ]
     },
     {
+        url: "/agenteView/ListadoTotalTickets",
+        name: "Listado Total",
+        slug: "ListadoTotalTickets",
+        icon: "FileIcon"
+    },
+    {
         url: "/agenteView/CalendarioElectricos",
         name: "Electricos",
         slug: "CalendarioElectricos",

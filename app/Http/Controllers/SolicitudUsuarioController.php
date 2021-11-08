@@ -125,7 +125,6 @@ class SolicitudUsuarioController extends Controller
         return  $ticketAP;
     }
 
-
     public function getSolicitudUsuariosJoin($idServicio)
     {
         $estadoEliminado = 7;
@@ -541,6 +540,5 @@ class SolicitudUsuarioController extends Controller
 
         return true;
     }
-
 
 }

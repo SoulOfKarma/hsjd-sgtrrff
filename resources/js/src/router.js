@@ -533,6 +533,12 @@ const router = new Router({
                     name: "CalendarioMIndustrial",
                     component: () =>
                         import("./views/agenteView/CalendarioMIndustrial.vue")
+                },
+                {
+                    path: "/agenteView/ListadoTotalTickets",
+                    name: "ListadoTotalTickets",
+                    component: () =>
+                        import("./views/agenteView/ListadoTotalTickets.vue")
                 }
             ]
         },

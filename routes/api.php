@@ -148,6 +148,8 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/GetSolicitudTicketsIND', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@getSolicitudUsuariosJoinIND']);
             //Traer Tickets con sus usuarios CA
             Route::get('/Agente/GetSolicitudTicketsCA', ['middleware' => 'cors', 'uses' => 'GestionTicketsApsController@getSolicitudUsuariosJoinCA']);
+            //Traer Todos Los tickets Existentes
+            Route::get('/Agente/GetTicketsTotales', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetTicketsTotales']);
             //Traer Turno
             Route::get('/Agente/GetTurnos', ['middleware' => 'cors', 'uses' => 'TurnoController@index']);
             //Traer Cargos
