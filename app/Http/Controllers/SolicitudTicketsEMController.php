@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use App\equipamientoMedicos;
+use App\tbl_ticket_equipamientoMedicos;
 
 class SolicitudTicketsEMController extends Controller
 {
@@ -137,6 +139,9 @@ class SolicitudTicketsEMController extends Controller
             $uuid = Uuid::generate()->string;
             $response = SolicitudTicketsEM::create(array_merge($request->all(), ['uuid' => $uuid]));
             seguimientoEMSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $response->id, 'descripcionSeguimiento' => 'Ticket creado']));
+            if($request->id_equipamiento_medico > 0){
+                tbl_ticket_equipamientoMedicos::create(['id_solicitud' => $response->id,'id_equipamiento_medico' => $request->id_equipamiento_medico]);
+            }
             $id = $request->id_user;
             $userSearch = Users::where('id',$id)->first();
                 $ValidarCargo = $userSearch->id_cargo_asociado;     

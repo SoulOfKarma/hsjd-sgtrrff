@@ -126,12 +126,55 @@
             >
                 <vx-card title="3. Informacion Equipo">
                     <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <ul class="centerx">
+                                <li>
+                                    <vs-checkbox
+                                        v-model="checkEQ"
+                                        class="w-full"
+                                        >chequee si la solicitud no requiere la
+                                        revision de un equipamiento
+                                        medico</vs-checkbox
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                        <br />
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>Seleccione la Serie del equipo a Revisar</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionSerie"
+                                placeholder="Seleccione el Equipamiento a Revisar"
+                                class="w-full select-large"
+                                label="serie"
+                                :options="listadoEquipamiento"
+                                @input="cargaEquipoPorSerie"
+                            ></v-select>
+                            <br />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>
+                                Seleccione el Inventario del equipo a Revisar
+                            </h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionInventario"
+                                placeholder="Seleccione el Equipamiento a Revisar"
+                                class="w-full select-large"
+                                label="ninventario"
+                                :options="listadoEquipamiento"
+                                @input="cargaEquipoPorNInventario"
+                            ></v-select>
+                            <br />
+                        </div>
                         <div class="vx-col w-1/2 mt-5">
                             <h6>3.1 - Equipo</h6>
                             <br />
                             <vs-input
+                                disabled="true"
                                 placeholder="Ej. Placa Madre MSI B550"
-                                v-model="dataEquipo.equipo"
+                                v-model="solicitud.equipo"
                                 class="w-full"
                                 name="Equipo"
                             />
@@ -142,7 +185,8 @@
                             <br />
                             <vs-input
                                 placeholder="Ej. MSI"
-                                v-model="dataEquipo.marca"
+                                disabled="true"
+                                v-model="solicitud.marca"
                                 class="w-full"
                                 name="Marca"
                             />
@@ -154,7 +198,8 @@
                             <br />
                             <vs-input
                                 placeholder="Ej. B550"
-                                v-model="dataEquipo.modelo"
+                                disabled="true"
+                                v-model="solicitud.modelo"
                                 class="w-full"
                                 name="Modelo"
                             />
@@ -165,7 +210,8 @@
                             <br />
                             <vs-input
                                 placeholder="Ej. A26548W866F9B"
-                                v-model="dataEquipo.serie"
+                                disabled="true"
+                                v-model="solicitud.serie"
                                 class="w-full"
                                 name="Serie"
                             />
@@ -176,7 +222,8 @@
                             <br />
                             <vs-input
                                 placeholder="Ej. 15-54112"
-                                v-model="dataEquipo.ninventario"
+                                disabled="true"
+                                v-model="solicitud.ninventario"
                                 class="w-full"
                                 name="Inventario"
                             />
@@ -251,7 +298,7 @@ export default {
                 ]
             }
         },
-
+        checkEQ: false,
         colorLoading: "#ff8000",
         listadoEdificios: [],
         listadoServicios: [],
@@ -261,6 +308,7 @@ export default {
         listadoServiciosData: [],
         listadoUsuarios: [],
         listadoPrioridad: [],
+        listadoEquipamiento: [],
         localVal: process.env.MIX_APP_URL,
         uuidC: "",
 
@@ -282,19 +330,26 @@ export default {
             id_categoria: 0,
             uuid: "",
             descripcionSeguimiento: "Solicitud creada",
-            descripcionCorreo: ""
-        },
-        dataEquipo: {
+            descripcionCorreo: "",
             equipo: "",
             marca: "",
             modelo: "",
             serie: "",
-            ninventario: ""
+            ninventario: "",
+            id_equipamiento_medico: 0
         },
         datosCorreo: {
             nombre: "",
             descripcionP: "",
             id: 0
+        },
+        seleccionSerie: {
+            id: 0,
+            serie: ""
+        },
+        seleccionInventario: {
+            id: 0,
+            ninventario: ""
         },
         seleccionEdificio: {
             id: 0,
@@ -370,6 +425,46 @@ export default {
             });
 
             this.seleccionEdificio = b;
+        },
+        cargaEquipoPorSerie() {
+            try {
+                var idGeneral = this.seleccionSerie.id;
+                let c = JSON.parse(JSON.stringify(this.listadoEquipamiento));
+                let b = [];
+                var a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        this.solicitud.equipo = value.equipo;
+                        this.solicitud.marca = value.marca;
+                        this.solicitud.modelo = value.modelo;
+                        this.solicitud.serie = value.serie;
+                        this.solicitud.ninventario = value.ninventario;
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        cargaEquipoPorNInventario() {
+            try {
+                var idGeneral = this.seleccionInventario.id;
+                let c = JSON.parse(JSON.stringify(this.listadoEquipamiento));
+                let b = [];
+                var a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        this.solicitud.equipo = value.equipo;
+                        this.solicitud.marca = value.marca;
+                        this.solicitud.modelo = value.modelo;
+                        this.solicitud.serie = value.serie;
+                        this.solicitud.ninventario = value.ninventario;
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
         },
         cargaSegunServicio() {
             try {
@@ -490,6 +585,18 @@ export default {
                 })
                 .then(res => {
                     this.listadoCategoria = res.data;
+                });
+        },
+        cargarEquipamientoMedico() {
+            axios
+                .get(this.localVal + "/api/Usuario/GetTodoEquipamientoMedico", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoEquipamiento = res.data;
                 });
         },
         cargarTipoRep() {
@@ -1347,6 +1454,7 @@ export default {
         this.cargarServicios();
         this.cargarCategoria();
         this.cargarTipoRep();
+        this.cargarEquipamientoMedico();
     },
     beforeMount() {
         setTimeout(() => {

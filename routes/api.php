@@ -40,6 +40,8 @@ use App\Mail\AutoRespuesta;
             Route::get('/Usuario/GetServicios', ['middleware' => 'cors', 'uses' => 'ServicioController@index']);
             //Retorna Categorias
             Route::get('/Usuario/GetCategoria', ['middleware' => 'cors', 'uses' => 'CategoriaController@index']);
+            //Retorna Equipamiento Medico
+            Route::get('/Usuario/GetTodoEquipamientoMedico', ['middleware' => 'cors', 'uses' => 'EquipamientoMedicosController@GetTodoEquipamientoMedico']);
             //Route::get('/Usuario/GetEdificios', 'ServicioController@index');
             //Retorna Tipo Unidad Especifica
             Route::get('/Usuario/GetUnidadEsp', ['middleware' => 'cors', 'uses' => 'UnidadExController@index']);
