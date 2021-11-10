@@ -87,6 +87,8 @@
                         <span v-else-if="props.column.field === 'action'">
                             <div v-if="props.row.Horas < 1">
                                 <plus-circle-icon
+                                    content="Informacion de la Solicitud"
+                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
@@ -98,6 +100,8 @@
                                     "
                                 ></plus-circle-icon>
                                 <upload-icon
+                                    content="Modificar Solicitud"
+                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
@@ -109,6 +113,8 @@
                                     "
                                 ></upload-icon>
                                 <trash-2-icon
+                                    content="Eliminar Solicitud"
+                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
@@ -120,6 +126,8 @@
                                     "
                                 ></trash-2-icon>
                                 <check-icon
+                                    content="Confirmar Realizacion de la solicitud"
+                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
@@ -133,6 +141,8 @@
                             </div>
                             <div v-else-if="props.row.Horas < 8">
                                 <plus-circle-icon
+                                    content="Informacion de la Solicitud"
+                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
@@ -144,6 +154,8 @@
                                     "
                                 ></plus-circle-icon>
                                 <upload-icon
+                                    content="Modificar Solicitud"
+                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
@@ -155,6 +167,8 @@
                                     "
                                 ></upload-icon>
                                 <check-icon
+                                    content="Confirmar Realizacion de la solicitud"
+                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
@@ -168,6 +182,8 @@
                             </div>
                             <div v-else-if="props.row.id_estado == 5">
                                 <plus-circle-icon
+                                    content="Informacion de la Solicitud"
+                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
@@ -179,6 +195,8 @@
                                     "
                                 ></plus-circle-icon>
                                 <check-icon
+                                    content="Confirmar Realizacion de la solicitud"
+                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
@@ -192,8 +210,11 @@
                             </div>
                             <div v-else-if="props.row.id_estado == 8">
                                 <plus-circle-icon
+                                    content="Informacion de la Solicitud"
+                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
+                                    animation-speed="slow"
                                     @click="
                                         detalleSolicitud(
                                             props.row.id,
@@ -205,6 +226,8 @@
                             </div>
                             <div v-else>
                                 <plus-circle-icon
+                                    content="Informacion de la Solicitud"
+                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
@@ -216,6 +239,8 @@
                                     "
                                 ></plus-circle-icon>
                                 <check-icon
+                                    content="Confirmar Realizacion de la solicitud"
+                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
@@ -326,9 +351,12 @@ import { CheckIcon } from "vue-feather-icons";
 import moment from "moment";
 // import the styles
 import Vue from "vue";
+import VueTippy, { TippyComponent } from "vue-tippy";
 import "vue-good-table/dist/vue-good-table.css";
 import VueGoodTablePlugin from "vue-good-table";
 Vue.use(VueGoodTablePlugin);
+Vue.use(VueTippy);
+Vue.component("tippy", TippyComponent);
 
 export default {
     components: {
