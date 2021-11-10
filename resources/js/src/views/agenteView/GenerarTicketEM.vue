@@ -39,16 +39,17 @@
                         <div class="vx-col w-full mt-5">
                             <h6>1.1 - Seleccione Al usuario</h6>
                             <br />
-                            <v-select
+                            <multiselect
                                 taggable
                                 v-model="seleccionUsuario"
-                                :filter="fuseSearch"
+                                :searchable="true"
+                                :close-on-select="true"
                                 placeholder="Seleccione al Usuario"
                                 class="w-full select-large"
                                 label="nombre"
                                 :options="listadoUsuarios"
                                 @input="agregarNuevoUsuario()"
-                            ></v-select>
+                            ></multiselect>
                         </div>
                     </div>
                 </vx-card>
@@ -663,6 +664,9 @@ import { quillEditor } from "vue-quill-editor";
 import router from "@/router";
 import { validate, clean, format } from "rut.js";
 import VxCard from "../../components/vx-card/VxCard.vue";
+import Vue from "vue";
+import Multiselect from "vue-multiselect";
+Vue.component("multiselect", Multiselect);
 
 export default {
     data: () => ({

@@ -39,16 +39,17 @@
                         <div class="vx-col w-full mt-5">
                             <h6>1.1 - Seleccione Al usuario</h6>
                             <br />
-                            <v-select
+                            <multiselect
                                 taggable
                                 v-model="seleccionUsuario"
-                                :filter="fuseSearch"
+                                :searchable="true"
+                                :close-on-select="true"
                                 placeholder="Seleccione al Usuario"
                                 class="w-full select-large"
                                 label="nombre"
                                 :options="listadoUsuarios"
                                 @input="agregarNuevoUsuario()"
-                            ></v-select>
+                            ></multiselect>
                         </div>
                     </div>
                 </vx-card>
@@ -806,6 +807,8 @@ import Vue from "vue";
 import "vue-good-table/dist/vue-good-table.css";
 import VueGoodTablePlugin from "vue-good-table";
 Vue.use(VueGoodTablePlugin);
+import Multiselect from "vue-multiselect";
+Vue.component("multiselect", Multiselect);
 
 export default {
     data: () => ({
