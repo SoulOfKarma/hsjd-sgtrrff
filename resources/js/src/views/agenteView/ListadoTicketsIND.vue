@@ -75,6 +75,8 @@
                     <span v-else-if="props.column.field === 'action'">
                         <div v-if="props.row.idTicketCilindro > 0">
                             <plus-circle-icon
+                                content="Asignar Solicitud"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -85,6 +87,8 @@
                                 "
                             ></plus-circle-icon>
                             <upload-icon
+                                content="Modificar Solicitud"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -95,11 +99,15 @@
                                 "
                             ></upload-icon>
                             <trash-2-icon
+                                content="Eliminar Solicitud"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="abrirPop(props.row.id, props.row.uuid)"
                             ></trash-2-icon>
                             <corner-down-right-icon
+                                content="Derivar Solicitud"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -110,6 +118,8 @@
                                 "
                             ></corner-down-right-icon>
                             <printer-icon
+                                content="Imprimir Solicitud"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -117,6 +127,8 @@
                                 "
                             ></printer-icon>
                             <file-plus-icon
+                                content="Imprimir Acta del Cilindro"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -127,6 +139,8 @@
                                 "
                             ></file-plus-icon>
                             <save-icon
+                                content="Menu para Guardar documentacion adicional"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -137,6 +151,8 @@
                                 "
                             ></save-icon>
                             <file-text-icon
+                                content="Listado Documentacion adicional asociada"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -147,6 +163,8 @@
                                 "
                             ></file-text-icon>
                             <loader-icon
+                                content="Repetir solicitud con los mismos datos creados"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -157,6 +175,8 @@
                                 "
                             ></loader-icon>
                             <alert-triangle-icon
+                                content="Finalizar Solicitud"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -169,6 +189,8 @@
                         </div>
                         <div v-else>
                             <plus-circle-icon
+                                content="Asignar Solicitud"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -179,6 +201,8 @@
                                 "
                             ></plus-circle-icon>
                             <upload-icon
+                                content="Modificar Solicitud"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -189,11 +213,15 @@
                                 "
                             ></upload-icon>
                             <trash-2-icon
+                                content="Eliminar Solicitud"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="abrirPop(props.row.id, props.row.uuid)"
                             ></trash-2-icon>
                             <corner-down-right-icon
+                                content="Derivar Solicitud"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -204,6 +232,8 @@
                                 "
                             ></corner-down-right-icon>
                             <printer-icon
+                                content="Imprimir Solicitud"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -211,6 +241,8 @@
                                 "
                             ></printer-icon>
                             <save-icon
+                                content="Menu para Guardar documentacion adicional"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -221,6 +253,8 @@
                                 "
                             ></save-icon>
                             <file-text-icon
+                                content="Listado Documentacion adicional asociada"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -231,6 +265,8 @@
                                 "
                             ></file-text-icon>
                             <loader-icon
+                                content="Repetir solicitud con los mismos datos creados"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -241,6 +277,8 @@
                                 "
                             ></loader-icon>
                             <alert-triangle-icon
+                                content="Finalizar Solicitud"
+                                v-tippy
                                 size="1.5x"
                                 class="custom-class"
                                 @click="
@@ -491,10 +529,13 @@ import vSelect from "vue-select";
 import moment from "moment";
 import { PrinterIcon } from "vue-feather-icons";
 import Vue from "vue";
+import VueTippy, { TippyComponent } from "vue-tippy";
 // import the styles
 import "vue-good-table/dist/vue-good-table.css";
 import VueGoodTablePlugin from "vue-good-table";
 Vue.use(VueGoodTablePlugin);
+Vue.use(VueTippy);
+Vue.component("tippy", TippyComponent);
 
 export default {
     components: {
