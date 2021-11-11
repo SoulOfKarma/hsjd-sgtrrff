@@ -37,15 +37,13 @@
                             <h6>1.1 - Seleccione Al usuario</h6>
                             <br />
                             <multiselect
-                                taggable
+                                :taggable="true"
                                 v-model="seleccionUsuario"
-                                :searchable="true"
-                                :close-on-select="true"
-                                placeholder="Seleccione al Usuario"
+                                placeholder="Seleccione Usuario"
                                 class="w-full select-large"
                                 label="nombre"
                                 :options="listadoUsuarios"
-                                @input="agregarNuevoUsuario()"
+                                @tag="agregarNuevoUsuario()"
                             ></multiselect>
                         </div>
                     </div>
@@ -1162,11 +1160,16 @@ export default {
         },
         agregarNuevoUsuario() {
             try {
+                this.seleccionUsuario = {
+                    id: 0,
+                    nombre: "Seleccione Usuario"
+                };
+
                 if (
-                    this.seleccionUsuario.id == 0 ||
                     this.seleccionUsuario.id == null ||
+                    this.seleccionUsuario == null ||
                     this.seleccionUsuario == 0 ||
-                    this.seleccionUsuario == null
+                    this.seleccionUsuario.id == 0
                 ) {
                     this.popCrearUsuario = true;
                 }
