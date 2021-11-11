@@ -132,6 +132,7 @@
                                     <vs-checkbox
                                         v-model="checkEQ"
                                         class="w-full"
+                                        @click="desactivarSeleccionEQ"
                                         >chequee si la solicitud no requiere la
                                         revision de un equipamiento
                                         medico</vs-checkbox
@@ -150,6 +151,7 @@
                                 label="serie"
                                 :options="listadoEquipamiento"
                                 @input="cargaEquipoPorSerie"
+                                :disabled="this.checkEQ"
                             ></v-select>
                             <br />
                         </div>
@@ -165,6 +167,7 @@
                                 label="ninventario"
                                 :options="listadoEquipamiento"
                                 @input="cargaEquipoPorNInventario"
+                                :disabled="this.checkEQ"
                             ></v-select>
                             <br />
                         </div>
@@ -172,7 +175,7 @@
                             <h6>3.1 - Equipo</h6>
                             <br />
                             <vs-input
-                                disabled="true"
+                                :disabled="this.checkEQ"
                                 placeholder="Ej. Placa Madre MSI B550"
                                 v-model="solicitud.equipo"
                                 class="w-full"
@@ -185,7 +188,7 @@
                             <br />
                             <vs-input
                                 placeholder="Ej. MSI"
-                                disabled="true"
+                                :disabled="this.checkEQ"
                                 v-model="solicitud.marca"
                                 class="w-full"
                                 name="Marca"
@@ -198,7 +201,7 @@
                             <br />
                             <vs-input
                                 placeholder="Ej. B550"
-                                disabled="true"
+                                :disabled="this.checkEQ"
                                 v-model="solicitud.modelo"
                                 class="w-full"
                                 name="Modelo"
@@ -210,7 +213,7 @@
                             <br />
                             <vs-input
                                 placeholder="Ej. A26548W866F9B"
-                                disabled="true"
+                                :disabled="this.checkEQ"
                                 v-model="solicitud.serie"
                                 class="w-full"
                                 name="Serie"
@@ -222,7 +225,7 @@
                             <br />
                             <vs-input
                                 placeholder="Ej. 15-54112"
-                                disabled="true"
+                                :disabled="this.checkEQ"
                                 v-model="solicitud.ninventario"
                                 class="w-full"
                                 name="Inventario"
@@ -377,6 +380,21 @@ export default {
         }
     },
     methods: {
+        desactivarSeleccionEQ() {
+            try {
+                if (this.checkEQ == false) {
+                    this.solicitud.equipo = "";
+                    this.solicitud.marca = "";
+                    this.solicitud.modelo = "";
+                    this.solicitud.serie = "";
+                    this.solicitud.ninventario = "";
+                } else {
+                    this.checkEQ = true;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
         getImage(event) {
             //Asignamos la imagen a  nuestra data
             this.image = event.target.files[0];
