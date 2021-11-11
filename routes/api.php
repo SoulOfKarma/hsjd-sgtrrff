@@ -442,7 +442,13 @@ use App\Mail\AutoRespuesta;
             //Retorna Tipo Reparacion
             Route::get('/Usuario/getTReparacionSI', ['middleware' => 'cors', 'uses' => 'TipoReparacionController@getTReparacionSI']);
             //Inserta Documentos de las solicitudes finalizadas
-            Route::post('/Agente/PostDocumentoF', ['middleware' => 'cors', 'uses' => 'DocumentosFController@store']);
+            Route::post('/Usuario/PostDocumentoF', ['middleware' => 'cors', 'uses' => 'DocumentosFController@store']);
+            //Inserta Documentos de las solicitudes finalizadas
+            Route::post('/Usuario/PostDocumentoAP', ['middleware' => 'cors', 'uses' => 'DocumentosFController@storeAP']);
+            //Inserta Documentos de las solicitudes finalizadas
+            Route::post('/Usuario/PostDocumentoEM', ['middleware' => 'cors', 'uses' => 'DocumentosFController@storeEM']);
+            //Inserta Documentos de las solicitudes finalizadas
+            Route::post('/Usuario/PostDocumentoIND', ['middleware' => 'cors', 'uses' => 'DocumentosFController@storeIND']);
             //Inserta Documentos de las solicitudes finalizadas
             Route::post('/Agente/getDocumentos', ['middleware' => 'cors', 'uses' => 'DocumentosFController@getData']);
             //Trae Duracion 

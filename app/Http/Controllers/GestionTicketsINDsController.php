@@ -154,15 +154,13 @@ class GestionTicketsINDsController extends Controller
             DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP) as desFormat"),
             DB::raw("(CASE WHEN solicitud_ticket_i_n_ds.created_at IS NULL THEN 'PENDIENTE'
             ELSE DATE_FORMAT(solicitud_ticket_i_n_ds.created_at,'%d/%m/%Y') END) AS fechaSolicitud"),
-            DB::raw("(CASE WHEN entregacilindros.idTicket IS NULL THEN 0
-            ELSE entregacilindros.idTicket END) AS idTicketCilindro"),
-            DB::raw("'PENDIENTE'AS nombreTra"))
-            ->join('entregacilindros','solicitud_ticket_i_n_ds.id','=', 'entregacilindros.idTicket')
+            DB::raw("'PENDIENTE' AS idTicketCilindro"),
+            DB::raw("'PENDIENTE' AS nombreTra")) 
             ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions','solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
             ->join('servicios','solicitud_ticket_i_n_ds.id_servicio','=','servicios.id')
-            ->where('solicitud_ticket_i_n_ds.id_categoria', 1)
+            ->where('solicitud_ticket_i_n_ds.id_categoria', 3)
             ->where('solicitud_ticket_i_n_ds.id_estado', 1);
             //->orderBy('solicitud_tickets.id', 'desc')
             //->get();

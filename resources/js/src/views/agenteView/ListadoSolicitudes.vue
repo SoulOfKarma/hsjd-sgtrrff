@@ -698,7 +698,8 @@ export default {
             //a
             this.popupActive4 = true;
             let data = {
-                id: id
+                id: id,
+                id_categoria: 1
             };
             axios
                 .post(this.localVal + "/api/Agente/getDocumentos", data, {
@@ -709,15 +710,6 @@ export default {
                 })
                 .then(res => {
                     let listado = res.data;
-                    /* let b = [];
-                    let a = 0;
-                    listado.forEach((value, index) => {
-                        a = value.id_solicitud;
-                        if (a == id) {
-                            b.push(value);
-                        }
-                    }); */
-
                     this.documentacion = JSON.parse(JSON.stringify(listado));
                 });
             //let c = this.dataDocumentacion;

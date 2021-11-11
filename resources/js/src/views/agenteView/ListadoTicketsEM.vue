@@ -137,7 +137,7 @@
                             size="1.5x"
                             class="custom-class"
                             @click="
-                                listadoDocumentacionAsociada(
+                                cargarDocumentacion(
                                     props.row.id,
                                     props.row.uuid
                                 )
@@ -685,27 +685,14 @@ export default {
 
             this.popupActive3 = true;
         },
-        listadoDocumentacionAsociada(id, uuid) {
-            this.popupActive4 = true;
-            let c = this.dataDocumentacion;
-            let b = [];
-            var a = 0;
-            c.forEach((value, index) => {
-                a = value.id_solicitud;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-
-            this.documentacion = b;
-        },
         forceRerender() {
             this.componentKey += 1;
         },
-        cargarDocumentacion() {
+        cargarDocumentacion(id, uuid) {
             this.popupActive4 = true;
             let data = {
-                id: id
+                id: id,
+                id_categoria: 2
             };
             axios
                 .post(this.localVal + "/api/Agente/getDocumentos", data, {
@@ -716,15 +703,6 @@ export default {
                 })
                 .then(res => {
                     let listado = res.data;
-                    /* let b = [];
-                    let a = 0;
-                    listado.forEach((value, index) => {
-                        a = value.id_solicitud;
-                        if (a == id) {
-                            b.push(value);
-                        }
-                    }); */
-
                     this.documentacion = JSON.parse(JSON.stringify(listado));
                 });
             //let c = this.dataDocumentacion;

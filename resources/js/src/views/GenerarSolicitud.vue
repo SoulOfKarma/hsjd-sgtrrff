@@ -756,7 +756,7 @@ export default {
                             .all([
                                 axios.post(
                                     this.localVal +
-                                        "/api/Agente/PostDocumentoF",
+                                        "/api/Usuario/PostDocumentoF",
                                     data,
                                     {
                                         headers: {
@@ -895,7 +895,7 @@ export default {
                             .all([
                                 axios.post(
                                     this.localVal +
-                                        "/api/Agente/PostDocumentoF",
+                                        "/api/Usuario/PostDocumentoEM",
                                     data,
                                     {
                                         headers: {
@@ -1034,7 +1034,7 @@ export default {
                             .all([
                                 axios.post(
                                     this.localVal +
-                                        "/api/Agente/PostDocumentoF",
+                                        "/api/Usuario/PostDocumentoIND",
                                     data,
                                     {
                                         headers: {
@@ -1173,7 +1173,7 @@ export default {
                             .all([
                                 axios.post(
                                     this.localVal +
-                                        "/api/Agente/PostDocumentoF",
+                                        "/api/Usuario/PostDocumentoAP",
                                     data,
                                     {
                                         headers: {
@@ -1312,7 +1312,7 @@ export default {
                             .all([
                                 axios.post(
                                     this.localVal +
-                                        "/api/Agente/PostDocumentoF",
+                                        "/api/Usuario/PostDocumentoF",
                                     data,
                                     {
                                         headers: {
