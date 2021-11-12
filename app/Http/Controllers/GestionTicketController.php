@@ -37,18 +37,14 @@ class GestionTicketController extends Controller
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('categorias','solicitud_tickets.id_categoria','=','categorias.id')
-            ->whereNotIn('solicitud_tickets.id_estado',$filtro)
-            ->orderBy('solicitud_tickets.id', 'desc')
-            ->get();
+            ->whereNotIn('solicitud_tickets.id_estado',$filtro);
         $ticketEM = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.*', 'users.nombre', 'users.apellido','categorias.des_categoria',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_e_m_s.created_at,NOW()) AS Horas'),
              DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"))
             ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
             ->join('categorias','solicitud_tickets_e_m_s.id_categoria','=','categorias.id')
-            ->whereNotIn('solicitud_tickets_e_m_s.id_estado',$filtro)
-            ->orderBy('solicitud_tickets_e_m_s.id', 'desc')
-            ->get();
+            ->whereNotIn('solicitud_tickets_e_m_s.id_estado',$filtro);
             
         $ticketIND = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.*', 'users.nombre', 'users.apellido','categorias.des_categoria',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_ticket_i_n_ds.created_at,NOW()) AS Horas'),
@@ -56,11 +52,11 @@ class GestionTicketController extends Controller
             ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
             ->join('categorias','solicitud_ticket_i_n_ds.id_categoria','=','categorias.id')
-            ->whereNotIn('solicitud_ticket_i_n_ds.id_estado',$filtro)
-            ->orderBy('solicitud_ticket_i_n_ds.id', 'desc')
-            ->get();
+            ->whereNotIn('solicitud_ticket_i_n_ds.id_estado',$filtro);
             
-        $ticketAP = SolicitudTicketsAps::select('solicitud_tickets_aps.*', 'users.nombre', 'users.apellido','categorias.des_categoria',
+            
+        $ticketAP = SolicitudTicketsAps::select('solicitud_tickets_aps.*', 'users.nombre', 'users.apellido',
+            'categorias.des_categoria',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_aps.created_at,NOW()) AS Horas'),
              DB::raw("CONCAT(solicitud_tickets_aps.id) as nticket"))
             ->join('users', 'solicitud_tickets_aps.id_user', '=', 'users.id')
@@ -70,9 +66,8 @@ class GestionTicketController extends Controller
             ->union($ticket)
             ->union($ticketEM)
             ->union($ticketIND)
-            ->orderBy('solicitud_tickets_aps.id', 'desc')
             ->get();    
-        return  $ticket;
+        return $ticketAP;
     }
 
     public function ticketsCategoriaInfra()
