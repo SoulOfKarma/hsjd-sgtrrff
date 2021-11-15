@@ -109,7 +109,11 @@
                             size="1.5x"
                             class="custom-class"
                             @click="
-                                cambiarCategoria(props.row.id, props.row.uuid)
+                                cambiarCategoria(
+                                    props.row.id,
+                                    props.row.uuid,
+                                    props.row.id_categoria
+                                )
                             "
                         ></corner-down-right-icon>
                         <printer-icon
@@ -709,12 +713,13 @@ export default {
                 });
             //let c = this.dataDocumentacion;
         },
-        cambiarCategoria(id, uuid) {
+        cambiarCategoria(id, uuid, id_categoria) {
             this.$router.push({
                 name: "ModificarCategoriaTicket",
                 params: {
                     id: `${id}`,
-                    uuid: `${uuid}`
+                    uuid: `${uuid}`,
+                    id_cat: `${id_categoria}`
                 }
             });
         },

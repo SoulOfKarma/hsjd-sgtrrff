@@ -252,7 +252,7 @@ use App\Mail\AutoRespuesta;
             //Traer Dato Join Calendario
             Route::get('/Agente/getDatoCalendarioCA', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetDatoCalendarioCA']);
             //Traer Dato Join Calendario
-            Route::post('/Agente/ModificarCategoria', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ModificarCategoria']);
+            Route::post('/Agente/ModificarCategoria', ['middleware' => 'cors', 'uses' => 'CategoriaController@PutCategoria']);
 
             //Api Trabajador
             //Traer datos especificos

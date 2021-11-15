@@ -106,10 +106,12 @@ export default {
         cambiar() {
             let uuid = this.$route.params.uuid;
             let id = this.$route.params.id;
+            let id_cat = this.$route.params.id_cat;
 
             this.categoria.idsolicitud = id;
             this.categoria.uuid = uuid;
             this.categoria.idCategoria = this.seleccionCategoria.id;
+            this.categoria.idCategoriaOriginal = id_cat;
             this.categoria.nombre = this.nombre;
             this.categoria.desCategoria = this.seleccionCategoria.des_categoria;
             this.categoria.id_user = sessionStorage.getItem("id");

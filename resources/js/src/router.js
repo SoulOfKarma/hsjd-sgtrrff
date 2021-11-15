@@ -431,7 +431,8 @@ const router = new Router({
                         import("./views/agenteView/GenerarTicketCA.vue")
                 },
                 {
-                    path: "/agenteView/ModificarCategoriaTicket/:id,:uuid",
+                    path:
+                        "/agenteView/ModificarCategoriaTicket/:id,:uuid,:id_cat",
                     name: "ModificarCategoriaTicket",
                     component: () =>
                         import(
