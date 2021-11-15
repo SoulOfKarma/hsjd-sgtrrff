@@ -123,7 +123,7 @@ class CategoriaController extends Controller
                 $data = SolicitudTickets::where('id',$request->idsolicitud)->delete();    
                 $seguimiento = new SeguimientoSolicitudes();
 
-                $seguimiento->id_solicitud = $request->idSolicitud;
+                $seguimiento->id_solicitud = $request->idsolicitud;
                 $seguimiento->uuid = $request->uuid;
                 $seguimiento->descripcionSeguimiento = "El agente " . $request->nombre . " a derivado el Ticket N°" . $request->idSolicitud . " a " . $request->des_categoria . "";
                 $seguimiento->id_user = $request->id_user;
@@ -133,7 +133,7 @@ class CategoriaController extends Controller
                 $data = SolicitudTicketsEM::where('id',$request->idsolicitud)->delete(); 
                 $seguimiento = new seguimientoEMSolicitudes();
 
-                $seguimiento->id_solicitud = $request->idSolicitud;
+                $seguimiento->id_solicitud = $request->idsolicitud;
                 $seguimiento->uuid = $request->uuid;
                 $seguimiento->descripcionSeguimiento = "El agente " . $request->nombre . " a derivado el Ticket N°" . $request->idSolicitud . " a " . $request->des_categoria . "";
                 $seguimiento->id_user = $request->id_user;
@@ -143,7 +143,7 @@ class CategoriaController extends Controller
                 $data = SolicitudTicketINDs::where('id',$request->idsolicitud)->delete(); 
                 $seguimiento = new seguimientoINDSolicitudes();
 
-                $seguimiento->id_solicitud = $request->idSolicitud;
+                $seguimiento->id_solicitud = $request->idsolicitud;
                 $seguimiento->uuid = $request->uuid;
                 $seguimiento->descripcionSeguimiento = "El agente " . $request->nombre . " a derivado el Ticket N°" . $request->idSolicitud . " a " . $request->des_categoria . "";
                 $seguimiento->id_user = $request->id_user;
@@ -153,7 +153,7 @@ class CategoriaController extends Controller
                 $data = SolicitudTicketsAps::where('id',$request->idsolicitud)->delete();
                 $seguimiento = new seguimientoAPSolicitudes();
 
-                $seguimiento->id_solicitud = $request->idSolicitud;
+                $seguimiento->id_solicitud = $request->idsolicitud;
                 $seguimiento->uuid = $request->uuid;
                 $seguimiento->descripcionSeguimiento = "El agente " . $request->nombre . " a derivado el Ticket N°" . $request->idSolicitud . " a " . $request->des_categoria . "";
                 $seguimiento->id_user = $request->id_user;
