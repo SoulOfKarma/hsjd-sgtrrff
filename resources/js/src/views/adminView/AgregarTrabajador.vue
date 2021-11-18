@@ -218,7 +218,7 @@ export default {
                 id_cargo_asociado: 0,
                 id_edificio: 0,
                 id_servicio: 0,
-                id_unidadEspecifica: 0,
+                id_unidadEspecifica: 42,
                 password: "",
                 run_usuario: "",
                 permiso_usuario: 3,
