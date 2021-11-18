@@ -541,18 +541,6 @@ export default {
                         time: 3000
                     });
                 } else if (
-                    this.modificarUsuario.id_unidadEspecifica == 0 ||
-                    this.modificarUsuario.id_unidadEspecifica == null
-                ) {
-                    this.$vs.notify({
-                        title: "Error ubicacion especifica del trabajador",
-                        text:
-                            "Debe seleccionar una ubicacion valida para continuar",
-                        color: "danger",
-                        position: "top-right",
-                        time: 3000
-                    });
-                } else if (
                     this.modificarUsuario.password == "" ||
                     this.modificarUsuario.password.length < 4 ||
                     this.modificarUsuario.password == null
