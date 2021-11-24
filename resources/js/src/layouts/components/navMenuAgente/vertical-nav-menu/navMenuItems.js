@@ -327,5 +327,11 @@ export default [
         name: "C. Industrial Tabla",
         slug: "CalendarioMIndustrial",
         icon: "CalendarIcon"
+    },
+    {
+        url: "/agenteView/CalendarioMApoyoClinico",
+        name: "C.M. Apoyo Clinico",
+        slug: "CalendarioMApoyoClinico",
+        icon: "CalendarIcon"
     }
 ];

@@ -1678,7 +1678,7 @@ export default {
         cargaColumnas() {
             try {
                 this.nombreTitulo =
-                    "PROGRAMACIÓN MANTENCIÓN GRUPO ELECTRÓGENO HOSPITAL, CDT Y CHACABUCO 430  HSJD" +
+                    "PROGRAMACIÓN MANTENCIÓN INDUSTRIAL" +
                     " " +
                     this.seleccionFechaMantencion.anio;
                 this.columns = [

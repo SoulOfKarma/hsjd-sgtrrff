@@ -1,0 +1,2430 @@
+<template>
+    <div>
+        <vx-card>
+            <vs-alert active="true" color="success">
+                Agente:
+                {{ nombre }} - {{ run }}
+            </vs-alert>
+        </vx-card>
+        <br />
+        <vx-card :title="nombreTitulo">
+            <div class="vx-row" alignment="center">
+                <div class="vx-col w-1/2">
+                    <vs-button
+                        color="primary"
+                        type="filled"
+                        class="w-full m-2"
+                        @click="PopFormularioMantencion()"
+                        >Nuevo Calendario Mantencion</vs-button
+                    >
+                </div>
+                <div class="vx-col w-1/2">
+                    <vs-button
+                        color="primary"
+                        type="filled"
+                        class="w-full m-2"
+                        @click="PopCalAnio()"
+                        >Nuevo Año</vs-button
+                    >
+                </div>
+            </div>
+            <div class="vx-row" alignment="center">
+                <div class="vx-col w-full">
+                    <br />
+                    <h6>Seleccione Año</h6>
+                    <v-select
+                        v-model="seleccionFechaMantencion"
+                        placeholder="Seleccione Año"
+                        class="w-full select-large"
+                        label="anio"
+                        :options="listadoAnios"
+                        @input="cargarListadoPorAnio()"
+                    ></v-select>
+                    <br />
+                </div>
+            </div>
+            <br />
+            <vue-good-table
+                :columns="columns"
+                :rows="mantenciones"
+                @on-cell-click="RowMantencion"
+                :pagination-options="{
+                    enabled: true,
+                    perPage: 10
+                }"
+            >
+                <template slot="table-row" slot-scope="props">
+                    <!-- Column: Name -->
+                    <span
+                        v-if="props.column.field === 'fullName'"
+                        class="text-nowrap"
+                    >
+                    </span>
+
+                    <!-- Column: Action -->
+                    <span v-else-if="props.column.field === 'action'">
+                        <plus-circle-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="modificarCodigo(props.row.id)"
+                        ></plus-circle-icon>
+                        <trash-2-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="popEliminarMantencion(props.row.id)"
+                        ></trash-2-icon>
+                    </span>
+                    <!-- Column: Common -->
+                    <span v-else>
+                        {{ props.formattedRow[props.column.field] }}
+                    </span>
+                </template></vue-good-table
+            >
+        </vx-card>
+
+        <!-- KPI Industrial -->
+        <div class="vx-col w-full mb-base">
+            <vx-card
+                title="Porcentaje Avance Mantenciones por Equipo"
+                :key="resetI"
+            >
+                <!-- CARD ACTION -->
+                <!-- <template slot="actions">
+                        <change-time-duration-dropdown />
+                    </template> -->
+
+                <!-- Chart -->
+                <div slot="no-body">
+                    <vue-apex-charts
+                        type="radialBar"
+                        height="420"
+                        :options="productOrdersRadialBar.chartOptions"
+                        :series="productsOrder.series"
+                    />
+                </div>
+
+                <ul>
+                    <li
+                        v-for="orderData in productsOrder.analyticsData"
+                        :key="orderData.orderType"
+                        class="flex mb-3 justify-between"
+                    >
+                        <span class="flex items-center">
+                            <span
+                                class="inline-block h-4 w-4 rounded-full mr-2 bg-white border-3 border-solid"
+                                :class="`border-${orderData.color}`"
+                            ></span>
+                            <span class="font-semibold">{{
+                                orderData.orderType
+                            }}</span>
+                        </span>
+                        <span>{{ orderData.counts }}</span>
+                    </li>
+                </ul>
+            </vx-card>
+        </div>
+        <vs-popup
+            classContent="popup-example"
+            title="Ingresar Datos Mantencion Apoyo Clinico"
+            :active.sync="popFormMantencionInd"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-full">
+                        <h6>Seleccione el Edificio</h6>
+                        <v-select
+                            v-model="seleccionEdificio"
+                            placeholder="Edificio"
+                            class="w-full mb-base"
+                            label="descripcionEdificio"
+                            :options="listadoEdificios"
+                        ></v-select>
+                    </div>
+                    <div class="vx-col w-1/2 mb-base">
+                        <h6>Equipo</h6>
+                        <vs-input
+                            v-model="descripcion_mantencion"
+                            class="w-full"
+                        />
+                    </div>
+                    <div class="vx-col w-1/2 mb-base">
+                        <h6>Proveedor</h6>
+                        <vs-input v-model="desProveedor" class="w-full" />
+                    </div>
+                    <div class="vx-col w-1/2 mb-base">
+                        <h6>Frecuencia</h6>
+                        <vs-input v-model="desFrecuencia" class="w-full" />
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <h6>Año</h6>
+                        <v-select
+                            v-model="seleccionAnio"
+                            placeholder="año"
+                            class="w-full select-large"
+                            label="anio"
+                            :options="listadoAnios"
+                        ></v-select>
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <h6>Tipo Mantencion</h6>
+                        <v-select
+                            v-model="seleccionTMantencion"
+                            placeholder="Correctiva"
+                            class="w-full select-large"
+                            label="descripcionTMantencion"
+                            :options="listadoTMantencion"
+                        ></v-select>
+                        <br />
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <h6>Estado Mantencion</h6>
+                        <v-select
+                            v-model="seleccionEstadoMIndustrial"
+                            placeholder="No Asignado"
+                            class="w-full select-large"
+                            label="descripcion_estadoI"
+                            :options="listadoEstadoMIndustrial"
+                        ></v-select>
+                        <br />
+                    </div>
+
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="PostMantencion()"
+                            >Guardar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popFormMantencionInd = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Ingresar Datos Nuevo Año"
+            :active.sync="popFormCalAnio"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-full mb-base">
+                        <h6>Ingrese Año</h6>
+                        <vs-input v-model="anio" class="w-full" type="number" />
+                    </div>
+
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="guardarAnio()"
+                            >Guardar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popFormCalAnio = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Ingresar Estado"
+            :active.sync="popFormEstadoItem"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <!-- <div class="vx-col w-full mb-base">
+                        <h6>Ingrese Estado</h6>
+                        <vs-input v-model="anio" class="w-full" type="number" />
+                    </div> -->
+
+                    <div class="vx-col w-1/2">
+                        <h6>Estado Mantencion</h6>
+                        <v-select
+                            v-model="seleccionEstadoMIndustrial"
+                            placeholder="No Asignado"
+                            class="w-full select-large"
+                            label="descripcion_estadoI"
+                            :options="listadoEstadoMIndustrial"
+                        ></v-select>
+                        <br />
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <h6>Estado Mantencion</h6>
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full select-large"
+                            @click="guardarEstadoM()"
+                            >Guardar Estado</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Ingresar Responsable"
+            :active.sync="popFormResponsableItem"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-1/2">
+                        <h6>Seleccione Responsable</h6>
+                        <v-select
+                            v-model="seleccionTrabajador"
+                            placeholder="No Asignado"
+                            class="w-full select-large"
+                            label="tra_nombre_apellido"
+                            :options="listadoTrabajadores"
+                        ></v-select>
+                        <br />
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <h6>Guardar Responsable</h6>
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full select-large"
+                            @click="guardarResponsable()"
+                            >Guardar Responsable</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            :title="descripcionDoc"
+            :active.sync="popFormDoc"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-full">
+                        <h6>Estado y Responsable Mantencion</h6>
+                    </div>
+                    <vue-good-table
+                        class="w-full m-2"
+                        :columns="columnasEstRes"
+                        :rows="ListadoEstRes"
+                        :pagination-options="{
+                            enabled: true,
+                            perPage: 10
+                        }"
+                    >
+                        <template slot="table-row" slot-scope="props">
+                            <!-- Column: Name -->
+                            <span
+                                v-if="props.column.field === 'fullName'"
+                                class="text-nowrap"
+                            >
+                            </span>
+
+                            <!-- Column: Action -->
+                            <span v-else-if="props.column.field === 'action'">
+                                <plus-circle-icon
+                                    content="Agregar o Modificar Estado"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="AgregarModificarEstado()"
+                                ></plus-circle-icon>
+                                <save-icon
+                                    content="Agregar o Modificar Responsable"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="AgregarModificarResponsable()"
+                                ></save-icon>
+                            </span>
+                            <!-- Column: Common -->
+                            <span v-else>
+                                {{ props.formattedRow[props.column.field] }}
+                            </span>
+                        </template></vue-good-table
+                    >
+                    <div class="vx-col w-full">
+                        <h6>Adjuntar Documentacion</h6>
+                    </div>
+                    <div class="vx-col w-full mt-5">
+                        <vs-input
+                            type="file"
+                            @change="getImage"
+                            class="form-control w-full"
+                        />
+                    </div>
+                    <vue-good-table
+                        class="w-full m-2"
+                        :columns="columnasDoc"
+                        :rows="Documentos"
+                        :pagination-options="{
+                            enabled: true,
+                            perPage: 10
+                        }"
+                    >
+                        <template slot="table-row" slot-scope="props">
+                            <!-- Column: Name -->
+                            <span
+                                v-if="props.column.field === 'fullName'"
+                                class="text-nowrap"
+                            >
+                            </span>
+
+                            <!-- Column: Action -->
+                            <span v-else-if="props.column.field === 'action'">
+                                <plus-circle-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        abrirDocumento(
+                                            props.row.nombreDocumento
+                                        )
+                                    "
+                                ></plus-circle-icon>
+                                <trash-2-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="ConfirmarDelDoc(props.row.id)"
+                                ></trash-2-icon>
+                            </span>
+                            <!-- Column: Common -->
+                            <span v-else>
+                                {{ props.formattedRow[props.column.field] }}
+                            </span>
+                        </template></vue-good-table
+                    >
+                    <div class="vx-col w-full">
+                        <vs-button
+                            color="danger"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="uploadImage"
+                            >Guardar Documento</vs-button
+                        >
+
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popFormDoc = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Modificar Codigo"
+            :active.sync="popFormModCod"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <vue-good-table
+                        class="w-full m-2"
+                        :columns="columnasMod"
+                        @on-cell-click="RowMantencionMod"
+                        :rows="ListaModificar"
+                        :pagination-options="{
+                            enabled: true,
+                            perPage: 10
+                        }"
+                    >
+                        <template slot="table-row" slot-scope="props">
+                            <!-- Column: Name -->
+                            <span
+                                v-if="props.column.field === 'fullName'"
+                                class="text-nowrap"
+                            >
+                            </span>
+
+                            <!-- Column: Action -->
+
+                            <!-- Column: Common -->
+                            <span v-else>
+                                {{ props.formattedRow[props.column.field] }}
+                            </span>
+                        </template></vue-good-table
+                    >
+                    <div class="vx-col w-full">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popFormModCod = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Ingresar Datos Tabla Mantencion Apoyo Clinico"
+            :active.sync="popFormAgregarSCod"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-full">
+                        <h6>Ingrese N° Mantencion</h6>
+                        <vs-input v-model="codMantencionNuevo" class="w-full" />
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="guardarCodMantencionN()"
+                            >Guardar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popFormAgregarSCod = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Confirmacion Eliminacion Documento"
+            :active.sync="popConfirmarEliminacionDoc"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="EliminarDoc()"
+                            >Eliminar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="VolverListaDoc()"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Confirmacion Eliminacion Tabla Mantencion"
+            :active.sync="popConfirmarEliminacionMan"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="EliminarMantencion()"
+                            >Eliminar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popConfirmarEliminacionMan = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Modificar Codigo Mantencion"
+            :active.sync="popCodModN"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-full">
+                        <h6>Ingrese codigo a Cambiar</h6>
+                        <vs-input v-model="codManModificar" class="w-full" />
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="modificarCodMantencion()"
+                            >Modificar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="volverModCod()"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+    </div>
+</template>
+<script>
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
+import moment from "moment";
+import router from "@/router";
+import axios from "axios";
+import Vue from "vue";
+import "vue-good-table/dist/vue-good-table.css";
+import { PlusCircleIcon } from "vue-feather-icons";
+import { Trash2Icon } from "vue-feather-icons";
+import { SaveIcon } from "vue-feather-icons";
+import VueGoodTablePlugin from "vue-good-table";
+import VueApexCharts from "vue-apexcharts";
+import StatisticsCardLine from "@/components/statistics-cards/StatisticsCardLine.vue";
+import analyticsData from "../ui-elements/card/analyticsData.js";
+import ChangeTimeDurationDropdown from "@/components/ChangeTimeDurationDropdown.vue";
+import VxTimeline from "@/components/timeline/VxTimeline";
+Vue.use(VueGoodTablePlugin);
+import vSelect from "vue-select";
+import VueTippy, { TippyComponent } from "vue-tippy";
+Vue.use(VueTippy);
+Vue.component("tippy", TippyComponent);
+export default {
+    components: {
+        flatPickr,
+        "v-select": vSelect,
+        PlusCircleIcon,
+        Trash2Icon,
+        SaveIcon,
+        VxTimeline,
+        VueApexCharts,
+        StatisticsCardLine,
+        ChangeTimeDurationDropdown
+    },
+    data() {
+        return {
+            editorOption: {
+                modules: {
+                    toolbar: [
+                        ["bold", "italic", "underline", "strike"],
+                        ["blockquote", "code-block"],
+                        [{ header: 1 }, { header: 2 }],
+                        [{ list: "ordered" }, { list: "bullet" }],
+                        [{ indent: "-1" }, { indent: "+1" }],
+                        [{ direction: "rtl" }],
+                        [{ font: [] }],
+                        [{ align: [] }],
+                        ["clean"]
+                    ]
+                }
+            },
+            nombre:
+                sessionStorage.getItem("nombre") +
+                " " +
+                sessionStorage.getItem("apellido"),
+            run: sessionStorage.getItem("run"),
+            columnasDoc: [
+                {
+                    label: "ID",
+                    field: "id",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Documento",
+                    field: "descripcionDocumento",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
+                }
+            ],
+            columnasEstRes: [
+                {
+                    label: "Estado",
+                    field: "descripcion_estadoI"
+                },
+                {
+                    label: "Responsable",
+                    field: "tra_nom_ape"
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
+                }
+            ],
+            Documentos: [],
+            ListaModificar: [],
+            mantenciones: [],
+            columns: [],
+            columnasMod: [],
+            seleccionFechaMantencion: {
+                id: 0,
+                anio: 0
+            },
+            seleccionTrabajador: {
+                id: 0,
+                tra_nombre_apellido: "Seleccione al Trabajador"
+            },
+            seleccionAnio: {
+                id: 1,
+                anio: 2021
+            },
+            seleccionTMantencion: {
+                id: 1,
+                descripcionTMantencion: "Correctiva"
+            },
+            nombreTitulo: "",
+            popCodModN: false,
+            popFormMantencionInd: false,
+            popFormCalAnio: false,
+            popFormModCod: false,
+            popConfirmarEliminacionDoc: false,
+            popConfirmarEliminacionMan: false,
+            popFormEstadoItem: false,
+            popFormResponsableItem: false,
+            descripcion_mantencion: "",
+            listadoEdificios: [],
+            listadoAnios: [],
+            listadoTMantencion: [],
+            listadoEstadoMIndustrial: [],
+            listadoTrabajadores: [],
+            ListadoEstRes: [],
+            seleccionEdificio: {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            },
+            seleccionEstadoMIndustrial: {
+                id: 0,
+                descripcion_estadoI: "Seleccione Estado Mantencion"
+            },
+            codManEspecificoMod: "",
+            codManModificar: "",
+            codManMes: 0,
+            codManEne: 0,
+            codManFeb: 0,
+            codManMar: 0,
+            codManAbr: 0,
+            codManMay: 0,
+            codManJun: 0,
+            codManJul: 0,
+            codManAgo: 0,
+            codManSep: 0,
+            codManOct: 0,
+            codManNov: 0,
+            codManDic: 0,
+            idTablaMod: 0,
+            idDocDel: 0,
+            anio: 0,
+            desFrecuencia: "",
+            desProveedor: "",
+            descripcionDoc: "",
+            codMantencionNuevo: "",
+            codMan: "",
+            idRowModificar: 0,
+            popFormDoc: false,
+            popFormAgregarSCod: false,
+            image: "",
+            desDoc: "",
+            idParam: 0,
+            resetI: 0,
+            idListadoMan: 0,
+            supportTracker: {},
+            productsOrder: {},
+            salesBarSession: {},
+            analyticsData,
+            productOrdersRadialBar: {
+                chartOptions: {
+                    labels: [
+                        "No Asignado",
+                        "En Proceso",
+                        "Pendiente",
+                        "Realizado"
+                    ],
+                    plotOptions: {
+                        radialBar: {
+                            size: 165,
+                            offsetY: -5,
+                            hollow: {
+                                size: "20%"
+                            },
+                            track: {
+                                background: "#ebebeb",
+                                strokeWidth: "100%",
+                                margin: 15
+                            },
+                            dataLabels: {
+                                show: true,
+                                name: {
+                                    fontSize: "18px"
+                                },
+                                value: {
+                                    fontSize: "16px",
+                                    color: "#636a71",
+                                    offsetY: 11
+                                },
+                                total: {
+                                    show: true,
+                                    label: "Total",
+                                    formatter() {
+                                        return 36;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    responsive: [
+                        {
+                            breakpoint: 576,
+                            options: {
+                                plotOptions: {
+                                    radialBar: {
+                                        size: 150,
+                                        hollow: {
+                                            size: "20%"
+                                        },
+                                        track: {
+                                            background: "#ebebeb",
+                                            strokeWidth: "100%",
+                                            margin: 15
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    colors: ["#7961F9", "#FF9F43", "#EA5455", "#1fcd39"],
+                    fill: {
+                        type: "gradient",
+                        gradient: {
+                            // enabled: true,
+                            shade: "dark",
+                            type: "vertical",
+                            shadeIntensity: 0.5,
+                            gradientToColors: [
+                                "#9c8cfc",
+                                "#FFC085",
+                                "#f29292",
+                                "#1fcd39"
+                            ],
+                            inverseColors: false,
+                            opacityFrom: 1,
+                            opacityTo: 1,
+                            stops: [0, 100]
+                        }
+                    },
+                    stroke: {
+                        lineCap: "round"
+                    },
+                    chart: {
+                        height: 355,
+                        dropShadow: {
+                            enabled: true,
+                            blur: 3,
+                            left: 1,
+                            top: 1,
+                            opacity: 0.1
+                        }
+                    }
+                }
+            },
+            localVal: process.env.MIX_APP_URL,
+            urlDocumentos: process.env.MIX_APP_URL_DOCUMENTOS
+        };
+    },
+    methods: {
+        modificarCodigo(id) {
+            try {
+                this.idTablaMod = id;
+                let obj = {
+                    id: id
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/GetListadoEspecificoAP",
+                        obj,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.ListaModificar = res.data;
+                        this.columnasMod = [
+                            {
+                                label:
+                                    "Ene." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManEne",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Feb." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManFeb",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Mar." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManMar",
+                                html: true,
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Abr." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManAbr",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "May." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManMay",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Jun." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManJun",
+                                // type: "date",
+                                // dateInputFormat: "dd/MM/yyyy",
+                                // dateOutputFormat: "dd/MM/yyyy",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Jul." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManJul",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Ago." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManAgo",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Sep." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManSep",
+                                html: true,
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Oct." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManOct",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Nov." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManNov",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            },
+                            {
+                                label:
+                                    "Dic." +
+                                    " " +
+                                    this.seleccionFechaMantencion.anio,
+                                field: "codManDic",
+                                // type: "date",
+                                // dateInputFormat: "dd/MM/yyyy",
+                                // dateOutputFormat: "dd/MM/yyyy",
+                                filterOptions: {
+                                    enabled: true
+                                }
+                            }
+                        ];
+                        this.popFormModCod = true;
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popEliminarMantencion(id) {
+            try {
+                this.popConfirmarEliminacionMan = true;
+                this.idListadoMan = id;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        AgregarModificarEstado() {
+            try {
+                this.popFormEstadoItem = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        AgregarModificarResponsable() {
+            try {
+                this.popFormResponsableItem = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        EliminarMantencion() {
+            try {
+                try {
+                    let obj = { id: this.idListadoMan };
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Agente/PostDeleteMantencionAP",
+                            obj,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Mantencion Eliminada Correctamente",
+                                    text: "Se Recargara Listado",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.cargarListadoPorAnio();
+                                this.popConfirmarEliminacionMan = false;
+                            } else {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error",
+                                    text:
+                                        "No se pudo Eliminar La lista con Mantenciones, intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } catch (error) {
+                    console.log(error);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        cargarDocumentacion() {
+            let obj = { id: this.idParam };
+            axios
+                .post(this.localVal + "/api/Agente/GetDocumentosMAP", obj, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.Documentos = res.data;
+                });
+        },
+        cargaListadoEstRes() {
+            let obj = { id: this.idParam, codManMes: this.codManMes };
+            axios
+                .post(this.localVal + "/api/Agente/GetListadoEstRes", obj, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    if (res.data.length > 0) {
+                        this.ListadoEstRes = res.data;
+                    } else {
+                        this.ListadoEstRes = [
+                            {
+                                descripcion_estadoI: "PENDIENTE",
+                                codMan: 0,
+                                codManMes: 0,
+                                tra_nom_ape: "PENDIENTE"
+                            }
+                        ];
+                    }
+                });
+        },
+        ConfirmarDelDoc(id) {
+            try {
+                this.idDocDel = id;
+                this.popConfirmarEliminacionDoc = true;
+                this.popFormDoc = false;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        VolverListaDoc() {
+            try {
+                this.popConfirmarEliminacionDoc = false;
+                this.popFormDoc = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        EliminarDoc() {
+            try {
+                let obj = { id: this.idDocDel };
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PostDeleteDocumentoAP",
+                        obj,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Documento Eliminado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.cargarDocumentacion();
+                            this.popConfirmarEliminacionDoc = false;
+                            this.popFormDoc = true;
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "No se pudo Eliminar el documento, intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        modificarCodMantencion() {
+            try {
+                let obj = {
+                    id: this.idTablaMod,
+                    codManModificar: this.codManModificar,
+                    codManEspecificoMod: this.codManEspecificoMod
+                };
+
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PutModificarCodigoMAP",
+                        obj,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Codigo Modificado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.modificarCodigo(this.idTablaMod);
+                            this.popFormModCod = true;
+                            this.popCodModN = false;
+                            this.cargarListadoPorAnio();
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text:
+                                    "No se pudo modificar, verifique los datos e intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        RowMantencion(params) {
+            try {
+                if (params.column.field == "codManEne") {
+                    if (params.row.codManEne == 0) {
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManEne";
+
+                        this.popFormAgregarSCod = true;
+                    } else {
+                        this.descripcionDoc =
+                            "Datos Documentacion N°" + params.row.codManEne;
+                        this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManEne";
+                        this.codManMes = 1;
+                        this.idParam = params.row.codManEne;
+                        let obj = { id: params.row.codManEne };
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/GetDocumentosMAP",
+                                obj,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.Documentos = res.data;
+                                this.cargaListadoEstRes();
+                            });
+                    }
+                } else if (params.column.field == "codManFeb") {
+                    if (params.row.codManFeb == 0) {
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManFeb";
+
+                        this.popFormAgregarSCod = true;
+                    } else {
+                        this.descripcionDoc =
+                            "Datos Documentacion N°" + params.row.codManFeb;
+                        this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManFeb";
+                        this.codManMes = 2;
+                        this.idParam = params.row.codManFeb;
+                        let obj = { id: params.row.codManFeb };
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/GetDocumentosMAP",
+                                obj,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.Documentos = res.data;
+                            });
+                    }
+                } else if (params.column.field == "codManMar") {
+                    if (params.row.codManMar == 0) {
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManMar";
+
+                        this.popFormAgregarSCod = true;
+                    } else {
+                        this.descripcionDoc =
+                            "Datos Documentacion N°" + params.row.codManMar;
+                        this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManMar";
+                        this.codManMes = 3;
+                        this.idParam = params.row.codManMar;
+                        let obj = { id: params.row.codManMar };
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/GetDocumentosMAP",
+                                obj,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.Documentos = res.data;
+                            });
+                    }
+                } else if (params.column.field == "codManAbr") {
+                    if (params.row.codManAbr == 0) {
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManAbr";
+
+                        this.popFormAgregarSCod = true;
+                    } else {
+                        this.descripcionDoc =
+                            "Datos Documentacion N°" + params.row.codManAbr;
+                        this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManAbr";
+                        this.codManMes = 4;
+                        this.idParam = params.row.codManAbr;
+                        let obj = { id: params.row.codManAbr };
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/GetDocumentosMAP",
+                                obj,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.Documentos = res.data;
+                            });
+                    }
+                } else if (params.column.field == "codManMay") {
+                    if (params.row.codManMay == 0) {
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManMay";
+
+                        this.popFormAgregarSCod = true;
+                    } else {
+                        this.descripcionDoc =
+                            "Datos Documentacion N°" + params.row.codManMay;
+                        this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManMay";
+                        this.codManMes = 5;
+                        this.idParam = params.row.codManMay;
+                        let obj = { id: params.row.codManMay };
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/GetDocumentosMAP",
+                                obj,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.Documentos = res.data;
+                            });
+                    }
+                } else if (params.column.field == "codManJun") {
+                    if (params.row.codManJun == 0) {
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManJun";
+
+                        this.popFormAgregarSCod = true;
+                    } else {
+                        this.descripcionDoc =
+                            "Datos Documentacion N°" + params.row.codManJun;
+                        this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManJun";
+                        this.codManMes = 6;
+                        this.idParam = params.row.codManJun;
+                        let obj = { id: params.row.codManJun };
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/GetDocumentosMAP",
+                                obj,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.Documentos = res.data;
+                            });
+                    }
+                } else if (params.column.field == "codManJul") {
+                    if (params.row.codManJul == 0) {
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManJul";
+
+                        this.popFormAgregarSCod = true;
+                    } else {
+                        this.descripcionDoc =
+                            "Datos Documentacion N°" + params.row.codManJul;
+                        this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManJul";
+                        this.codManMes = 7;
+                        this.idParam = params.row.codManJul;
+                        let obj = { id: params.row.codManJul };
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/GetDocumentosMAP",
+                                obj,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.Documentos = res.data;
+                            });
+                    }
+                } else if (params.column.field == "codManAgo") {
+                    if (params.row.codManAgo == 0) {
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManAgo";
+
+                        this.popFormAgregarSCod = true;
+                    } else {
+                        this.descripcionDoc =
+                            "Datos Documentacion N°" + params.row.codManAgo;
+                        this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManAgo";
+                        this.codManMes = 8;
+                        this.idParam = params.row.codManAgo;
+                        let obj = { id: params.row.codManAgo };
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/GetDocumentosMAP",
+                                obj,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.Documentos = res.data;
+                            });
+                    }
+                } else if (params.column.field == "codManSep") {
+                    if (params.row.codManSep == 0) {
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManSep";
+
+                        this.popFormAgregarSCod = true;
+                    } else {
+                        this.descripcionDoc =
+                            "Datos Documentacion N°" + params.row.codManSep;
+                        this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManSep";
+                        this.codManMes = 9;
+                        this.idParam = params.row.codManSep;
+                        let obj = { id: params.row.codManSep };
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/GetDocumentosMAP",
+                                obj,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.Documentos = res.data;
+                            });
+                    }
+                } else if (params.column.field == "codManOct") {
+                    if (params.row.codManOct == 0) {
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManOct";
+
+                        this.popFormAgregarSCod = true;
+                    } else {
+                        this.descripcionDoc =
+                            "Datos Documentacion N°" + params.row.codManOct;
+                        this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManOct";
+                        this.codManMes = 10;
+                        this.idParam = params.row.codManOct;
+                        let obj = { id: params.row.codManOct };
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/GetDocumentosMAP",
+                                obj,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.Documentos = res.data;
+                            });
+                    }
+                } else if (params.column.field == "codManNov") {
+                    if (params.row.codManNov == 0) {
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManNov";
+
+                        this.popFormAgregarSCod = true;
+                    } else {
+                        this.descripcionDoc =
+                            "Datos Documentacion N°" + params.row.codManNov;
+                        this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManNov";
+                        this.codManMes = 11;
+                        this.idParam = params.row.codManNov;
+                        let obj = { id: params.row.codManNov };
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/GetDocumentosMAP",
+                                obj,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.Documentos = res.data;
+                            });
+                    }
+                } else if (params.column.field == "codManDic") {
+                    if (params.row.codManDic == 0) {
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManDic";
+
+                        this.popFormAgregarSCod = true;
+                    } else {
+                        this.descripcionDoc =
+                            "Datos Documentacion N°" + params.row.codManDic;
+                        this.popFormDoc = true;
+                        this.idRowModificar = params.row.id;
+                        this.codMan = "codManDic";
+                        this.codManMes = 12;
+                        this.idParam = params.row.codManDic;
+                        let obj = { id: params.row.codManDic };
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/GetDocumentosMAP",
+                                obj,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.Documentos = res.data;
+                            });
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        volverModCod() {
+            try {
+                this.popCodModN = false;
+                this.popFormModCod = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        RowMantencionMod(params) {
+            try {
+                if (params.column.field == "codManEne") {
+                    if (params.row.codManEne.length > 0) {
+                        this.codManModificar = params.row.codManEne;
+                        this.codManEspecificoMod = "codManEne";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManFeb") {
+                    if (params.row.codManFeb.length > 0) {
+                        this.codManModificar = params.row.codManFeb;
+                        this.codManEspecificoMod = "codManFeb";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManMar") {
+                    if (params.row.codManMar.length > 0) {
+                        this.codManModificar = params.row.codManMar;
+                        this.codManEspecificoMod = "codManMar";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManAbr") {
+                    if (params.row.codManAbr.length > 0) {
+                        this.codManModificar = params.row.codManAbr;
+                        this.codManEspecificoMod = "codManAbr";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManMay") {
+                    if (params.row.codManMay.length > 0) {
+                        this.codManModificar = params.row.codManMay;
+                        this.codManEspecificoMod = "codManMay";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManJun") {
+                    if (params.row.codManJun.length > 0) {
+                        this.codManModificar = params.row.codManJun;
+                        this.codManEspecificoMod = "codManJun";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManJul") {
+                    if (params.row.codManJul.length > 0) {
+                        this.codManModificar = params.row.codManJul;
+                        this.codManEspecificoMod = "codManJul";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManAgo") {
+                    if (params.row.codManAgo.length > 0) {
+                        this.codManModificar = params.row.codManAgo;
+                        this.codManEspecificoMod = "codManAgo";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManSep") {
+                    if (params.row.codManSep.length > 0) {
+                        this.codManModificar = params.row.codManSep;
+                        this.codManEspecificoMod = "codManSep";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManOct") {
+                    if (params.row.codManOct.length > 0) {
+                        this.codManModificar = params.row.codManOct;
+                        this.codManEspecificoMod = "codManOct";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManNov") {
+                    if (params.row.codManNov.length > 0) {
+                        this.codManModificar = params.row.codManNov;
+                        this.codManEspecificoMod = "codManNov";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                } else if (params.column.field == "codManDic") {
+                    if (params.row.codManDic.length > 0) {
+                        this.codManModificar = params.row.codManDic;
+                        this.codManEspecificoMod = "codManDic";
+                        this.popCodModN = true;
+                        this.popFormModCod = false;
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        guardarResponsable() {
+            try {
+                let obj = {
+                    id: this.idRowModificar,
+                    codMan: this.codMan,
+                    CodMantencionN: this.idParam,
+                    id_trabajador: this.seleccionTrabajador.id,
+                    codManMes: this.codManMes
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PostResponsableMAP",
+                        obj,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data == true) {
+                            this.$vs.notify({
+                                title: "Correcto",
+                                text: "Trabajador Asignado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.cargaSO();
+                            this.popFormResponsableItem = false;
+                        } else {
+                            this.$vs.notify({
+                                title: "Error ",
+                                text: "No se pudo actualizar el trabajador",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        guardarEstadoM() {
+            try {
+                let obj = {
+                    id: this.idRowModificar,
+                    codMan: this.codMan,
+                    CodMantencionN: this.idParam,
+                    idEstado: this.seleccionEstadoMIndustrial.id,
+                    codManMes: this.codManMes
+                };
+                axios
+                    .post(this.localVal + "/api/Agente/PostEstadoMAP", obj, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        if (res.data == true) {
+                            this.$vs.notify({
+                                title: "Correcto",
+                                text: "Estado Cambiado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.cargaSO();
+                            this.popFormEstadoItem = false;
+                        } else {
+                            this.$vs.notify({
+                                title: "Error ",
+                                text: "No se pudo actualizar el estado",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        guardarCodMantencionN() {
+            try {
+                let obj = {
+                    id: this.idRowModificar,
+                    codMan: this.codMan,
+                    codMantencionNuevo: this.codMantencionNuevo
+                };
+
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PutCodMantencionAP",
+                        obj,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let response = res.data;
+                        if (response == true) {
+                            this.$vs.notify({
+                                title: "Correcto",
+                                text: "N° guardado correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popFormAgregarSCod = false;
+                            this.codMantencionNuevo = 0;
+                            this.cargarListadoPorAnio();
+                        } else {
+                            this.$vs.notify({
+                                title: "Error al guardar N° ",
+                                text:
+                                    "Verifique los datos y intente nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        abrirDocumento(link) {
+            try {
+                const url = this.urlDocumentos + link;
+                window.open(url, "_blank");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        getImage(event) {
+            //Asignamos la imagen a  nuestra data
+            this.image = event.target.files[0];
+            this.desDoc = this.image.name;
+        },
+        uploadImage() {
+            //Creamos el formData
+            var data = new FormData();
+            //Añadimos la imagen seleccionada
+            data.append("avatar", this.image);
+            data.append("id", this.idParam);
+            data.append("nombreDoc", this.desDoc);
+            axios
+                .post(this.localVal + "/api/Agente/PostDocumentoAP", data, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(response => {
+                    let resp = response.data;
+                    if (resp == true) {
+                        this.$vs.notify({
+                            title: "Documento Guardado ",
+                            text:
+                                "Podra Visualizarlo en el menu del costado para descargarlo o visualizarlo en el navegador ",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.popGuardarDoc = false;
+                        this.recargaDocumentacion();
+                    } else {
+                        this.$vs.notify({
+                            title: "Error al subir el documento ",
+                            text:
+                                "Intente nuevamente con el formato PDF o alguna Imagen ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                });
+        },
+        recargaDocumentacion() {
+            try {
+                let obj = { id: this.idParam };
+                axios
+                    .post(this.localVal + "/api/Agente/GetDocumentosMAP", obj, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.Documentos = res.data;
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        cargaColumnas() {
+            try {
+                this.nombreTitulo =
+                    "PROGRAMACIÓN MANTENCIÓN APOYO CLINICO" +
+                    " " +
+                    this.seleccionFechaMantencion.anio;
+                this.columns = [
+                    {
+                        label: "Edificio",
+                        field: "descripcionEdificio",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Equipo",
+                        field: "descripcion_mantencion",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Proveedor",
+                        field: "descripcion_proveedor",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label:
+                            "Ene." + " " + this.seleccionFechaMantencion.anio,
+                        field: "codManEne",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label:
+                            "Feb." + " " + this.seleccionFechaMantencion.anio,
+                        field: "codManFeb",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label:
+                            "Mar." + " " + this.seleccionFechaMantencion.anio,
+                        field: "codManMar",
+                        html: true,
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label:
+                            "Abr." + " " + this.seleccionFechaMantencion.anio,
+                        field: "codManAbr",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label:
+                            "May." + " " + this.seleccionFechaMantencion.anio,
+                        field: "codManMay",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label:
+                            "Jun." + " " + this.seleccionFechaMantencion.anio,
+                        field: "codManJun",
+                        // type: "date",
+                        // dateInputFormat: "dd/MM/yyyy",
+                        // dateOutputFormat: "dd/MM/yyyy",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label:
+                            "Jul." + " " + this.seleccionFechaMantencion.anio,
+                        field: "codManJul",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label:
+                            "Ago." + " " + this.seleccionFechaMantencion.anio,
+                        field: "codManAgo",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label:
+                            "Sep." + " " + this.seleccionFechaMantencion.anio,
+                        field: "codManSep",
+                        html: true,
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label:
+                            "Oct." + " " + this.seleccionFechaMantencion.anio,
+                        field: "codManOct",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label:
+                            "Nov." + " " + this.seleccionFechaMantencion.anio,
+                        field: "codManNov",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label:
+                            "Dic." + " " + this.seleccionFechaMantencion.anio,
+                        field: "codManDic",
+                        // type: "date",
+                        // dateInputFormat: "dd/MM/yyyy",
+                        // dateOutputFormat: "dd/MM/yyyy",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Frecuencia.",
+                        field: "desFrecuencia",
+                        // type: "date",
+                        // dateInputFormat: "dd/MM/yyyy",
+                        // dateOutputFormat: "dd/MM/yyyy",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Tipo Mantencion.",
+                        field: "descripcionTMantencion",
+                        // type: "date",
+                        // dateInputFormat: "dd/MM/yyyy",
+                        // dateOutputFormat: "dd/MM/yyyy",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Opciones",
+                        field: "action"
+                    }
+                ];
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        PopFormularioMantencion() {
+            this.popFormMantencionInd = true;
+        },
+        PopCalAnio() {
+            this.popFormCalAnio = true;
+        },
+        PostMantencion() {
+            try {
+                let obj = {
+                    id_edificio: this.seleccionEdificio.id,
+                    descripcion_mantencion: this.descripcion_mantencion,
+                    descripcion_proveedor: this.desProveedor,
+                    codManEne: parseInt(this.codManEne),
+                    codManFeb: parseInt(this.codManFeb),
+                    codManMar: parseInt(this.codManMar),
+                    codManAbr: parseInt(this.codManAbr),
+                    codManMay: parseInt(this.codManMay),
+                    codManJun: parseInt(this.codManJun),
+                    codManJul: parseInt(this.codManJul),
+                    codManAgo: parseInt(this.codManAgo),
+                    codManSep: parseInt(this.codManSep),
+                    codManOct: parseInt(this.codManOct),
+                    codManNov: parseInt(this.codManNov),
+                    codManDic: parseInt(this.codManDic),
+                    desFrecuencia: this.desFrecuencia,
+                    id_anio: this.seleccionAnio.id,
+                    id_tmantencion: this.seleccionTMantencion.id,
+                    idEstadoManI: this.seleccionEstadoMIndustrial.id
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PostCalendarioMAP",
+                        obj,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data == true) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Calendario Ingregado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popFormMantencionInd = false;
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text: "Hubo una falla al agregar el Calendario",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        cargarEdificios() {
+            axios
+                .get(this.localVal + "/api/Usuario/GetEdificios", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoEdificios = res.data;
+                });
+        },
+        cargarEstadoM() {
+            axios
+                .get(this.localVal + "/api/Agente/GetEstadoMIndustrial", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoEstadoMIndustrial = res.data;
+                });
+        },
+        cargarTMantencion() {
+            axios
+                .get(this.localVal + "/api/Agente/GetTMantencion", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoTMantencion = res.data;
+                });
+        },
+        cargarTrabajadores() {
+            axios
+                .get(this.localVal + "/api/Agente/GetTrabajadores", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoTrabajadores = res.data;
+                });
+        },
+        cargarAnios() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Agente/GetAnios", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoAnios = res.data;
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        cargarListadoPorAnio() {
+            try {
+                let obj = { id_anio: this.seleccionFechaMantencion.id };
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/GetMantencionesAPAnio",
+                        obj,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.cargaColumnas();
+                        this.mantenciones = res.data;
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        guardarAnio() {
+            try {
+                let obj = { anio: this.anio };
+                axios
+                    .post(this.localVal + "/api/Agente/PostAnios", obj, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        if (res.data == true) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Año Ingregado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popFormCalAnio = false;
+                            this.cargarAnios();
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error",
+                                text: "Hubo una falla al agregar el Año",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //KPI
+        cargaSO() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Agente/TraerKPIMProgramadaAP", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        //this.productsOrder = res.data;
+                        let list = res.data;
+                        // console.log(list);
+                        let b = [];
+                        let obj = {};
+                        let label = [];
+                        let contador = 0;
+                        let objData = {};
+                        let codcolors = [];
+                        let objcolor = {};
+                        let gradcolors = [];
+                        let objgragcolor = {};
+                        if (list.length > 0) {
+                            list.forEach((value, index) => {
+                                obj = {};
+                                obj = parseInt(value.porcentaje);
+                                objData = {};
+                                objData = value.orderType;
+                                label.push(objData);
+                                objcolor = {};
+                                objcolor = value.codcolor;
+                                codcolors.push(objcolor);
+                                objgragcolor = {};
+                                objgragcolor = value.codcolor;
+                                gradcolors.push(objgragcolor);
+                                contador = contador + value.counts;
+                                b.push(obj);
+                            });
+                        }
+
+                        this.productOrdersRadialBar = {
+                            chartOptions: {
+                                labels: label,
+                                plotOptions: {
+                                    radialBar: {
+                                        size: 165,
+                                        offsetY: -5,
+                                        hollow: {
+                                            size: "20%"
+                                        },
+                                        track: {
+                                            background: "#ebebeb",
+                                            strokeWidth: "100%",
+                                            margin: 15
+                                        },
+                                        dataLabels: {
+                                            show: true,
+                                            name: {
+                                                fontSize: "18px"
+                                            },
+                                            value: {
+                                                fontSize: "16px",
+                                                color: "#636a71",
+                                                offsetY: 11
+                                            },
+                                            total: {
+                                                show: true,
+                                                label: "Total",
+                                                formatter() {
+                                                    return contador;
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                responsive: [
+                                    {
+                                        breakpoint: 576,
+                                        options: {
+                                            plotOptions: {
+                                                radialBar: {
+                                                    size: 150,
+                                                    hollow: {
+                                                        size: "20%"
+                                                    },
+                                                    track: {
+                                                        background: "#ebebeb",
+                                                        strokeWidth: "100%",
+                                                        margin: 15
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ],
+                                colors: codcolors,
+                                fill: {
+                                    type: "gradient",
+                                    gradient: {
+                                        // enabled: true,
+                                        shade: "dark",
+                                        type: "vertical",
+                                        shadeIntensity: 0.5,
+                                        gradientToColors: gradcolors,
+                                        inverseColors: false,
+                                        opacityFrom: 1,
+                                        opacityTo: 1,
+                                        stops: [0, 100]
+                                    }
+                                },
+                                stroke: {
+                                    lineCap: "round"
+                                },
+                                chart: {
+                                    height: 355,
+                                    dropShadow: {
+                                        enabled: true,
+                                        blur: 3,
+                                        left: 1,
+                                        top: 1,
+                                        opacity: 0.1
+                                    }
+                                }
+                            }
+                        };
+                        let dat = {
+                            analyticsData: list,
+                            series: b
+                        };
+                        this.productsOrder = dat;
+                        this.resetI += 1;
+                    });
+            } catch (error) {
+                console.log("Error al cargar datos");
+            }
+        }
+    },
+    created() {
+        this.cargaColumnas();
+        this.cargarAnios();
+        this.cargarEdificios();
+        this.cargarTMantencion();
+        this.cargaSO();
+        this.cargarEstadoM();
+        this.cargarTrabajadores();
+    }
+};
+</script>
+<style lang="stylus">
+.con-vs-popup .vs-popup {
+  width: 1000px;
+}
+
+.examplex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    margin: 0px !important;
+
+    &.btnx {
+      margin-left: 10px !important;
+      border-radius: 5px 0px 0px 5px;
+    }
+
+    &.btn-drop {
+      border-radius: 0px 5px 5px 0px;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+
+      .cardx {
+        margin: 15px;
+      }
+    }
+  }
+}
+</style>

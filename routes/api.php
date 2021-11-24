@@ -525,6 +525,34 @@ use App\Mail\AutoRespuesta;
             //Busqueda Ticket Cadena
             Route::post('/Agente/GetTicketCadena', ['middleware' => 'cors', 'uses' => 'TicketCadenasController@BuscarExistenciaCadena']);
 
+            //Calendario Mantenciones Apoyo Clinico
+            Route::post('/Agente/PostCalendarioMAP', ['middleware' => 'cors', 'uses' => 'MantencionApProgramadasController@PostCalMantencionI']);
+
+            Route::post('/Agente/GetListadoEstRes', ['middleware' => 'cors', 'uses' => 'MantencionApProgramadasController@GetListadoEstRes']);
+
+            Route::post('/Agente/GetMantencionesAPAnio', ['middleware' => 'cors', 'uses' => 'MantencionApProgramadasController@GetListadoMantencion']);
+
+            Route::post('/Agente/PostDocumentoAP', ['middleware' => 'cors', 'uses' => 'DocumentacionAPTablesController@PostDocumentoAP']);
+
+            Route::post('/Agente/GetDocumentosMAP', ['middleware' => 'cors', 'uses' => 'DocumentacionAPTablesController@showRegistroEspecifico']);
+
+            Route::post('/Agente/PutCodMantencionAP', ['middleware' => 'cors', 'uses' => 'MantencionApProgramadasController@PostCodMantencionN']);
+
+            Route::post('/Agente/PostEstadoMAP', ['middleware' => 'cors', 'uses' => 'MantencionApProgramadasController@PostEstadoM']);
+
+            Route::post('/Agente/PostResponsableMAP', ['middleware' => 'cors', 'uses' => 'ResponsableApMantencionesController@PostResponsableAP']);
+
+            Route::post('/Agente/GetListadoEspecificoAP', ['middleware' => 'cors', 'uses' => 'MantencionApProgramadasController@GetListadoEspecifico']);
+
+            Route::post('/Agente/PutModificarCodigoMAP', ['middleware' => 'cors', 'uses' => 'MantencionApProgramadasController@PutModificarCodigoM']);
+
+            Route::post('/Agente/PostDeleteDocumentoAP', ['middleware' => 'cors', 'uses' => 'DocumentacionAPTablesController@DestroyDocReg']);
+
+            Route::post('/Agente/PostDeleteMantencionAP', ['middleware' => 'cors', 'uses' => 'MantencionApProgramadasController@PostDeleteMantencion']);
+
+            //KPI Apoyo clinico 
+            Route::get('/Agente/TraerKPIMProgramadaAP', ['middleware' => 'cors', 'uses' => 'MantencionApProgramadasController@getTicketsKPI']);
+
             //Guardar Calendario
             Route::post('/Agente/PostCalendarioMIndustrial', ['middleware' => 'cors', 'uses' => 'MantencionProgramadasController@PostCalMantencionI']);
 
