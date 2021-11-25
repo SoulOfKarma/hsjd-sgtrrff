@@ -21,7 +21,27 @@
                     </div>
                 </div>
             </div>
-
+            <!-- Ubicacion -->
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="Categoria">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <h6>
+                                Seleccione Categoria Para Generar el Reporte
+                            </h6>
+                            <br />
+                            <v-select
+                                taggable
+                                v-model="seleccionCategoria"
+                                placeholder="Seleccione Categoria"
+                                class="w-full select-large"
+                                label="des_categoria"
+                                :options="listadoCategoria"
+                            ></v-select>
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
             <!-- Ubicacion -->
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="1. Seleccione Fechas">
@@ -99,6 +119,7 @@ import { ArchiveIcon } from "vue-feather-icons";
 import Datepicker from "vuejs-datepicker";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
+import vSelect from "vue-select";
 
 export default {
     components: {
@@ -108,7 +129,8 @@ export default {
         Trash2Icon,
         UploadIcon,
         CornerDownRightIcon,
-        flatPickr
+        flatPickr,
+        "v-select": vSelect
     },
     data() {
         return {
@@ -227,6 +249,11 @@ export default {
                 fechaInicio: null,
                 fechaTermino: null
             },
+            seleccionCategoria: {
+                id: 1,
+                des_categoria: "Infraestructura"
+            },
+            listadoCategoria: [],
             localVal: process.env.MIX_APP_URL
         };
     },
@@ -236,29 +263,112 @@ export default {
         },
         GenerarExcelTodo() {
             let newWindow = window.open();
+            if (this.seleccionCategoria.id == 1) {
+                axios
+                    .get(this.localVal + "/api/Agente/generarExcelTodoJ", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        newWindow.location =
+                            "http://" +
+                            window.location.hostname +
+                            ":8001/api/Agente/generarExcelTodoJ";
+                    });
+            } else if (this.seleccionCategoria.id == 2) {
+                axios
+                    .get(this.localVal + "/api/Agente/generarExcelTodoEMJ", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        newWindow.location =
+                            "http://" +
+                            window.location.hostname +
+                            ":8001/api/Agente/generarExcelTodoEMJ";
+                    });
+            } else if (this.seleccionCategoria.id == 3) {
+                axios
+                    .get(this.localVal + "/api/Agente/generarExcelTodoIJ", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        newWindow.location =
+                            "http://" +
+                            window.location.hostname +
+                            ":8001/api/Agente/generarExcelTodoIJ";
+                    });
+            } else if (this.seleccionCategoria.id == 4) {
+                axios
+                    .get(this.localVal + "/api/Agente/generarExcelTodoAPJ", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        newWindow.location =
+                            "http://" +
+                            window.location.hostname +
+                            ":8001/api/Agente/generarExcelTodoAPJ";
+                    });
+            }
+        },
+        GenerarExcel() {
+            if (this.seleccionCategoria.id == 1) {
+                const url =
+                    this.localVal +
+                    "/api/Agente/generarExcelByFechaJ/" +
+                    this.fechas.fechaInicio +
+                    "/" +
+                    this.fechas.fechaTermino;
+                window.open(url, "_blank");
+            } else if (this.seleccionCategoria.id == 2) {
+                const url =
+                    this.localVal +
+                    "/api/Agente/generarExcelByFechaEMJ/" +
+                    this.fechas.fechaInicio +
+                    "/" +
+                    this.fechas.fechaTermino;
+                window.open(url, "_blank");
+            } else if (this.seleccionCategoria.id == 3) {
+                const url =
+                    this.localVal +
+                    "/api/Agente/generarExcelByFechaIJ/" +
+                    this.fechas.fechaInicio +
+                    "/" +
+                    this.fechas.fechaTermino;
+                window.open(url, "_blank");
+            } else if (this.seleccionCategoria.id == 4) {
+                const url =
+                    this.localVal +
+                    "/api/Agente/generarExcelByFechaAPJ/" +
+                    this.fechas.fechaInicio +
+                    "/" +
+                    this.fechas.fechaTermino;
+                window.open(url, "_blank");
+            }
+        },
+        cargarCategoria() {
+            this.csrf_token;
 
             axios
-                .get(this.localVal + "/api/Agente/generarExcelTodoAPJ", {
+                .get(this.localVal + "/api/Usuario/getCategoriaSI", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
                     }
                 })
                 .then(res => {
-                    newWindow.location =
-                        "http://" +
-                        window.location.hostname +
-                        ":8001/api/Agente/generarExcelTodoAPJ";
+                    this.listadoCategoria = res.data;
                 });
-        },
-        GenerarExcel() {
-            const url =
-                this.localVal +
-                "/api/Agente/generarExcelByFechaAPJ/" +
-                this.fechas.fechaInicio +
-                "/" +
-                this.fechas.fechaTermino;
-            window.open(url, "_blank");
         },
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
@@ -266,6 +376,9 @@ export default {
         onToChange(selectedDates, dateStr, instance) {
             this.$set(this.configFromdateTimePicker, "maxDate", dateStr);
         }
+    },
+    created() {
+        this.cargarCategoria();
     }
 };
 </script>
