@@ -281,6 +281,12 @@ export default [
         icon: "FileIcon"
     },
     {
+        url: "/agenteView/ReportesJefatura",
+        name: "Reportes Jefatura",
+        slug: "ReportesJefatura",
+        icon: "CalendarIcon"
+    },
+    {
         url: "/agenteView/CalendarioElectricos",
         name: "Electricos",
         slug: "CalendarioElectricos",

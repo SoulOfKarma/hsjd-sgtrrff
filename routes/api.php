@@ -636,6 +636,23 @@ use App\Mail\AutoRespuesta;
     //Imprimir Acta Cilindros
     //Imprimir Ticket Industrial
     Route::get('/Agente/imprimirCilindroIND/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirCilindroIND']);
+
+    //Generar Excel	Jefatura
+    Route::get('/Agente/generarExcelTodoJ', 'ExcelJefaturaController@generarExcelTodo');
+    //Generar Excel	Por Fechas
+    Route::get('/Agente/generarExcelByFechaJ/{fechaInicio}/{fechaTermino}', 'ExcelJefaturaController@generarExcelByFecha');
+    //Generar Excel	
+    Route::get('/Agente/generarExcelTodoEMJ', 'ExcelJefaturaController@generarExcelTodoEM');
+    //Generar Excel	Por Fechas
+    Route::get('/Agente/generarExcelByFechaEMJ/{fechaInicio}/{fechaTermino}', 'ExcelJefaturaController@generarExcelByFechaEM');
+    //Generar Excel	
+    Route::get('/Agente/generarExcelTodoAPJ', 'ExcelJefaturaController@generarExcelTodoAP');
+    //Generar Excel	Por Fechas
+    Route::get('/Agente/generarExcelByFechaAPJ/{fechaInicio}/{fechaTermino}', 'ExcelJefaturaController@generarExcelByFechaAP');
+    //Generar Excel	
+    Route::get('/Agente/generarExcelTodoIJ', 'ExcelJefaturaController@generarExcelTodoI');
+    //Generar Excel	Por Fechas
+    Route::get('/Agente/generarExcelByFechaIJ/{fechaInicio}/{fechaTermino}', 'ExcelJefaturaController@generarExcelByFechaI');
     
 
 

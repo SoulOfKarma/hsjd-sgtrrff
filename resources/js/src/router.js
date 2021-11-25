@@ -546,6 +546,12 @@ const router = new Router({
                     name: "ListadoTotalTickets",
                     component: () =>
                         import("./views/agenteView/ListadoTotalTickets.vue")
+                },
+                {
+                    path: "/agenteView/ReportesJefatura",
+                    name: "ReportesJefatura",
+                    component: () =>
+                        import("./views/agenteView/ReportesJefatura.vue")
                 }
             ]
         },
