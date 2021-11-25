@@ -195,5 +195,11 @@ export default [
                 ]
             }
         ]
+    },
+    {
+        url: "/agenteView/CalendarioMApoyoClinico",
+        name: "C.M. Apoyo Clinico",
+        slug: "CalendarioMApoyoClinico",
+        icon: "CalendarIcon"
     }
 ];
