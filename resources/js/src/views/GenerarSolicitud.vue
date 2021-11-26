@@ -172,19 +172,7 @@
                             <br />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>3.1 - Equipo</h6>
-                            <br />
-                            <vs-input
-                                :disabled="this.checkEQ"
-                                placeholder="Ej. Placa Madre MSI B550"
-                                v-model="solicitud.equipo"
-                                class="w-full"
-                                name="Equipo"
-                            />
-                            <br />
-                        </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>3.2 - Marca</h6>
+                            <h6>3.1 - Marca</h6>
                             <br />
                             <vs-input
                                 placeholder="Ej. MSI"
@@ -197,7 +185,7 @@
                             <br />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>3.3 - Modelo</h6>
+                            <h6>3.2 - Modelo</h6>
                             <br />
                             <vs-input
                                 placeholder="Ej. B550"
@@ -209,7 +197,7 @@
                             <br />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>3.4 - Serie</h6>
+                            <h6>3.3 - Serie</h6>
                             <br />
                             <vs-input
                                 placeholder="Ej. A26548W866F9B"
@@ -221,7 +209,7 @@
                             <br />
                         </div>
                         <div class="vx-col w-full mt-5">
-                            <h6>3.5 - Inventario</h6>
+                            <h6>3.4 - Inventario</h6>
                             <br />
                             <vs-input
                                 placeholder="Ej. 15-54112"
@@ -334,7 +322,7 @@ export default {
             uuid: "",
             descripcionSeguimiento: "Solicitud creada",
             descripcionCorreo: "",
-            equipo: "",
+            //equipo: "",
             marca: "",
             modelo: "",
             serie: "",
@@ -383,7 +371,7 @@ export default {
         desactivarSeleccionEQ() {
             try {
                 if (this.checkEQ == false) {
-                    this.solicitud.equipo = "";
+                    //this.solicitud.equipo = "";
                     this.solicitud.marca = "";
                     this.solicitud.modelo = "";
                     this.solicitud.serie = "";
@@ -453,7 +441,7 @@ export default {
                 c.forEach((value, index) => {
                     a = value.id;
                     if (a == idGeneral) {
-                        this.solicitud.equipo = value.equipo;
+                        //this.solicitud.equipo = value.equipo;
                         this.solicitud.marca = value.marca;
                         this.solicitud.modelo = value.modelo;
                         this.solicitud.serie = value.serie;
@@ -473,7 +461,7 @@ export default {
                 c.forEach((value, index) => {
                     a = value.id;
                     if (a == idGeneral) {
-                        this.solicitud.equipo = value.equipo;
+                        //this.solicitud.equipo = value.equipo;
                         this.solicitud.marca = value.marca;
                         this.solicitud.modelo = value.modelo;
                         this.solicitud.serie = value.serie;

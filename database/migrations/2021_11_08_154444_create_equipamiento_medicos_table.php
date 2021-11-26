@@ -15,7 +15,6 @@ class CreateEquipamientoMedicosTable extends Migration
     {
         Schema::create('equipamiento_medicos', function (Blueprint $table) {
             $table->id();
-            $table->string('equipo');
             $table->string('marca');
             $table->string('modelo');
             $table->string('serie');

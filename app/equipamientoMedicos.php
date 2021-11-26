@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class equipamientoMedicos extends Model
 {
     protected $fillable = [
-        'equipo','marca','modelo','serie','ninventario'
+        'marca','modelo','serie','ninventario'
     ];
 }
