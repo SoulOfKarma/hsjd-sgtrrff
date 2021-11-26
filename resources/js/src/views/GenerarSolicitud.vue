@@ -208,7 +208,7 @@
                             />
                             <br />
                         </div>
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-1/2 mt-5">
                             <h6>3.4 - Inventario</h6>
                             <br />
                             <vs-input
