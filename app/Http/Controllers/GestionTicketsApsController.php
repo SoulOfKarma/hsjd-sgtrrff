@@ -172,7 +172,7 @@ class GestionTicketsApsController extends Controller
             ->join('servicios','solicitud_tickets_aps.id_servicio','=','servicios.id')
             ->where('solicitud_tickets_aps.id_categoria', 4)
             ->where('solicitud_tickets_aps.id_estado', 1)
-            ->orwhere('solicitud_tickets_aps.id_estado', 9);
+            ->orWhere('solicitud_tickets_aps.id_estado', 9);
 
             $uticket = SolicitudTicketsAps::select('solicitud_tickets_aps.id','solicitud_tickets_aps.id_categoria','solicitud_tickets_aps.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_aps.descripcionP','solicitud_tickets_aps.id_estado',

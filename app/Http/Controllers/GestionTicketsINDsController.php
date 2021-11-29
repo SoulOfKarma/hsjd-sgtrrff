@@ -162,7 +162,7 @@ class GestionTicketsINDsController extends Controller
             ->join('servicios','solicitud_ticket_i_n_ds.id_servicio','=','servicios.id')
             ->where('solicitud_ticket_i_n_ds.id_categoria', 3)
             ->where('solicitud_ticket_i_n_ds.id_estado', 1)
-            ->orwhere('solicitud_ticket_i_n_ds.id_estado', 9);
+            ->orWhere('solicitud_ticket_i_n_ds.id_estado', 9);
             //->orderBy('solicitud_tickets.id', 'desc')
             //->get();
             $uticket = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.id','solicitud_ticket_i_n_ds.id_categoria','solicitud_ticket_i_n_ds.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),

@@ -364,7 +364,7 @@ class GestionTicketController extends Controller
             ->join('servicios','solicitud_tickets.id_servicio','=','servicios.id')
             ->where('solicitud_tickets.id_categoria', 1)
             ->where('solicitud_tickets.id_estado', 1)
-            ->orwhere('solicitud_tickets.id_estado', 9);
+            ->orWhere('solicitud_tickets.id_estado', 9);
 
 
             //->orderBy('solicitud_tickets.id', 'desc')
