@@ -49,11 +49,8 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
             DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
-             ELSE gestion_solicitudes.horaTermino END) AS horaTermino")
-             /* ,
-            DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
-            ELSE gestion_solicitudes.horaTermino END) AS horaTermino"
-            "DATE_FORMAT(gestion_solicitudes.fechaTermino, '%d/%m/%Y') as fechaTermino") */
+             ELSE gestion_solicitudes.horaTermino END) AS horaTermino"),
+            DB::raw("DATE_FORMAT(gestion_solicitudes.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
@@ -94,6 +91,7 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             'Nombre Solicitante',
             'Tipo de Trabajo',
             'Hora Termino',
+            'Fecha Termino',
         ];
     }
 }
@@ -131,7 +129,8 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
             DB::raw("(CASE WHEN gestion_ticket_e_m_s.horaTermino IS NULL THEN '0'
-             ELSE gestion_ticket_e_m_s.horaTermino END) AS horaTermino")
+             ELSE gestion_ticket_e_m_s.horaTermino END) AS horaTermino"),
+             DB::raw("DATE_FORMAT(gestion_ticket_e_m_s.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
             ->join('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_ticket_e_m_s.id_supervisor', '=', 'supervisores.id')
@@ -172,6 +171,7 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
             'Nombre Solicitante',
             'Tipo de Trabajo',
             'Hora Termino',
+            'Fecha Termino',
         ];
     }
 }
@@ -210,7 +210,8 @@ class GestionExportAP implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
             DB::raw("(CASE WHEN gestion_tickets_aps.horaTermino IS NULL THEN '0'
-             ELSE gestion_tickets_aps.horaTermino END) AS horaTermino")
+             ELSE gestion_tickets_aps.horaTermino END) AS horaTermino"),
+             DB::raw("DATE_FORMAT(gestion_tickets_aps.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
             ->join('trabajadores', 'gestion_tickets_aps.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_tickets_aps.id_supervisor', '=', 'supervisores.id')
@@ -251,6 +252,7 @@ class GestionExportAP implements FromCollection, WithHeadings, ShouldAutoSize
             'Nombre Solicitante',
             'Tipo de Trabajo',
             'Hora Termino',
+            'Fecha Termino',
         ];
     }
 }
@@ -289,7 +291,8 @@ class GestionExportI implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.horaTermino IS NULL THEN '0'
-             ELSE gestion_tickets_i_n_ds.horaTermino END) AS horaTermino")
+             ELSE gestion_tickets_i_n_ds.horaTermino END) AS horaTermino"),
+             DB::raw("DATE_FORMAT(gestion_tickets_i_n_ds.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
             ->join('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_tickets_i_n_ds.id_supervisor', '=', 'supervisores.id')
@@ -330,6 +333,7 @@ class GestionExportI implements FromCollection, WithHeadings, ShouldAutoSize
             'Nombre Solicitante',
             'Tipo de Trabajo',
             'Hora Termino',
+            'Fecha Termino',
         ];
     }
 }
@@ -376,7 +380,8 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
             DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
-             ELSE gestion_solicitudes.horaTermino END) AS horaTermino")
+             ELSE gestion_solicitudes.horaTermino END) AS horaTermino"),
+             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
@@ -420,6 +425,7 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
             'Nombre Solicitante',
             'Tipo de Trabajo',
             'Hora Termino',
+            'Fecha Termino',
         ];
     }
 }
@@ -466,7 +472,8 @@ class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAut
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
             DB::raw("(CASE WHEN gestion_ticket_e_m_s.horaTermino IS NULL THEN '0'
-             ELSE gestion_ticket_e_m_s.horaTermino END) AS horaTermino")
+             ELSE gestion_ticket_e_m_s.horaTermino END) AS horaTermino"),
+             DB::raw("DATE_FORMAT(gestion_ticket_e_m_s.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
             ->join('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_ticket_e_m_s.id_supervisor', '=', 'supervisores.id')
@@ -510,6 +517,7 @@ class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAut
             'Nombre Solicitante',
             'Tipo de Trabajo',
             'Hora Termino',
+            'Fecha Termino'
         ];
     }
 }
@@ -556,7 +564,8 @@ class GestionExportByFechasAP implements FromCollection, WithHeadings, ShouldAut
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
             DB::raw("(CASE WHEN gestion_tickets_aps.horaTermino IS NULL THEN '0'
-             ELSE gestion_tickets_aps.horaTermino END) AS horaTermino")
+             ELSE gestion_tickets_aps.horaTermino END) AS horaTermino"),
+             DB::raw("DATE_FORMAT(gestion_tickets_aps.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
             ->join('trabajadores', 'gestion_tickets_aps.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_tickets_aps.id_supervisor', '=', 'supervisores.id')
@@ -600,6 +609,7 @@ class GestionExportByFechasAP implements FromCollection, WithHeadings, ShouldAut
             'Nombre Solicitante',
             'Tipo de Trabajo',
             'Hora Termino',
+            'Fecha Termino',
         ];
     }
 }
@@ -646,7 +656,8 @@ class GestionExportByFechasI implements FromCollection, WithHeadings, ShouldAuto
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.horaTermino IS NULL THEN '0'
-             ELSE gestion_tickets_i_n_ds.horaTermino END) AS horaTermino")
+             ELSE gestion_tickets_i_n_ds.horaTermino END) AS horaTermino"),
+             DB::raw("DATE_FORMAT(gestion_tickets_i_n_ds.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
             ->join('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_tickets_i_n_ds.id_supervisor', '=', 'supervisores.id')
@@ -690,6 +701,7 @@ class GestionExportByFechasI implements FromCollection, WithHeadings, ShouldAuto
             'Nombre Solicitante',
             'Tipo de Trabajo',
             'Hora Termino',
+            'Fecha Termino',
         ];
     }
 }
