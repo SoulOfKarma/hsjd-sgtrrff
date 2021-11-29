@@ -164,13 +164,14 @@ class GestionTicketEMSController extends Controller
             DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as desFormat"),
             DB::raw("(CASE WHEN solicitud_tickets_e_m_s.created_at IS NULL THEN 'PENDIENTE'
             ELSE DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%d/%m/%Y') END) AS fechaSolicitud"),
-            DB::raw("'PENDIENTE'AS nombreTra"))
+            DB::raw("'PENDIENTE' AS nombreTra"))
             ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions','solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
             ->join('servicios','solicitud_tickets_e_m_s.id_servicio','=','servicios.id')
             ->where('solicitud_tickets_e_m_s.id_categoria', 2)
-            ->where('solicitud_tickets_e_m_s.id_estado', 1);
+            ->where('solicitud_tickets_e_m_s.id_estado', 1)
+            ->orwhere('solicitud_tickets_e_m_s.id_estado', 9);
 
             $uticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.id_categoria','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_e_m_s.descripcionP','solicitud_tickets_e_m_s.id_estado',
@@ -347,20 +348,24 @@ class GestionTicketEMSController extends Controller
 
     public function destroy(Request $request)
     {
-        /* GestionSolicitudes::where('id_solicitud', $id)->delete();
-        SolicitudTickets::where('id', $id)->delete(); */
-        $id = $request->id_solicitud;
-        $nombre = $request->nombre;
-        $razon = $request->razonEliminacion;
-        $descripcionSeguimiento = $request->descripcionSeguimiento;
-        $seguimientoRazon = SeguimientoSolicitudes::create($request->all());
-        $estadoEliminado = 7;
-        $ticket = SolicitudTicketsEM::find($id);
-        $idUser = $ticket->id_user;
-        $ticket->id_estado = $estadoEliminado;
-        $ticket->save();
+        $validador = false;
+        try {
+            /* GestionSolicitudes::where('id_solicitud', $id)->delete();
+            SolicitudTickets::where('id', $id)->delete(); */
+            $id = $request->id_solicitud;
+            $nombre = $request->nombre;
+            $razon = $request->razonEliminacion;
+            $descripcionSeguimiento = $request->descripcionSeguimiento;
+            $seguimientoRazon = SeguimientoSolicitudes::create($request->all());
+            $estadoEliminado = 7;
+            $ticket = SolicitudTicketsEM::find($id);
+            $idUser = $ticket->id_user;
+            $ticket->id_estado = $estadoEliminado;
+            $ticket->save();
 
-        $userSearch = Users::where('id',$idUser)->first();
+            $validador = true;
+
+            $userSearch = Users::where('id',$idUser)->first();
                 $ValidarCargo = $userSearch->id_cargo_asociado;     
                 $userMail = [];
     
@@ -391,7 +396,17 @@ class GestionTicketEMSController extends Controller
                    // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
                 });
 
-        return true;
+            return true;
+        } catch (\Throwable $th) {
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
+        }
+        
     }
 
     public function FinalizarTicket(Request $request){

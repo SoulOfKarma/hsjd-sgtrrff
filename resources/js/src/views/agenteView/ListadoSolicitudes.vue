@@ -73,6 +73,12 @@
                         <vs-chip v-if="props.row.id_estado == 8" color="danger">
                             {{ props.row.descripcionEstado }}
                         </vs-chip>
+                        <vs-chip
+                            v-if="props.row.id_estado == 9"
+                            color="primary"
+                        >
+                            {{ props.row.descripcionEstado }}
+                        </vs-chip>
                     </span>
 
                     <!-- Column: Action -->

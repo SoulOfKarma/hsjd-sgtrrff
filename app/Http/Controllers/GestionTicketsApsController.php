@@ -171,7 +171,8 @@ class GestionTicketsApsController extends Controller
             ->join('tipo_reparacions','solicitud_tickets_aps.id_tipoReparacion','=','tipo_reparacions.id')
             ->join('servicios','solicitud_tickets_aps.id_servicio','=','servicios.id')
             ->where('solicitud_tickets_aps.id_categoria', 4)
-            ->where('solicitud_tickets_aps.id_estado', 1);
+            ->where('solicitud_tickets_aps.id_estado', 1)
+            ->orwhere('solicitud_tickets_aps.id_estado', 9);
 
             $uticket = SolicitudTicketsAps::select('solicitud_tickets_aps.id','solicitud_tickets_aps.id_categoria','solicitud_tickets_aps.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_aps.descripcionP','solicitud_tickets_aps.id_estado',
@@ -373,7 +374,9 @@ class GestionTicketsApsController extends Controller
 
     public function destroy(Request $request)
     {
-        /* GestionSolicitudes::where('id_solicitud', $id)->delete();
+        $validador = false;
+        try {
+            /* GestionSolicitudes::where('id_solicitud', $id)->delete();
         SolicitudTickets::where('id', $id)->delete(); */
         $id = $request->id_solicitud;
         $nombre = $request->nombre;
@@ -385,6 +388,8 @@ class GestionTicketsApsController extends Controller
         $idUser = $ticket->id_user;
         $ticket->id_estado = $estadoEliminado;
         $ticket->save();
+
+        $validador = true;
 
         $userSearch = Users::where('id',$idUser)->first();
                 $ValidarCargo = $userSearch->id_cargo_asociado;     
@@ -418,6 +423,16 @@ class GestionTicketsApsController extends Controller
                 });
 
         return true;
+        } catch (\Throwable $th) {
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
+        }
+        
     }
 
     public function FinalizarTicket(Request $request){

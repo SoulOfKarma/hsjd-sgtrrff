@@ -47,15 +47,15 @@ class SolicitudTicketsEMController extends Controller
                 'id_estado' => $request->id_estado, 'descripcionP' => $request->descripcionP, 'tituloP' => $request->tituloP
             ]);
 
-         $response = seguimientoEMSolicitudes::create($request->all());
+            $response = seguimientoEMSolicitudes::create($request->all());
 
-         $nombre = $request->nombre;
-         $id = $request->id_user;
-         $titulo = $request->tituloP;
-         $descripcionTicket = $request->descripcionP;
-         $estado = $request->id_estado;
-         $razon = $request->razonMail;
-         $descripcionProblema = $request->descripcionProblema;
+            $nombre = $request->nombre;
+            $id = $request->id_user;
+            $titulo = $request->tituloP;
+            $descripcionTicket = $request->descripcionP;
+            $estado = $request->id_estado;
+            $razon = $request->razonMail;
+            $descripcionProblema = $request->descripcionProblema;
 
             $userSearch = Users::where('id',$id)->first();
             $ValidarCargo = $userSearch->id_cargo_asociado;     

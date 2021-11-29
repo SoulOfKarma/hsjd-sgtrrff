@@ -41,6 +41,7 @@ class CategoriaController extends Controller
     public function PutCategoria(Request $request){
         try {
             $data = [];
+            $estado = 9;
             if($request->idCategoriaOriginal == 1){
               $data = SolicitudTickets::firstwhere('id',$request->idsolicitud);       
             }else if($request->idCategoriaOriginal == 2){
@@ -120,7 +121,10 @@ class CategoriaController extends Controller
             }
 
             if($request->idCategoriaOriginal == 1){
-                $data = SolicitudTickets::where('id',$request->idsolicitud)->delete();    
+                $data = SolicitudTickets::where('id',$request->idsolicitud)
+                ->update(
+                    ['id_estado' => $estado]
+                 );
                 $seguimiento = new SeguimientoSolicitudes();
 
                 $seguimiento->id_solicitud = $request->idsolicitud;
@@ -130,7 +134,10 @@ class CategoriaController extends Controller
 
                 $seguimiento->save();   
             }else if($request->idCategoriaOriginal == 2){
-                $data = SolicitudTicketsEM::where('id',$request->idsolicitud)->delete(); 
+                $data = SolicitudTicketsEM::where('id',$request->idsolicitud)
+                ->update(
+                    ['id_estado' => $estado]
+                 ); 
                 $seguimiento = new seguimientoEMSolicitudes();
 
                 $seguimiento->id_solicitud = $request->idsolicitud;
@@ -140,7 +147,10 @@ class CategoriaController extends Controller
 
                 $seguimiento->save();
             }else if($request->idCategoriaOriginal == 3){
-                $data = SolicitudTicketINDs::where('id',$request->idsolicitud)->delete(); 
+                $data = SolicitudTicketINDs::where('id',$request->idsolicitud)
+                ->update(
+                    ['id_estado' => $estado]
+                 ); 
                 $seguimiento = new seguimientoINDSolicitudes();
 
                 $seguimiento->id_solicitud = $request->idsolicitud;
@@ -150,7 +160,10 @@ class CategoriaController extends Controller
 
                 $seguimiento->save();
             }else if($request->idCategoriaOriginal == 4){
-                $data = SolicitudTicketsAps::where('id',$request->idsolicitud)->delete();
+                $data = SolicitudTicketsAps::where('id',$request->idsolicitud)
+                ->update(
+                    ['id_estado' => $estado]
+                 );
                 $seguimiento = new seguimientoAPSolicitudes();
 
                 $seguimiento->id_solicitud = $request->idsolicitud;

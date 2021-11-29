@@ -161,7 +161,8 @@ class GestionTicketsINDsController extends Controller
             ->join('tipo_reparacions','solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
             ->join('servicios','solicitud_ticket_i_n_ds.id_servicio','=','servicios.id')
             ->where('solicitud_ticket_i_n_ds.id_categoria', 3)
-            ->where('solicitud_ticket_i_n_ds.id_estado', 1);
+            ->where('solicitud_ticket_i_n_ds.id_estado', 1)
+            ->orwhere('solicitud_ticket_i_n_ds.id_estado', 9);
             //->orderBy('solicitud_tickets.id', 'desc')
             //->get();
             $uticket = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.id','solicitud_ticket_i_n_ds.id_categoria','solicitud_ticket_i_n_ds.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
@@ -351,20 +352,24 @@ class GestionTicketsINDsController extends Controller
 
     public function destroy(Request $request)
     {
-        /* GestionSolicitudes::where('id_solicitud', $id)->delete();
-        SolicitudTickets::where('id', $id)->delete(); */
-        $id = $request->id_solicitud;
-        $nombre = $request->nombre;
-        $razon = $request->razonEliminacion;
-        $descripcionSeguimiento = $request->descripcionSeguimiento;
-        $seguimientoRazon = SeguimientoSolicitudes::create($request->all());
-        $estadoEliminado = 7;
-        $ticket = SolicitudTicketINDs::find($id);
-        $idUser = $ticket->id_user;
-        $ticket->id_estado = $estadoEliminado;
-        $ticket->save();
+        $validador = false;
+        try {
+            /* GestionSolicitudes::where('id_solicitud', $id)->delete();
+            SolicitudTickets::where('id', $id)->delete(); */
+            $id = $request->id_solicitud;
+            $nombre = $request->nombre;
+            $razon = $request->razonEliminacion;
+            $descripcionSeguimiento = $request->descripcionSeguimiento;
+            $seguimientoRazon = SeguimientoSolicitudes::create($request->all());
+            $estadoEliminado = 7;
+            $ticket = SolicitudTicketINDs::find($id);
+            $idUser = $ticket->id_user;
+            $ticket->id_estado = $estadoEliminado;
+            $ticket->save();
 
-        $userSearch = Users::where('id',$idUser)->first();
+            $validador = true;
+
+            $userSearch = Users::where('id',$idUser)->first();
                 $ValidarCargo = $userSearch->id_cargo_asociado;     
                 $userMail = [];
     
@@ -395,7 +400,17 @@ class GestionTicketsINDsController extends Controller
                    // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
                 });
 
-        return true;
+            return true;
+        } catch (\Throwable $th) {
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
+        }
+        
     }
 
     public function FinalizarTicket(Request $request){
