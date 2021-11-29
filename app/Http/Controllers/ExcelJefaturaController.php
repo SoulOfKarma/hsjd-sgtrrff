@@ -50,6 +50,10 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             'duracion_solicitudes.descripcion_duracion',
             DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
              ELSE gestion_solicitudes.horaTermino END) AS horaTermino")
+             /* ,
+            DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
+            ELSE gestion_solicitudes.horaTermino END) AS horaTermino"
+            "DATE_FORMAT(gestion_solicitudes.fechaTermino, '%d/%m/%Y') as fechaTermino") */
         )
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')

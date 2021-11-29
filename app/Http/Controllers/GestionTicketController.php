@@ -406,7 +406,7 @@ class GestionTicketController extends Controller
             DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
             DB::raw("(CASE WHEN solicitud_tickets.created_at IS NULL THEN  DATE_FORMAT(solicitud_tickets.created_at,'%d/%m/%Y')
             ELSE DATE_FORMAT(solicitud_tickets.created_at,'%d/%m/%Y') END) AS fechaSolicitud"),
-            DB::raw("'PENDIENTE' AS nombreTra"),'categorias.des_categoria')
+            DB::raw("'PENDIENTE' AS nombreTra"),'categorias.des_categoria','solicitud_tickets.id_categoria')
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('categorias','solicitud_tickets.id_categoria','=','categorias.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
@@ -426,7 +426,7 @@ class GestionTicketController extends Controller
             DB::raw("(CASE WHEN gestion_solicitudes.fechaInicio IS NULL THEN 'PENDIENTE'
             ELSE DATE_FORMAT(gestion_solicitudes.fechaInicio,'%d/%m/%Y') END) AS fechaSolicitud"),
             DB::raw("(CASE WHEN gestion_solicitudes.id_trabajador IS NULL THEN 'PENDIENTE'
-             ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"),'categorias.des_categoria')
+             ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"),'categorias.des_categoria','solicitud_tickets.id_categoria')
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('categorias','solicitud_tickets.id_categoria','=','categorias.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
@@ -443,7 +443,7 @@ class GestionTicketController extends Controller
             DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as desFormat"),
             DB::raw("(CASE WHEN solicitud_tickets_e_m_s.created_at IS NULL THEN 'PENDIENTE'
             ELSE DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%d/%m/%Y') END) AS fechaSolicitud"),
-            DB::raw("'PENDIENTE'AS nombreTra"),'categorias.des_categoria')
+            DB::raw("'PENDIENTE'AS nombreTra"),'categorias.des_categoria','solicitud_tickets_e_m_s.id_categoria')
             ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
             ->join('categorias','solicitud_tickets_e_m_s.id_categoria','=','categorias.id')
             ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
@@ -460,7 +460,7 @@ class GestionTicketController extends Controller
             DB::raw("(CASE WHEN gestion_ticket_e_m_s.fechaInicio IS NULL THEN 'PENDIENTE'
             ELSE DATE_FORMAT(gestion_ticket_e_m_s.fechaInicio,'%d/%m/%Y') END) AS fechaSolicitud"),
             DB::raw("(CASE WHEN gestion_ticket_e_m_s.id_trabajador IS NULL THEN 'PENDIENTE'
-             ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"),'categorias.des_categoria')
+             ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"),'categorias.des_categoria','solicitud_tickets_e_m_s.id_categoria')
             ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
             ->join('categorias','solicitud_tickets_e_m_s.id_categoria','=','categorias.id')
             ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
@@ -477,7 +477,7 @@ class GestionTicketController extends Controller
             DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP) as desFormat"),
             DB::raw("(CASE WHEN solicitud_ticket_i_n_ds.created_at IS NULL THEN 'PENDIENTE'
             ELSE DATE_FORMAT(solicitud_ticket_i_n_ds.created_at,'%d/%m/%Y') END) AS fechaSolicitud"),
-            DB::raw("'PENDIENTE'AS nombreTra"),'categorias.des_categoria')
+            DB::raw("'PENDIENTE'AS nombreTra"),'categorias.des_categoria','solicitud_ticket_i_n_ds.id_categoria')
             ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
             ->join('categorias','solicitud_ticket_i_n_ds.id_categoria','=','categorias.id')
             ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
@@ -495,7 +495,7 @@ class GestionTicketController extends Controller
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.fechaInicio IS NULL THEN 'PENDIENTE'
             ELSE DATE_FORMAT(gestion_tickets_i_n_ds.fechaInicio,'%d/%m/%Y') END) AS fechaSolicitud"),
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.id_trabajador IS NULL THEN 'PENDIENTE'
-             ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"),'categorias.des_categoria')
+             ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"),'categorias.des_categoria','solicitud_ticket_i_n_ds.id_categoria')
             ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
             ->join('categorias','solicitud_ticket_i_n_ds.id_categoria','=','categorias.id')
             ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
@@ -512,7 +512,7 @@ class GestionTicketController extends Controller
             DB::raw("fnStripTags(solicitud_tickets_aps.descripcionP) as desFormat"),
             DB::raw("(CASE WHEN solicitud_tickets_aps.created_at IS NULL THEN 'PENDIENTE'
             ELSE DATE_FORMAT(solicitud_tickets_aps.created_at,'%d/%m/%Y') END) AS fechaSolicitud"),
-            DB::raw("'PENDIENTE' AS nombreTra"),'categorias.des_categoria')
+            DB::raw("'PENDIENTE' AS nombreTra"),'categorias.des_categoria','solicitud_tickets_aps.id_categoria')
             ->join('users', 'solicitud_tickets_aps.id_user', '=', 'users.id')
             ->join('categorias','solicitud_tickets_aps.id_categoria','=','categorias.id')
             ->join('estado_solicituds', 'solicitud_tickets_aps.id_estado', '=', 'estado_solicituds.id')
@@ -529,7 +529,7 @@ class GestionTicketController extends Controller
             DB::raw("(CASE WHEN gestion_tickets_aps.fechaInicio IS NULL THEN 'PENDIENTE'
             ELSE DATE_FORMAT(gestion_tickets_aps.fechaInicio,'%d/%m/%Y') END) AS fechaSolicitud"),
             DB::raw("(CASE WHEN gestion_tickets_aps.id_trabajador IS NULL THEN 'PENDIENTE'
-             ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"),'categorias.des_categoria')
+             ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"),'categorias.des_categoria','solicitud_tickets_aps.id_categoria')
             ->join('users', 'solicitud_tickets_aps.id_user', '=', 'users.id')
             ->join('categorias','solicitud_tickets_aps.id_categoria','=','categorias.id')
             ->join('estado_solicituds', 'solicitud_tickets_aps.id_estado', '=', 'estado_solicituds.id')
