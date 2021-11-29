@@ -38,6 +38,7 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_solicitudes.horaInicio,'%H:%i:%s')) as horaProgramada"),
             DB::raw("(CASE WHEN gestion_solicitudes.horasEjecucion IS NULL THEN '0'
              ELSE gestion_solicitudes.horasEjecucion END) AS horasEjecucion"),
             DB::raw("(CASE WHEN gestion_solicitudes.diasEjecucion IS NULL THEN '0'
@@ -80,6 +81,7 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
             'Apoyo 3',
             'Supervisor a Cargo',
             'Fecha de Programacion - Visita',
+            'Hora de Programacion - Visita',
             'Horas de Ejecucion',
             'Dias de Ejecucion',
             'Estado Ticket',
@@ -114,6 +116,7 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_ticket_e_m_s.fechaInicio, '%d/%m/%Y') as nfechaI"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_ticket_e_m_s.horaInicio,'%H:%i:%s')) as horaProgramada"),
             DB::raw("(CASE WHEN gestion_ticket_e_m_s.horasEjecucion IS NULL THEN '0'
              ELSE gestion_ticket_e_m_s.horasEjecucion END) AS horasEjecucion"),
             DB::raw("(CASE WHEN gestion_ticket_e_m_s.diasEjecucion IS NULL THEN '0'
@@ -156,6 +159,7 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
             'Apoyo 3',
             'Supervisor a Cargo',
             'Fecha de Programacion - Visita',
+            'Hora de Programacion - Visita',
             'Horas de Ejecucion',
             'Dias de Ejecucion',
             'Estado Ticket',
@@ -191,6 +195,7 @@ class GestionExportAP implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_tickets_aps.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_tickets_aps.fechaInicio, '%d/%m/%Y') as nfechaI"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_tickets_aps.horaInicio,'%H:%i:%s')) as horaProgramada"),
             DB::raw("(CASE WHEN gestion_tickets_aps.horasEjecucion IS NULL THEN '0'
              ELSE gestion_tickets_aps.horasEjecucion END) AS horasEjecucion"),
             DB::raw("(CASE WHEN gestion_tickets_aps.diasEjecucion IS NULL THEN '0'
@@ -233,6 +238,7 @@ class GestionExportAP implements FromCollection, WithHeadings, ShouldAutoSize
             'Apoyo 3',
             'Supervisor a Cargo',
             'Fecha de Programacion - Visita',
+            'Hora de Programacion - Visita',
             'Horas de Ejecucion',
             'Dias de Ejecucion',
             'Estado Ticket',
@@ -268,6 +274,7 @@ class GestionExportI implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_tickets_i_n_ds.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_tickets_i_n_ds.fechaInicio, '%d/%m/%Y') as nfechaI"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_tickets_i_n_ds.horaInicio,'%H:%i:%s')) as horaProgramada"),
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.horasEjecucion IS NULL THEN '0'
              ELSE gestion_tickets_i_n_ds.horasEjecucion END) AS horasEjecucion"),
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.diasEjecucion IS NULL THEN '0'
@@ -310,6 +317,7 @@ class GestionExportI implements FromCollection, WithHeadings, ShouldAutoSize
             'Apoyo 3',
             'Supervisor a Cargo',
             'Fecha de Programacion - Visita',
+            'Hora de Programacion - Visita',
             'Horas de Ejecucion',
             'Dias de Ejecucion',
             'Estado Ticket',
@@ -353,6 +361,7 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_solicitudes.horaInicio,'%H:%i:%s')) as horaProgramada"),
             DB::raw("(CASE WHEN gestion_solicitudes.horasEjecucion IS NULL THEN '0'
              ELSE gestion_solicitudes.horasEjecucion END) AS horasEjecucion"),
             DB::raw("(CASE WHEN gestion_solicitudes.diasEjecucion IS NULL THEN '0'
@@ -398,6 +407,7 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
             'Apoyo 3',
             'Supervisor a Cargo',
             'Fecha de Programacion - Visita',
+            'Hora de Programacion - Visita',
             'Horas de Ejecucion',
             'Dias de Ejecucion',
             'Estado Ticket',
@@ -441,6 +451,7 @@ class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAut
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_ticket_e_m_s.fechaInicio, '%d/%m/%Y') as nfechaI"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_ticket_e_m_s.horaInicio,'%H:%i:%s')) as horaProgramada"),
             DB::raw("(CASE WHEN gestion_ticket_e_m_s.horasEjecucion IS NULL THEN '0'
              ELSE gestion_ticket_e_m_s.horasEjecucion END) AS horasEjecucion"),
             DB::raw("(CASE WHEN gestion_ticket_e_m_s.diasEjecucion IS NULL THEN '0'
@@ -486,6 +497,7 @@ class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAut
             'Apoyo 3',
             'Supervisor a Cargo',
             'Fecha de Programacion - Visita',
+            'Hora de Programacion - Visita',
             'Horas de Ejecucion',
             'Dias de Ejecucion',
             'Estado Ticket',
@@ -529,6 +541,7 @@ class GestionExportByFechasAP implements FromCollection, WithHeadings, ShouldAut
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_tickets_aps.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_tickets_aps.fechaInicio, '%d/%m/%Y') as nfechaI"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_tickets_aps.horaProgramada,'%H:%i:%s')) as horaProgramacion"),
             DB::raw("(CASE WHEN gestion_tickets_aps.horasEjecucion IS NULL THEN '0'
              ELSE gestion_tickets_aps.horasEjecucion END) AS horasEjecucion"),
             DB::raw("(CASE WHEN gestion_tickets_aps.diasEjecucion IS NULL THEN '0'
@@ -574,6 +587,7 @@ class GestionExportByFechasAP implements FromCollection, WithHeadings, ShouldAut
             'Apoyo 3',
             'Supervisor a Cargo',
             'Fecha de Programacion - Visita',
+            'Hora de Programacion - Visita',
             'Horas de Ejecucion',
             'Dias de Ejecucion',
             'Estado Ticket',
@@ -617,6 +631,7 @@ class GestionExportByFechasI implements FromCollection, WithHeadings, ShouldAuto
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_tickets_i_n_ds.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_tickets_i_n_ds.fechaInicio, '%d/%m/%Y') as nfechaI"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_tickets_i_n_ds.horaInicio,'%H:%i:%s')) as horaProgramda"),
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.horasEjecucion IS NULL THEN '0'
              ELSE gestion_tickets_i_n_ds.horasEjecucion END) AS horasEjecucion"),
             DB::raw("(CASE WHEN gestion_tickets_i_n_ds.diasEjecucion IS NULL THEN '0'
@@ -662,6 +677,7 @@ class GestionExportByFechasI implements FromCollection, WithHeadings, ShouldAuto
             'Apoyo 3',
             'Supervisor a Cargo',
             'Fecha de Programacion - Visita',
+            'Hora de Programacion - Visita',
             'Horas de Ejecucion',
             'Dias de Ejecucion',
             'Estado Ticket',
