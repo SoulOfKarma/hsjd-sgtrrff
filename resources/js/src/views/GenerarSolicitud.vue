@@ -474,7 +474,7 @@ export default {
         },
         cargaEquipoPorNInventario() {
             try {
-                var idGeneral = this.seleccionInventario.id;
+                var idGeneral = this.seleccionSerie.id;
                 let c = JSON.parse(JSON.stringify(this.listadoEquipamiento));
                 let b = [];
                 var a = 0;

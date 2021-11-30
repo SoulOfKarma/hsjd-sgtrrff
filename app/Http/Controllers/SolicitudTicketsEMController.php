@@ -144,7 +144,7 @@ class SolicitudTicketsEMController extends Controller
                 tbl_ticket_equipamientoMedicos::create(['id_solicitud' => $response->id,'id_equipamiento_medico' => $request->id_equipamiento_medico]);
             }else{
                 $resp = equipamientoMedicos::create(['marca' => $request->marca,'modelo' => $request->modelo,'serie' => $request->serie,'ninventario' => $request->ninventario]);
-                tbl_ticket_equipamientoMedicos::create(['id_solicitud' => $response->id,'id_equipamiento_medico' => $resp->id_equipamiento_medico]);
+                tbl_ticket_equipamientoMedicos::create(['id_solicitud' => $response->id,'id_equipamiento_medico' => $resp->id]);
             }
             $id = $request->id_user;
             $userSearch = Users::where('id',$id)->first();
