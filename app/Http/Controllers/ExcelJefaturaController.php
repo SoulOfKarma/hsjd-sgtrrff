@@ -553,7 +553,7 @@ class GestionExportByFechasAP implements FromCollection, WithHeadings, ShouldAut
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_tickets_aps.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_tickets_aps.fechaInicio, '%d/%m/%Y') as nfechaI"),
-            DB::raw("CONCAT(DATE_FORMAT(gestion_tickets_aps.horaProgramada,'%H:%i:%s')) as horaProgramacion"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_tickets_aps.horaInicio,'%H:%i:%s')) as horaProgramacion"),
             DB::raw("(CASE WHEN gestion_tickets_aps.horasEjecucion IS NULL THEN '0'
              ELSE gestion_tickets_aps.horasEjecucion END) AS horasEjecucion"),
             DB::raw("(CASE WHEN gestion_tickets_aps.diasEjecucion IS NULL THEN '0'

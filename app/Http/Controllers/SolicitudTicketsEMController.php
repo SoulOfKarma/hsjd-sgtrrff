@@ -135,12 +135,16 @@ class SolicitudTicketsEMController extends Controller
 
     public function store(Request $request)
     {
+        $validarTicket = 0;
         try {
             $uuid = Uuid::generate()->string;
             $response = SolicitudTicketsEM::create(array_merge($request->all(), ['uuid' => $uuid]));
             seguimientoEMSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $response->id, 'descripcionSeguimiento' => 'Ticket creado']));
             if($request->id_equipamiento_medico > 0){
                 tbl_ticket_equipamientoMedicos::create(['id_solicitud' => $response->id,'id_equipamiento_medico' => $request->id_equipamiento_medico]);
+            }else{
+                $resp = equipamientoMedicos::create(['marca' => $request->marca,'modelo' => $request->modelo,'serie' => $request->serie,'ninventario' => $request->ninventario]);
+                tbl_ticket_equipamientoMedicos::create(['id_solicitud' => $response->id,'id_equipamiento_medico' => $resp->id_equipamiento_medico]);
             }
             $id = $request->id_user;
             $userSearch = Users::where('id',$id)->first();
