@@ -161,7 +161,7 @@
                             </h6>
                             <br />
                             <v-select
-                                v-model="seleccionInventario"
+                                v-model="seleccionSerie"
                                 placeholder="Seleccione el Equipamiento a Revisar"
                                 class="w-full select-large"
                                 label="ninventario"
@@ -169,6 +169,15 @@
                                 @input="cargaEquipoPorNInventario"
                                 :disabled="this.checkEQ"
                             ></v-select>
+                            <br />
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <vs-button
+                                color="warning"
+                                class="mr-3 mb-2 w-full"
+                                @click="limpiarSerieInv"
+                                >Limpiar Seleccion Serie o Inventario</vs-button
+                            >
                             <br />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -336,7 +345,8 @@ export default {
         },
         seleccionSerie: {
             id: 0,
-            serie: ""
+            serie: "Seleccione Serie",
+            ninventario: "Seleccione Inventario"
         },
         seleccionInventario: {
             id: 0,
@@ -401,6 +411,16 @@ export default {
             };
             this.solicitud.descripcionP = "";
             this.solicitud.tituloP = "";
+            this.seleccionSerie = {
+                id: 0,
+                serie: "Seleccione Serie",
+                ninventario: "Seleccione Inventario"
+            };
+
+            this.solicitud.marca = "";
+            this.solicitud.modelo = "";
+            this.solicitud.serie = "";
+            this.solicitud.ninventario = "";
         },
         cargaESU() {
             var idGeneral = this.seleccionServicio.id;
@@ -667,6 +687,22 @@ export default {
                 position: "top-right"
             });
         },
+        limpiarSerieInv() {
+            try {
+                this.seleccionSerie = {
+                    id: 0,
+                    serie: "Seleccione Serie",
+                    ninventario: "Seleccione Inventario"
+                };
+
+                this.solicitud.marca = "";
+                this.solicitud.modelo = "";
+                this.solicitud.serie = "";
+                this.solicitud.ninventario = "";
+            } catch (error) {
+                console.log(error);
+            }
+        },
         async guardarSolicitud() {
             try {
                 if (this.seleccionCategoria.id == 1) {
@@ -819,6 +855,12 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        if (this.seleccionSerie.id > 0) {
+                            this.solicitud.id_equipamiento_medico = this.seleccionSerie.id;
+                        } else {
+                            this.solicitud.id_equipamiento_medico = 0;
+                        }
+
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
@@ -834,7 +876,8 @@ export default {
                             id_servicio: 0,
                             id_ubicacionEx: 42,
                             id_tipoReparacion: 0,
-                            id_categoria: 0
+                            id_categoria: 0,
+                            id_equipamiento_medico: 0
                         };
                         //Enviando Datos para crear ticket
                         await axios
@@ -879,6 +922,11 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        if (this.seleccionSerie.id > 0) {
+                            this.solicitud.id_equipamiento_medico = this.seleccionSerie.id;
+                        } else {
+                            this.solicitud.id_equipamiento_medico = 0;
+                        }
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
