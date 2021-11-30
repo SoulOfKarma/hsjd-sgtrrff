@@ -171,7 +171,8 @@ class GestionTicketEMSController extends Controller
             ->join('servicios','solicitud_tickets_e_m_s.id_servicio','=','servicios.id')
             ->where('solicitud_tickets_e_m_s.id_categoria', 2)
             ->where('solicitud_tickets_e_m_s.id_estado', 1)
-            ->orWhere('solicitud_tickets_e_m_s.id_estado', 9);
+            ->orWhere('solicitud_tickets_e_m_s.id_estado', 9)
+            ->orWhere('solicitud_tickets_e_m_s.id_estado', 7);
 
             $uticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.id_categoria','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_e_m_s.descripcionP','solicitud_tickets_e_m_s.id_estado',
@@ -189,6 +190,7 @@ class GestionTicketEMSController extends Controller
             ->join('gestion_ticket_e_m_s', 'solicitud_tickets_e_m_s.id', '=', 'gestion_ticket_e_m_s.id_solicitud')
             ->join('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_tickets_e_m_s.id_categoria', 2)
+            ->where('solicitud_tickets_e_m_s.id_estado','!=', 7)
             ->union($ticket)
             ->orderBy('id','desc')
             ->get();
