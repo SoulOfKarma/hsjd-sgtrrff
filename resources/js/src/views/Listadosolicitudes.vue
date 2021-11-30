@@ -440,6 +440,7 @@ export default {
             ],
             value1: "",
             value2: "",
+            id_cat: "",
             validaEliminar: false,
             popupActive2: false,
             popupActive3: false,
@@ -502,10 +503,11 @@ export default {
                 }
             });
         },
-        abrirPop(id, uuid) {
+        abrirPop(id, uuid, id_categoria) {
             this.validaEliminar = true;
             this.value1 = id;
             this.value2 = uuid;
+            this.id_cat = id_categoria;
             this.popupActive2 = true;
         },
         modificarSolicitud(id, uuid, id_categoria) {
@@ -530,27 +532,114 @@ export default {
         },
         eliminarSolicitud(id, uuid, eliminar) {
             if (eliminar) {
-                axios
-                    .get(this.localVal + `/api/Usuario/destroyTicket/${id}`, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        var eliminado = res.data;
-                        this.popupActive2 = false;
-                        if (eliminado) {
-                            this.$vs.notify({
-                                title: "Ticket Eliminado ",
-                                time: 4000,
-                                text: "Se recargara el listado ",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                            this.cargarSolicitudes();
-                        }
-                    });
+                if (this.id_cat == 1) {
+                    axios
+                        .get(
+                            this.localVal + `/api/Usuario/destroyTicket/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            var eliminado = res.data;
+                            this.popupActive2 = false;
+                            if (eliminado) {
+                                this.$vs.notify({
+                                    title: "Ticket Eliminado ",
+                                    time: 4000,
+                                    text: "Se recargara el listado ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                            }
+                        });
+                } else if (this.id_cat == 2) {
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Usuario/destroyTicketEM/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            var eliminado = res.data;
+                            this.popupActive2 = false;
+                            if (eliminado) {
+                                this.$vs.notify({
+                                    title: "Ticket Eliminado ",
+                                    time: 4000,
+                                    text: "Se recargara el listado ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                            }
+                        });
+                } else if (this.id_cat == 3) {
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Usuario/destroyTicketIND/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            var eliminado = res.data;
+                            this.popupActive2 = false;
+                            if (eliminado) {
+                                this.$vs.notify({
+                                    title: "Ticket Eliminado ",
+                                    time: 4000,
+                                    text: "Se recargara el listado ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                            }
+                        });
+                } else if (this.id_cat == 4) {
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Usuario/destroyTicketAP/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            var eliminado = res.data;
+                            this.popupActive2 = false;
+                            if (eliminado) {
+                                this.$vs.notify({
+                                    title: "Ticket Eliminado ",
+                                    time: 4000,
+                                    text: "Se recargara el listado ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                            }
+                        });
+                }
             }
         },
         abrirPopFinalizar(id, uuid) {

@@ -113,6 +113,12 @@ use App\Mail\AutoRespuesta;
             Route::post('/Usuario/GetSolicitudCreadaAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@GetSolicitudCreada']);
             //Eliminar Ticket
             Route::get('/Usuario/destroyTicket/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@destroy']);
+            //Eliminar Ticket
+            Route::get('/Usuario/destroyTicketEM/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@destroy']);
+            //Eliminar Ticket
+            Route::get('/Usuario/destroyTicketIND/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@destroy']);
+            //Eliminar Ticket
+            Route::get('/Usuario/destroyTicketAP/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@destroy']);
                         /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/
 
             //Gestion Agentes
