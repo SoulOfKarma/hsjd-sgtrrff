@@ -1054,8 +1054,8 @@ export default {
             descripcionServicio: "Seleccione Servicio"
         },
         seleccionPrioridad: {
-            id: 0,
-            descripcion_prioridad: "Seleccione Prioridad"
+            id: 2,
+            descripcion_prioridad: "Normal"
         },
         seleccionReparacion: {
             id: 0,
@@ -2138,9 +2138,6 @@ export default {
         },
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
-        },
-        onToChange(selectedDates, dateStr, instance) {
-            this.$set(this.configFromdateTimePicker, "maxDate", dateStr);
         },
         cargarEdificios() {
             axios

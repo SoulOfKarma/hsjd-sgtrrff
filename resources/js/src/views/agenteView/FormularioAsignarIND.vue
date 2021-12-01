@@ -697,16 +697,16 @@ export default {
             descripcionServicio: "Seleccione Servicio"
         },
         seleccionPrioridad: {
-            id: 0,
-            descripcion_prioridad: "Seleccione Prioridad"
+            id: 2,
+            descripcion_prioridad: "Normal"
         },
         seleccionReparacion: {
             id: 0,
             descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
         },
         seleccionEstado: {
-            id: 0,
-            descripcionEstado: "Seleccione Estado"
+            id: 2,
+            descripcionEstado: "En Proceso"
         },
         seleccionSupervisor: {
             id: 0,
@@ -1538,7 +1538,7 @@ export default {
         },
         cargarEstado() {
             axios
-                .get(this.localVal + "/api/Agente/GetEstado", {
+                .get(this.localVal + "/api/Agente/GetEstadoAsignar", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")

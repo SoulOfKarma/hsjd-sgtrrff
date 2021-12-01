@@ -139,6 +139,8 @@ use App\Mail\AutoRespuesta;
             //Retorna Categorias
             Route::get('/Agente/GetCategoria', ['middleware' => 'cors', 'uses' => 'CategoriaController@index']);
             //Traer Estado
+            Route::get('/Agente/GetEstadoAsignar', ['middleware' => 'cors', 'uses' => 'EstadoController@EstadoAsignar']);
+            //Traer Estado
             Route::get('/Agente/GetEstado', ['middleware' => 'cors', 'uses' => 'EstadoController@index']);
             //Guardar Ticket
             Route::post('/Agente/PostTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@store']);

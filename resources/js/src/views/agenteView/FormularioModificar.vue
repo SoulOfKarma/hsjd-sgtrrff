@@ -760,8 +760,8 @@ export default {
             sup_nombre_apellido: "Seleccione al Supervisor"
         },
         seleccionPrioridad: {
-            id: 0,
-            descripcion_prioridad: "Seleccione Prioridad"
+            id: 2,
+            descripcion_prioridad: "Normal"
         },
         seleccionTrabajador: {
             id: 0,

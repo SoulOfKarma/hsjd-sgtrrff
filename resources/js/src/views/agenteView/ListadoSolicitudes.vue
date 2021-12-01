@@ -342,9 +342,25 @@
             :active.sync="popFinTicket"
         >
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <div class="vx-row">
-                    <div class="vx-col sm:w-full w-full ">
-                        <vx-card>
+                <vx-card title="">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <h6>Hora y Fecha de termino</h6>
+                            <br />
+                            <flat-pickr
+                                class="w-1/2 mb-6"
+                                :config="configTodateTimePicker"
+                                v-model="fechaTermino"
+                                placeholder="Fecha Termino"
+                            />
+                            <flat-pickr
+                                class="w-1/3 mb-6"
+                                :config="configdateTimePicker"
+                                v-model="horaTermino"
+                                placeholder="Seleccione Hora"
+                            />
+                        </div>
+                        <div class="vx-col w-full mt-5">
                             <h6>Horas Trabajadas.</h6>
                             <br />
                             <vs-input
@@ -363,26 +379,27 @@
                                 :options="listadoEstado"
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
-                        </vx-card>
-                        <br />
+                            <br />
+                        </div>
+
+                        <div class="vx-col w-full md-5">
+                            <vs-button
+                                @click="popFinTicket = false"
+                                color="primary"
+                                type="filled"
+                                class="w-full m-1"
+                                >Volver</vs-button
+                            >
+                            <vs-button
+                                @click="finalizarTicket"
+                                color="danger"
+                                type="filled"
+                                class="w-full m-1"
+                                >Finalizar Ticket</vs-button
+                            >
+                        </div>
                     </div>
-                    <div class="vx-col w-full md-5">
-                        <vs-button
-                            @click="popFinTicket = false"
-                            color="primary"
-                            type="filled"
-                            class="w-full m-1"
-                            >Volver</vs-button
-                        >
-                        <vs-button
-                            @click="finalizarTicket"
-                            color="danger"
-                            type="filled"
-                            class="w-full m-1"
-                            >Finalizar Ticket</vs-button
-                        >
-                    </div>
-                </div>
+                </vx-card>
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
@@ -404,6 +421,9 @@ import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
+import Datepicker from "vuejs-datepicker";
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
 //import Vuesax from "vuesax";
 import { SaveIcon } from "vue-feather-icons";
 import { FileTextIcon } from "vue-feather-icons";
@@ -433,7 +453,8 @@ export default {
         FileTextIcon,
         LoaderIcon,
         AlertTriangleIcon,
-        PrinterIcon
+        PrinterIcon,
+        flatPickr
     },
     data() {
         return {
@@ -455,6 +476,64 @@ export default {
                 nombre: sessionStorage.getItem("nombre"),
                 razonEliminacion: ""
             },
+            configTodateTimePicker: {
+                minDate: null,
+                locale: {
+                    firstDayOfWeek: 1,
+                    weekdays: {
+                        shorthand: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                        longhand: [
+                            "Domingo",
+                            "Lunes",
+                            "Martes",
+                            "Miércoles",
+                            "Jueves",
+                            "Viernes",
+                            "Sábado"
+                        ]
+                    },
+                    months: {
+                        shorthand: [
+                            "Ene",
+                            "Feb",
+                            "Mar",
+                            "Abr",
+                            "May",
+                            "Jun",
+                            "Jul",
+                            "Ago",
+                            "Sep",
+                            "Оct",
+                            "Nov",
+                            "Dic"
+                        ],
+                        longhand: [
+                            "Enero",
+                            "Febrero",
+                            "Мarzo",
+                            "Abril",
+                            "Mayo",
+                            "Junio",
+                            "Julio",
+                            "Agosto",
+                            "Septiembre",
+                            "Octubre",
+                            "Noviembre",
+                            "Diciembre"
+                        ]
+                    }
+                }
+            },
+            configdateTimePicker: {
+                enableTime: true,
+                //enableSeconds: true,
+                noCalendar: true,
+                time_24hr: true,
+                dateFormat: "H:i"
+            },
+
+            fechaTermino: null,
+            horaTermino: null,
             colorLoading: "#ff8000",
             value1: "",
             value2: "",
@@ -597,15 +676,17 @@ export default {
         },
         finalizarTicket() {
             try {
+                console.log(this.horaTermino);
                 let data = {
                     id_solicitud: this.idCierreTicket,
                     uuid: this.uuidCierreTicket,
                     horasEjecucion: this.horasTrabajadas,
                     id: this.idCierreTicket,
                     id_estado: this.seleccionEstado[0].id,
-                    horaTermino: moment(new Date()).format("H:mm"),
-                    fechaTermino: moment(new Date()).format("YYYY-MM-DD")
+                    horaTermino: this.horaTermino,
+                    fechaTermino: moment(this.fechaTermino).format("YYYY-MM-DD")
                 };
+                console.log(data);
                 axios
                     .post(
                         this.localVal + "/api/Agente/PostCierreTicket",

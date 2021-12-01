@@ -244,6 +244,16 @@
                                 :options="listadoDuracion"
                                 @input="arrayDuracion(seleccionDuracion.id)"
                             ></v-select>
+                            <br />
+                            <h6>4.5 - Descripcion del problema</h6>
+                            <br />
+                            <quill-editor
+                                v-model="descripcionP"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
                         </div>
                     </div>
                 </vx-card>
@@ -465,6 +475,21 @@ import { validate, clean, format } from "rut.js";
 
 export default {
     data: () => ({
+        editorOption: {
+            modules: {
+                toolbar: [
+                    ["bold", "italic", "underline", "strike"],
+                    ["blockquote", "code-block"],
+                    [{ header: 1 }, { header: 2 }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ indent: "-1" }, { indent: "+1" }],
+                    [{ direction: "rtl" }],
+                    [{ font: [] }],
+                    [{ align: [] }],
+                    ["clean"]
+                ]
+            }
+        },
         horasCalculadas: 0,
         colorLoading: "#ff8000",
         diaCalculado: 0,
@@ -696,16 +721,16 @@ export default {
             descripcionServicio: "Seleccione Servicio"
         },
         seleccionPrioridad: {
-            id: 0,
-            descripcion_prioridad: "Seleccione Prioridad"
+            id: 2,
+            descripcion_prioridad: "Normal"
         },
         seleccionReparacion: {
             id: 0,
             descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
         },
         seleccionEstado: {
-            id: 0,
-            descripcionEstado: "Seleccione Estado"
+            id: 2,
+            descripcionEstado: "En Proceso"
         },
         seleccionSupervisor: {
             id: 0,
@@ -750,7 +775,8 @@ export default {
         componentKey: 0,
         popAServicio: false,
         value2: "",
-        value3: ""
+        value3: "",
+        descripcionP: ""
     }),
     computed: {
         calcularHorasTrabajo() {
@@ -1535,7 +1561,7 @@ export default {
         },
         cargarEstado() {
             axios
-                .get(this.localVal + "/api/Agente/GetEstado", {
+                .get(this.localVal + "/api/Agente/GetEstadoAsignar", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -1561,6 +1587,7 @@ export default {
                     var datoidEdificio = this.datosSolicitud[0].id_edificio;
                     var datoidEstado = this.datosSolicitud[0].id_estado;
                     var datoidRep = this.datosSolicitud[0].id_tipoReparacion;
+                    this.descripcionP = this.datosSolicitud[0].descripcionP;
                     this.cargarUSE(
                         datoidServicio,
                         datoidEdificio,
@@ -1752,7 +1779,7 @@ export default {
                 this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
                 var newElement = document.createElement("div");
                 newElement.innerHTML = this.datosSolicitud[0].descripcionP;
-                this.gestionTicket.descripcionP = newElement.textContent;
+                this.gestionTicket.descripcionP = this.descripcionP;
                 this.gestionTicket.nombre = this.nombre;
                 var fechaCreacionT = moment(this.datosSolicitud[0].created_at)
                     .locale("es")
