@@ -598,11 +598,15 @@ use App\Mail\AutoRespuesta;
              //Cilindros
               //Traer Estados Tickets
               Route::get('/Agente/GetCilindros', ['middleware' => 'cors', 'uses' => 'CilindrosController@GetCilindros']);
-
+              
+              //Post Cilindros
               Route::post('/Agente/PostECilindros', ['middleware' => 'cors', 'uses' => 'EntregacilindrosController@PostECilindros']);
 
               //Datos Ticket Para exportar a PDF Bodega
               Route::post('/Agente/ExportarDataPDF', ['middleware' => 'cors', 'uses' => 'PdfController@ExportarDataPDF']);
+
+            //Listado Equipamiento Medicos  
+            Route::post('/Agente/ListadoEquipamientoMedicoByID', ['middleware' => 'cors', 'uses' => 'tblTicketEquipamientoMedicosController@ListadoEquipamientoMedicoByID']);  
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');

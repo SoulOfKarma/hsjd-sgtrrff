@@ -153,6 +153,13 @@
                                 )
                             "
                         ></file-text-icon>
+                        <columns-icon
+                            content="Equipamiento Medico A Revisar"
+                            v-tippy
+                            size="1.5x"
+                            class="custom-class"
+                            @click="cargarListadoEquipoMedico(props.row.id)"
+                        ></columns-icon>
                     </span>
 
                     <!-- Column: Common -->
@@ -368,6 +375,33 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Equipo Medico a Revisar"
+            :active.sync="popListadoEquipoMedico"
+        >
+            <vue-good-table
+                :columns="colEquipoMedico"
+                :rows="listadoEquipoMedico"
+                :pagination-options="{
+                    enabled: true,
+                    perPage: 10
+                }"
+            >
+                <template slot="table-row" slot-scope="props">
+                    <!-- Column: Name -->
+                    <span
+                        v-if="props.column.field === 'fullName'"
+                        class="text-nowrap"
+                    >
+                    </span>
+                    <!-- Column: Common -->
+                    <span v-else>
+                        {{ props.formattedRow[props.column.field] }}
+                    </span>
+                </template></vue-good-table
+            >
+        </vs-popup>
     </div>
 </template>
 
@@ -388,6 +422,7 @@ import { SaveIcon } from "vue-feather-icons";
 import { FileTextIcon } from "vue-feather-icons";
 import { LoaderIcon } from "vue-feather-icons";
 import { AlertTriangleIcon } from "vue-feather-icons";
+import { ColumnsIcon } from "vue-feather-icons";
 import vSelect from "vue-select";
 import moment from "moment";
 import { PrinterIcon } from "vue-feather-icons";
@@ -414,7 +449,8 @@ export default {
         FileTextIcon,
         LoaderIcon,
         AlertTriangleIcon,
-        PrinterIcon
+        PrinterIcon,
+        ColumnsIcon
     },
     data() {
         return {
@@ -446,6 +482,7 @@ export default {
             popupActive2: false,
             popupActive3: false,
             popupActive4: false,
+            popListadoEquipoMedico: false,
             popFinTicket: false,
             horasTrabajadas: 0,
             solicitudes: [],
@@ -470,10 +507,48 @@ export default {
             idCierreTicket: "",
             uuidCierreTicket: "",
             listadoEstado: [],
+            listadoEquipoMedico: [],
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: "Seleccione Estado"
             },
+            colEquipoMedico: [
+                {
+                    label: "N° Ticket",
+                    field: "id_solicitud",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Marca",
+                    field: "marca",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Modelo",
+                    field: "modelo",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Serie",
+                    field: "serie",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "N° Inventario",
+                    field: "ninventario",
+                    filterOptions: {
+                        enabled: true
+                    }
+                }
+            ],
             columns: [
                 {
                     label: "N° Ticket",
@@ -727,6 +802,26 @@ export default {
                 })
                 .then(res => {
                     this.solicitudes = res.data;
+                });
+        },
+        cargarListadoEquipoMedico(id) {
+            let data = {
+                id: id
+            };
+            axios
+                .post(
+                    this.localVal + "/api/Agente/ListadoEquipamientoMedicoByID",
+                    data,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(res => {
+                    this.listadoEquipoMedico = res.data;
+                    this.popListadoEquipoMedico = true;
                 });
         },
         detalleSolicitud(id, uuid) {
