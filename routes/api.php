@@ -606,7 +606,7 @@ use App\Mail\AutoRespuesta;
               Route::post('/Agente/ExportarDataPDF', ['middleware' => 'cors', 'uses' => 'PdfController@ExportarDataPDF']);
 
             //Listado Equipamiento Medicos  
-            Route::post('/Agente/ListadoEquipamientoMedicoByID', ['middleware' => 'cors', 'uses' => 'tblTicketEquipamientoMedicosController@ListadoEquipamientoMedicoByID']);  
+            Route::post('/Agente/ListadoEquipamientoMedicoByID', ['middleware' => 'cors', 'uses' => 'TblTicketEquipamientoMedicosController@ListadoEquipamientoMedicoByID']);  
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');
