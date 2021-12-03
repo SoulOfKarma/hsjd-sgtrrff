@@ -139,7 +139,7 @@ class GestionTicketEMSController extends Controller
                 if($count == 0){
                     return true;
                 }else{
-                    log::info($th);
+                    
                     Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
                         $message->setTo($listContactos)->setSubject('Asignacion de ticket');
                         $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
@@ -148,7 +148,7 @@ class GestionTicketEMSController extends Controller
                     return true;
                 }
               }else{
-                  log::info($th);
+                  
                   return false;
               }
         }

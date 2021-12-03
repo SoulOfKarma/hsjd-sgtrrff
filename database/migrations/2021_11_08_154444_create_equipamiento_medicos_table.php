@@ -15,10 +15,11 @@ class CreateEquipamientoMedicosTable extends Migration
     {
         Schema::create('equipamiento_medicos', function (Blueprint $table) {
             $table->id();
-            $table->string('marca');
-            $table->string('modelo');
-            $table->string('serie');
-            $table->string('ninventario');
+            $table->string('equipo')->nullable();
+            $table->string('marca')->nullable();
+            $table->string('modelo')->nullable();
+            $table->string('serie')->nullable();
+            $table->string('ninventario')->nullable();
             $table->timestamps();
         });
     }
