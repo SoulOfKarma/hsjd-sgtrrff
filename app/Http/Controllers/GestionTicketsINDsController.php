@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\GestionTicketsINDs;
 use Illuminate\Http\Request;
 use App\Mail\TicketAsignado;
-use App\SeguimientoSolicitudes;
+use App\seguimientoINDSolicitudes;
 use App\SolicitudTicketINDs;
 use App\Mail\AutoRespuesta;
 use App\Supervisores;
@@ -113,7 +113,7 @@ class GestionTicketsINDsController extends Controller
                 $i++;
             } */
 
-            SeguimientoSolicitudes::create($request->all());
+            seguimientoINDSolicitudes::create($request->all());
             //Insertando Ticket
             $response2 = SolicitudTicketINDs::where('id', $request->id_solicitud)
                 ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 
@@ -250,7 +250,7 @@ class GestionTicketsINDsController extends Controller
         $nombreTrabajador = $trabajador->tra_nombre . " " . $trabajador->tra_apellido;
         $nombreSupervisor = $supervisor->sup_nombre . " " . $supervisor->sup_apellido;
 
-        SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
+        seguimientoINDSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
         Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
             $message->setTo($listContactos)->setSubject('Nueva Creacion de ticket');
@@ -292,7 +292,7 @@ class GestionTicketsINDsController extends Controller
             $descripcionSeguimiento = $request->descripcionSeguimiento;
             $razoncambio = $request->razoncambio;
 
-            SeguimientoSolicitudes::create($request->all());
+            seguimientoINDSolicitudes::create($request->all());
 
 
             $response2 = SolicitudTicketINDs::where('uuid', $request->uuid)
@@ -360,7 +360,7 @@ class GestionTicketsINDsController extends Controller
             $nombre = $request->nombre;
             $razon = $request->razonEliminacion;
             $descripcionSeguimiento = $request->descripcionSeguimiento;
-            $seguimientoRazon = SeguimientoSolicitudes::create($request->all());
+            $seguimientoRazon = seguimientoINDSolicitudes::create($request->all());
             $estadoEliminado = 7;
             $ticket = SolicitudTicketINDs::find($id);
             $idUser = $ticket->id_user;
@@ -418,7 +418,7 @@ class GestionTicketsINDsController extends Controller
         $id = $request->id_solicitud;
         $nombre = $request->nombre;
         $descripcionSeguimiento = $request->descripcionSeguimiento;
-        $seguimientoRazon = SeguimientoSolicitudes::create($request->all());
+        $seguimientoRazon = seguimientoINDSolicitudes::create($request->all());
         $estadoFinalizado = 6;
         $ticket = SolicitudTicketINDs::find($id);
         $idUser = $ticket->id_user;

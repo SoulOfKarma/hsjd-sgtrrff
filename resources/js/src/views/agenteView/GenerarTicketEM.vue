@@ -278,10 +278,40 @@
                                 class="w-full"
                             />
                             <br /> -->
-                            <h6>5.5 - Descripcion del problema</h6>
+                            <h6>
+                                5.5 - Seleccione Tipo Daño Equipamiento Medico
+                            </h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionDanios"
+                                placeholder="Seleccione Tipo Daño"
+                                class="w-full select-large"
+                                label="desdanioseq"
+                                :options="listadoDaniosEM"
+                            ></v-select>
+                            <br />
+                            <h6>5.6 - Descripcion del problema</h6>
                             <br />
                             <quill-editor
                                 v-model="gestionTicket.descripcionP"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
+                            <h6>5.7 - Resolucion y Resultados</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.desresolucionresultados"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
+                            <h6>5.8 - Observaciones</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.desobservaciones"
                                 :options="editorOption"
                             >
                                 <div id="toolbar" slot="toolbar"></div>
@@ -874,7 +904,9 @@ export default {
             descripcionCorreo: "",
             nombre: "",
             idDuracion: 0,
-            id_prioridad: 0
+            id_prioridad: 0,
+            desresolucionresultados: "",
+            desobservaciones: ""
         },
         registroUsuario: {
             run: null,
@@ -930,6 +962,10 @@ export default {
             id: 0,
             tra_nombre_apellido: "Seleccione al Trabajador"
         },
+        seleccionDanios: {
+            id: 1,
+            desdanioseq: "Deterioro"
+        },
         seleccionApoyo1: [
             {
                 id: 1,
@@ -980,6 +1016,7 @@ export default {
         listadoEdificiosU: [],
         listadoServiciosU: [],
         listadoServiciosDataU: [],
+        listadoDaniosEM: [],
         validaEliminar2: false,
         val_runU: false,
         seleccionCargoU: [
@@ -2613,6 +2650,18 @@ export default {
                 this.seleccionEdificioU = b;
             }
         },
+        cargarDaniosEM() {
+            axios
+                .get(this.localVal + "/api/Agente/GetListadoDanio", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoDaniosEM = res.data;
+                });
+        },
         cargarHoras() {
             try {
                 this.gestionTicket.fechaInicio = moment(new Date()).format(
@@ -2641,6 +2690,7 @@ export default {
         this.cargarEspecialidad();
         this.cargarCargoUsuarioU();
         this.cargarHoras();
+        this.cargarDaniosEM();
         setTimeout(() => {
             this.cargarPrioridades();
         }, 2000);

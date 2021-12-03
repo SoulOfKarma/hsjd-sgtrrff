@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\GestionTicketEMS;
 use Illuminate\Http\Request;
 use App\Mail\TicketAsignado;
-use App\SeguimientoSolicitudes;
+use App\seguimientoEMSolicitudes;
 use App\SolicitudTicketsEM;
 use App\Mail\AutoRespuesta;
 use App\Supervisores;
@@ -14,6 +14,7 @@ use App\Users;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Uuid;
+use App\DetalleSolicitudEMs;
 use DB;
 
 class GestionTicketEMSController extends Controller
@@ -91,7 +92,26 @@ class GestionTicketEMSController extends Controller
             $id_user = $request->id_user;
             $id_usuarioSolicitante = $request->id_usuarioSolicitante;
 
-        $userSearch = Users::where('id',$id_usuarioSolicitante)->first();
+            seguimientoEMSolicitudes::create($request->all());
+            //Insertando Ticket
+            $response2 = SolicitudTicketsEM::where('id', $request->id_solicitud)
+                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
+                 'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
+                  'id_estado' => $request->id_estado,'id_prioridad' => $request->id_prioridad,'descripcionP' => $request->descripcionP]);
+
+            DetalleSolicitudEMs::updateOrCreate([
+                'id_solicitud' => $request->id_solicitud,
+            //],[
+                'desresolucionresultados' => $request->desresolucionresultados,
+                'desobservaciones' => $request->desobservaciones,
+                'id_danoEQ' => $request->id_danoEQ
+            ]);  
+
+            $response = GestionTicketEMS::create($request->all());
+
+            $validador = true;
+
+            $userSearch = Users::where('id',$id_usuarioSolicitante)->first();
             $ValidarCargo = $userSearch->id_cargo_asociado;     
             $userMail = [];
 
@@ -107,7 +127,7 @@ class GestionTicketEMSController extends Controller
             ->orWhere('id',$ValidarCargo)
             ->first();
             }
-            $validador = true;
+            
 
             $listContactos = [$userMail->email];
             $i = 0;
@@ -118,14 +138,7 @@ class GestionTicketEMSController extends Controller
             } */
 
 
-            SeguimientoSolicitudes::create($request->all());
-            //Insertando Ticket
-            $response2 = SolicitudTicketsEM::where('id', $request->id_solicitud)
-                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
-                 'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
-                  'id_estado' => $request->id_estado,'id_prioridad' => $request->id_prioridad,'descripcionP' => $request->descripcionP]);
-
-            $response = GestionTicketEMS::create($request->all());
+            
         } catch (\Throwable $th) {
             if($validador == true){
                 log::info($th);
@@ -210,6 +223,14 @@ class GestionTicketEMSController extends Controller
 
         $response = GestionTicketEMS::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
 
+        DetalleSolicitudEMs::updateOrCreate([
+            'id_solicitud' => $id,
+        ],[
+            'desresolucionresultados' => $request->desresolucionresultados,
+            'desobservaciones' => $request->desobservaciones,
+            'id_danoEQ' => $request->id_danoEQ
+        ]);
+
 
         $nombre = $request->nombre;
         $descripcionP = $request->descripcionCorreo;
@@ -254,7 +275,7 @@ class GestionTicketEMSController extends Controller
         $nombreTrabajador = $trabajador->tra_nombre . " " .$trabajador->tra_apellido;
         $nombreSupervisor = $supervisor->sup_nombre . " " .$supervisor->sup_apellido;
 
-        SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
+        seguimientoEMSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
         Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
             $message->setTo($listContactos)->setSubject('Nueva Creacion de ticket');
@@ -291,7 +312,7 @@ class GestionTicketEMSController extends Controller
             $descripcionSeguimiento = $request->descripcionSeguimiento;
             $razoncambio = $request->razoncambio;
 
-            SeguimientoSolicitudes::create($request->all());
+            seguimientoEMSolicitudes::create($request->all());
 
 
             $response2 = SolicitudTicketsEM::where('uuid', $request->uuid)
@@ -311,6 +332,14 @@ class GestionTicketEMSController extends Controller
                     'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
                     'fechaTermino' => $request->fechaTermino
                 ]);
+
+            DetalleSolicitudEMs::updateOrCreate([
+                'id_solicitud' => $request->id_solicitud,
+            ],[
+                'desresolucionresultados' => $request->desresolucionresultados,
+                'desobservaciones' => $request->desobservaciones,
+                'id_danoEQ' => $request->id_danoEQ
+            ]);
 
                 $userSearch = Users::where('id',$id_busqueda_solicitante)->first();
                 $ValidarCargo = $userSearch->id_cargo_asociado;     
@@ -358,7 +387,7 @@ class GestionTicketEMSController extends Controller
             $nombre = $request->nombre;
             $razon = $request->razonEliminacion;
             $descripcionSeguimiento = $request->descripcionSeguimiento;
-            $seguimientoRazon = SeguimientoSolicitudes::create($request->all());
+            $seguimientoRazon = seguimientoEMSolicitudes::create($request->all());
             $estadoEliminado = 7;
             $ticket = SolicitudTicketsEM::find($id);
             $idUser = $ticket->id_user;

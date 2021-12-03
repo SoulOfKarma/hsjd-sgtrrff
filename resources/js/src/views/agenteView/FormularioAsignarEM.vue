@@ -244,6 +244,28 @@
                                 :options="listadoDuracion"
                                 @input="arrayDuracion(seleccionDuracion.id)"
                             ></v-select>
+                            <br />
+                            <h6>
+                                4.5 - Seleccione Tipo Daño Equipamiento Medico
+                            </h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionDanios"
+                                placeholder="Seleccione Tipo Daño"
+                                class="w-full select-large"
+                                label="desdanioseq"
+                                :options="listadoDaniosEM"
+                            ></v-select>
+                            <br />
+                            <h6>4.6 - Descripcion del problema</h6>
+                            <br />
+                            <quill-editor
+                                v-model="descripcionP"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
                         </div>
                     </div>
                 </vx-card>
@@ -466,6 +488,21 @@ import { validate, clean, format } from "rut.js";
 
 export default {
     data: () => ({
+        editorOption: {
+            modules: {
+                toolbar: [
+                    ["bold", "italic", "underline", "strike"],
+                    ["blockquote", "code-block"],
+                    [{ header: 1 }, { header: 2 }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ indent: "-1" }, { indent: "+1" }],
+                    [{ direction: "rtl" }],
+                    [{ font: [] }],
+                    [{ align: [] }],
+                    ["clean"]
+                ]
+            }
+        },
         horasCalculadas: 0,
         colorLoading: "#ff8000",
         diaCalculado: 0,
@@ -598,6 +635,7 @@ export default {
         correoUsuario: "",
         rutUsuario: null,
         passUsuario: "",
+        descripcionP: "",
         popCrearTrabajador: false,
         listadoEspecialidad: [],
         seleccionEspecialidad: {
@@ -659,7 +697,8 @@ export default {
             descripcionSeguimiento: "",
             id_usuarioSolicitante: 0,
             idDuracion: 0,
-            id_prioridad: 0
+            id_prioridad: 0,
+            id_danoEQ: 0
         },
         registroUsuario: {
             run: null,
@@ -740,7 +779,12 @@ export default {
                 descripcion_duracion: "Chequeo"
             }
         ],
+        seleccionDanios: {
+            id: 1,
+            desdanioseq: "Deterioro"
+        },
         listadoDuracion: [],
+        listadoDaniosEM: [],
         variablePrueba: 0,
         mensajeError: "",
 
@@ -1448,6 +1492,18 @@ export default {
                     this.listadoEdificios = res.data;
                 });
         },
+        cargarDaniosEM() {
+            axios
+                .get(this.localVal + "/api/Agente/GetListadoDanio", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoDaniosEM = res.data;
+                });
+        },
         cargarServicios() {
             axios
                 .get(this.localVal + "/api/Usuario/GetServicios", {
@@ -1562,6 +1618,7 @@ export default {
                     var datoidEdificio = this.datosSolicitud[0].id_edificio;
                     var datoidEstado = this.datosSolicitud[0].id_estado;
                     var datoidRep = this.datosSolicitud[0].id_tipoReparacion;
+                    this.descripcionP = this.datosSolicitud[0].descripcionP;
                     this.cargarUSE(
                         datoidServicio,
                         datoidEdificio,
@@ -1752,9 +1809,10 @@ export default {
                 this.gestionTicket.tituloP = this.datosSolicitud[0].tituloP;
                 this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
                 this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
+                this.gestionTicket.id_danoEQ = this.seleccionDanios.id;
                 var newElement = document.createElement("div");
                 newElement.innerHTML = this.datosSolicitud[0].descripcionP;
-                this.gestionTicket.descripcionP = newElement.textContent;
+                this.gestionTicket.descripcionP = this.descripcionP;
                 this.gestionTicket.nombre = this.nombre;
                 var fechaCreacionT = moment(this.datosSolicitud[0].created_at)
                     .locale("es")
@@ -1976,6 +2034,7 @@ export default {
         this.cargarInicial();
         this.cargaTicketAsignado();
         this.cargarHoras();
+        this.cargarDaniosEM();
         setTimeout(() => {
             this.cargarPrioridades();
         }, 2000);

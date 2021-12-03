@@ -334,6 +334,9 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/getUsuariosSubrogantes', ['middleware' => 'cors', 'uses' => 'UsersController@getSoloSubrogantes']);
             //Traer Trabajadores
             Route::get('/Trabajador/getTrabajadoresByRun/{run}', ['middleware' => 'cors', 'uses' => 'TrabajadorController@getTrabajadoresByRun']);
+            //Traer Listado Tipo Daño Equipos Medicos
+            Route::get('/Agente/GetListadoDanio', ['middleware' => 'cors', 'uses' => 'EquipamientomedicodaniosController@GetListadoDanio']);
+
 
             //Agregar Nuevo Calendario Ascensores
             Route::post('/Agente/PostCalendarioAsc', ['middleware' => 'cors', 'uses' => 'CalendarioAscensoresController@postNuevoTCalendario']);

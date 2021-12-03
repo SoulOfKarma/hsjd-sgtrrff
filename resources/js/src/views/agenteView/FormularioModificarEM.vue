@@ -246,7 +246,19 @@
                                 @input="arrayDuracion(seleccionDuracion.id)"
                             ></v-select>
                             <br />
-                            <h6>4.5 - Descripcion del problema</h6>
+                            <h6>
+                                4.5 - Seleccione Tipo Daño Equipamiento Medico
+                            </h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionDanios"
+                                placeholder="Seleccione Tipo Daño"
+                                class="w-full select-large"
+                                label="desdanioseq"
+                                :options="listadoDaniosEM"
+                            ></v-select>
+                            <br />
+                            <h6>4.6 - Descripcion del problema</h6>
                             <br />
                             <quill-editor
                                 v-model="descripcionP"
@@ -255,7 +267,26 @@
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
                             <br />
-                            <h6>4.6 - Razon de la modificacion</h6>
+
+                            <h6>4.7 - Resolucion y Resultados</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.desresolucionresultados"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
+                            <h6>4.8 - Observaciones</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.desobservaciones"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
+                            <h6>4.9 - Razon de la modificacion</h6>
                             <br />
                             <quill-editor
                                 v-model="razoncambio"
@@ -696,7 +727,9 @@ export default {
             idUsuarioSesion: 0,
             razoncambio: "",
             idDuracion: 0,
-            id_prioridad: 0
+            id_prioridad: 0,
+            desresolucionresultados: "",
+            desobservaciones: ""
         },
         registroUsuario: {
             run: null,
@@ -753,6 +786,10 @@ export default {
             id: 0,
             tra_nombre_apellido: "Seleccione al Trabajador"
         },
+        seleccionDanios: {
+            id: 1,
+            desdanioseq: "Deterioro"
+        },
         seleccionApoyo1: [
             {
                 id: 1,
@@ -778,6 +815,7 @@ export default {
             }
         ],
         listadoDuracion: [],
+        listadoDaniosEM: [],
         variablePrueba: 0,
         mensajeError: "",
 
@@ -1804,7 +1842,7 @@ export default {
                 this.gestionTicket.fechaCambiadaFormateada = fechaCambiadaF;
                 this.gestionTicket.fechaCreacion = fechaCreacionT;
                 this.gestionTicket.descripcionPFormat = this.descripcionP;
-                this.gestionTicket.id_user = localStorage.getItem("id");
+                this.gestionTicket.id_user = sessionStorage.getItem("id");
                 this.gestionTicket.idUsuarioSesion = this.$route.params.id_user;
                 newElement.innerHTML = this.razoncambio;
                 this.gestionTicket.razoncambio = newElement.textContent;
@@ -2092,6 +2130,18 @@ export default {
             this.cargarDuracion();
             this.cargarEspecialidad();
         },
+        cargarDaniosEM() {
+            axios
+                .get(this.localVal + "/api/Agente/GetListadoDanio", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoDaniosEM = res.data;
+                });
+        },
         limpiar() {
             this.gestionTicket = {
                 uuid: "",
@@ -2171,6 +2221,7 @@ export default {
         this.cargarSupervisores();
         this.cargarTrabajadores();
         this.cargarEstado();
+        this.cargarDaniosEM();
         setTimeout(() => {
             this.cargaSolicitudEspecifica();
             this.cargaTicketAsignado();
