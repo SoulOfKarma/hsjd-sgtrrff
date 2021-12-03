@@ -28,7 +28,7 @@
                     card-background="#4792f9"
                     content-color="#ffffff"
                 >
-                    <h3 class="text-white">Bienvenido a SGTRRFF!</h3>
+                    <h3 class="text-white">Bienvenido a PANAKEIA!</h3>
                 </vx-card>
                 <br />
                 <vs-card class="cardx">

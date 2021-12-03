@@ -19,7 +19,7 @@
     >
         <v-nav-menu
             :navMenuItems="navMenuItems"
-            title="SGTRRFF"
+            title="PANAKEIA"
             parent=".layout--main"
         />
 
