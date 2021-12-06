@@ -281,14 +281,24 @@ class PdfController extends Controller
             ->first();
 
         $equipomedico = GestionTicketEMS::select(DB::raw("IF (equipamiento_medicos.equipo IS NULL ,CONCAT('PENDIENTE'), equipamiento_medicos.equipo) as equipo"),
-        'equipamiento_medicos.marca',
-        'equipamiento_medicos.modelo',
-        'equipamiento_medicos.serie',
-        'equipamiento_medicos.ninventario') 
+        DB::raw("IF (equipamiento_medicos.marca IS NULL ,CONCAT('PENDIENTE'), equipamiento_medicos.marca) as marca"),
+        DB::raw("IF (equipamiento_medicos.modelo IS NULL ,CONCAT('PENDIENTE'), equipamiento_medicos.modelo) as modelo"),
+        DB::raw("IF (equipamiento_medicos.serie IS NULL ,CONCAT('PENDIENTE'), equipamiento_medicos.serie) as serie"),
+        DB::raw("IF (equipamiento_medicos.ninventario IS NULL ,CONCAT('PENDIENTE'), equipamiento_medicos.ninventario) as ninventario")) 
         ->join('tbl_ticket_equipamiento_medicos', 'gestion_ticket_e_m_s.id_solicitud', '=', 'tbl_ticket_equipamiento_medicos.id_solicitud')
         ->join('equipamiento_medicos', 'tbl_ticket_equipamiento_medicos.id_equipamiento_medico', '=', 'equipamiento_medicos.id')
         ->where('gestion_ticket_e_m_s.id_solicitud', $id)
         ->first();
+
+        if($equipomedico == ""){
+          $equipomedico = [
+              'equipo' => 'PENDIENTE',
+              'marca' => 'PENDIENTE',
+              'modelo' => 'PENDIENTE',
+              'serie' => 'PENDIENTE',
+              'ninventario' => 'PENDIENTE'
+          ];
+        }
 
         log::info($equipomedico);    
 
