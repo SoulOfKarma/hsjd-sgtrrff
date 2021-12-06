@@ -298,7 +298,11 @@ class PdfController extends Controller
               'serie' => 'PENDIENTE',
               'ninventario' => 'PENDIENTE'
           ];
+
+          $equipomedico = json_encode($equipomedico);
         }
+
+        $listEquipoMedico = $equipomedico;
 
         log::info($equipomedico);    
 
@@ -361,11 +365,11 @@ class PdfController extends Controller
         $turno = $data->descripcionTurno;
         $anexo = $data->anexo;
         $email = $data->email;
-        $equipo = $equipomedico->equipo;
-        $marca = $equipomedico->marca;
-        $modelo = $equipomedico->modelo;
-        $serie = $equipomedico->serie;
-        $ninventario = $equipomedico->ninventario;
+        $equipo = $listEquipoMedico->equipo;
+        $marca = $listEquipoMedico->marca;
+        $modelo = $listEquipoMedico->modelo;
+        $serie = $listEquipoMedico->serie;
+        $ninventario = $listEquipoMedico->ninventario;
         $duracionSolicitudes = $data->descripcion_duracion;
 
         $data = [
