@@ -308,7 +308,7 @@ class GestionTicketEMSController extends Controller
             $desApoyo2 = $request->desApoyo2;
             $desApoyo3 = $request->desApoyo3;
             $id_user = $request->id_user;
-            $id_busqueda_solicitante = $request->idUsuarioSesion;
+            $id_busqueda_solicitante = $request->id_user;
             $descripcionSeguimiento = $request->descripcionSeguimiento;
             $razoncambio = $request->razoncambio;
 
@@ -333,17 +333,23 @@ class GestionTicketEMSController extends Controller
                     'fechaTermino' => $request->fechaTermino
                 ]);
 
+            log::info($request->all());   
+
             DetalleSolicitudEMs::updateOrCreate([
                 'id_solicitud' => $request->id_solicitud,
             ],[
                 'desresolucionresultados' => $request->desresolucionresultados,
                 'desobservaciones' => $request->desobservaciones,
-                'id_danoEQ' => $request->id_danoEQ
+                'id_danoEQ' => $request->idDanio
             ]);
 
-                $userSearch = Users::where('id',$id_busqueda_solicitante)->first();
+                $userSearch = Users::where('id',$id_user)->first();
+                log::info($request->all());
+                $ValidarCargo = [];
                 $ValidarCargo = $userSearch->id_cargo_asociado;     
                 $userMail = [];
+
+                
     
                 if($ValidarCargo == null || $ValidarCargo == 0){
                     $userMail = Users::select('email')
@@ -370,6 +376,7 @@ class GestionTicketEMSController extends Controller
                     $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
                     //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
                 });
+                
                 return $response;
         } catch (\Throwable $th) {
             log::info($th);

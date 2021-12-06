@@ -906,7 +906,8 @@ export default {
             idDuracion: 0,
             id_prioridad: 0,
             desresolucionresultados: "",
-            desobservaciones: ""
+            desobservaciones: "",
+            id_danoEQ: 0
         },
         registroUsuario: {
             run: null,
@@ -2188,6 +2189,7 @@ export default {
             this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
             this.gestionTicket.idTurno = this.seleccionTurno.id;
             this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
+            this.gestionTicket.id_danoEQ = this.seleccionDanios.id;
             var newElement = document.createElement("div");
             newElement.innerHTML = this.gestionTicket.descripcionP;
             this.gestionTicket.descripcionCorreo = newElement.textContent;

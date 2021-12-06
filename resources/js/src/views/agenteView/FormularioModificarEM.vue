@@ -701,6 +701,7 @@ export default {
             idApoyo2: 1,
             idApoyo3: 1,
             idTurno: 0,
+            idDanio: 0,
             fechaCambiada: null,
             fechaTermino: null,
             horaCambiada: null,
@@ -1829,6 +1830,7 @@ export default {
                 this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
                 this.gestionTicket.tituloP = this.datosSolicitud.tituloP;
                 this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
+                this.gestionTicket.idDanio = this.seleccionDanios.id;
                 var newElement = document.createElement("div");
                 newElement.innerHTML = this.datosSolicitud.descripcionP;
                 this.gestionTicket.descripcionP = newElement.textContent;

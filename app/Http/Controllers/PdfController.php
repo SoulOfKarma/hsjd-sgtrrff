@@ -255,6 +255,7 @@ class PdfController extends Controller
             'tipo_reparacions.descripcionTipoReparacion',
             'turnos.descripcionTurno',
             'users.anexo',
+            DB::raw("IF (users.email IS NULL ,CONCAT('PENDIENTE'), users.email) as email"),
             'duracion_solicitudes.descripcion_duracion',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
@@ -278,6 +279,18 @@ class PdfController extends Controller
             ->join('duracion_solicitudes', 'gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
             ->where('gestion_ticket_e_m_s.id_solicitud', $id)
             ->first();
+
+        $equipomedico = GestionTicketEMS::select(DB::raw("IF (equipamiento_medicos.equipo IS NULL ,CONCAT('PENDIENTE'), equipamiento_medicos.equipo) as equipo"),
+        'equipamiento_medicos.marca',
+        'equipamiento_medicos.modelo',
+        'equipamiento_medicos.serie',
+        'equipamiento_medicos.ninventario') 
+        ->join('tbl_ticket_equipamiento_medicos', 'gestion_ticket_e_m_s.id_solicitud', '=', 'tbl_ticket_equipamiento_medicos.id_solicitud')
+        ->join('equipamiento_medicos', 'tbl_ticket_equipamiento_medicos.id_equipamiento_medico', '=', 'equipamiento_medicos.id')
+        ->where('gestion_ticket_e_m_s.id_solicitud', $id)
+        ->first();
+
+        log::info($equipomedico);    
 
         $idApoyo1 = $data->idApoyo1;
         $idApoyo2 = $data->idApoyo2;
@@ -337,6 +350,12 @@ class PdfController extends Controller
         $nombreUsuario = $data->nombre;
         $turno = $data->descripcionTurno;
         $anexo = $data->anexo;
+        $email = $data->email;
+        $equipo = $equipomedico->equipo;
+        $marca = $equipomedico->marca;
+        $modelo = $equipomedico->modelo;
+        $serie = $equipomedico->serie;
+        $ninventario = $equipomedico->ninventario;
         $duracionSolicitudes = $data->descripcion_duracion;
 
         $data = [
@@ -362,7 +381,14 @@ class PdfController extends Controller
             'nombreUsuario' => $nombreUsuario,
             'descripcionTurno' =>$turno,
             'anexo' => $anexo,
-            'duracionSolicitudes' => $duracionSolicitudes
+            'duracionSolicitudes' => $duracionSolicitudes,
+            'email' => $email,
+            'equipo' => $equipo,
+            'marca' => $marca,
+            'modelo' => $modelo,
+            'serie' => $serie,
+            'ninventario' => $ninventario
+            
         ];
 
         $pdf = App::make("dompdf.wrapper");

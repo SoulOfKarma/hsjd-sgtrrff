@@ -895,70 +895,97 @@ table.table-bordered > tbody > tr > td{
             
             </div>
             <div class="row">
-              <table class="table table-bordered">
+              <table class="table table-bordered table-condensed">
                <tbody>
                  <tr>
-                   <td>N°OT</td>
-                   <td>{{$idSolicitud}}</td>
+                   <td colspan="2">Notificante y Servicio</td>
+                   <td>N° Solicitud</td>
+                   <td colspan="1">{{$idSolicitud}}</td>
                  </tr>
                  <tr>
+                 <td>Edificio</td>
+                   <td colspan="1">{{$desEdificio}}</td>
                    <td>Fecha Solicitud</td>
-                   <td>{{$fechaS}}</td>
+                   <td colspan="1">{{$fechaS}}</td>
                  </tr>
                  <tr>
-                   <td>Fecha Ejecucion OT</td>
-                   <td>{{$fechaI}}</td>
+                 <td>Servicio</td>
+                   <td colspan="1">{{$desServicio}}</td>
+                   <td>Anexo</td>
+                   <td colspan="1">{{$anexo}}</td>
                  </tr>
                  <tr>
-                   <td>Estado OT</td>
-                   <td>{{$desEstado}}</td>
-                 </tr>
-                 
+                 <td>Usuario Notificante:</td>
+                   <td colspan="1">{{$nombreUsuario}}</td>
+                   <td>Correo</td>
+                   <td colspan="1">{{$email}}</td>
+                 </tr>                 
                </tbody>
+              </table>
+            </div>
+            <div class="row">
+              <table class="table table-bordered table-condensed">
+               <tbody>
+                 <tr>
+                   <td colspan="4" >Antecedentes del Equipo</td>
+                 </tr>
+                 <tr>
+                   <td>Equipo</td>
+                   <td colspan="1">{{$equipo}}</td>
+                   <td>Marca</td>
+                   <td colspan="1">{{$marca}}</td>
+                 </tr>
+                 <tr>
+                   <td>Serie</td>
+                   <td colspan="1">{{$serie}}</td>
+                   <td>Inventario</td>
+                   <td colspan="1">{{$ninventario}}</td>
+                 </tr>
+                 <tr>
+                   <td>Modelo</td>
+                   <td colspan="3">{{$modelo}}</td>
+                 </tr>
+                 <tr>
+                   <td colspan="4" >Descripcion del Problema o Evento Adverso</td>
+                 </tr>
+                 <tr>
+                   <td colspan="4"><?php
+                    echo "<ul>$descripcionPro </ul>";
+                  ?></td>
+                 </tr>
+                 </tbody>
               </table>
             </div>
             <div class="row">
               <table class="table table-bordered ">
                <tbody>
                  <tr>
-                   <td>Servicio</td>
-                   <td colspan="1">{{$desServicio}}</td>
-                   <td>Edificio</td>
-                   <td colspan="1">{{$desEdificio}}</td>
+                   <td colspan="4" >Uso Exclusivo Equipos Medicos</td>
                  </tr>
                  <tr>
-                 <td >Responsable</td>
-                   <td >{{$nombreTra}}</td>
-                   <td >Supervisor</td>
-                   <td >{{$nombreSup}}</td>
+                   <td colspan="2">Resolucion y Resultados</td>
+                   <td colspan="1">N° OT</td>
+                   <td colspan="1">{{$idSolicitud}}</td>
                  </tr>
                  <tr>
-                   <td>Apoyo 1</td>
-                   <td colspan="1">{{$nomApoyo1}} {{$apeApoyo1}}</td>
-                   <td>Apoyo 2</td>
-                   <td colspan="1">{{$nomApoyo2}} {{$apeApoyo2}}</td>
+                   <td colspan="2"></td>
+                   <td colspan="1">Fecha de Fermino</td>
+                   <td colspan="1">{{$fechaS}}</td>
                  </tr>
                  <tr>
-                   <td>Apoyo 3</td>
-                   <td colspan="1">{{$nomApoyo3}} {{$apeApoyo3}}</td>
-                   <td>Especialidad</td>
-                   <td colspan="1">{{$desTipoRep}}</td>
+                   <td rowspan="3" colspan="4"></td>
+                 </tr>
+                 </tbody>
+              </table>
+            </div>
+            <div class="row">
+              <table class="table table-bordered ">
+               <tbody>
+                 <tr>
+                   <td colspan="4">Observaciones</td>
                  </tr>
                  <tr>
-                   <td >Turno</td>
-                   <td colspan="1">{{$descripcionTurno}}</td>
-                   <td >Duracion</td>
-                   <td colspan="1">{{$duracionSolicitudes}}</td>
-                 </tr>
-                 <tr>
-                   <td >Descripcion Falla</td>
-                   <td  colspan="3"><?php
-                    echo "<ul>$descripcionPro </ul>";
-                  ?></td>
-                 </tr>
-                 <tr>
-                   <td rowspan="3" >Observaciones</td>
-                   <td rowspan="3" colspan="3"></td>
+                   <td rowspan="3" colspan="4"></td>
                  </tr>
                </tbody>
               </table>
@@ -982,16 +1009,8 @@ table.table-bordered > tbody > tr > td{
               </div>
               <div class="col-xs-1"></div>
               
-            </div><br>
-            <div class="row">
-              <div class="col-xs-1"></div>
-              <div class="col-xs-5" id="centrarFirmas"><label id="hoverL">Nombre y firma Supervisor</label></div>
-              <div class="col-xs-5" id="centrarFirmas"><label id="hoverL"> _____________________</label> <br>
-                <label id="hoverL" >{{$nombreSup}}</label>
-              </div>
-              <div class="col-xs-1"></div>
-              
             </div>
+            
         </div>
         
     </body>
