@@ -290,17 +290,11 @@ class PdfController extends Controller
             ->join('equipamiento_medicos', 'tbl_ticket_equipamiento_medicos.id_equipamiento_medico', '=', 'equipamiento_medicos.id')
             ->where('gestion_ticket_e_m_s.id_solicitud', $id)
             ->first();
+
+            $validador = false;
     
             if($equipomedico == ""){
-              $equipomedico = [
-                  'equipo' => 'PENDIENTE',
-                  'marca' => 'PENDIENTE',
-                  'modelo' => 'PENDIENTE',
-                  'serie' => 'PENDIENTE',
-                  'ninventario' => 'PENDIENTE'
-              ];
-    
-              $equipomedico = json_encode($equipomedico);
+              $validador = true;
             }
     
             $idApoyo1 = $data->idApoyo1;
@@ -362,11 +356,27 @@ class PdfController extends Controller
             $turno = $data->descripcionTurno;
             $anexo = $data->anexo;
             $email = $data->email;
-            $equipo = 'PENDIENTE';//$listEquipoMedico->equipo;
-            $marca = $equipomedico->marca;
-            $modelo = $equipomedico->modelo;
-            $serie = $equipomedico->serie;
-            $ninventario = $equipomedico->ninventario;
+
+            $equipo = "";
+            $marca = "";
+            $modelo = "";
+            $serie = "";
+            $ninventario = "";
+
+            if($validador){
+                $equipo = "PENDIENTE";
+                $marca = "PENDIENTE";
+                $modelo = "PENDIENTE";
+                $serie = "PENDIENTE";
+                $ninventario = "PENDIENTE";
+            }else{
+                $equipo = $equipomedico->equipo;
+                $marca = $equipomedico->marca;
+                $modelo = $equipomedico->modelo;
+                $serie = $equipomedico->serie;
+                $ninventario = $equipomedico->ninventario;
+            }
+
             $duracionSolicitudes = $data->descripcion_duracion;
             $data = [
                 'nombreTra' =>  $nombreTra,
