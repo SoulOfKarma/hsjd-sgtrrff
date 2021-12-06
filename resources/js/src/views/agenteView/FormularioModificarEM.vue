@@ -755,6 +755,7 @@ export default {
             idvalmail: 0
         },
         listadoTurno: [],
+        listadoDetalle: [],
         seleccionTurno: {
             id: 0,
             descripcionTurno: "Seleccione Turno"
@@ -1928,6 +1929,26 @@ export default {
                     this.listadoDuracion = res.data;
                 });
         },
+        cargarDetallesEquipoMedico() {
+            let id = this.$route.params.id;
+            let data = { id: id };
+            axios
+                .post(
+                    this.localVal + "/api/Agente/DetallesEquipoMedico",
+                    data,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(res => {
+                    this.listadoDetalle = res.data;
+                    this.gestionTicket.desresolucionresultados = this.listadoDetalle[0].desresolucionresultados;
+                    this.gestionTicket.desobservaciones = this.listadoDetalle[0].desobservaciones;
+                });
+        },
         cargaTipoReparacion() {
             var datoidRep = this.datosSolicitud.id_tipoReparacion;
             let c = JSON.parse(JSON.stringify(this.listadoTipoRep));
@@ -2228,6 +2249,7 @@ export default {
             this.cargaSolicitudEspecifica();
             this.cargaTicketAsignado();
             this.cargarPrioridades();
+            this.cargarDetallesEquipoMedico();
         }, 2000);
         this.cargarHoras();
     },

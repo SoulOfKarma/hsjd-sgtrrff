@@ -336,6 +336,8 @@ use App\Mail\AutoRespuesta;
             Route::get('/Trabajador/getTrabajadoresByRun/{run}', ['middleware' => 'cors', 'uses' => 'TrabajadorController@getTrabajadoresByRun']);
             //Traer Listado Tipo Daño Equipos Medicos
             Route::get('/Agente/GetListadoDanio', ['middleware' => 'cors', 'uses' => 'EquipamientomedicodaniosController@GetListadoDanio']);
+            //Traer Listado Detalles y Resolucion - Observacion Equipos Medicos
+            Route::post('/Agente/DetallesEquipoMedico', ['middleware' => 'cors', 'uses' => 'DetalleSolicitudEMsController@GetDetallesEquipoMedico']);
 
 
             //Agregar Nuevo Calendario Ascensores

@@ -266,6 +266,23 @@
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
                             <br />
+                            <h6>4.7 - Resolucion y Resultados</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.desresolucionresultados"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
+                            <h6>4.8 - Observaciones</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.desobservaciones"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
                         </div>
                     </div>
                 </vx-card>
@@ -698,7 +715,9 @@ export default {
             id_usuarioSolicitante: 0,
             idDuracion: 0,
             id_prioridad: 0,
-            id_danoEQ: 0
+            id_danoEQ: 0,
+            desresolucionresultados: "",
+            desobservaciones: ""
         },
         registroUsuario: {
             run: null,
