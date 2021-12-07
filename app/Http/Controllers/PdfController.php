@@ -256,6 +256,8 @@ class PdfController extends Controller
                 'tipo_reparacions.descripcionTipoReparacion',
                 'turnos.descripcionTurno',
                 'users.anexo',
+                'detalle_solicitud_e_ms.desresolucionresultados',
+                'detalle_solicitud_e_ms.desobservaciones',
                 DB::raw("IF (users.email IS NULL ,CONCAT('PENDIENTE'), users.email) as email"),
                 'duracion_solicitudes.descripcion_duracion',
                 DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
@@ -278,6 +280,7 @@ class PdfController extends Controller
                 ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
                 ->join('turnos', 'gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
                 ->join('duracion_solicitudes', 'gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
+                ->join('detalle_solicitud_e_ms','solicitud_tickets_e_m_s.id', '=', 'detalle_solicitud_e_ms.id_solicitud')
                 ->where('gestion_ticket_e_m_s.id_solicitud', $id)
                 ->first();
     
@@ -356,6 +359,8 @@ class PdfController extends Controller
             $turno = $data->descripcionTurno;
             $anexo = $data->anexo;
             $email = $data->email;
+            $desresolucionresultados = $data->desresolucionresultados;
+            $desobservaciones = $data->desobservaciones;
 
             $equipo = "";
             $marca = "";
@@ -407,7 +412,9 @@ class PdfController extends Controller
                 'marca' => $marca,
                 'modelo' => $modelo,
                 'serie' => $serie,
-                'ninventario' => $ninventario
+                'ninventario' => $ninventario,
+                'desresolucionresultados' => $desresolucionresultados,
+                'desobservaciones' => $desobservaciones
                 
             ];
     

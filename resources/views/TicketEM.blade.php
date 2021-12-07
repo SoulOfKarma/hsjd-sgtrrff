@@ -973,7 +973,11 @@ table.table-bordered > tbody > tr > td{
                    <td colspan="1">{{$fechaS}}</td>
                  </tr>
                  <tr>
-                   <td rowspan="3" colspan="4"></td>
+                   <td rowspan="3" colspan="4">
+                   <?php
+                    echo "<ul>$desresolucionresultados </ul>";
+                  ?>
+                   </td>
                  </tr>
                  </tbody>
               </table>
@@ -985,7 +989,11 @@ table.table-bordered > tbody > tr > td{
                    <td colspan="4">Observaciones</td>
                  </tr>
                  <tr>
-                   <td rowspan="3" colspan="4"></td>
+                   <td rowspan="3" colspan="4">
+                   <?php
+                    echo "<ul>$desobservaciones </ul>";
+                  ?>
+                   </td>
                  </tr>
                </tbody>
               </table>
