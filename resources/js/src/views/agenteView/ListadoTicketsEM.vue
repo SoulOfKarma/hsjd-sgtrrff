@@ -376,6 +376,69 @@
             </div>
         </vs-popup>
         <vs-popup
+            classContent="popEquipamientoMedico"
+            title="Modificar Equipamiento Medico"
+            :active.sync="popModificarEqMed"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-1/3 mb-base">
+                        <h6>Equipo</h6>
+                        <vs-input
+                            v-model="equipamientoMedico.equipo"
+                            class="w-full"
+                        />
+                    </div>
+                    <div class="vx-col w-1/3 mb-base">
+                        <h6>Marca</h6>
+                        <vs-input
+                            v-model="equipamientoMedico.marca"
+                            class="w-full"
+                        />
+                    </div>
+                    <div class="vx-col w-1/3 mb-base">
+                        <h6>Modelo</h6>
+                        <vs-input
+                            v-model="equipamientoMedico.modelo"
+                            class="w-full"
+                        />
+                    </div>
+                    <div class="vx-col w-1/2 mb-base">
+                        <h6>Serie</h6>
+                        <vs-input
+                            v-model="equipamientoMedico.serie"
+                            class="w-full"
+                        />
+                    </div>
+                    <div class="vx-col w-1/2 mb-base">
+                        <h6>N° Inventario</h6>
+                        <vs-input
+                            v-model="equipamientoMedico.ninventario"
+                            class="w-full"
+                        />
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="PutModificarEquipamientoMedico()"
+                            >Modificar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popModificarEqMed = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
             classContent="popup-example"
             title="Equipo Medico a Revisar"
             :active.sync="popListadoEquipoMedico"
@@ -394,6 +457,15 @@
                         v-if="props.column.field === 'fullName'"
                         class="text-nowrap"
                     >
+                    </span>
+                    <span v-else-if="props.column.field === 'action'">
+                        <plus-circle-icon
+                            content="Modificar Equipo Medico"
+                            v-tippy
+                            size="1.5x"
+                            class="custom-class"
+                            @click="popModificarEquipo(props.row.id_solicitud)"
+                        ></plus-circle-icon>
                     </span>
                     <!-- Column: Common -->
                     <span v-else>
@@ -484,6 +556,7 @@ export default {
             popupActive4: false,
             popListadoEquipoMedico: false,
             popFinTicket: false,
+            popModificarEqMed: false,
             horasTrabajadas: 0,
             solicitudes: [],
             documentacion: [],
@@ -498,7 +571,15 @@ export default {
                 nombre: sessionStorage.getItem("nombre"),
                 razonEliminacion: ""
             },
-
+            equipamientoMedico: {
+                id: "",
+                equipo: "",
+                marca: "",
+                modelo: "",
+                serie: "",
+                ninventario: ""
+            },
+            idSolicitudEQ: 0,
             nombre:
                 sessionStorage.getItem("nombre") +
                 " " +
@@ -516,6 +597,13 @@ export default {
                 {
                     label: "N° Ticket",
                     field: "id_solicitud",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Equipo",
+                    field: "equipo",
                     filterOptions: {
                         enabled: true
                     }
@@ -547,6 +635,10 @@ export default {
                     filterOptions: {
                         enabled: true
                     }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
                 }
             ],
             columns: [
@@ -765,6 +857,47 @@ export default {
             this.value2 = uuid;
             this.popupActive2 = true;
         },
+        popModificarEquipo(id) {
+            this.idSolicitudEQ = id;
+            this.popModificarEqMed = true;
+        },
+        PutModificarEquipamientoMedico() {
+            try {
+                let data = this.equipamientoMedico;
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PutEquipamientoMedico",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data == true) {
+                            this.$vs.notify({
+                                title: "Equipo Medico Modificado Correctamente",
+                                text: "Se Volvera a Cargar Equipo Medico",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.cargarListadoEquipoMedico(this.idSolicitudEQ);
+                            this.popModificarEqMed = false;
+                        } else {
+                            this.$vs.notify({
+                                title: "No se pudieron modificar los datos",
+                                text: "Intente nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         guardarPDFEscaneado(id, uuid) {
             this.value3 = id;
 
@@ -821,6 +954,12 @@ export default {
                 )
                 .then(res => {
                     this.listadoEquipoMedico = res.data;
+                    this.equipamientoMedico.id = this.listadoEquipoMedico[0].id_equipamiento_medico;
+                    this.equipamientoMedico.equipo = this.listadoEquipoMedico[0].equipo;
+                    this.equipamientoMedico.marca = this.listadoEquipoMedico[0].marca;
+                    this.equipamientoMedico.modelo = this.listadoEquipoMedico[0].modelo;
+                    this.equipamientoMedico.serie = this.listadoEquipoMedico[0].serie;
+                    this.equipamientoMedico.ninventario = this.listadoEquipoMedico[0].ninventario;
                     this.popListadoEquipoMedico = true;
                 });
         },

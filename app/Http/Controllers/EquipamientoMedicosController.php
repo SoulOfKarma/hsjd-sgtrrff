@@ -28,4 +28,24 @@ class EquipamientoMedicosController extends Controller
             return false;
         }
     }
+
+    public function PutEquipamientoMedico(Request $request){
+        try {
+            equipamientoMedicos::where(
+                'id',$request->id)
+            //],[
+                ->update([
+                'equipo' => $request->equipo,
+                'marca' => $request->marca,
+                'modelo' => $request->modelo,
+                'serie' => $request->serie,
+                'ninventario' => $request->ninventario
+            ]); 
+
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
 }

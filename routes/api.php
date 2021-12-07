@@ -338,6 +338,8 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/GetListadoDanio', ['middleware' => 'cors', 'uses' => 'EquipamientomedicodaniosController@GetListadoDanio']);
             //Traer Listado Detalles y Resolucion - Observacion Equipos Medicos
             Route::post('/Agente/DetallesEquipoMedico', ['middleware' => 'cors', 'uses' => 'DetalleSolicitudEMsController@GetDetallesEquipoMedico']);
+             //Modificar Equipamiento Medico 
+             Route::post('/Agente/PutEquipamientoMedico', ['middleware' => 'cors', 'uses' => 'EquipamientoMedicosController@PutEquipamientoMedico']);
 
 
             //Agregar Nuevo Calendario Ascensores

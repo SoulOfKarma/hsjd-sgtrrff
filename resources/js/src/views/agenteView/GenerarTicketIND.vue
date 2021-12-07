@@ -1062,8 +1062,8 @@ export default {
             descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
         },
         seleccionEstado: {
-            id: 0,
-            descripcionEstado: "Seleccione Estado"
+            id: 2,
+            descripcionEstado: "En Proceso"
         },
         seleccionSupervisor: {
             id: 0,
