@@ -122,7 +122,7 @@
             <!-- Menu Adicional Para agregar el equipamiento de Equipos Medicos o Apoyo Clinico -->
             <div
                 class="vx-col md:w-1/1 w-full mb-base"
-                v-if="seleccionCategoria.id == 2 || seleccionCategoria.id == 4"
+                v-if="seleccionCategoria.id == 2"
             >
                 <vx-card title="3. Informacion Equipo">
                     <div class="vx-row mb-12">
@@ -134,8 +134,8 @@
                                         class="w-full"
                                         @click="desactivarSeleccionEQ"
                                         >chequee si la solicitud no requiere la
-                                        revision de un equipamiento
-                                        medico</vs-checkbox
+                                        revision de un equipamiento de Equipos
+                                        Medicos</vs-checkbox
                                     >
                                 </li>
                             </ul>
@@ -166,6 +166,132 @@
                                 class="w-full select-large"
                                 label="ninventario"
                                 :options="listadoEquipamiento"
+                                @input="cargaEquipoPorNInventario"
+                                :disabled="this.checkEQ"
+                            ></v-select>
+                            <br />
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <vs-button
+                                color="warning"
+                                class="mr-3 mb-2 w-full"
+                                @click="limpiarSerieInv"
+                                >Limpiar Seleccion Serie o Inventario</vs-button
+                            >
+                            <br />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>3.1 - Equipo</h6>
+                            <br />
+                            <vs-input
+                                placeholder="Ej. MSI"
+                                :disabled="this.checkEQ"
+                                v-model="solicitud.equipo"
+                                class="w-full"
+                                name="Marca"
+                            />
+
+                            <br />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>3.2 - Marca</h6>
+                            <br />
+                            <vs-input
+                                placeholder="Ej. MSI"
+                                :disabled="this.checkEQ"
+                                v-model="solicitud.marca"
+                                class="w-full"
+                                name="Marca"
+                            />
+
+                            <br />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>3.3 - Modelo</h6>
+                            <br />
+                            <vs-input
+                                placeholder="Ej. B550"
+                                :disabled="this.checkEQ"
+                                v-model="solicitud.modelo"
+                                class="w-full"
+                                name="Modelo"
+                            />
+                            <br />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>3.4 - Serie</h6>
+                            <br />
+                            <vs-input
+                                placeholder="Ej. A26548W866F9B"
+                                :disabled="this.checkEQ"
+                                v-model="solicitud.serie"
+                                class="w-full"
+                                name="Serie"
+                            />
+                            <br />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>3.5 - Inventario</h6>
+                            <br />
+                            <vs-input
+                                placeholder="Ej. 15-54112"
+                                :disabled="this.checkEQ"
+                                v-model="solicitud.ninventario"
+                                class="w-full"
+                                name="Inventario"
+                            />
+                            <br />
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+            <!-- Menu Adicional Para agregar el equipamiento de Equipos Medicos o Apoyo Clinico -->
+            <div
+                class="vx-col md:w-1/1 w-full mb-base"
+                v-if="seleccionCategoria.id == 4"
+            >
+                <vx-card title="3. Informacion Equipo">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <ul class="centerx">
+                                <li>
+                                    <vs-checkbox
+                                        v-model="checkEQ"
+                                        class="w-full"
+                                        @click="desactivarSeleccionEQ"
+                                        >chequee si la solicitud no requiere la
+                                        revision de un equipamiento de Apoyo
+                                        Clinico</vs-checkbox
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                        <br />
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>Seleccione la Serie del equipo a Revisar</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionSerieAp"
+                                placeholder="Seleccione el Equipamiento a Revisar"
+                                class="w-full select-large"
+                                label="serie"
+                                :options="listadoEApoyoClinico"
+                                @input="cargaEquipoPorSerieAp"
+                                :disabled="this.checkEQ"
+                            ></v-select>
+                            <br />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>
+                                Seleccione el Inventario del equipo a Revisar
+                            </h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionSerieAp"
+                                placeholder="Seleccione el Equipamiento a Revisar"
+                                class="w-full select-large"
+                                label="ninventario"
+                                :options="listadoEApoyoClinico"
                                 @input="cargaEquipoPorNInventario"
                                 :disabled="this.checkEQ"
                             ></v-select>
@@ -349,14 +475,21 @@ export default {
             modelo: "",
             serie: "",
             ninventario: "",
-            id_equipamiento_medico: 0
+            id_equipamiento_medico: 0,
+            id_equipamiento_apoyoclinico: 0
         },
+        listadoEApoyoClinico: [],
         datosCorreo: {
             nombre: "",
             descripcionP: "",
             id: 0
         },
         seleccionSerie: {
+            id: 0,
+            serie: "Seleccione Serie",
+            ninventario: "Seleccione Inventario"
+        },
+        seleccionSerieAp: {
             id: 0,
             serie: "Seleccione Serie",
             ninventario: "Seleccione Inventario"
@@ -485,10 +618,50 @@ export default {
                 console.log(error);
             }
         },
+        cargaEquipoPorSerieAp() {
+            try {
+                var idGeneral = this.seleccionSerieAp.id;
+                let c = JSON.parse(JSON.stringify(this.listadoEApoyoClinico));
+                let b = [];
+                var a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        //this.solicitud.equipo = value.equipo;
+                        this.solicitud.marca = value.marca;
+                        this.solicitud.modelo = value.modelo;
+                        this.solicitud.serie = value.serie;
+                        this.solicitud.ninventario = value.ninventario;
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         cargaEquipoPorNInventario() {
             try {
                 var idGeneral = this.seleccionSerie.id;
                 let c = JSON.parse(JSON.stringify(this.listadoEquipamiento));
+                let b = [];
+                var a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        this.solicitud.equipo = value.equipo;
+                        this.solicitud.marca = value.marca;
+                        this.solicitud.modelo = value.modelo;
+                        this.solicitud.serie = value.serie;
+                        this.solicitud.ninventario = value.ninventario;
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        cargaEquipoPorNInventarioAp() {
+            try {
+                var idGeneral = this.seleccionSerieAp.id;
+                let c = JSON.parse(JSON.stringify(this.listadoEApoyoClinico));
                 let b = [];
                 var a = 0;
                 c.forEach((value, index) => {
@@ -593,6 +766,22 @@ export default {
                 })
                 .then(res => {
                     this.listadoEdificios = res.data;
+                });
+        },
+        cargarEquipamientoApoyoClinico() {
+            axios
+                .get(
+                    this.localVal +
+                        "/api/Agente/GetTodoEquipamientoApoyoClinico",
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(res => {
+                    this.listadoEApoyoClinico = res.data;
                 });
         },
         cargarServicios() {
@@ -1158,6 +1347,11 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        if (this.seleccionSerieAp.id > 0) {
+                            this.solicitud.id_equipamiento_apoyoclinico = this.seleccionSerieAp.id;
+                        } else {
+                            this.solicitud.id_equipamiento_apoyoclinico = 0;
+                        }
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
@@ -1218,6 +1412,11 @@ export default {
                         this.solicitud.id_servicio = this.seleccionServicio[0].id;
                         this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                         this.solicitud.id_categoria = this.seleccionCategoria.id;
+                        if (this.seleccionSerieAp.id > 0) {
+                            this.solicitud.id_equipamiento_apoyoclinico = this.seleccionSerieAp.id;
+                        } else {
+                            this.solicitud.id_equipamiento_apoyoclinico = 0;
+                        }
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.solicitud.descripcionP;
                         this.solicitud.descripcionCorreo =
@@ -1522,6 +1721,7 @@ export default {
         this.cargarCategoria();
         this.cargarTipoRep();
         this.cargarEquipamientoMedico();
+        this.cargarEquipamientoApoyoClinico();
     },
     beforeMount() {
         setTimeout(() => {

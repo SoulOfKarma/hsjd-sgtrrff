@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use App\TicketEquipamientoApoyoClinicos;
+use App\EquipamientoApoyoClinicos;
 
 class SolicitudTicketsApsController extends Controller
 {
@@ -133,10 +135,17 @@ class SolicitudTicketsApsController extends Controller
 
     public function store(Request $request)
     {
+        $validarTicket = 0;
         try {
             $uuid = Uuid::generate()->string;
             $response = SolicitudTicketsAps::create(array_merge($request->all(), ['uuid' => $uuid]));
             seguimientoAPSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $response->id, 'descripcionSeguimiento' => 'Ticket creado']));
+            if($request->id_equipamiento_apoyoclinico > 0){
+                TicketEquipamientoApoyoClinicos::create(['id_solicitud' => $response->id,'id_equipamiento_apoyoclinico' => $request->id_equipamiento_apoyoclinico]);
+            }else{
+                $resp = EquipamientoApoyoClinicos::create(['equipo' => $request->equipo,'marca' => $request->marca,'modelo' => $request->modelo,'serie' => $request->serie,'ninventario' => $request->ninventario]);
+                TicketEquipamientoApoyoClinicos::create(['id_solicitud' => $response->id,'id_equipamiento_apoyoclinico' => $resp->id]);
+            }
             $id = $request->id_user;
             $userSearch = Users::where('id',$id)->first();
                 $ValidarCargo = $userSearch->id_cargo_asociado;     

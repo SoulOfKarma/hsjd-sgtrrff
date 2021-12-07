@@ -342,6 +342,10 @@ use App\Mail\AutoRespuesta;
              Route::post('/Agente/PutEquipamientoMedico', ['middleware' => 'cors', 'uses' => 'EquipamientoMedicosController@PutEquipamientoMedico']);
 
 
+            //Traer Listado Equipamiento Apoyo Clinico
+            Route::get('/Agente/GetTodoEquipamientoApoyoClinico', ['middleware' => 'cors', 'uses' => 'EquipamientoApoyoClinicosController@GetTodoEquipamientoApoyoClinico']);
+
+
             //Agregar Nuevo Calendario Ascensores
             Route::post('/Agente/PostCalendarioAsc', ['middleware' => 'cors', 'uses' => 'CalendarioAscensoresController@postNuevoTCalendario']);
             //Traer Todo Calendario Ascensores
