@@ -475,11 +475,11 @@ use App\Mail\AutoRespuesta;
             //Guardar Ticket
             Route::post('/Agente/PostCierreTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@PostCierreTicket']);
             //Guardar Ticket
-            Route::post('/Agente/PostCierreTicketEM', ['middleware' => 'cors', 'uses' => 'GestionTicketController@PostCierreTicket']);
+            Route::post('/Agente/PostCierreTicketEM', ['middleware' => 'cors', 'uses' => 'GestionTicketEMSController@PostCierreTicket']);
             //Guardar Ticket
-            Route::post('/Agente/PostCierreTicketIND', ['middleware' => 'cors', 'uses' => 'GestionTicketController@PostCierreTicket']);
+            Route::post('/Agente/PostCierreTicketIND', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@PostCierreTicket']);
             //Guardar Ticket
-            Route::post('/Agente/PostCierreTicketAP', ['middleware' => 'cors', 'uses' => 'GestionTicketController@PostCierreTicket']);
+            Route::post('/Agente/PostCierreTicketAP', ['middleware' => 'cors', 'uses' => 'GestionTicketsApsController@PostCierreTicket']);
 
             //Datos KPI 
             //Traer Estados Tickets

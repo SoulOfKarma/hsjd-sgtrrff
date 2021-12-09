@@ -121,14 +121,24 @@ class GestionTicketsINDsController extends Controller
                 'id_estado' => $request->id_estado,'id_prioridad' => $request->id_prioridad,'descripcionP' => $request->descripcionP]);
 
             $response = GestionTicketsINDs::create($request->all());
+
+            if($validador == true){
+                if($count == 0){
+                    return true;
+                }else{
+                    Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
+                        $message->setTo($listContactos)->setSubject('Asignacion de ticket');
+                        $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
+                        //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                    });
+                    return true;
+                }
+              }else{
+                  log::info("Error al Enviar Correo");
+                  return false;
+              }
+
         } catch (\Throwable $th) {
-            log::info($th);
-        } finally {
-            Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
-                $message->setTo($listContactos)->setSubject('Asignacion de ticket');
-                $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
-                //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
-            });
             if($validador == true){
                 log::info($th);
                 return true;
@@ -136,7 +146,7 @@ class GestionTicketsINDsController extends Controller
                   log::info($th);
               return false;
               }
-        }
+        } 
     }
 
     public function getTicketCreado($id)
@@ -273,29 +283,30 @@ class GestionTicketsINDsController extends Controller
 
     public function modificarTicketIND(Request $request)
     {
+        $validador = false;
         try {
             //Gestionando Correo
-            $nombre = $request->nombre;
-            $descripcionP = $request->descripcionP;
-            $id_solicitud = $request->id_solicitud;
-            $fecha = $request->fechaCambiadaFormateada;
-            $fechacreacion = $request->fechaCreacion;
-            $tituloP = $request->tituloP;
-            $nombreTrabajador = $request->desTrabajador;
-            $nombreSupervisor = $request->desSupervisor;
-            $desEstado = $request->desEstado;
-            $desApoyo1 = $request->desApoyo1;
-            $desApoyo2 = $request->desApoyo2;
-            $desApoyo3 = $request->desApoyo3;
-            $id_user = $request->id_user;
-            $id_busqueda_solicitante = $request->idUsuarioSesion;
-            $descripcionSeguimiento = $request->descripcionSeguimiento;
-            $razoncambio = $request->razoncambio;
+                $nombre = $request->nombre;
+                $descripcionP = $request->descripcionP;
+                $id_solicitud = $request->id_solicitud;
+                $fecha = $request->fechaCambiadaFormateada;
+                $fechacreacion = $request->fechaCreacion;
+                $tituloP = $request->tituloP;
+                $nombreTrabajador = $request->desTrabajador;
+                $nombreSupervisor = $request->desSupervisor;
+                $desEstado = $request->desEstado;
+                $desApoyo1 = $request->desApoyo1;
+                $desApoyo2 = $request->desApoyo2;
+                $desApoyo3 = $request->desApoyo3;
+                $id_user = $request->id_user;
+                $id_busqueda_solicitante = $request->idUsuarioSesion;
+                $descripcionSeguimiento = $request->descripcionSeguimiento;
+                $razoncambio = $request->razoncambio;
 
-            seguimientoINDSolicitudes::create($request->all());
+                seguimientoINDSolicitudes::create($request->all());
 
 
-            $response2 = SolicitudTicketINDs::where('uuid', $request->uuid)
+                $response2 = SolicitudTicketINDs::where('uuid', $request->uuid)
                 ->where('id', $request->id_solicitud)
                 ->update([
                     'id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
@@ -303,7 +314,7 @@ class GestionTicketsINDsController extends Controller
                     'id_estado' => $request->id_estado,'id_prioridad' => $request->id_prioridad,
                     'descripcionP' => $request->descripcionPFormat
                 ]);
-            $response = GestionTicketsINDs::where('uuid', $request->uuid)
+                $response = GestionTicketsINDs::where('uuid', $request->uuid)
                 ->where('id_solicitud', $request->id_solicitud)
                 ->update([
                     'id_supervisor' => $request->id_supervisor, 'id_trabajador' => $request->id_trabajador,
@@ -313,6 +324,8 @@ class GestionTicketsINDsController extends Controller
                     'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
                     'fechaTermino' => $request->fechaTermino
                 ]);
+
+                $validador = true;
 
                 $userSearch = Users::where('id',$id_busqueda_solicitante)->first();
                 $ValidarCargo = $userSearch->id_cargo_asociado;     
@@ -345,9 +358,27 @@ class GestionTicketsINDsController extends Controller
                 });
                 return $response;
         } catch (\Throwable $th) {
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
+        } 
+    }
+
+    public function PostCierreTicket(Request $request){
+        try {
+                $res = GestionTicketsINDs::where('id_solicitud',$request->id_solicitud)
+                 ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
+                 $res2 = SolicitudTicketINDs::where('id',$request->id_solicitud)
+                 ->update(['id_estado' => $request->id_estado]);
+            return true;
+        } catch (\Throwable $th) {
             log::info($th);
             return false;
-        } 
+        }
     }
 
     public function destroy(Request $request)
@@ -414,18 +445,21 @@ class GestionTicketsINDsController extends Controller
     }
 
     public function FinalizarTicket(Request $request){
+        $validador = false;
+        try {
+                $id = $request->id_solicitud;
+                $nombre = $request->nombre;
+                $descripcionSeguimiento = $request->descripcionSeguimiento;
+                $seguimientoRazon = seguimientoINDSolicitudes::create($request->all());
+                $estadoFinalizado = 6;
+                $ticket = SolicitudTicketINDs::find($id);
+                $idUser = $ticket->id_user;
+                $ticket->id_estado = $estadoFinalizado;
+                $ticket->save();
 
-        $id = $request->id_solicitud;
-        $nombre = $request->nombre;
-        $descripcionSeguimiento = $request->descripcionSeguimiento;
-        $seguimientoRazon = seguimientoINDSolicitudes::create($request->all());
-        $estadoFinalizado = 6;
-        $ticket = SolicitudTicketINDs::find($id);
-        $idUser = $ticket->id_user;
-        $ticket->id_estado = $estadoFinalizado;
-        $ticket->save();
+                $validador = true;
 
-        $userSearch = Users::where('id',$idUser)->first();
+                $userSearch = Users::where('id',$idUser)->first();
                 $ValidarCargo = $userSearch->id_cargo_asociado;     
                 $userMail = [];
     
@@ -456,7 +490,17 @@ class GestionTicketsINDsController extends Controller
                    // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
                 });
 
-        return true;
+             return true;
+        } catch (\Throwable $th) {
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
+        }
+        
 
     }
 }

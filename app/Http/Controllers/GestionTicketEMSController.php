@@ -137,22 +137,10 @@ class GestionTicketEMSController extends Controller
                 $i++;
             } */
 
-
-            
-        } catch (\Throwable $th) {
-            if($validador == true){
-                log::info($th);
-                return true;
-              }else{
-                  log::info($th);
-              return false;
-              }
-        } finally {
             if($validador == true){
                 if($count == 0){
                     return true;
                 }else{
-                    
                     Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
                         $message->setTo($listContactos)->setSubject('Asignacion de ticket');
                         $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
@@ -161,8 +149,17 @@ class GestionTicketEMSController extends Controller
                     return true;
                 }
               }else{
-                  
+                  log::info("Error al Enviar Correo");
                   return false;
+              }
+            
+        } catch (\Throwable $th) {
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
               }
         }
     }
@@ -216,6 +213,7 @@ class GestionTicketEMSController extends Controller
 
     public function NuevoTicketEM(Request $request)
     {
+        $validador = false;
         //Insertando Ticket
         try {
             $uuid = Uuid::uuid4();
@@ -238,6 +236,8 @@ class GestionTicketEMSController extends Controller
         $fecha = $request->fechaInicio;
         $tituloP = $request->tituloP;
         $id_user = $request->id_user;
+
+        $validador = true;
 
         $userSearch = Users::where('id',$id_user)->first();
             $ValidarCargo = $userSearch->id_cargo_asociado;     
@@ -285,14 +285,20 @@ class GestionTicketEMSController extends Controller
 
         return $response;
         } catch (\Throwable $th) {
-            log::info($th);
-            return false;
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
         }
         
     }
 
     public function modificarTicketEM(Request $request)
     {
+        $validador = false;
         try {
             //Gestionando Correo
             $nombre = $request->nombre;
@@ -333,7 +339,6 @@ class GestionTicketEMSController extends Controller
                     'fechaTermino' => $request->fechaTermino
                 ]);
 
-            log::info($request->all());   
 
             DetalleSolicitudEMs::updateOrCreate([
                 'id_solicitud' => $request->id_solicitud,
@@ -343,8 +348,9 @@ class GestionTicketEMSController extends Controller
                 'id_danoEQ' => $request->idDanio
             ]);
 
+            $validador = true;
+
                 $userSearch = Users::where('id',$id_user)->first();
-                log::info($request->all());
                 $ValidarCargo = [];
                 $ValidarCargo = $userSearch->id_cargo_asociado;     
                 $userMail = [];
@@ -379,9 +385,27 @@ class GestionTicketEMSController extends Controller
                 
                 return $response;
         } catch (\Throwable $th) {
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
+        } 
+    }
+
+    public function PostCierreTicket(Request $request){
+        try {
+                $res = GestionTicketEMS::where('id_solicitud',$request->id_solicitud)
+                 ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
+                 $res2 = SolicitudTicketsEM::where('id',$request->id_solicitud)
+                 ->update(['id_estado' => $request->id_estado]);
+            return true;
+        } catch (\Throwable $th) {
             log::info($th);
             return false;
-        } 
+        }
     }
 
     public function destroy(Request $request)
@@ -448,7 +472,8 @@ class GestionTicketEMSController extends Controller
     }
 
     public function FinalizarTicket(Request $request){
-
+        $validador = false;
+        try {
         $id = $request->id_solicitud;
         $nombre = $request->nombre;
         $descripcionSeguimiento = $request->descripcionSeguimiento;
@@ -458,6 +483,8 @@ class GestionTicketEMSController extends Controller
         $idUser = $ticket->id_user;
         $ticket->id_estado = $estadoFinalizado;
         $ticket->save();
+
+        $validador = true;
 
         $userSearch = Users::where('id',$idUser)->first();
                 $ValidarCargo = $userSearch->id_cargo_asociado;     
@@ -491,6 +518,17 @@ class GestionTicketEMSController extends Controller
                 });
 
         return true;
+        } catch (\Throwable $th) {
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
+        }
+
+        
 
     }
 }

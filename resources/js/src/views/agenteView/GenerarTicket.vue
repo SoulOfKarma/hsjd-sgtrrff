@@ -262,7 +262,6 @@
                                 class="w-full select-large"
                                 label="descripcionEstado"
                                 :options="listadoEstado"
-                                @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
                             <br />
                             <h6>5.3 - Seleccione Prioridad</h6>
@@ -2007,6 +2006,10 @@ export default {
                 })
                 .then(res => {
                     this.listadoEstado = res.data;
+                    this.seleccionEstado = {
+                        id: 2,
+                        descripcionEstado: "En Proceso"
+                    };
                 });
         },
         errorDrop(mensajeError) {
@@ -2057,7 +2060,7 @@ export default {
                 } else if (this.seleccionReparacion[0].id == 0) {
                     this.mensajeError = "el tipo de reparacion";
                     this.errorDrop(this.mensajeError);
-                } else if (this.seleccionEstado[0].id == 0) {
+                } else if (this.seleccionEstado.id == 0) {
                     this.mensajeError = "el estado";
                     this.errorDrop(this.mensajeError);
                 } else if (this.seleccionSupervisor[0].id == 0) {
@@ -2151,7 +2154,7 @@ export default {
             this.gestionTicket.id_edificio = this.seleccionEdificio[0].id;
             this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
             this.gestionTicket.id_tipoReparacion = this.seleccionReparacion[0].id;
-            this.gestionTicket.id_estado = this.seleccionEstado[0].id;
+            this.gestionTicket.id_estado = this.seleccionEstado.id;
             this.gestionTicket.id_supervisor = this.seleccionSupervisor[0].id;
             this.gestionTicket.id_trabajador = this.seleccionTrabajador[0].id;
             this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
@@ -2413,12 +2416,10 @@ export default {
                     descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
                 }
             ];
-            this.seleccionEstado = [
-                {
-                    id: 0,
-                    descripcionEstado: "Seleccione Estado"
-                }
-            ];
+            this.seleccionEstado = {
+                id: 2,
+                descripcionEstado: "En Proceso"
+            };
             this.seleccionSupervisor = [
                 {
                     id: 0,

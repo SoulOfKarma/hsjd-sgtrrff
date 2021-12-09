@@ -248,7 +248,6 @@
                                 class="w-full select-large"
                                 label="descripcionEstado"
                                 :options="listadoEstado"
-                                @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
                         </div>
                         <br />
@@ -2400,477 +2399,497 @@ export default {
             }
         },
         guardarFormulario() {
-            this.gestionTicket.id_user = this.seleccionUsuario.id;
-            this.gestionTicket.id_edificio = this.seleccionEdificio[0].id;
-            this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
-            this.gestionTicket.id_tipoReparacion = this.seleccionReparacion[0].id;
-            this.gestionTicket.id_estado = this.seleccionEstado[0].id;
-            this.gestionTicket.id_supervisor = this.seleccionSupervisor[0].id;
-            this.gestionTicket.id_trabajador = this.seleccionTrabajador[0].id;
-            this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
-            this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
-            this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
-            this.gestionTicket.idTurno = this.seleccionTurno.id;
-            this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
-            var newElement = document.createElement("div");
-            newElement.innerHTML = this.gestionTicket.descripcionP;
-            this.gestionTicket.descripcionCorreo = newElement.textContent;
-            this.gestionTicket.tituloP = "Sin Titulo";
-            this.gestionTicket.id_categoria = 3;
-            this.gestionTicket.nombre = this.nombre;
-            this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
-            let events = {
-                title: "",
-                startDate: null,
-                endDate: null,
-                label: "none",
-                descripcion_calderas: "",
-                descripcion_oxigenistas: "",
-                id_trabajador: 0,
-                id_turno: 0,
-                id_edificio: 0,
-                id_val_dia_administrativo: 2,
-                id_val_vacaciones: 2,
-                id_val_reemplazo: 2,
-                id_val_turno_extra: 2,
-                id_tipo_dia_administrativo: 0,
-                fecha_dia_administrativo: null,
-                fecha_inicio_vacaciones: null,
-                fecha_termino_vacaciones: null,
-                dias_vacaciones: 0,
-                id_trabajador_reemplazo: 0,
-                fecha_inicio_reemplazo: null,
-                fecha_termino_reemplazo: null,
-                dias_reemplazo: 0,
-                fecha_inicio_turno_extra: null,
-                fecha_termino_turno_extra: null,
-                dias_ejecucion_turno_extra: null,
-                horas_ejecucion_turno_extra: null,
-                hora_termino_turno_extra: null,
-                hora_inicio_turno_extra: null,
-                hora_inicio: null,
-                hora_termino: null,
-                dias_ejecucion: 0,
-                horas_ejecucion: 0,
-                id_dia_administrativo: null,
-                id_vacaciones: null,
-                id_reemplazo: null,
-                id_turno_extra: null,
-                id_calendario_gasfiter: null,
-                classes: "",
-                estado_turno_extra: true,
-                estado_reemplazo: true,
-                estado_dia_administrativo: true,
-                estado_vacaciones: true
-            };
-            const newevent = events;
-            const ticket = this.gestionTicket;
-            this.openLoadingColor();
-            if (this.esturno == true) {
-                if (this.SeleccionTipoTurnoCal.id == 1) {
-                    events.title = this.gestionTicket.descripcionCorreo;
-                    events.descripcion_oxigenistas = this.gestionTicket.descripcionCorreo;
-                    events.startDate = this.gestionTicket.fechaInicio;
-                    events.endDate = this.gestionTicket.fechaTermino;
-                    events.id_turno = this.seleccionTurno.id;
-                    events.id_trabajador = this.seleccionTrabajador[0].id;
-                    events.id_edificio = this.seleccionEdificio[0].id;
-                    events.hora_inicio = this.gestionTicket.horaInicio;
-                    events.hora_termino = this.gestionTicket.horaTermino;
-                    if (this.seleccionTurno.id == 1) {
-                        events.label = "tdia";
-                    } else if (this.seleccionTurno.id == 2) {
-                        events.label = "tnoche";
-                    }
-                    events.classes = `event-${this.labelColor(events.label)}`;
-                    if (events.title == null || events.title.trim() == "") {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe agregar el titulo para poder guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (
-                        events.descripcion_oxigenistas == null ||
-                        events.descripcion_oxigenistas.trim() == ""
-                    ) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe agregar la descripcion para poder guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (events.startDate == null) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe agregar la fecha de inicio para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (events.endDate == null) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe agregar la fecha de termino para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (
-                        events.id_turno == null ||
-                        events.id_turno == 0
-                    ) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe seleccionar el turno para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (
-                        events.id_trabajador == null ||
-                        events.id_trabajador == 0
-                    ) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe seleccionar al trabajador para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (
-                        events.id_edificio == null ||
-                        events.id_edificio == 0
-                    ) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe seleccionar el edificio para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (events.hora_inicio == null) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe agregar una hora de inicio para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (events.hora_termino == null) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe agregar un hora de termino para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else {
-                        axios
-                            .all([
-                                axios.post(
-                                    this.localVal +
-                                        "/api/Agente/PostNuevoTicketIND",
-                                    ticket,
-                                    {
-                                        headers: {
-                                            Authorization:
-                                                `Bearer ` +
-                                                sessionStorage.getItem("token")
-                                        }
-                                    }
-                                ),
-                                axios.post(
-                                    this.localVal +
-                                        "/api/Agente/PostCalendarioOxi",
-                                    newevent,
-                                    {
-                                        headers: {
-                                            Authorization:
-                                                `Bearer ` +
-                                                sessionStorage.getItem("token")
-                                        }
-                                    }
-                                )
-                            ])
-                            .then(
-                                axios.spread((res1, res2) => {
-                                    let ticketServer = res1.data;
-                                    let calen2 = res2.data;
-                                    if (
-                                        ticketServer == true &&
-                                        calen2 == true
-                                    ) {
-                                        this.mensajeGuardado();
-                                        setTimeout(() => {
-                                            router.back();
-                                        }, 4000);
-                                        this.limpiar();
-                                    } else {
-                                        this.$vs.notify({
-                                            time: 5000,
-                                            title: "Error",
-                                            text:
-                                                "No fue posible crear el ticket o agregar al calendario, revise los campos e intente nuevamente",
-                                            color: "danger",
-                                            position: "top-right"
-                                        });
-                                    }
-                                })
-                            );
-                    }
-                } else if (this.SeleccionTipoTurnoCal.id == 2) {
-                    events.title = this.gestionTicket.descripcionCorreo;
-                    events.descripcion_calderas = this.gestionTicket.descripcionCorreo;
-                    events.startDate = this.gestionTicket.fechaInicio;
-                    events.endDate = this.gestionTicket.fechaTermino;
-                    events.id_turno = this.seleccionTurno.id;
-                    events.id_trabajador = this.seleccionTrabajador[0].id;
-                    events.id_edificio = this.seleccionEdificio[0].id;
-                    events.hora_inicio = this.gestionTicket.horaInicio;
-                    events.hora_termino = this.gestionTicket.horaTermino;
-                    if (this.seleccionTurno.id == 1) {
-                        events.label = "tdia";
-                    } else if (this.seleccionTurno.id == 2) {
-                        events.label = "tnoche";
-                    }
-                    events.classes = `event-${this.labelColor(events.label)}`;
-                    if (this.seleccionTurno.id == 1) {
-                        events.label = "tdia";
-                    } else if (this.seleccionTurno.id == 2) {
-                        events.label = "tnoche";
-                    }
-                    events.classes = `event-${this.labelColor(events.label)}`;
-
-                    if (events.title == null || events.title.trim() == "") {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe agregar el titulo para poder guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (
-                        events.descripcion_oxigenistas == null ||
-                        events.descripcion_oxigenistas.trim() == ""
-                    ) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe agregar la descripcion para poder guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (events.startDate == null) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe agregar la fecha de inicio para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (events.endDate == null) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe agregar la fecha de termino para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (
-                        events.id_turno == null ||
-                        events.id_turno == 0
-                    ) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe seleccionar el turno para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (
-                        events.id_trabajador == null ||
-                        events.id_trabajador == 0
-                    ) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe seleccionar al trabajador para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (
-                        events.id_edificio == null ||
-                        events.id_edificio == 0
-                    ) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe seleccionar el edificio para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (events.hora_inicio == null) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe agregar una hora de inicio para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else if (events.hora_termino == null) {
-                        this.$vs.notify({
-                            time: 5000,
-                            title: "Error",
-                            text:
-                                "Debe agregar un hora de termino para guardar el turno correspondiente",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else {
-                        axios
-                            .all([
-                                axios.post(
-                                    this.localVal +
-                                        "/api/Agente/PostNuevoTicketIND",
-                                    ticket,
-                                    {
-                                        headers: {
-                                            Authorization:
-                                                `Bearer ` +
-                                                sessionStorage.getItem("token")
-                                        }
-                                    }
-                                ),
-                                axios.post(
-                                    this.localVal +
-                                        "/api/Agente/PostCalendarioCal",
-                                    newevent,
-                                    {
-                                        headers: {
-                                            Authorization:
-                                                `Bearer ` +
-                                                sessionStorage.getItem("token")
-                                        }
-                                    }
-                                )
-                            ])
-                            .then(
-                                axios.spread((res1, res2) => {
-                                    let ticketServer = res1.data;
-                                    let calen2 = res2.data;
-                                    if (
-                                        ticketServer == true &&
-                                        calen2 == true
-                                    ) {
-                                        this.mensajeGuardado();
-                                        setTimeout(() => {
-                                            router.back();
-                                        }, 4000);
-                                        this.limpiar();
-                                    } else {
-                                        this.$vs.notify({
-                                            time: 5000,
-                                            title: "Error",
-                                            text:
-                                                "No fue posible crear el ticket o agregar al calendario, revise los campos e intente nuevamente",
-                                            color: "danger",
-                                            position: "top-right"
-                                        });
-                                    }
-                                })
-                            );
-                    }
-                }
-            } else if (this.escilindro == true) {
-                if (this.listadoTCilindro.length > 0) {
-                    axios
-                        .all([
-                            axios.post(
-                                this.localVal +
-                                    "/api/Agente/PostNuevoTicketIND",
-                                ticket,
-                                {
-                                    headers: {
-                                        Authorization:
-                                            `Bearer ` +
-                                            sessionStorage.getItem("token")
-                                    }
-                                }
-                            ),
-                            axios.post(
-                                this.localVal + "/api/Agente/PostECilindros",
-                                this.listadoTCilindro,
-                                {
-                                    headers: {
-                                        Authorization:
-                                            `Bearer ` +
-                                            sessionStorage.getItem("token")
-                                    }
-                                }
-                            )
-                        ])
-                        .then(
-                            axios.spread((res1, res2) => {
-                                if (res1 == true && res2 == true) {
-                                    this.mensajeGuardado();
-                                } else {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Error",
-                                        text:
-                                            "No fue posible crear el ticket o guardar los cilindros, revise los campos e intente nuevamente",
-                                        color: "danger",
-                                        position: "top-right"
-                                    });
-                                }
-                            })
-                        );
-                } else {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text:
-                            "El listado debe tener minimo un cilindro para ser ingresado, revise y intente nuevamente",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                }
-            } else {
-                axios
-                    .post(
-                        this.localVal + "/api/Agente/PostNuevoTicketIND",
-                        ticket,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
+            try {
+                this.gestionTicket.id_user = this.seleccionUsuario.id;
+                this.gestionTicket.id_edificio = this.seleccionEdificio[0].id;
+                this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
+                this.gestionTicket.id_tipoReparacion = this.seleccionReparacion[0].id;
+                this.gestionTicket.id_estado = this.seleccionEstado.id;
+                this.gestionTicket.id_supervisor = this.seleccionSupervisor[0].id;
+                this.gestionTicket.id_trabajador = this.seleccionTrabajador[0].id;
+                this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
+                this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
+                this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
+                this.gestionTicket.idTurno = this.seleccionTurno.id;
+                this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
+                var newElement = document.createElement("div");
+                newElement.innerHTML = this.gestionTicket.descripcionP;
+                this.gestionTicket.descripcionCorreo = newElement.textContent;
+                this.gestionTicket.tituloP = "Sin Titulo";
+                this.gestionTicket.id_categoria = 3;
+                this.gestionTicket.nombre = this.nombre;
+                this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
+                let events = {
+                    title: "",
+                    startDate: null,
+                    endDate: null,
+                    label: "none",
+                    descripcion_calderas: "",
+                    descripcion_oxigenistas: "",
+                    id_trabajador: 0,
+                    id_turno: 0,
+                    id_edificio: 0,
+                    id_val_dia_administrativo: 2,
+                    id_val_vacaciones: 2,
+                    id_val_reemplazo: 2,
+                    id_val_turno_extra: 2,
+                    id_tipo_dia_administrativo: 0,
+                    fecha_dia_administrativo: null,
+                    fecha_inicio_vacaciones: null,
+                    fecha_termino_vacaciones: null,
+                    dias_vacaciones: 0,
+                    id_trabajador_reemplazo: 0,
+                    fecha_inicio_reemplazo: null,
+                    fecha_termino_reemplazo: null,
+                    dias_reemplazo: 0,
+                    fecha_inicio_turno_extra: null,
+                    fecha_termino_turno_extra: null,
+                    dias_ejecucion_turno_extra: null,
+                    horas_ejecucion_turno_extra: null,
+                    hora_termino_turno_extra: null,
+                    hora_inicio_turno_extra: null,
+                    hora_inicio: null,
+                    hora_termino: null,
+                    dias_ejecucion: 0,
+                    horas_ejecucion: 0,
+                    id_dia_administrativo: null,
+                    id_vacaciones: null,
+                    id_reemplazo: null,
+                    id_turno_extra: null,
+                    id_calendario_gasfiter: null,
+                    classes: "",
+                    estado_turno_extra: true,
+                    estado_reemplazo: true,
+                    estado_dia_administrativo: true,
+                    estado_vacaciones: true
+                };
+                const newevent = events;
+                const ticket = this.gestionTicket;
+                this.openLoadingColor();
+                if (this.esturno == true) {
+                    if (this.SeleccionTipoTurnoCal.id == 1) {
+                        events.title = this.gestionTicket.descripcionCorreo;
+                        events.descripcion_oxigenistas = this.gestionTicket.descripcionCorreo;
+                        events.startDate = this.gestionTicket.fechaInicio;
+                        events.endDate = this.gestionTicket.fechaTermino;
+                        events.id_turno = this.seleccionTurno.id;
+                        events.id_trabajador = this.seleccionTrabajador[0].id;
+                        events.id_edificio = this.seleccionEdificio[0].id;
+                        events.hora_inicio = this.gestionTicket.horaInicio;
+                        events.hora_termino = this.gestionTicket.horaTermino;
+                        if (this.seleccionTurno.id == 1) {
+                            events.label = "tdia";
+                        } else if (this.seleccionTurno.id == 2) {
+                            events.label = "tnoche";
                         }
-                    )
-                    .then(res => {
-                        const ticketServer = res.data;
-                        this.mensajeGuardado();
-                    });
+                        events.classes = `event-${this.labelColor(
+                            events.label
+                        )}`;
+                        if (events.title == null || events.title.trim() == "") {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe agregar el titulo para poder guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (
+                            events.descripcion_oxigenistas == null ||
+                            events.descripcion_oxigenistas.trim() == ""
+                        ) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe agregar la descripcion para poder guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (events.startDate == null) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe agregar la fecha de inicio para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (events.endDate == null) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe agregar la fecha de termino para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (
+                            events.id_turno == null ||
+                            events.id_turno == 0
+                        ) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe seleccionar el turno para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (
+                            events.id_trabajador == null ||
+                            events.id_trabajador == 0
+                        ) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe seleccionar al trabajador para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (
+                            events.id_edificio == null ||
+                            events.id_edificio == 0
+                        ) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe seleccionar el edificio para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (events.hora_inicio == null) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe agregar una hora de inicio para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (events.hora_termino == null) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe agregar un hora de termino para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            axios
+                                .all([
+                                    axios.post(
+                                        this.localVal +
+                                            "/api/Agente/PostNuevoTicketIND",
+                                        ticket,
+                                        {
+                                            headers: {
+                                                Authorization:
+                                                    `Bearer ` +
+                                                    sessionStorage.getItem(
+                                                        "token"
+                                                    )
+                                            }
+                                        }
+                                    ),
+                                    axios.post(
+                                        this.localVal +
+                                            "/api/Agente/PostCalendarioOxi",
+                                        newevent,
+                                        {
+                                            headers: {
+                                                Authorization:
+                                                    `Bearer ` +
+                                                    sessionStorage.getItem(
+                                                        "token"
+                                                    )
+                                            }
+                                        }
+                                    )
+                                ])
+                                .then(
+                                    axios.spread((res1, res2) => {
+                                        let ticketServer = res1.data;
+                                        let calen2 = res2.data;
+                                        if (
+                                            ticketServer == true &&
+                                            calen2 == true
+                                        ) {
+                                            this.mensajeGuardado();
+                                            setTimeout(() => {
+                                                router.back();
+                                            }, 4000);
+                                            this.limpiar();
+                                        } else {
+                                            this.$vs.notify({
+                                                time: 5000,
+                                                title: "Error",
+                                                text:
+                                                    "No fue posible crear el ticket o agregar al calendario, revise los campos e intente nuevamente",
+                                                color: "danger",
+                                                position: "top-right"
+                                            });
+                                        }
+                                    })
+                                );
+                        }
+                    } else if (this.SeleccionTipoTurnoCal.id == 2) {
+                        events.title = this.gestionTicket.descripcionCorreo;
+                        events.descripcion_calderas = this.gestionTicket.descripcionCorreo;
+                        events.startDate = this.gestionTicket.fechaInicio;
+                        events.endDate = this.gestionTicket.fechaTermino;
+                        events.id_turno = this.seleccionTurno.id;
+                        events.id_trabajador = this.seleccionTrabajador[0].id;
+                        events.id_edificio = this.seleccionEdificio[0].id;
+                        events.hora_inicio = this.gestionTicket.horaInicio;
+                        events.hora_termino = this.gestionTicket.horaTermino;
+                        if (this.seleccionTurno.id == 1) {
+                            events.label = "tdia";
+                        } else if (this.seleccionTurno.id == 2) {
+                            events.label = "tnoche";
+                        }
+                        events.classes = `event-${this.labelColor(
+                            events.label
+                        )}`;
+                        if (this.seleccionTurno.id == 1) {
+                            events.label = "tdia";
+                        } else if (this.seleccionTurno.id == 2) {
+                            events.label = "tnoche";
+                        }
+                        events.classes = `event-${this.labelColor(
+                            events.label
+                        )}`;
+
+                        if (events.title == null || events.title.trim() == "") {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe agregar el titulo para poder guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (
+                            events.descripcion_oxigenistas == null ||
+                            events.descripcion_oxigenistas.trim() == ""
+                        ) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe agregar la descripcion para poder guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (events.startDate == null) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe agregar la fecha de inicio para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (events.endDate == null) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe agregar la fecha de termino para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (
+                            events.id_turno == null ||
+                            events.id_turno == 0
+                        ) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe seleccionar el turno para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (
+                            events.id_trabajador == null ||
+                            events.id_trabajador == 0
+                        ) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe seleccionar al trabajador para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (
+                            events.id_edificio == null ||
+                            events.id_edificio == 0
+                        ) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe seleccionar el edificio para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (events.hora_inicio == null) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe agregar una hora de inicio para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (events.hora_termino == null) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe agregar un hora de termino para guardar el turno correspondiente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            axios
+                                .all([
+                                    axios.post(
+                                        this.localVal +
+                                            "/api/Agente/PostNuevoTicketIND",
+                                        ticket,
+                                        {
+                                            headers: {
+                                                Authorization:
+                                                    `Bearer ` +
+                                                    sessionStorage.getItem(
+                                                        "token"
+                                                    )
+                                            }
+                                        }
+                                    ),
+                                    axios.post(
+                                        this.localVal +
+                                            "/api/Agente/PostCalendarioCal",
+                                        newevent,
+                                        {
+                                            headers: {
+                                                Authorization:
+                                                    `Bearer ` +
+                                                    sessionStorage.getItem(
+                                                        "token"
+                                                    )
+                                            }
+                                        }
+                                    )
+                                ])
+                                .then(
+                                    axios.spread((res1, res2) => {
+                                        let ticketServer = res1.data;
+                                        let calen2 = res2.data;
+                                        if (
+                                            ticketServer == true &&
+                                            calen2 == true
+                                        ) {
+                                            this.mensajeGuardado();
+                                            setTimeout(() => {
+                                                router.back();
+                                            }, 4000);
+                                            this.limpiar();
+                                        } else {
+                                            this.$vs.notify({
+                                                time: 5000,
+                                                title: "Error",
+                                                text:
+                                                    "No fue posible crear el ticket o agregar al calendario, revise los campos e intente nuevamente",
+                                                color: "danger",
+                                                position: "top-right"
+                                            });
+                                        }
+                                    })
+                                );
+                        }
+                    }
+                } else if (this.escilindro == true) {
+                    if (this.listadoTCilindro.length > 0) {
+                        axios
+                            .all([
+                                axios.post(
+                                    this.localVal +
+                                        "/api/Agente/PostNuevoTicketIND",
+                                    ticket,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                ),
+                                axios.post(
+                                    this.localVal +
+                                        "/api/Agente/PostECilindros",
+                                    this.listadoTCilindro,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                )
+                            ])
+                            .then(
+                                axios.spread((res1, res2) => {
+                                    if (res1 == true && res2 == true) {
+                                        this.mensajeGuardado();
+                                    } else {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Error",
+                                            text:
+                                                "No fue posible crear el ticket o guardar los cilindros, revise los campos e intente nuevamente",
+                                            color: "danger",
+                                            position: "top-right"
+                                        });
+                                    }
+                                })
+                            );
+                    } else {
+                        this.$vs.notify({
+                            time: 5000,
+                            title: "Error",
+                            text:
+                                "El listado debe tener minimo un cilindro para ser ingresado, revise y intente nuevamente",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                } else {
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/PostNuevoTicketIND",
+                            ticket,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const ticketServer = res.data;
+                            this.mensajeGuardado();
+                        });
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
         limpiar() {
@@ -2913,8 +2932,8 @@ export default {
                 descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
             };
             this.seleccionEstado = {
-                id: 0,
-                descripcionEstado: "Seleccione Estado"
+                id: 2,
+                descripcionEstado: "En Proceso"
             };
             this.seleccionSupervisor = {
                 id: 0,

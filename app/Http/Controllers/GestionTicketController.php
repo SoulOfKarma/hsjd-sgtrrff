@@ -277,20 +277,10 @@ class GestionTicketController extends Controller
 
             $response = GestionSolicitudes::create($request->all());
 
-        } catch (\Throwable $th) {
-            if($validador == true){
-                log::info($th);
-                return true;
-              }else{
-                  log::info($th);
-              return false;
-              }
-        } finally {
             if($validador == true){
                 if($count == 0){
                     return true;
                 }else{
-                    log::info($th);
                     Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
                         $message->setTo($listContactos)->setSubject('Asignacion de ticket');
                         $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
@@ -299,10 +289,19 @@ class GestionTicketController extends Controller
                     return true;
                 }
               }else{
-                  log::info($th);
+                  log::info("Error al Enviar Correo");
                   return false;
               }
-        }
+
+        } catch (\Throwable $th) {
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
+        } 
     }
 
     
@@ -684,6 +683,7 @@ class GestionTicketController extends Controller
 
     public function modificarTicket(Request $request)
     {
+        $validador = false;
         try {
             //Gestionando Correo
             $nombre = $request->nombre;
@@ -726,6 +726,8 @@ class GestionTicketController extends Controller
                     'fechaTermino' => $request->fechaTermino
                 ]); 
 
+            $validador = true;
+
             $userSearch = Users::where('id',$id_busqueda_solicitante)->first();
             $ValidarCargo = $userSearch->id_cargo_asociado;     
             $userMail = [];
@@ -756,9 +758,15 @@ class GestionTicketController extends Controller
                 $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
                // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
             });
-            return "ok";
+            return true;
         } catch (\Throwable $th) {
-            log::info($th);
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
         } 
         //Modificando Ticket
     }
@@ -829,7 +837,8 @@ class GestionTicketController extends Controller
     }
 
     public function FinalizarTicket(Request $request){
-
+        $validador = false;
+        try {
         $id = $request->id_solicitud;
         $nombre = $request->nombre;
         $descripcionSeguimiento = $request->descripcionSeguimiento;
@@ -839,6 +848,8 @@ class GestionTicketController extends Controller
         $idUser = $ticket->id_user;
         $ticket->id_estado = $estadoFinalizado;
         $ticket->save();
+
+        $validador = true;
 
         $userSearch = Users::where('id',$idUser)->first();
                 $ValidarCargo = $userSearch->id_cargo_asociado;     
@@ -871,7 +882,18 @@ class GestionTicketController extends Controller
                    // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
                 });
 
-        return true;
+            return true;
+        } catch (\Throwable $th) {
+            if($validador == true){
+                log::info($th);
+                return true;
+              }else{
+                  log::info($th);
+              return false;
+              }
+        }
+
+        
 
     }
 }
