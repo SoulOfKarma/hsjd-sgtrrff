@@ -98,7 +98,11 @@
                             size="1.5x"
                             class="custom-class"
                             @click="
-                                modificarSolicitud(props.row.id, props.row.uuid)
+                                modificarSolicitud(
+                                    props.row.id,
+                                    props.row.uuid,
+                                    props.row.id_user
+                                )
                             "
                         ></upload-icon>
                         <trash-2-icon

@@ -74,9 +74,6 @@
                                 class="w-full select-large"
                                 label="sup_nombre_apellido"
                                 :options="listadoSupervisores"
-                                @input="
-                                    arraySupervisores(seleccionSupervisor.id)
-                                "
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -208,9 +205,6 @@
                                 class="w-full select-large"
                                 label="descripcionTipoReparacion"
                                 :options="listadoTipoRep"
-                                @input="
-                                    arrayTipoReparacion(seleccionReparacion.id)
-                                "
                             ></v-select>
                             <br />
                             <h6>4.2 - Seleccione Estado</h6>
@@ -241,7 +235,6 @@
                                 class="w-full select-large"
                                 label="descripcion_duracion"
                                 :options="listadoDuracion"
-                                @input="arrayDuracion(seleccionDuracion.id)"
                             ></v-select>
                             <br />
                             <h6>4.5 - Descripcion del problema</h6>
@@ -320,6 +313,7 @@
                                 type="number"
                                 class="vx-col w-full mt-5"
                                 v-model="anexoUsuario"
+                                @keypress="isNumber($event)"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -347,7 +341,6 @@
                                 class="w-full select-large"
                                 label="sup_nombre_apellido"
                                 :options="listadoSupervisores"
-                                @input="arraySupervisor"
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -359,7 +352,6 @@
                                 class="w-full select-large"
                                 label="descripcionEspecialidad"
                                 :options="listadoEspecialidad"
-                                @input="arrayEspecialidad"
                             ></v-select>
                         </div>
                     </div>
@@ -739,30 +731,22 @@ export default {
             id: 0,
             tra_nombre_apellido: "Seleccione al Trabajador"
         },
-        seleccionApoyo1: [
-            {
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            }
-        ],
-        seleccionApoyo2: [
-            {
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            }
-        ],
-        seleccionApoyo3: [
-            {
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            }
-        ],
-        seleccionDuracion: [
-            {
-                id: 1,
-                descripcion_duracion: "Chequeo"
-            }
-        ],
+        seleccionApoyo1: {
+            id: 1,
+            tra_nombre_apellido: "Sin Asignar"
+        },
+        seleccionApoyo2: {
+            id: 1,
+            tra_nombre_apellido: "Sin Asignar"
+        },
+        seleccionApoyo3: {
+            id: 1,
+            tra_nombre_apellido: "Sin Asignar"
+        },
+        seleccionDuracion: {
+            id: 2,
+            descripcion_duracion: "Trabajo Diario"
+        },
         listadoDuracion: [],
         variablePrueba: 0,
         mensajeError: "",
@@ -822,6 +806,19 @@ export default {
         volverTra() {
             this.popCrearTrabajador = false;
         },
+        isNumber: function(evt) {
+            evt = evt ? evt : window.event;
+            var charCode = evt.which ? evt.which : evt.keyCode;
+            if (
+                charCode > 31 &&
+                (charCode < 48 || charCode > 57) &&
+                charCode !== 46
+            ) {
+                evt.preventDefault();
+            } else {
+                return true;
+            }
+        },
         formatear_run() {
             if (this.rutUsuario == "" || this.rutUsuario == null) {
                 //console.log("Sin Rut");
@@ -848,8 +845,8 @@ export default {
         },
         guardarTrabajador() {
             if (
-                this.seleccionSupervisor[0] == null ||
-                this.seleccionSupervisor[0].id == 0
+                this.seleccionSupervisor == null ||
+                this.seleccionSupervisor.id == 0
             ) {
                 this.$vs.notify({
                     title: "Error en Seleccionar al supervisor",
@@ -859,8 +856,8 @@ export default {
                     time: 3000
                 });
             } else if (
-                this.seleccionEspecialidad[0] == null ||
-                this.seleccionEspecialidad[0].id == 0
+                this.seleccionEspecialidad == null ||
+                this.seleccionEspecialidad.id == 0
             ) {
                 this.$vs.notify({
                     title: "Error en Seleccionar la especialidad",
@@ -870,8 +867,8 @@ export default {
                     time: 3000
                 });
             } else if (
-                this.seleccionEdificio[0] == null ||
-                this.seleccionEdificio[0].id == null
+                this.seleccionEdificio == null ||
+                this.seleccionEdificio.id == null
             ) {
                 this.$vs.notify({
                     title: "Error en Seleccionar el edificio",
@@ -881,8 +878,8 @@ export default {
                     time: 3000
                 });
             } else if (
-                this.seleccionServicio[0] == null ||
-                this.seleccionServicio[0].id == 0
+                this.seleccionServicio == null ||
+                this.seleccionServicio.id == 0
             ) {
                 this.$vs.notify({
                     title: "Error en Seleccionar el servicio",
@@ -898,15 +895,15 @@ export default {
                 this.registroUsuario.apellido = this.apellidoUsuario;
                 this.registroUsuario.anexo = this.anexoUsuario;
                 this.registroUsuario.id_cargo = 6;
-                this.registroUsuario.id_cargo_asociado = this.seleccionSupervisor[0].id;
-                this.registroUsuario.id_edificio = this.seleccionEdificio[0].id;
-                this.registroUsuario.id_servicio = this.seleccionServicio[0].id;
+                this.registroUsuario.id_cargo_asociado = this.seleccionSupervisor.id;
+                this.registroUsuario.id_edificio = this.seleccionEdificio.id;
+                this.registroUsuario.id_servicio = this.seleccionServicio.id;
                 this.registroUsuario.password = this.passUsuario;
                 this.registroUsuario.run_usuario = this.rutUsuario;
                 this.registroUsuario.tra_run = this.rutUsuario;
                 this.registroUsuario.tra_nombre = this.nombreUsuario;
                 this.registroUsuario.tra_apellido = this.apellidoUsuario;
-                this.registroUsuario.id_especialidad1 = this.seleccionEspecialidad[0].id;
+                this.registroUsuario.id_especialidad1 = this.seleccionEspecialidad.id;
 
                 if (
                     this.rutUsuario == 0 ||
@@ -1032,19 +1029,6 @@ export default {
                 }
             }
         },
-        arrayEspecialidad() {
-            let id = this.seleccionEspecialidad.id;
-            let c = JSON.parse(JSON.stringify(this.listadoEspecialidad));
-            let b = [];
-            let a = 0;
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionEspecialidad = b;
-        },
         cargarEspecialidad() {
             axios
                 .get(this.localVal + "/api/Agente/getEspecialidad", {
@@ -1080,30 +1064,22 @@ export default {
             this.registroUsuario.tra_apellido = "";
             this.registroUsuario.id_especialidad1 = 0;
 
-            this.seleccionCargo = [
-                {
-                    id: 0,
-                    descripcionCargo: "Seleccione Cargo"
-                }
-            ];
-            this.seleccionEdificio = [
-                {
-                    id: 0,
-                    descripcionEdificio: "Seleccione Edificio"
-                }
-            ];
-            this.seleccionServicio = [
-                {
-                    id: 0,
-                    descripcionServicio: "Seleccione Servicio"
-                }
-            ];
-            this.seleccionEspecialidad = [
-                {
-                    id: 0,
-                    descripcionEspecialidad: "Seleccion Especialidad"
-                }
-            ];
+            this.seleccionCargo = {
+                id: 0,
+                descripcionCargo: "Seleccione Cargo"
+            };
+            this.seleccionEdificio = {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            };
+            this.seleccionServicio = {
+                id: 0,
+                descripcionServicio: "Seleccione Servicio"
+            };
+            this.seleccionEspecialidad = {
+                id: 0,
+                descripcionEspecialidad: "Seleccion Especialidad"
+            };
             this.nombreUsuario = "";
             this.apellidoUsuario = "";
             this.anexoUsuario = 0;
@@ -1139,7 +1115,11 @@ export default {
                     }
                 });
 
-                this.seleccionEdificio = b;
+                let idEdificio = b[0].id;
+                let desEdificio = b[0].descripcionEdificio;
+
+                this.seleccionEdificio.id = idEdificio;
+                this.seleccionEdificio.descripcionEdificio = desEdificio;
             }
         },
         guardarServicio(val3) {
@@ -1155,11 +1135,6 @@ export default {
                 ) {
                     servicio = {
                         id_edificio: this.seleccionEdificio.id,
-                        descripcionServicio: val3
-                    };
-                } else {
-                    servicio = {
-                        id_edificio: this.seleccionEdificio[0].id,
                         descripcionServicio: val3
                     };
                 }
@@ -1214,10 +1189,7 @@ export default {
                     this.seleccionServicio.id == 0 ||
                     this.seleccionServicio.id == null
                 ) {
-                    if (
-                        this.seleccionEdificio.id == 0 ||
-                        this.seleccionEdificio[0].id == 0
-                    ) {
+                    if (this.seleccionEdificio.id == 0) {
                         this.$vs.notify({
                             time: 3000,
                             title: "Error",
@@ -1262,9 +1234,15 @@ export default {
                                 b.push(value);
                             }
                         });
-                        this.seleccionServicio = b;
+
+                        let idServicio = b[0].id;
+                        let desServicio = b[0].descripcionServicio;
+
+                        this.seleccionServicio.id = idServicio;
+                        this.seleccionServicio.descripcionServicio = desServicio;
+
                         idGeneral = 0;
-                        idGeneral = this.seleccionServicio[0].id_edificio;
+                        idGeneral = b[0].id_edificio;
                         b = [];
 
                         c = JSON.parse(JSON.stringify(this.listadoEdificios));
@@ -1275,40 +1253,17 @@ export default {
                                 b.push(value);
                             }
                         });
+                        let idEdificio = b[0].id;
+                        let desEdificio = b[0].descripcionEdificio;
 
-                        this.seleccionEdificio = b;
+                        this.seleccionEdificio.id = idEdificio;
+                        this.seleccionEdificio.descripcionEdificio = desEdificio;
                     }
                 }
             } catch (error) {
                 console.log("Error en servicio");
                 console.log(error);
             }
-        },
-        arrayEstado(id) {
-            let c = JSON.parse(JSON.stringify(this.listadoEstado));
-            let b = [];
-            var a = 0;
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionEstado = b;
-        },
-        arrayDuracion(id) {
-            let c = JSON.parse(JSON.stringify(this.listadoDuracion));
-            let b = [];
-            var a = 0;
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionDuracion = b;
         },
         arrayTipoReparacion(id) {
             let c = JSON.parse(JSON.stringify(this.listadoTipoRep));
@@ -1321,33 +1276,12 @@ export default {
                     b.push(value);
                 }
             });
-            this.seleccionReparacion = b;
-        },
-        arraySupervisores(id) {
-            let c = JSON.parse(JSON.stringify(this.listadoSupervisores));
-            let b = [];
-            var a = 0;
 
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionSupervisor = b;
-        },
-        arraySupervisor() {
-            let id = this.seleccionSupervisor.id;
-            let c = JSON.parse(JSON.stringify(this.listadoSupervisores));
-            let b = [];
-            let a = 0;
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionSupervisor = b;
+            let idTipoRep = b[0].id;
+            let desTipoRep = b[0].descripcionTipoReparacion;
+
+            this.seleccionReparacion.id = idTipoRep;
+            this.seleccionReparacion.descripcionTipoReparacion = desTipoRep;
         },
         arrayTrabajadores(id) {
             if (id == 0 || id == null) {
@@ -1365,7 +1299,11 @@ export default {
                         b.push(value);
                     }
                 });
-                this.seleccionTrabajador = b;
+
+                let idTra = b[0].id;
+                let desTra = b[0].tra_nombre_apellido;
+                this.seleccionTrabajador.id = idTra;
+                this.seleccionTrabajador.tra_nombre_apellido = desTra;
 
                 b = [];
                 a = 0;
@@ -1393,7 +1331,12 @@ export default {
                     b.push(value);
                 }
             });
-            this.seleccionApoyo1 = b;
+
+            let idSA1 = b[0].id;
+            let desSA1 = b[0].tra_nombre_apellido;
+
+            this.seleccionApoyo1.id = idSA1;
+            this.seleccionApoyo1.tra_nombre_apellido = desSA1;
 
             b = [];
             a = 0;
@@ -1423,7 +1366,12 @@ export default {
                     b.push(value);
                 }
             });
-            this.seleccionApoyo2 = b;
+
+            let idSA2 = b[0].id;
+            let desSA2 = b[0].tra_nombre_apellido;
+
+            this.seleccionApoyo2.id = idSA2;
+            this.seleccionApoyo2.tra_nombre_apellido = desSA2;
 
             b = [];
             a = 0;
@@ -1452,7 +1400,12 @@ export default {
                     b.push(value);
                 }
             });
-            this.seleccionApoyo3 = b;
+
+            let idSA3 = b[0].id;
+            let desSA3 = b[0].tra_nombre_apellido;
+
+            this.seleccionApoyo3.id = idSA3;
+            this.seleccionApoyo3.tra_nombre_apellido = desSA3;
         },
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
@@ -1591,6 +1544,16 @@ export default {
                     var datoidEstado = this.datosSolicitud[0].id_estado;
                     var datoidRep = this.datosSolicitud[0].id_tipoReparacion;
                     this.descripcionP = this.datosSolicitud[0].descripcionP;
+                    var fechaCreacionT = moment(
+                        this.datosSolicitud[0].created_at
+                    )
+                        .locale("es")
+                        .format("Do MMMM YYYY, HH:mm:ss");
+                    this.gestionTicket.fechaCreacion = fechaCreacionT;
+                    this.gestionTicket.id_usuarioSolicitante = this.datosSolicitud[0].id_user;
+                    /* var newElement = document.createElement("div");
+                    newElement.innerHTML = this.datosSolicitud[0].descripcionP; */
+                    this.gestionTicket.tituloP = this.datosSolicitud[0].tituloP;
                     this.cargarUSE(
                         datoidServicio,
                         datoidEdificio,
@@ -1627,86 +1590,45 @@ export default {
         },
         validarFormulario() {
             var hoy = new Date();
-            try {
-                if (this.seleccionEdificio[0].id == 0) {
-                    this.mensajeError = "el Edificio";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionServicio[0].id == 0) {
-                    this.mensajeError = "el servicio";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionReparacion[0].id == 0) {
-                    this.mensajeError = "el tipo de reparacion";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionEstado.id == 0) {
-                    this.mensajeError = "el estado";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionSupervisor[0].id == 0) {
-                    this.mensajeError = "el supervisor";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionTrabajador[0].id == 0) {
-                    this.mensajeError = "el trabajador";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionApoyo1[0].id == 0) {
-                    this.mensajeError = "el apoyo 1";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionApoyo2[0].id == 0) {
-                    this.mensajeError = "el apoyo 2";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionApoyo3[0].id == 0) {
-                    this.mensajeError = "el apoyo 3";
-                    this.errorDrop(this.mensajeError);
-                } else if (
-                    this.gestionTicket.fechaInicio == null ||
-                    this.gestionTicket.fechaInicio < hoy.getDate()
-                ) {
-                    this.mensajeError = "la fecha de inicio ";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionPrioridad.id == 0) {
-                    this.mensajeError = "la prioridad ";
-                    this.errorDrop(this.mensajeError);
-                } else {
-                    this.guardarFormulario();
-                }
-            } catch (error) {
-                if (this.seleccionEdificio.id == 0) {
-                    this.mensajeError = "el Edificio";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionServicio.id == 0) {
-                    this.mensajeError = "el servicio";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionReparacion.id == 0) {
-                    this.mensajeError = "el tipo de reparacion";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionEstado.id == 0) {
-                    this.mensajeError = "el estado";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionSupervisor.id == 0) {
-                    this.mensajeError = "el supervisor";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionTrabajador.id == 0) {
-                    this.mensajeError = "el trabajador";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionApoyo1.id == 0) {
-                    this.mensajeError = "el apoyo 1";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionApoyo2.id == 0) {
-                    this.mensajeError = "el apoyo 2";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionApoyo3.id == 0) {
-                    this.mensajeError = "el apoyo 3";
-                    this.errorDrop(this.mensajeError);
-                } else if (
-                    this.gestionTicket.fechaInicio == null ||
-                    this.gestionTicket.fechaInicio < hoy.getDate()
-                ) {
-                    this.mensajeError = "la fecha de inicio ";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionPrioridad.id == 0) {
-                    this.mensajeError = "la prioridad ";
-                    this.errorDrop(this.mensajeError);
-                } else {
-                    this.guardarFormulario();
-                }
+
+            if (this.seleccionEdificio.id == 0) {
+                this.mensajeError = "el Edificio";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionServicio.id == 0) {
+                this.mensajeError = "el servicio";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionReparacion.id == 0) {
+                this.mensajeError = "el tipo de reparacion";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionEstado.id == 0) {
+                this.mensajeError = "el estado";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionSupervisor.id == 0) {
+                this.mensajeError = "el supervisor";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionTrabajador.id == 0) {
+                this.mensajeError = "el trabajador";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionApoyo1.id == 0) {
+                this.mensajeError = "el apoyo 1";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionApoyo2.id == 0) {
+                this.mensajeError = "el apoyo 2";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionApoyo3.id == 0) {
+                this.mensajeError = "el apoyo 3";
+                this.errorDrop(this.mensajeError);
+            } else if (
+                this.gestionTicket.fechaInicio == null ||
+                this.gestionTicket.fechaInicio < hoy.getDate()
+            ) {
+                this.mensajeError = "la fecha de inicio ";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionPrioridad.id == 0) {
+                this.mensajeError = "la prioridad ";
+                this.errorDrop(this.mensajeError);
+            } else {
+                this.guardarFormulario();
             }
         },
         guardarFormulario() {
@@ -1717,43 +1639,37 @@ export default {
                 let id = this.$route.params.id;
 
                 this.gestionTicket.id_solicitud = id;
-                this.gestionTicket.id_edificio = this.seleccionEdificio[0].id;
-                this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
-                this.gestionTicket.id_tipoReparacion = this.seleccionReparacion[0].id;
+                this.gestionTicket.id_edificio = this.seleccionEdificio.id;
+                this.gestionTicket.id_servicio = this.seleccionServicio.id;
+                this.gestionTicket.id_tipoReparacion = this.seleccionReparacion.id;
                 this.gestionTicket.id_estado = this.seleccionEstado.id;
-                this.gestionTicket.id_supervisor = this.seleccionSupervisor[0].id;
-                this.gestionTicket.id_trabajador = this.seleccionTrabajador[0].id;
-                this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
-                this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
-                this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
+                this.gestionTicket.id_supervisor = this.seleccionSupervisor.id;
+                this.gestionTicket.id_trabajador = this.seleccionTrabajador.id;
+                this.gestionTicket.idApoyo1 = this.seleccionApoyo1.id;
+                this.gestionTicket.idApoyo2 = this.seleccionApoyo2.id;
+                this.gestionTicket.idApoyo3 = this.seleccionApoyo3.id;
                 this.gestionTicket.idTurno = this.seleccionTurno.id;
-                this.gestionTicket.desEdificio = this.seleccionEdificio[0].descripcionEdificio;
-                this.gestionTicket.desServicio = this.seleccionServicio[0].descripcionServicio;
-                this.gestionTicket.desReparacion = this.seleccionReparacion[0].descripcionTipoReparacion;
+                this.gestionTicket.desEdificio = this.seleccionEdificio.descripcionEdificio;
+                this.gestionTicket.desServicio = this.seleccionServicio.descripcionServicio;
+                this.gestionTicket.desReparacion = this.seleccionReparacion.descripcionTipoReparacion;
                 this.gestionTicket.desEstado = this.seleccionEstado.descripcionEstado;
-                this.gestionTicket.desTrabajador = this.seleccionTrabajador[0].tra_nombre_apellido;
-                this.gestionTicket.desSupervisor = this.seleccionSupervisor[0].sup_nombre_apellido;
-                this.gestionTicket.desApoyo1 = this.seleccionApoyo1[0].tra_nombre_apellido;
-                this.gestionTicket.desApoyo2 = this.seleccionApoyo2[0].tra_nombre_apellido;
-                this.gestionTicket.desApoyo3 = this.seleccionApoyo3[0].tra_nombre_apellido;
+                this.gestionTicket.desTrabajador = this.seleccionTrabajador.tra_nombre_apellido;
+                this.gestionTicket.desSupervisor = this.seleccionSupervisor.sup_nombre_apellido;
+                this.gestionTicket.desApoyo1 = this.seleccionApoyo1.tra_nombre_apellido;
+                this.gestionTicket.desApoyo2 = this.seleccionApoyo2.tra_nombre_apellido;
+                this.gestionTicket.desApoyo3 = this.seleccionApoyo3.tra_nombre_apellido;
                 this.gestionTicket.idTurno = this.seleccionTurno.id;
-                this.gestionTicket.tituloP = this.datosSolicitud[0].tituloP;
                 this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
-                var newElement = document.createElement("div");
-                newElement.innerHTML = this.datosSolicitud[0].descripcionP;
+                /* var newElement = document.createElement("div");
+                newElement.innerHTML = this.datosSolicitud[0].descripcionP; */
                 this.gestionTicket.descripcionP = this.descripcionP;
                 this.gestionTicket.nombre = this.nombre;
-                var fechaCreacionT = moment(this.datosSolicitud[0].created_at)
-                    .locale("es")
-                    .format("Do MMMM YYYY, HH:mm:ss");
-                this.gestionTicket.fechaCreacion = fechaCreacionT;
-                this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
+                this.gestionTicket.idDuracion = this.seleccionDuracion.id;
                 var fechaInicioT = moment(this.hora1)
                     .locale("es")
                     .format("Do MMMM YYYY, HH:mm:ss");
 
                 this.gestionTicket.fechaInicioFormateada = fechaInicioT;
-                this.gestionTicket.id_usuarioSolicitante = this.datosSolicitud[0].id_user;
                 this.gestionTicket.id_user = sessionStorage.getItem("id");
                 this.gestionTicket.descripcionSeguimiento =
                     "El Agente " +
@@ -1814,7 +1730,11 @@ export default {
                 }
             });
 
-            this.seleccionServicio = b;
+            let idServicio = b[0].id;
+            let desServicio = b[0].descripcionServicio;
+
+            this.seleccionServicio.id = idServicio;
+            this.seleccionServicio.descripcionServicio = desServicio;
 
             c = JSON.parse(JSON.stringify(this.listadoEdificios));
             b = [];
@@ -1825,7 +1745,11 @@ export default {
                 }
             });
 
-            this.seleccionEdificio = b;
+            let idEdificio = b[0].id;
+            let desEdificio = b[0].descripcionEdificio;
+
+            this.seleccionEdificio.id = idEdificio;
+            this.seleccionEdificio.descripcionEdificio = desEdificio;
 
             c = JSON.parse(JSON.stringify(this.listadoTipoRep));
             b = [];
@@ -1835,7 +1759,12 @@ export default {
                     b.push(value);
                 }
             });
-            this.seleccionReparacion = b;
+
+            let idTipoRep = b[0].id;
+            let desTipoRep = b[0].descripcionTipoReparacion;
+
+            this.seleccionReparacion.id = idTipoRep;
+            this.seleccionReparacion.descripcionTipoReparacion = desTipoRep;
         },
 
         cargarInicial() {
@@ -1919,24 +1848,18 @@ export default {
                 id: 0,
                 tra_nombre_apellido: "Seleccione al Trabajador"
             };
-            this.seleccionApoyo1 = [
-                {
-                    id: 1,
-                    tra_nombre_apellido: "Sin Asignar"
-                }
-            ];
-            this.seleccionApoyo2 = [
-                {
-                    id: 1,
-                    tra_nombre_apellido: "Sin Asignar"
-                }
-            ];
-            this.seleccionApoyo3 = [
-                {
-                    id: 1,
-                    tra_nombre_apellido: "Sin Asignar"
-                }
-            ];
+            this.seleccionApoyo1 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo2 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo3 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
         },
         cargarHoras() {
             try {
