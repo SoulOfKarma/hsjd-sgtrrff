@@ -503,4 +503,24 @@ class GestionTicketsINDsController extends Controller
         
 
     }
+
+    public function PutFechas(Request $request){
+        try {
+            SolicitudTicketINDs::where('id',$request->idSolicitud)
+            ->update([
+                'created_at' => $request->fechaSolicitud
+            ]);
+
+            GestionTicketsINDs::where('id_solicitud',$request->idSolicitud)
+            ->update([
+                'fechaInicio' => $request->fechaAsignacion,
+                'fechaTermino' => $request->fechaTermino
+            ]);
+
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
 }

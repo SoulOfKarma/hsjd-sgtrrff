@@ -617,7 +617,10 @@ use App\Mail\AutoRespuesta;
               Route::post('/Agente/ExportarDataPDF', ['middleware' => 'cors', 'uses' => 'PdfController@ExportarDataPDF']);
 
             //Listado Equipamiento Medicos  
-            Route::post('/Agente/ListadoEquipamientoMedicoByID', ['middleware' => 'cors', 'uses' => 'TblTicketEquipamientoMedicosController@ListadoEquipamientoMedicoByID']);  
+            Route::post('/Agente/ListadoEquipamientoMedicoByID', ['middleware' => 'cors', 'uses' => 'TblTicketEquipamientoMedicosController@ListadoEquipamientoMedicoByID']); 
+            
+            //Modificar Fechas 
+            Route::post('/Agente/PutFechas', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@PutFechas']);  
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');

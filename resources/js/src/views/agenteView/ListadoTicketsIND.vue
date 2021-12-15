@@ -296,6 +296,18 @@
                                     )
                                 "
                             ></alert-triangle-icon>
+                            <calendar-icon
+                                content="Cambiar Fecha de Asignacion"
+                                v-tippy
+                                size="1.5x"
+                                class="custom-class"
+                                @click="
+                                    popModFechaAsig(
+                                        props.row.id,
+                                        props.row.uuid
+                                    )
+                                "
+                            ></calendar-icon>
                         </div>
                     </span>
 
@@ -512,12 +524,76 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="popFechaCambiar"
+            title="Cambiar Fechas"
+            :active.sync="popFechaCambiar"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full ">
+                        <vx-card>
+                            <div class="vx-col w-full mt-5">
+                                <h6>3.1 - Fecha de Solicitud</h6>
+                                <br />
+                                <flat-pickr
+                                    class="w-full"
+                                    :config="configFromdateTimePicker"
+                                    v-model="fechaSolicitudI"
+                                    placeholder="Seleccione Fecha"
+                                />
+                            </div>
+                            <div class="vx-col w-full mt-5">
+                                <h6>3.2 - Fecha de Asignacion</h6>
+                                <br />
+                                <flat-pickr
+                                    class="w-full"
+                                    :config="configFromdateTimePicker"
+                                    v-model="fechaAsignacion"
+                                    placeholder="Seleccione Fecha"
+                                />
+                            </div>
+                            <div class="vx-col w-full mt-5">
+                                <h6>3.3 - Fecha de Termino</h6>
+                                <br />
+                                <flat-pickr
+                                    class="w-full"
+                                    :config="configFromdateTimePicker"
+                                    v-model="fechaTermino"
+                                    placeholder="Seleccione Fecha"
+                                />
+                            </div>
+                        </vx-card>
+                        <br />
+                    </div>
+                    <div class="vx-col w-full md-5">
+                        <vs-button
+                            @click="popFechaCambiar = false"
+                            color="primary"
+                            type="filled"
+                            class="w-full m-1"
+                            >Volver</vs-button
+                        >
+                        <vs-button
+                            @click="cambiarFechas"
+                            color="danger"
+                            type="filled"
+                            class="w-full m-1"
+                            >Cambiar Fechas</vs-button
+                        >
+                    </div>
+                </div>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 
 <script>
 import axios from "axios";
 import router from "@/router";
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
 import { InfoIcon } from "vue-feather-icons";
 import { PlusCircleIcon } from "vue-feather-icons";
 import { Trash2Icon } from "vue-feather-icons";
@@ -533,6 +609,7 @@ import { FileTextIcon } from "vue-feather-icons";
 import { LoaderIcon } from "vue-feather-icons";
 import { AlertTriangleIcon } from "vue-feather-icons";
 import { FilePlusIcon } from "vue-feather-icons";
+import { CalendarIcon } from "vue-feather-icons";
 import vSelect from "vue-select";
 import moment from "moment";
 import { PrinterIcon } from "vue-feather-icons";
@@ -560,7 +637,9 @@ export default {
         LoaderIcon,
         AlertTriangleIcon,
         PrinterIcon,
-        FilePlusIcon
+        FilePlusIcon,
+        CalendarIcon,
+        flatPickr
     },
     data() {
         return {
@@ -582,6 +661,55 @@ export default {
                     ]
                 }
             },
+            configFromdateTimePicker: {
+                minDate: null,
+                maxDate: null,
+                locale: {
+                    firstDayOfWeek: 1,
+                    weekdays: {
+                        shorthand: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                        longhand: [
+                            "Domingo",
+                            "Lunes",
+                            "Martes",
+                            "Miércoles",
+                            "Jueves",
+                            "Viernes",
+                            "Sábado"
+                        ]
+                    },
+                    months: {
+                        shorthand: [
+                            "Ene",
+                            "Feb",
+                            "Mar",
+                            "Abr",
+                            "May",
+                            "Jun",
+                            "Jul",
+                            "Ago",
+                            "Sep",
+                            "Оct",
+                            "Nov",
+                            "Dic"
+                        ],
+                        longhand: [
+                            "Enero",
+                            "Febrero",
+                            "Мarzo",
+                            "Abril",
+                            "Mayo",
+                            "Junio",
+                            "Julio",
+                            "Agosto",
+                            "Septiembre",
+                            "Octubre",
+                            "Noviembre",
+                            "Diciembre"
+                        ]
+                    }
+                }
+            },
             image: "",
             componentKey: 0,
             dataEliminacion: {
@@ -601,6 +729,7 @@ export default {
             popupActive3: false,
             popupActive4: false,
             popFinTicket: false,
+            popFechaCambiar: false,
             horasTrabajadas: 0,
             solicitudes: [],
             documentacion: [],
@@ -614,7 +743,12 @@ export default {
             run: sessionStorage.getItem("run"),
             idCierreTicket: "",
             uuidCierreTicket: "",
+            idSolicitudFecha: "",
+            uuidSolicitudFecha: "",
             listadoEstado: [],
+            fechaSolicitudI: "",
+            fechaAsignacion: "",
+            fechaTermino: "",
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: "Seleccione Estado"
@@ -688,6 +822,47 @@ export default {
         };
     },
     methods: {
+        cambiarFechas() {
+            try {
+                let data = {
+                    idSolicitud: this.idSolicitudFecha,
+                    fechaSolicitud: this.fechaSolicitudI,
+                    fechaAsignacion: this.fechaAsignacion,
+                    fechaTermino: this.fechaTermino
+                };
+
+                axios
+                    .post(this.localVal + "/api/Agente/PutFechas", data, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        let resultado = res.data;
+                        if (resultado) {
+                            this.$vs.notify({
+                                title: "Fechas Cambiadas Correctamente ",
+                                text: "Se recargara listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.cargarSolicitudes();
+                            this.popFechaCambiar = false;
+                        } else {
+                            this.$vs.notify({
+                                title: "Error ",
+                                text:
+                                    "No se Pudieron Cambiar las Fechas, Revise los datos",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         isNumber: function($event) {
             // console.log($event.keyCode); //keyCodes value
             let keyCode = $event.keyCode ? $event.keyCode : $event.which;
@@ -715,6 +890,15 @@ export default {
                 this.popFinTicket = true;
                 this.idCierreTicket = id;
                 this.uuidCierreTicket = uuid;
+            } catch (error) {
+                console.log("Error al Abrir el Pop de cierre");
+            }
+        },
+        popModFechaAsig(id, uuid) {
+            try {
+                this.popFechaCambiar = true;
+                this.idSolicitudFecha = id;
+                this.uuidSolicitudFecha = uuid;
             } catch (error) {
                 console.log("Error al Abrir el Pop de cierre");
             }
