@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use App\Supervisores;
 use App\Trabajadores;
+use App\SupCatIntermedias;
 use DB;
 
 class UsersController extends Controller
@@ -476,6 +477,7 @@ class UsersController extends Controller
         try {
             $idvalrun = $request->idvalRut;
             $idvalmail = $request->idvalmail;
+            $idSup = 0;
             if($idvalrun == 1){
                 if($idvalmail == 1){
                     $run = $request->run_usuario;
@@ -497,12 +499,17 @@ class UsersController extends Controller
                         'api_token' => Str::random(60),
                     ]);
 
-                    Supervisores::create([
+                    $idSup = Supervisores::create([
                         'sup_run' => $run,
                         'sup_nombre' => $request->nombre,
                         'sup_apellido' => $request->apellido,
                         'id_especialidad1' =>$request->id_especialidad1,
                         'id_especialidad2' =>$request->id_especialidad2,
+                    ])->id;
+
+                    SupCatIntermedias::create([
+                        'id_supervisor' => $idSup,
+                        'id_categoria' => $request->id_categoria,
                     ]);
 
                     tblPermisoUsuarios::create([
@@ -531,12 +538,17 @@ class UsersController extends Controller
                         'api_token' => Str::random(60),
                     ]);
 
-                    Supervisores::create([
+                    $idSup = Supervisores::create([
                         'sup_run' => $run,
                         'sup_nombre' => $request->nombre,
                         'sup_apellido' => $request->apellido,
                         'id_especialidad1' =>$request->id_especialidad1,
                         'id_especialidad2' =>$request->id_especialidad2,
+                    ])->id;
+
+                    SupCatIntermedias::create([
+                        'id_supervisor' => $idSup,
+                        'id_categoria' => $request->id_categoria,
                     ]);
 
                     tblPermisoUsuarios::create([
@@ -567,12 +579,17 @@ class UsersController extends Controller
                         'api_token' => Str::random(60),
                     ]);
             
-                    Supervisores::create([
+                    $idSup = Supervisores::create([
                         //'sup_run' => $run,
                         'sup_nombre' => $request->nombre,
                         'sup_apellido' => $request->apellido,
                         'id_especialidad1' =>$request->id_especialidad1,
                         'id_especialidad2' =>$request->id_especialidad2,
+                    ])->id;
+
+                    SupCatIntermedias::create([
+                        'id_supervisor' => $idSup,
+                        'id_categoria' => $request->id_categoria,
                     ]);
             
                     /* tblPermisoUsuarios::create([
@@ -602,12 +619,17 @@ class UsersController extends Controller
                         'api_token' => Str::random(60),
                     ]);
             
-                    Supervisores::create([
+                    $idSup = Supervisores::create([
                         //'sup_run' => $run,
                         'sup_nombre' => $request->nombre,
                         'sup_apellido' => $request->apellido,
                         'id_especialidad1' =>$request->id_especialidad1,
                         'id_especialidad2' =>$request->id_especialidad2,
+                    ])->id;
+
+                    SupCatIntermedias::create([
+                        'id_supervisor' => $idSup,
+                        'id_categoria' => $request->id_categoria,
                     ]);
             
                     /* tblPermisoUsuarios::create([
@@ -653,8 +675,6 @@ class UsersController extends Controller
                         'password' => Hash::make($request->password),
                         'api_token' => Str::random(60),
                     ]);
-
-                    log::info($resp);
             
                     Supervisores::where('sup_run',$run)
                     ->update([
@@ -662,6 +682,11 @@ class UsersController extends Controller
                         'sup_apellido' => $request->apellido,
                         'id_especialidad1' =>$request->id_especialidad1,
                         'id_especialidad2' =>$request->id_especialidad2,
+                    ]);
+
+                    SupCatIntermedias::where('id_supervisor',$request->idSup)
+                    ->update([
+                        'id_categoria' => $request->id_categoria,
                     ]);
             
                     tblPermisoUsuarios::where('run_usuario',$run)
@@ -696,6 +721,11 @@ class UsersController extends Controller
                         'sup_apellido' => $request->apellido,
                         'id_especialidad1' =>$request->id_especialidad1,
                         'id_especialidad2' =>$request->id_especialidad2,
+                    ]);
+
+                    SupCatIntermedias::where('id_supervisor',$request->idSup)
+                    ->update([
+                        'id_categoria' => $request->id_especialidad1,
                     ]);
 
                     tblPermisoUsuarios::where('run_usuario',$run)
@@ -734,6 +764,11 @@ class UsersController extends Controller
                         'id_especialidad2' =>$request->id_especialidad2,
                     ]);
 
+                    SupCatIntermedias::where('id_supervisor',$request->idSup)
+                    ->update([
+                        'id_categoria' => $request->id_especialidad1,
+                    ]);
+
                     /* tblPermisoUsuarios::where('run_usuario',$run)
                     ->update([
                         'permiso_usuario' => $request->permiso_usuario,
@@ -767,6 +802,11 @@ class UsersController extends Controller
                         'sup_apellido' => $request->apellido,
                         'id_especialidad1' =>$request->id_especialidad1,
                         'id_especialidad2' =>$request->id_especialidad2,
+                    ]);
+
+                    SupCatIntermedias::where('id_supervisor',$request->idSup)
+                    ->update([
+                        'id_categoria' => $request->id_especialidad1,
                     ]);
 
                     /* tblPermisoUsuarios::where('run_usuario',$run)
@@ -1087,8 +1127,10 @@ class UsersController extends Controller
 
     public function getSoloSupervisoresRRFF()
     {
-        $getall = Users::select('users.*','users.id as id_user','supervisores.*',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombreSupervisor"))
+        $getall = Users::select('users.*','users.id as id_user','supervisores.*',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombreSupervisor"),
+        'sup_cat_intermedias.id_supervisor','sup_cat_intermedias.id_categoria')
         ->join('supervisores','users.run','=','supervisores.sup_run')
+        ->join('sup_cat_intermedias','supervisores.id','=','sup_cat_intermedias.id_supervisor')
         ->where('id_cargo',[5])
         ->get();
          return $getall;

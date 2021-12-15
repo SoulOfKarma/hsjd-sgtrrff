@@ -280,7 +280,7 @@ class PdfController extends Controller
                 ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
                 ->join('turnos', 'gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
                 ->join('duracion_solicitudes', 'gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
-                ->join('detalle_solicitud_e_ms','solicitud_tickets_e_m_s.id', '=', 'detalle_solicitud_e_ms.id_solicitud')
+                ->leftjoin('detalle_solicitud_e_ms','solicitud_tickets_e_m_s.id', '=', 'detalle_solicitud_e_ms.id_solicitud')
                 ->where('gestion_ticket_e_m_s.id_solicitud', $id)
                 ->first();
     
@@ -299,6 +299,8 @@ class PdfController extends Controller
             if($equipomedico == ""){
               $validador = true;
             }
+
+            log::info($data);
     
             $idApoyo1 = $data->idApoyo1;
             $idApoyo2 = $data->idApoyo2;

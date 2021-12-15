@@ -114,7 +114,7 @@
                                 @input="arrayEspecialidad2"
                             ></v-select>
                         </div>
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-1/2 mt-5">
                             <h6>1.10 - Categoria</h6>
                             <br />
                             <v-select
@@ -123,6 +123,21 @@
                                 class="w-full select-large"
                                 label="des_categoria"
                                 :options="listadoCategoria"
+                            ></v-select>
+                            <br />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>
+                                1.11 - Seleccione para autocargar Tipo de
+                                Reparacion Por Supervisor
+                            </h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionReparacion"
+                                placeholder="Seleccione Tipo de Reparacion"
+                                class="w-full select-large"
+                                label="descripcionTipoReparacion"
+                                :options="listadoTipoRep"
                             ></v-select>
                             <br />
                         </div>
@@ -212,6 +227,10 @@ export default {
                 id: 0,
                 descripcionEspecialidad: "Seleccione Especialidad"
             },
+            seleccionReparacion: {
+                id: 0,
+                descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+            },
             seleccionEspecialidad2: {
                 id: 0,
                 descripcionEspecialidad: "Seleccione Especialidad"
@@ -233,6 +252,7 @@ export default {
                 des_categoria: "Seleccione Categoria"
             },
             listadoCategoria: [],
+            listadoTipoRep: [],
             dataUsuarioCreador: {
                 nombre:
                     sessionStorage.getItem("nombre") +
@@ -479,7 +499,17 @@ export default {
                 this.registroUsuario.sup_apellido = this.apellidoUsuario;
                 this.registroUsuario.id_especialidad1 = this.seleccionEspecialidad1[0].id;
                 this.registroUsuario.id_especialidad2 = this.seleccionEspecialidad2[0].id;
-                this.registroUsuario.id_categoria = this.seleccionCategoria.id;
+                this.registroUsuario.id_categoria = this.seleccionReparacion.id;
+                if (this.seleccionCategoria.id == 1) {
+                    this.registroUsuario.permiso_usuario = 5;
+                } else if (this.seleccionCategoria.id == 2) {
+                    this.registroUsuario.permiso_usuario = 6;
+                } else if (this.seleccionCategoria.id == 3) {
+                    this.registroUsuario.permiso_usuario = 7;
+                } else if (this.seleccionCategoria.id == 4) {
+                    this.registroUsuario.permiso_usuario = 8;
+                }
+
                 if (
                     this.rutUsuario == 0 ||
                     this.rutUsuario == null ||
@@ -751,6 +781,18 @@ export default {
                     this.listadoUsuariosCargo = b;
                 });
         },
+        cargarTipoRep() {
+            axios
+                .get(this.localVal + "/api/Usuario/getTReparacionSI", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoTipoRep = res.data;
+                });
+        },
         cargarEdificios() {
             axios
                 .get(this.localVal + "/api/Usuario/GetEdificios", {
@@ -813,6 +855,7 @@ export default {
         this.cargarServicios();
         this.cargarEspecialidad();
         this.cargarListadoUsuarios();
+        this.cargarTipoRep();
     },
     components: {
         "v-select": vSelect,

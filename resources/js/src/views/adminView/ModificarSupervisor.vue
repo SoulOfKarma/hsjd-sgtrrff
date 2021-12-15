@@ -132,6 +132,21 @@
                                 @input="arrayEspecialidad2"
                             ></v-select>
                         </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>
+                                2.10 - Seleccione para autocargar Tipo de
+                                Reparacion Por Supervisor
+                            </h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionReparacion"
+                                placeholder="Seleccione Tipo de Reparacion"
+                                class="w-full select-large"
+                                label="descripcionTipoReparacion"
+                                :options="listadoTipoRep"
+                            ></v-select>
+                            <br />
+                        </div>
                     </div>
                 </vx-card>
             </div>
@@ -215,6 +230,11 @@ export default {
             listadoServiciosData: [],
             listadoEspecialidad: [],
             listadoSupervisor: [],
+            listadoTipoRep: [],
+            seleccionReparacion: {
+                id: 0,
+                descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+            },
             seleccionSupervisor: {
                 id: 0,
                 nombreSupervisor: "Seleccione Supervisor"
@@ -269,7 +289,9 @@ export default {
                 id_especialidad2: 0,
                 id: 0,
                 idvalRut: 0,
-                idvalmail: 0
+                idvalmail: 0,
+                idSup: 0,
+                id_categoria: 0
             },
             value1: "",
             validaEliminar: false,
@@ -498,6 +520,8 @@ export default {
                 this.modificarSupervisor.id_especialidad2 = this.seleccionEspecialidad2[0].id;
 
                 this.modificarSupervisor.id = this.seleccionSupervisor[0].id_user;
+                this.modificarSupervisor.idSup = this.seleccionSupervisor[0].id;
+                this.modificarSupervisor.id_categoria = this.seleccionReparacion.id;
                 this.rutUsuario = format(this.rutUsuario);
                 if (
                     this.rutUsuario == 0 ||
@@ -818,6 +842,18 @@ export default {
                     this.listadoEdificios = b;
                 });
         },
+        cargarTipoRep() {
+            axios
+                .get(this.localVal + "/api/Usuario/getTReparacionSI", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoTipoRep = res.data;
+                });
+        },
         cargarEspecialidad() {
             axios
                 .get(this.localVal + "/api/Agente/getEspecialidadI", {
@@ -862,6 +898,7 @@ export default {
         this.cargarEspecialidad();
         this.cargarSupervisores();
         this.cargarListadoUsuarios();
+        this.cargarTipoRep();
     },
     components: {
         "v-select": vSelect,
