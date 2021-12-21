@@ -173,6 +173,26 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="4. Asignar Hora y Fecha">
                     <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <h6>Es Solicitud Antigua?</h6>
+                            <vs-checkbox v-model="esantiguo"
+                                >Marque si es Antigua, Sino desmarquelo
+                            </vs-checkbox>
+                        </div>
+                        <div class="vx-col w-full mt-5" v-show="esantiguo">
+                            <h6>Fecha y Hora Solicitud</h6>
+                            <br />
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaSolicitud"
+                                placeholder="Fecha Inicio"
+                            />
+                            <flat-pickr
+                                :config="configdateTimePicker"
+                                v-model="horaSolicitud"
+                                placeholder="Seleccione Hora"
+                            />
+                        </div>
                         <div class="vx-col w-1/2 mt-5">
                             <h6>4.1 - Hora y Fecha de inicio</h6>
                             <br />
@@ -251,15 +271,17 @@
                             ></v-select>
                         </div>
                         <br />
-                        <h6>5.3 - Seleccione Prioridad</h6>
-                        <br />
-                        <v-select
-                            v-model="seleccionPrioridad"
-                            placeholder="Seleccione la Prioridad"
-                            class="w-full select-large"
-                            label="descripcion_prioridad"
-                            :options="listadoPrioridad"
-                        ></v-select>
+                        <div class="vx-col w-full mt-5">
+                            <h6>5.3 - Seleccione Prioridad</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionPrioridad"
+                                placeholder="Seleccione la Prioridad"
+                                class="w-full select-large"
+                                label="descripcion_prioridad"
+                                :options="listadoPrioridad"
+                            ></v-select>
+                        </div>
                         <br />
                         <div class="vx-col w-full mt-5">
                             <h6>5.4 - Duracion</h6>
@@ -291,6 +313,18 @@
                             >
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <br />
+                            <h6>5.5 - Resolucion y Resultados</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.desresolucionresultados"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
                         </div>
                     </div>
                 </vx-card>
@@ -964,11 +998,14 @@ export default {
         popCrearTrabajador: false,
         popCrearUsuario: false,
         listadoEspecialidad: [],
+        fechaSolicitud: "",
+        horaSolicitud: "",
         seleccionEspecialidad: {
             id: 0,
             descripcionEspecialidad: "Seleccion Especialidad"
         },
         listadoEdificios: [],
+        esantiguo: false,
         datosSolicitud: [],
         listadoServicios: [],
         listadoTemporalServicios: [],
@@ -1016,7 +1053,8 @@ export default {
             id_categoria: 0,
             nombre: "",
             idDuracion: 0,
-            id_prioridad: 0
+            id_prioridad: 0,
+            desresolucionresultados: "-"
         },
         registroUsuario: {
             run: null,
@@ -1259,6 +1297,12 @@ export default {
         }
     },
     methods: {
+        onFromChange(selectedDates, dateStr, instance) {
+            this.$set(this.configTodateTimePicker, "minDate", dateStr);
+        },
+        onToChange(selectedDates, dateStr, instance) {
+            this.$set(this.configFromdateTimePicker, "maxDate", dateStr);
+        },
         agregarCilindro() {
             try {
                 if (this.listadoTCilindro.length < 1) {

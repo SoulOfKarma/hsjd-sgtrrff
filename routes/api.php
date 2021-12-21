@@ -621,6 +621,9 @@ use App\Mail\AutoRespuesta;
             
             //Modificar Fechas 
             Route::post('/Agente/PutFechas', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@PutFechas']);  
+
+            //Enviar Correo Personalizado a Usuario
+            Route::post('/Agente/PostMensajeCorreo', ['middleware' => 'cors', 'uses' => 'GestionTicketController@PostMensajeCorreo']); 
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');

@@ -293,6 +293,16 @@
                             >
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
+                            <br />
+                            <h6>5.6 - Resolucion y Resultados</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.desresolucionresultados"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
                         </div>
                     </div>
                 </vx-card>
@@ -883,7 +893,8 @@ export default {
             nombre: "",
             descripcionCorreo: "",
             idDuracion: 0,
-            id_prioridad: 0
+            id_prioridad: 0,
+            desresolucionresultados: "-"
         },
         registroUsuario: {
             run: null,

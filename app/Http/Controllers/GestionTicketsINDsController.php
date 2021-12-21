@@ -14,6 +14,7 @@ use App\Users;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Uuid;
+use App\detallesolicitudinds;
 use DB;
 
 class GestionTicketsINDsController extends Controller
@@ -87,7 +88,24 @@ class GestionTicketsINDsController extends Controller
             $id_user = $request->id_user;
             $id_usuarioSolicitante = $request->id_usuarioSolicitante;
 
-        $userSearch = Users::where('id',$id_user)->first();
+            seguimientoINDSolicitudes::create($request->all());
+            //Insertando Ticket
+            $response2 = SolicitudTicketINDs::where('id', $request->id_solicitud)
+                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 
+                'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion, 
+                'id_estado' => $request->id_estado,'id_prioridad' => $request->id_prioridad,'descripcionP' => $request->descripcionP]);
+
+            detallesolicitudinds::updateOrCreate([
+              'id_solicitud' => $request->id_solicitud,
+            //],[
+              'desresolucionresultados' => $request->desresolucionresultados
+            ]);  
+
+            $response = GestionTicketsINDs::create($request->all());
+
+            $validador = true;
+
+            $userSearch = Users::where('id',$id_user)->first();
             $ValidarCargo = $userSearch->id_cargo_asociado;     
             $userMail = [];
 
@@ -103,7 +121,7 @@ class GestionTicketsINDsController extends Controller
             ->orWhere('id',$ValidarCargo)
             ->first();
             }
-            $validador = true;
+            
 
             $listContactos = [$userMail->email];
             $i = 0;
@@ -112,15 +130,6 @@ class GestionTicketsINDsController extends Controller
                 $listContactos[$i] = $key->email;
                 $i++;
             } */
-
-            seguimientoINDSolicitudes::create($request->all());
-            //Insertando Ticket
-            $response2 = SolicitudTicketINDs::where('id', $request->id_solicitud)
-                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 
-                'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion, 
-                'id_estado' => $request->id_estado,'id_prioridad' => $request->id_prioridad,'descripcionP' => $request->descripcionP]);
-
-            $response = GestionTicketsINDs::create($request->all());
 
             if($validador == true){
                 if($count == 0){
@@ -213,6 +222,12 @@ class GestionTicketsINDsController extends Controller
         $id = SolicitudTicketINDs::create(array_merge($request->all(), ['uuid' => $uuid]))->id;
 
         $response = GestionTicketsINDs::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
+
+        detallesolicitudinds::updateOrCreate([
+            'id_solicitud' => $id,
+          //],[
+            'desresolucionresultados' => $request->desresolucionresultados
+          ]);  
 
 
         $nombre = $request->nombre;
@@ -324,6 +339,12 @@ class GestionTicketsINDsController extends Controller
                     'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
                     'fechaTermino' => $request->fechaTermino
                 ]);
+
+                detallesolicitudinds::updateOrCreate([
+                    'id_solicitud' => $request->id_solicitud,
+                  //],[
+                    'desresolucionresultados' => $request->desresolucionresultados
+                  ]);
 
                 $validador = true;
 

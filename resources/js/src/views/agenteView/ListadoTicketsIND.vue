@@ -848,6 +848,9 @@ export default {
                                 position: "top-right"
                             });
                             this.cargarSolicitudes();
+                            this.fechaSolicitudI = "";
+                            this.fechaAsignacion = "";
+                            this.fechaTermino = "";
                             this.popFechaCambiar = false;
                         } else {
                             this.$vs.notify({

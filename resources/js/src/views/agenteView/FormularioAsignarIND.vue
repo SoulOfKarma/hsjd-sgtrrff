@@ -243,6 +243,25 @@
                                 :options="listadoDuracion"
                                 @input="arrayDuracion(seleccionDuracion.id)"
                             ></v-select>
+                            <br />
+                            <h6>4.5 - Descripcion del problema</h6>
+                            <br />
+                            <quill-editor
+                                v-model="descripcionP"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
+                            <h6>4.6 - Resolucion y Resultados</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.desresolucionresultados"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
                         </div>
                     </div>
                 </vx-card>
@@ -658,7 +677,8 @@ export default {
             descripcionSeguimiento: "",
             id_usuarioSolicitante: 0,
             idDuracion: 0,
-            id_prioridad: 0
+            id_prioridad: 0,
+            desresolucionresultados: "-"
         },
         registroUsuario: {
             run: null,
@@ -750,7 +770,8 @@ export default {
         componentKey: 0,
         popAServicio: false,
         value2: "",
-        value3: ""
+        value3: "",
+        descripcionP: ""
     }),
     computed: {
         calcularHorasTrabajo() {
@@ -1567,6 +1588,7 @@ export default {
                     var datoidEdificio = this.datosSolicitud[0].id_edificio;
                     var datoidEstado = this.datosSolicitud[0].id_estado;
                     var datoidRep = this.datosSolicitud[0].id_tipoReparacion;
+                    this.descripcionP = this.datosSolicitud[0].descripcionP;
                     this.cargarUSE(
                         datoidServicio,
                         datoidEdificio,
@@ -1758,9 +1780,10 @@ export default {
                     this.gestionTicket.tituloP = this.datosSolicitud[0].tituloP;
                     this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
                     this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
-                    var newElement = document.createElement("div");
-                    newElement.innerHTML = this.datosSolicitud[0].descripcionP;
-                    this.gestionTicket.descripcionP = newElement.textContent;
+                    /* var newElement = document.createElement("div");
+                    newElement.innerHTML = this.datosSolicitud[0].descripcionP; */
+                    //this.gestionTicket.descripcionP = newElement.textContent;
+                    this.gestionTicket.descripcionP = this.descripcionP;
                     this.gestionTicket.nombre = this.nombre;
                     var fechaCreacionT = moment(
                         this.datosSolicitud[0].created_at

@@ -255,7 +255,16 @@
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
                             <br />
-                            <h6>4.6 - Razon de la modificacion</h6>
+                            <h6>4.6 - Resolucion y Resultados</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.desresolucionresultados"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
+                            <h6>4.7 - Razon de la modificacion</h6>
                             <br />
                             <quill-editor
                                 v-model="razoncambio"
@@ -696,7 +705,8 @@ export default {
             idUsuarioSesion: 0,
             razoncambio: "",
             idDuracion: 0,
-            id_prioridad: 0
+            id_prioridad: 0,
+            desresolucionresultados: "-"
         },
         registroUsuario: {
             run: null,

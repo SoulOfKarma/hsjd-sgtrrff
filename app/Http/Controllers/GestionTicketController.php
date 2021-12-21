@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\GestionSolicitudes;
+use App\detallesolicitudinfraestructuras;
 use App\Mail\TicketAsignado;
 use App\SeguimientoSolicitudes;
 use App\SolicitudTickets;
@@ -199,25 +200,6 @@ class GestionTicketController extends Controller
             ->get();
         return  $users;
     }
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validador = false;
@@ -239,6 +221,23 @@ class GestionTicketController extends Controller
             $id_user = $request->id_user;
             $id_usuarioSolicitante = $request->id_usuarioSolicitante;
 
+            SeguimientoSolicitudes::create($request->all());
+            //Insertando Ticket
+            $response2 = SolicitudTickets::where('id', $request->id_solicitud)
+                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 
+                'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
+                 'id_estado' => $request->id_estado,'id_prioridad' => $request->id_prioridad,'descripcionP' => $request->descripcionP]);
+
+            $response = GestionSolicitudes::create($request->all());
+
+            detallesolicitudinfraestructuras::updateOrCreate([
+                'id_solicitud' => $request->id_solicitud,
+              //],[
+                'desresolucionresultados' => $request->desresolucionresultados
+              ]);
+
+            $validador = true;
+
             $userSearch = Users::where('id',$id_usuarioSolicitante)->first();
             $ValidarCargo = $userSearch->id_cargo_asociado;     
             $userMail = [];
@@ -255,7 +254,7 @@ class GestionTicketController extends Controller
             ->orWhere('id',$ValidarCargo)
             ->first();
             }
-            $validador = true;
+            
 
             $listContactos = [$userMail->email];
             $i = 0;
@@ -265,16 +264,6 @@ class GestionTicketController extends Controller
                 $listContactos[$i] = $key->email;
                 $i++;
             } */
-
-
-            SeguimientoSolicitudes::create($request->all());
-            //Insertando Ticket
-            $response2 = SolicitudTickets::where('id', $request->id_solicitud)
-                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 
-                'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
-                 'id_estado' => $request->id_estado,'id_prioridad' => $request->id_prioridad,'descripcionP' => $request->descripcionP]);
-
-            $response = GestionSolicitudes::create($request->all());
 
             if($validador == true){
                 if($count == 0){
@@ -587,6 +576,12 @@ class GestionTicketController extends Controller
             if($request->esCadena == true){
                 TicketCadenas::create(array_merge($request->all(),['idTicketNuevo' => $id]));
             };
+
+            detallesolicitudinfraestructuras::updateOrCreate([
+                'id_solicitud' => $id,
+              //],[
+                'desresolucionresultados' => $request->desresolucionresultados
+              ]);
     
             $nombre = $request->nombre;
             $descripcionP = $request->descripcionCorreo;
@@ -725,6 +720,12 @@ class GestionTicketController extends Controller
                     'fechaTermino' => $request->fechaTermino
                 ]); 
 
+            detallesolicitudinfraestructuras::updateOrCreate([
+                 'id_solicitud' => $request->id_solicitud,
+                 //],[
+                  'desresolucionresultados' => $request->desresolucionresultados
+              ]);   
+
             $validador = true;
 
             $userSearch = Users::where('id',$id_busqueda_solicitante)->first();
@@ -850,7 +851,7 @@ class GestionTicketController extends Controller
 
         $validador = true;
 
-        $userSearch = Users::where('id',$idUser)->first();
+                $userSearch = Users::where('id',$idUser)->first();
                 $ValidarCargo = $userSearch->id_cargo_asociado;     
                 $userMail = [];
     
@@ -894,5 +895,33 @@ class GestionTicketController extends Controller
 
         
 
+    }
+
+    public function PostMensajeCorreo(Request $request){
+        try {
+                $solicitud = SolicitudTickets::where('id',$request->idSolicitud)
+                ->first();    
+
+                $userSearch = Users::where('id',$solicitud->id_user)->first();
+
+                $Contacto = [$userSearch->email];
+
+                $mensaje = $request->mensajeCorreo;
+    
+                /* foreach ($userMail as $key) {
+                    $listContactos[$i] = $key->email;
+                    $i++;
+                } */
+
+                Mail::send('/Mails/MensajeUsuario', ['nombre' => $userSearch->nombre, 'id_solicitud' => $request->idSolicitud, 'mensaje' => $mensaje], function ($message) use($Contacto) {
+                    $message->setTo($Contacto)->setSubject('Finalizacion de ticket');
+                    $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
+                   // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                });
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 }
