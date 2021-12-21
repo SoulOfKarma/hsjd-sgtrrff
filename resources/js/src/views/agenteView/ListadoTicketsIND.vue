@@ -308,6 +308,18 @@
                                     )
                                 "
                             ></calendar-icon>
+                            <edit-icon
+                                content="Enviar Mensaje Por Correo a Usuari@"
+                                v-tippy
+                                size="1.5x"
+                                class="custom-class"
+                                @click="
+                                    popEnviarCorreo(
+                                        props.row.id,
+                                        props.row.uuid
+                                    )
+                                "
+                            ></edit-icon>
                         </div>
                     </span>
 
@@ -586,6 +598,48 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="popup-enviarcorreo"
+            title="Enviar Mensaje a Usuario"
+            :active.sync="popEnviarCorreoU"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full ">
+                        <vx-card>
+                            <div class="vx-col w-full mt-5">
+                                <h6>
+                                    Enviar correo a Usuario Solicitante
+                                </h6>
+                                <br />
+                                <quill-editor
+                                    v-model="mensaje"
+                                    :options="editorOption"
+                                >
+                                    <div id="toolbar" slot="toolbar"></div>
+                                </quill-editor>
+                            </div>
+                            <div class="vx-col w-full mt-5">
+                                <vs-button
+                                    class="vx-col w-full mt-5"
+                                    color="success"
+                                    type="filled"
+                                    @click="EnviarMensajeU"
+                                    >Enviar Correo</vs-button
+                                >
+                                <vs-button
+                                    class="vx-col w-full mt-5"
+                                    @click="popEnviarCorreoU = false"
+                                    color="primary"
+                                    type="filled"
+                                    >Volver</vs-button
+                                >
+                            </div>
+                        </vx-card>
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 
@@ -610,6 +664,7 @@ import { LoaderIcon } from "vue-feather-icons";
 import { AlertTriangleIcon } from "vue-feather-icons";
 import { FilePlusIcon } from "vue-feather-icons";
 import { CalendarIcon } from "vue-feather-icons";
+import { EditIcon } from "vue-feather-icons";
 import vSelect from "vue-select";
 import moment from "moment";
 import { PrinterIcon } from "vue-feather-icons";
@@ -639,7 +694,8 @@ export default {
         PrinterIcon,
         FilePlusIcon,
         CalendarIcon,
-        flatPickr
+        flatPickr,
+        EditIcon
     },
     data() {
         return {
@@ -724,12 +780,15 @@ export default {
             value1: "",
             value2: "",
             value3: "",
+            mensaje: "",
             validaEliminar: false,
             popupActive2: false,
             popupActive3: false,
             popupActive4: false,
             popFinTicket: false,
             popFechaCambiar: false,
+            popEnviarCorreoU: false,
+            idSolicitudCorreo: 0,
             horasTrabajadas: 0,
             solicitudes: [],
             documentacion: [],
@@ -904,6 +963,57 @@ export default {
                 this.uuidSolicitudFecha = uuid;
             } catch (error) {
                 console.log("Error al Abrir el Pop de cierre");
+            }
+        },
+        popEnviarCorreo(id, uuid) {
+            try {
+                this.idSolicitudCorreo = id;
+                this.popEnviarCorreoU = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        EnviarMensajeU() {
+            try {
+                var newElement = document.createElement("div");
+                newElement.innerHTML = this.mensaje;
+                let mesagge = newElement.textContent;
+
+                let data = {
+                    idSolicitud: this.idSolicitudCorreo,
+                    mensajeCorreo: mesagge
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PostMensajeCorreoIND",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data == true) {
+                            this.$vs.notify({
+                                title: "Completado",
+                                text: "Correo Fue Enviado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popEnviarCorreoU = false;
+                        } else {
+                            this.$vs.notify({
+                                title: "Error",
+                                text: "No se pudo enviar correo",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
             }
         },
         finalizarTicket() {

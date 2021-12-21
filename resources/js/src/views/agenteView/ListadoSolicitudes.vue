@@ -762,7 +762,6 @@ export default {
                 var newElement = document.createElement("div");
                 newElement.innerHTML = this.mensaje;
                 let mesagge = newElement.textContent;
-                console.log(mesagge);
 
                 let data = {
                     idSolicitud: this.idSolicitudCorreo,
@@ -787,6 +786,7 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.popEnviarCorreoU = false;
                         } else {
                             this.$vs.notify({
                                 title: "Error",

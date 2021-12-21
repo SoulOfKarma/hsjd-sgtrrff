@@ -318,7 +318,7 @@ a {
                                 </tr>
                                 <tr>
                                     <td class="content-block">
-                                        Se ha Enviado un mensaje sobre el Ticket N° {{$id_solicitud}}, Categoria Infraestructura <b></b>, con el siguiente detalle.
+                                        Se ha Enviado un mensaje sobre el Ticket N° {{$id_solicitud}}, Categoria Industrial <b></b>, con el siguiente detalle.
                                     </td>
                                 </tr>
                                 <tr>

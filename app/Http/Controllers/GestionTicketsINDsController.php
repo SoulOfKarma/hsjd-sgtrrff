@@ -544,4 +544,32 @@ class GestionTicketsINDsController extends Controller
             return false;
         }
     }
+
+    public function PostMensajeCorreo(Request $request){
+        try {
+                $solicitud = SolicitudTicketINDs::where('id',$request->idSolicitud)
+                ->first();    
+
+                $userSearch = Users::where('id',$solicitud->id_user)->first();
+
+                $Contacto = [$userSearch->email];
+
+                $mensaje = $request->mensajeCorreo;
+    
+                /* foreach ($userMail as $key) {
+                    $listContactos[$i] = $key->email;
+                    $i++;
+                } */
+
+                Mail::send('/Mails/MensajeUsuarioIND', ['nombre' => $userSearch->nombre, 'id_solicitud' => $request->idSolicitud, 'mensaje' => $mensaje], function ($message) use($Contacto) {
+                    $message->setTo($Contacto)->setSubject('Nuevo Mensaje');
+                    $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
+                   // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
+                });
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
 }

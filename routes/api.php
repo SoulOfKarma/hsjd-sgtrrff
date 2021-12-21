@@ -623,7 +623,16 @@ use App\Mail\AutoRespuesta;
             Route::post('/Agente/PutFechas', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@PutFechas']);  
 
             //Enviar Correo Personalizado a Usuario
-            Route::post('/Agente/PostMensajeCorreo', ['middleware' => 'cors', 'uses' => 'GestionTicketController@PostMensajeCorreo']); 
+            Route::post('/Agente/PostMensajeCorreo', ['middleware' => 'cors', 'uses' => 'GestionTicketController@PostMensajeCorreo']);
+            
+            //Enviar Correo Personalizado a Usuario Apoyo Clinico
+            Route::post('/Agente/PostMensajeCorreoAP', ['middleware' => 'cors', 'uses' => 'GestionTicketsApsController@PostMensajeCorreo']);
+
+            //Enviar Correo Personalizado a Usuario Equipos Medicos
+            Route::post('/Agente/PostMensajeCorreoEM', ['middleware' => 'cors', 'uses' => 'GestionTicketEMSController@PostMensajeCorreo']);
+
+            //Enviar Correo Personalizado a Usuario Industrial
+            Route::post('/Agente/PostMensajeCorreoIND', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@PostMensajeCorreo']);
       });
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');
