@@ -342,7 +342,7 @@ class GestionTicketsApsController extends Controller
                     'idApoyo3' => $request->idApoyo3, 'idTurno' => $request->idTurno,
                     'horaCambiada' => $request->horaCambiada,
                     'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
-                    'fechaTermino' => $request->fechaTermino
+                    'fechaTermino' => $request->fechaTermino, 'descripcionTraRealizado' => $request->descripcionTraRealizado
                 ]);
 
                 $validador = true;

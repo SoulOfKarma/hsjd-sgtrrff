@@ -243,6 +243,25 @@
                                 :options="listadoDuracion"
                                 @input="arrayDuracion(seleccionDuracion.id)"
                             ></v-select>
+                            <h6>4.5 - Descripcion del problema</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.descripcionP"
+                                :options="editorOption"
+                            >
+                                <div
+                                    id="toolbar"
+                                    slot="toolbar"
+                                ></div> </quill-editor
+                            ><br />
+                            <h6>4.6 - Descripcion Trabajo Realizado</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.descripcionTraRealizado"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
                         </div>
                     </div>
                 </vx-card>
@@ -657,7 +676,8 @@ export default {
             descripcionSeguimiento: "",
             id_usuarioSolicitante: 0,
             idDuracion: 0,
-            id_prioridad: 0
+            id_prioridad: 0,
+            descripcionTraRealizado: ""
         },
         registroUsuario: {
             run: null,
@@ -1565,6 +1585,7 @@ export default {
                     var datoidEdificio = this.datosSolicitud[0].id_edificio;
                     var datoidEstado = this.datosSolicitud[0].id_estado;
                     var datoidRep = this.datosSolicitud[0].id_tipoReparacion;
+                    this.gestionTicket.descripcionP = this.datosSolicitud[0].descripcionP;
                     this.cargarUSE(
                         datoidServicio,
                         datoidEdificio,

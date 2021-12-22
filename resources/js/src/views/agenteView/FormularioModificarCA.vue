@@ -249,13 +249,22 @@
                             <h6>4.5 - Descripcion del problema</h6>
                             <br />
                             <quill-editor
-                                v-model="descripcionP"
+                                v-model="gestionTicket.descripcionP"
                                 :options="editorOption"
                             >
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
                             <br />
-                            <h6>4.6 - Razon de la modificacion</h6>
+                            <h6>4.6 - Descripcion Trabajo Realizado</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.descripcionTraRealizado"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
+                            <h6>4.7 - Razon de la modificacion</h6>
                             <br />
                             <quill-editor
                                 v-model="razoncambio"
@@ -696,7 +705,8 @@ export default {
             idUsuarioSesion: 0,
             razoncambio: "",
             idDuracion: 0,
-            id_prioridad: 0
+            id_prioridad: 0,
+            descripcionTraRealizado: ""
         },
         registroUsuario: {
             run: null,
@@ -1966,6 +1976,8 @@ export default {
                     var datoidTurno = this.datosTicketAsignado[0].idTurno;
                     var datoidEstado = this.datosTicketAsignado[0].id_estado;
                     this.descripcionP = this.datosTicketAsignado[0].descripcionP;
+                    this.gestionTicket.descripcionP = this.datosSolicitud[0].descripcionP;
+                    this.gestionTicket.descripcionTraRealizado = this.datosSolicitud[0].descripcionTraRealizado;
                     var datoidTipoReparacion = this.datosTicketAsignado[0]
                         .id_tipoReparacion;
                     this.cargarSTA(
