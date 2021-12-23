@@ -486,6 +486,18 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/TraerKPITickets', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getTicketsKPI']);
             //Traer Tickets Pendientes,Finalizados y Nuevos.
             Route::get('/Agente/TraerKPITicketsTotal', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getTicketsKPITotal']);
+            //Traer Estados Tickets
+            Route::get('/Agente/TraerKPITicketsEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@getTicketsKPI']);
+            //Traer Tickets Pendientes,Finalizados y Nuevos.
+            Route::get('/Agente/TraerKPITicketsTotalEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@getTicketsKPITotal']);
+            //Traer Estados Tickets
+            Route::get('/Agente/TraerKPITicketsIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@getTicketsKPI']);
+            //Traer Tickets Pendientes,Finalizados y Nuevos.
+            Route::get('/Agente/TraerKPITicketsTotalIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@getTicketsKPITotal']);
+            //Traer Estados Tickets
+            Route::get('/Agente/TraerKPITicketsAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@getTicketsKPI']);
+            //Traer Tickets Pendientes,Finalizados y Nuevos.
+            Route::get('/Agente/TraerKPITicketsTotalAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@getTicketsKPITotal']);
             //Traer Servicio mas solicitado.
             Route::get('/Agente/TraerServicioKPI', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPIServicio']);
             //Traer usuario mas solicitante.
@@ -494,6 +506,31 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/TraerCategoriaKPI', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPICategoria']);
             //Traer Tipo Mantencion mas solicitante.
             Route::get('/Agente/TraerTipoMantencionKPI', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPITipoMantencion']);
+            //Traer Servicio mas solicitado EM.
+            Route::get('/Agente/TraerServicioKPIEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@getKPIServicio']);
+            //Traer usuario mas solicitante EM.
+            Route::get('/Agente/TraerUsuarioKPIEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@getKPIUsuario']);
+            //Traer Categoria mas solicitante EM.
+            Route::get('/Agente/TraerCategoriaKPIEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@getKPICategoria']);
+            //Traer Tipo Mantencion mas solicitante.
+            Route::get('/Agente/TraerTipoMantencionKPIEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@getKPITipoMantencion']);
+            //Traer Servicio mas solicitado IND.
+            Route::get('/Agente/TraerServicioKPIIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@getKPIServicio']);
+            //Traer usuario mas solicitante IND.
+            Route::get('/Agente/TraerUsuarioKPIIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@getKPIUsuario']);
+            //Traer Categoria mas solicitante IND.
+            Route::get('/Agente/TraerCategoriaKPIIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@getKPICategoria']);
+            //Traer Tipo Mantencion mas solicitante IND.
+            Route::get('/Agente/TraerTipoMantencionKPIIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@getKPITipoMantencion']);
+            //Traer Servicio mas solicitado AP.
+            Route::get('/Agente/TraerServicioKPIAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@getKPIServicio']);
+            //Traer usuario mas solicitante.
+            Route::get('/Agente/TraerUsuarioKPIAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@getKPIUsuario']);
+            //Traer Categoria mas solicitante.
+            Route::get('/Agente/TraerCategoriaKPIAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@getKPICategoria']);
+            //Traer Tipo Mantencion mas solicitante.
+            Route::get('/Agente/TraerTipoMantencionKPIAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@getKPITipoMantencion']);
+
             
             //Datos Calendario 
             //Traer ultimo ID Ingresado

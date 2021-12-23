@@ -381,7 +381,7 @@ class SolicitudUsuarioController extends Controller
     public function getKPITipoMantencion(){
         try {
             $get_all = solicitudTickets::select("tipo_reparacions.descripcionTipoReparacion",DB::raw("COUNT(solicitud_tickets.id_tipoReparacion) AS tipomassol"))
-            ->join("tipo_reparacions",'solicitud_tickets.id_categoria','=','tipo_reparacions.id')
+            ->join("tipo_reparacions",'solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
             ->groupby("tipo_reparacions.id")
             ->orderBy('tipomassol', 'desc')
             ->limit(1)

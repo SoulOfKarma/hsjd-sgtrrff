@@ -193,7 +193,7 @@
             </div>
         </div>
         <br />
-        <div class="vx-row">
+        <div class="vx-row" v-show="esJefatura">
             <!--<div class="vx-col w-full lg:w-1/4 mb-base"></div>-->
             <div class="vx-col w-1/2 mb-base">
                 <vx-card title="Seguimiento Tickets" :key="resetI">
@@ -295,7 +295,7 @@
             </div>
         </div>
         <br />
-        <div class="vx-row">
+        <div class="vx-row" v-show="esJefatura">
             <!--<div class="vx-col w-full lg:w-1/4 mb-base"></div>-->
             <div class="vx-col w-1/2 mb-base">
                 <vx-card title="Seguimiento Tickets" :key="resetI">
@@ -397,7 +397,7 @@
             </div>
         </div>
         <br />
-        <div class="vx-row">
+        <div class="vx-row" v-show="esJefatura">
             <!--<div class="vx-col w-full lg:w-1/4 mb-base"></div>-->
             <div class="vx-col w-1/2 mb-base">
                 <vx-card title="Seguimiento Tickets" :key="resetI">
@@ -663,6 +663,7 @@ export default {
                     }
                 }
             },
+            esJefatura: false,
             serviciom: "",
             usuariom: "",
             categoriam: "",
@@ -675,207 +676,11 @@ export default {
     },
     methods: {
         cargaST() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Agente/TraerKPITicketsTotal", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        //this.productsOrder = res.data;
-                        let list = res.data;
-
-                        this.supportTracker = {
-                            analyticsData: {
-                                openTickets: list[0].openTickets,
-                                meta: {
-                                    "Tickets Nuevos": list[0].NewTickets,
-                                    "Tickets Abiertos": list[0].OpenTickets,
-                                    "Tickets Finalizados": list[0].FinalTicket
-                                }
-                            },
-                            series: [parseInt(list[0].Porcentaje)]
-                        };
-
-                        //this.productsOrder = dat;
-                        // this.resetI += 1;
-                    });
-            } catch (error) {
-                console.log("Error al cargar datos");
-            }
-        },
-        cargaSO() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Agente/TraerKPITickets", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        //this.productsOrder = res.data;
-                        let list = res.data;
-                        // console.log(list);
-                        let b = [];
-                        let obj = {};
-                        let label = [];
-                        let contador = 0;
-                        let objData = {};
-                        let codcolors = [];
-                        let objcolor = {};
-                        let gradcolors = [];
-                        let objgragcolor = {};
-                        list.forEach((value, index) => {
-                            obj = {};
-                            obj = parseInt(value.porcentaje);
-                            objData = {};
-                            objData = value.orderType;
-                            label.push(objData);
-                            objcolor = {};
-                            objcolor = value.codcolor;
-                            codcolors.push(objcolor);
-                            objgragcolor = {};
-                            objgragcolor = value.codcolor;
-                            gradcolors.push(objgragcolor);
-                            contador = contador + value.counts;
-                            b.push(obj);
-                        });
-                        this.productOrdersRadialBar = {
-                            chartOptions: {
-                                labels: label,
-                                plotOptions: {
-                                    radialBar: {
-                                        size: 165,
-                                        offsetY: -5,
-                                        hollow: {
-                                            size: "20%"
-                                        },
-                                        track: {
-                                            background: "#ebebeb",
-                                            strokeWidth: "100%",
-                                            margin: 15
-                                        },
-                                        dataLabels: {
-                                            show: true,
-                                            name: {
-                                                fontSize: "18px"
-                                            },
-                                            value: {
-                                                fontSize: "16px",
-                                                color: "#636a71",
-                                                offsetY: 11
-                                            },
-                                            total: {
-                                                show: true,
-                                                label: "Total",
-                                                formatter() {
-                                                    return contador;
-                                                }
-                                            }
-                                        }
-                                    }
-                                },
-                                responsive: [
-                                    {
-                                        breakpoint: 576,
-                                        options: {
-                                            plotOptions: {
-                                                radialBar: {
-                                                    size: 150,
-                                                    hollow: {
-                                                        size: "20%"
-                                                    },
-                                                    track: {
-                                                        background: "#ebebeb",
-                                                        strokeWidth: "100%",
-                                                        margin: 15
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                ],
-                                colors: codcolors,
-                                fill: {
-                                    type: "gradient",
-                                    gradient: {
-                                        // enabled: true,
-                                        shade: "dark",
-                                        type: "vertical",
-                                        shadeIntensity: 0.5,
-                                        gradientToColors: gradcolors,
-                                        inverseColors: false,
-                                        opacityFrom: 1,
-                                        opacityTo: 1,
-                                        stops: [0, 100]
-                                    }
-                                },
-                                stroke: {
-                                    lineCap: "round"
-                                },
-                                chart: {
-                                    height: 355,
-                                    dropShadow: {
-                                        enabled: true,
-                                        blur: 3,
-                                        left: 1,
-                                        top: 1,
-                                        opacity: 0.1
-                                    }
-                                }
-                            }
-                        };
-                        let dat = {
-                            analyticsData: list,
-                            series: b
-                        };
-                        this.productsOrder = dat;
-                        this.resetI += 1;
-                    });
-            } catch (error) {
-                console.log("Error al cargar datos");
-            }
-        },
-        cargaMas() {
-            try {
-                axios
-                    .all([
-                        axios.get(
-                            this.localVal + "/api/Agente/TraerServicioKPI",
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        ),
-                        axios.get(
-                            this.localVal + "/api/Agente/TraerUsuarioKPI",
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        ),
-                        axios.get(
-                            this.localVal + "/api/Agente/TraerCategoriaKPI",
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        ),
-                        axios.get(
-                            this.localVal +
-                                "/api/Agente/TraerTipoMantencionKPI",
+            if (sessionStorage.getItem("permiso_usuario") == 1) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerKPITicketsTotal",
                             {
                                 headers: {
                                     Authorization:
@@ -884,18 +689,1149 @@ export default {
                                 }
                             }
                         )
-                    ])
-                    .then(
-                        axios.spread((dat1, dat2, dat3, dat4) => {
-                            this.serviciom = dat1.data[0].descripcionServicio;
-                            this.usuariom = dat2.data[0].usuariosolicitante;
-                            this.categoriam = dat3.data[0].des_categoria;
-                            this.tmantencionm =
-                                dat4.data[0].descripcionTipoReparacion;
+                        .then(res => {
+                            //this.productsOrder = res.data;
+                            let list = res.data;
+                            this.esJefatura = true;
+                            this.supportTracker = {
+                                analyticsData: {
+                                    openTickets: list[0].openTickets,
+                                    meta: {
+                                        "Tickets Nuevos": list[0].NewTickets,
+                                        "Tickets Abiertos": list[0].OpenTickets,
+                                        "Tickets Finalizados":
+                                            list[0].FinalTicket
+                                    }
+                                },
+                                series: [parseInt(list[0].Porcentaje)]
+                            };
+
+                            //this.productsOrder = dat;
+                            // this.resetI += 1;
+                        });
+                } catch (error) {
+                    console.log("Error al cargar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 5) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerKPITicketsTotal",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            //this.productsOrder = res.data;
+                            let list = res.data;
+
+                            this.supportTracker = {
+                                analyticsData: {
+                                    openTickets: list[0].openTickets,
+                                    meta: {
+                                        "Tickets Nuevos": list[0].NewTickets,
+                                        "Tickets Abiertos": list[0].OpenTickets,
+                                        "Tickets Finalizados":
+                                            list[0].FinalTicket
+                                    }
+                                },
+                                series: [parseInt(list[0].Porcentaje)]
+                            };
+
+                            //this.productsOrder = dat;
+                            // this.resetI += 1;
+                        });
+                } catch (error) {
+                    console.log("Error al cargar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 6) {
+                try {
+                    axios
+                        .get(
+                            this.localVal +
+                                "/api/Agente/TraerKPITicketsTotalEM",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            //this.productsOrder = res.data;
+                            let list = res.data;
+
+                            this.supportTracker = {
+                                analyticsData: {
+                                    openTickets: list[0].openTickets,
+                                    meta: {
+                                        "Tickets Nuevos": list[0].NewTickets,
+                                        "Tickets Abiertos": list[0].OpenTickets,
+                                        "Tickets Finalizados":
+                                            list[0].FinalTicket
+                                    }
+                                },
+                                series: [parseInt(list[0].Porcentaje)]
+                            };
+
+                            //this.productsOrder = dat;
+                            // this.resetI += 1;
+                        });
+                } catch (error) {
+                    console.log("Error al cargar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 7) {
+                try {
+                    axios
+                        .get(
+                            this.localVal +
+                                "/api/Agente/TraerKPITicketsTotalEM",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            //this.productsOrder = res.data;
+                            let list = res.data;
+
+                            this.supportTracker = {
+                                analyticsData: {
+                                    openTickets: list[0].openTickets,
+                                    meta: {
+                                        "Tickets Nuevos": list[0].NewTickets,
+                                        "Tickets Abiertos": list[0].OpenTickets,
+                                        "Tickets Finalizados":
+                                            list[0].FinalTicket
+                                    }
+                                },
+                                series: [parseInt(list[0].Porcentaje)]
+                            };
+
+                            //this.productsOrder = dat;
+                            // this.resetI += 1;
+                        });
+                } catch (error) {
+                    console.log("Error al cargar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 8) {
+                try {
+                    axios
+                        .get(
+                            this.localVal +
+                                "/api/Agente/TraerKPITicketsTotalEM",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            //this.productsOrder = res.data;
+                            let list = res.data;
+
+                            this.supportTracker = {
+                                analyticsData: {
+                                    openTickets: list[0].openTickets,
+                                    meta: {
+                                        "Tickets Nuevos": list[0].NewTickets,
+                                        "Tickets Abiertos": list[0].OpenTickets,
+                                        "Tickets Finalizados":
+                                            list[0].FinalTicket
+                                    }
+                                },
+                                series: [parseInt(list[0].Porcentaje)]
+                            };
+
+                            //this.productsOrder = dat;
+                            // this.resetI += 1;
+                        });
+                } catch (error) {
+                    console.log("Error al cargar datos");
+                }
+            }
+        },
+        cargaSO() {
+            if (sessionStorage.getItem("permiso_usuario") == 1) {
+                try {
+                    axios
+                        .get(this.localVal + "/api/Agente/TraerKPITickets", {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
                         })
-                    );
-            } catch (error) {
-                console.log("Error de carga de datos");
+                        .then(res => {
+                            //this.productsOrder = res.data;
+                            let list = res.data;
+                            // console.log(list);
+                            let b = [];
+                            let obj = {};
+                            let label = [];
+                            let contador = 0;
+                            let objData = {};
+                            let codcolors = [];
+                            let objcolor = {};
+                            let gradcolors = [];
+                            let objgragcolor = {};
+                            list.forEach((value, index) => {
+                                obj = {};
+                                obj = parseInt(value.porcentaje);
+                                objData = {};
+                                objData = value.orderType;
+                                label.push(objData);
+                                objcolor = {};
+                                objcolor = value.codcolor;
+                                codcolors.push(objcolor);
+                                objgragcolor = {};
+                                objgragcolor = value.codcolor;
+                                gradcolors.push(objgragcolor);
+                                contador = contador + value.counts;
+                                b.push(obj);
+                            });
+                            this.productOrdersRadialBar = {
+                                chartOptions: {
+                                    labels: label,
+                                    plotOptions: {
+                                        radialBar: {
+                                            size: 165,
+                                            offsetY: -5,
+                                            hollow: {
+                                                size: "20%"
+                                            },
+                                            track: {
+                                                background: "#ebebeb",
+                                                strokeWidth: "100%",
+                                                margin: 15
+                                            },
+                                            dataLabels: {
+                                                show: true,
+                                                name: {
+                                                    fontSize: "18px"
+                                                },
+                                                value: {
+                                                    fontSize: "16px",
+                                                    color: "#636a71",
+                                                    offsetY: 11
+                                                },
+                                                total: {
+                                                    show: true,
+                                                    label: "Total",
+                                                    formatter() {
+                                                        return contador;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    responsive: [
+                                        {
+                                            breakpoint: 576,
+                                            options: {
+                                                plotOptions: {
+                                                    radialBar: {
+                                                        size: 150,
+                                                        hollow: {
+                                                            size: "20%"
+                                                        },
+                                                        track: {
+                                                            background:
+                                                                "#ebebeb",
+                                                            strokeWidth: "100%",
+                                                            margin: 15
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    colors: codcolors,
+                                    fill: {
+                                        type: "gradient",
+                                        gradient: {
+                                            // enabled: true,
+                                            shade: "dark",
+                                            type: "vertical",
+                                            shadeIntensity: 0.5,
+                                            gradientToColors: gradcolors,
+                                            inverseColors: false,
+                                            opacityFrom: 1,
+                                            opacityTo: 1,
+                                            stops: [0, 100]
+                                        }
+                                    },
+                                    stroke: {
+                                        lineCap: "round"
+                                    },
+                                    chart: {
+                                        height: 355,
+                                        dropShadow: {
+                                            enabled: true,
+                                            blur: 3,
+                                            left: 1,
+                                            top: 1,
+                                            opacity: 0.1
+                                        }
+                                    }
+                                }
+                            };
+                            let dat = {
+                                analyticsData: list,
+                                series: b
+                            };
+                            this.productsOrder = dat;
+                            this.resetI += 1;
+                        });
+                } catch (error) {
+                    console.log("Error al cargar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 5) {
+                try {
+                    axios
+                        .get(this.localVal + "/api/Agente/TraerKPITickets", {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        })
+                        .then(res => {
+                            //this.productsOrder = res.data;
+                            let list = res.data;
+                            // console.log(list);
+                            let b = [];
+                            let obj = {};
+                            let label = [];
+                            let contador = 0;
+                            let objData = {};
+                            let codcolors = [];
+                            let objcolor = {};
+                            let gradcolors = [];
+                            let objgragcolor = {};
+                            list.forEach((value, index) => {
+                                obj = {};
+                                obj = parseInt(value.porcentaje);
+                                objData = {};
+                                objData = value.orderType;
+                                label.push(objData);
+                                objcolor = {};
+                                objcolor = value.codcolor;
+                                codcolors.push(objcolor);
+                                objgragcolor = {};
+                                objgragcolor = value.codcolor;
+                                gradcolors.push(objgragcolor);
+                                contador = contador + value.counts;
+                                b.push(obj);
+                            });
+                            this.productOrdersRadialBar = {
+                                chartOptions: {
+                                    labels: label,
+                                    plotOptions: {
+                                        radialBar: {
+                                            size: 165,
+                                            offsetY: -5,
+                                            hollow: {
+                                                size: "20%"
+                                            },
+                                            track: {
+                                                background: "#ebebeb",
+                                                strokeWidth: "100%",
+                                                margin: 15
+                                            },
+                                            dataLabels: {
+                                                show: true,
+                                                name: {
+                                                    fontSize: "18px"
+                                                },
+                                                value: {
+                                                    fontSize: "16px",
+                                                    color: "#636a71",
+                                                    offsetY: 11
+                                                },
+                                                total: {
+                                                    show: true,
+                                                    label: "Total",
+                                                    formatter() {
+                                                        return contador;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    responsive: [
+                                        {
+                                            breakpoint: 576,
+                                            options: {
+                                                plotOptions: {
+                                                    radialBar: {
+                                                        size: 150,
+                                                        hollow: {
+                                                            size: "20%"
+                                                        },
+                                                        track: {
+                                                            background:
+                                                                "#ebebeb",
+                                                            strokeWidth: "100%",
+                                                            margin: 15
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    colors: codcolors,
+                                    fill: {
+                                        type: "gradient",
+                                        gradient: {
+                                            // enabled: true,
+                                            shade: "dark",
+                                            type: "vertical",
+                                            shadeIntensity: 0.5,
+                                            gradientToColors: gradcolors,
+                                            inverseColors: false,
+                                            opacityFrom: 1,
+                                            opacityTo: 1,
+                                            stops: [0, 100]
+                                        }
+                                    },
+                                    stroke: {
+                                        lineCap: "round"
+                                    },
+                                    chart: {
+                                        height: 355,
+                                        dropShadow: {
+                                            enabled: true,
+                                            blur: 3,
+                                            left: 1,
+                                            top: 1,
+                                            opacity: 0.1
+                                        }
+                                    }
+                                }
+                            };
+                            let dat = {
+                                analyticsData: list,
+                                series: b
+                            };
+                            this.productsOrder = dat;
+                            this.resetI += 1;
+                        });
+                } catch (error) {
+                    console.log("Error al cargar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 6) {
+                try {
+                    axios
+                        .get(this.localVal + "/api/Agente/TraerKPITicketsEM", {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        })
+                        .then(res => {
+                            //this.productsOrder = res.data;
+                            let list = res.data;
+                            // console.log(list);
+                            let b = [];
+                            let obj = {};
+                            let label = [];
+                            let contador = 0;
+                            let objData = {};
+                            let codcolors = [];
+                            let objcolor = {};
+                            let gradcolors = [];
+                            let objgragcolor = {};
+                            list.forEach((value, index) => {
+                                obj = {};
+                                obj = parseInt(value.porcentaje);
+                                objData = {};
+                                objData = value.orderType;
+                                label.push(objData);
+                                objcolor = {};
+                                objcolor = value.codcolor;
+                                codcolors.push(objcolor);
+                                objgragcolor = {};
+                                objgragcolor = value.codcolor;
+                                gradcolors.push(objgragcolor);
+                                contador = contador + value.counts;
+                                b.push(obj);
+                            });
+                            this.productOrdersRadialBar = {
+                                chartOptions: {
+                                    labels: label,
+                                    plotOptions: {
+                                        radialBar: {
+                                            size: 165,
+                                            offsetY: -5,
+                                            hollow: {
+                                                size: "20%"
+                                            },
+                                            track: {
+                                                background: "#ebebeb",
+                                                strokeWidth: "100%",
+                                                margin: 15
+                                            },
+                                            dataLabels: {
+                                                show: true,
+                                                name: {
+                                                    fontSize: "18px"
+                                                },
+                                                value: {
+                                                    fontSize: "16px",
+                                                    color: "#636a71",
+                                                    offsetY: 11
+                                                },
+                                                total: {
+                                                    show: true,
+                                                    label: "Total",
+                                                    formatter() {
+                                                        return contador;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    responsive: [
+                                        {
+                                            breakpoint: 576,
+                                            options: {
+                                                plotOptions: {
+                                                    radialBar: {
+                                                        size: 150,
+                                                        hollow: {
+                                                            size: "20%"
+                                                        },
+                                                        track: {
+                                                            background:
+                                                                "#ebebeb",
+                                                            strokeWidth: "100%",
+                                                            margin: 15
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    colors: codcolors,
+                                    fill: {
+                                        type: "gradient",
+                                        gradient: {
+                                            // enabled: true,
+                                            shade: "dark",
+                                            type: "vertical",
+                                            shadeIntensity: 0.5,
+                                            gradientToColors: gradcolors,
+                                            inverseColors: false,
+                                            opacityFrom: 1,
+                                            opacityTo: 1,
+                                            stops: [0, 100]
+                                        }
+                                    },
+                                    stroke: {
+                                        lineCap: "round"
+                                    },
+                                    chart: {
+                                        height: 355,
+                                        dropShadow: {
+                                            enabled: true,
+                                            blur: 3,
+                                            left: 1,
+                                            top: 1,
+                                            opacity: 0.1
+                                        }
+                                    }
+                                }
+                            };
+                            let dat = {
+                                analyticsData: list,
+                                series: b
+                            };
+                            this.productsOrder = dat;
+                            this.resetI += 1;
+                        });
+                } catch (error) {
+                    console.log("Error al cargar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 7) {
+                try {
+                    axios
+                        .get(this.localVal + "/api/Agente/TraerKPITicketsIND", {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        })
+                        .then(res => {
+                            //this.productsOrder = res.data;
+                            let list = res.data;
+                            // console.log(list);
+                            let b = [];
+                            let obj = {};
+                            let label = [];
+                            let contador = 0;
+                            let objData = {};
+                            let codcolors = [];
+                            let objcolor = {};
+                            let gradcolors = [];
+                            let objgragcolor = {};
+                            list.forEach((value, index) => {
+                                obj = {};
+                                obj = parseInt(value.porcentaje);
+                                objData = {};
+                                objData = value.orderType;
+                                label.push(objData);
+                                objcolor = {};
+                                objcolor = value.codcolor;
+                                codcolors.push(objcolor);
+                                objgragcolor = {};
+                                objgragcolor = value.codcolor;
+                                gradcolors.push(objgragcolor);
+                                contador = contador + value.counts;
+                                b.push(obj);
+                            });
+                            this.productOrdersRadialBar = {
+                                chartOptions: {
+                                    labels: label,
+                                    plotOptions: {
+                                        radialBar: {
+                                            size: 165,
+                                            offsetY: -5,
+                                            hollow: {
+                                                size: "20%"
+                                            },
+                                            track: {
+                                                background: "#ebebeb",
+                                                strokeWidth: "100%",
+                                                margin: 15
+                                            },
+                                            dataLabels: {
+                                                show: true,
+                                                name: {
+                                                    fontSize: "18px"
+                                                },
+                                                value: {
+                                                    fontSize: "16px",
+                                                    color: "#636a71",
+                                                    offsetY: 11
+                                                },
+                                                total: {
+                                                    show: true,
+                                                    label: "Total",
+                                                    formatter() {
+                                                        return contador;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    responsive: [
+                                        {
+                                            breakpoint: 576,
+                                            options: {
+                                                plotOptions: {
+                                                    radialBar: {
+                                                        size: 150,
+                                                        hollow: {
+                                                            size: "20%"
+                                                        },
+                                                        track: {
+                                                            background:
+                                                                "#ebebeb",
+                                                            strokeWidth: "100%",
+                                                            margin: 15
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    colors: codcolors,
+                                    fill: {
+                                        type: "gradient",
+                                        gradient: {
+                                            // enabled: true,
+                                            shade: "dark",
+                                            type: "vertical",
+                                            shadeIntensity: 0.5,
+                                            gradientToColors: gradcolors,
+                                            inverseColors: false,
+                                            opacityFrom: 1,
+                                            opacityTo: 1,
+                                            stops: [0, 100]
+                                        }
+                                    },
+                                    stroke: {
+                                        lineCap: "round"
+                                    },
+                                    chart: {
+                                        height: 355,
+                                        dropShadow: {
+                                            enabled: true,
+                                            blur: 3,
+                                            left: 1,
+                                            top: 1,
+                                            opacity: 0.1
+                                        }
+                                    }
+                                }
+                            };
+                            let dat = {
+                                analyticsData: list,
+                                series: b
+                            };
+                            this.productsOrder = dat;
+                            this.resetI += 1;
+                        });
+                } catch (error) {
+                    console.log("Error al cargar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 8) {
+                try {
+                    axios
+                        .get(this.localVal + "/api/Agente/TraerKPITicketsAP", {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        })
+                        .then(res => {
+                            //this.productsOrder = res.data;
+                            let list = res.data;
+                            // console.log(list);
+                            let b = [];
+                            let obj = {};
+                            let label = [];
+                            let contador = 0;
+                            let objData = {};
+                            let codcolors = [];
+                            let objcolor = {};
+                            let gradcolors = [];
+                            let objgragcolor = {};
+                            list.forEach((value, index) => {
+                                obj = {};
+                                obj = parseInt(value.porcentaje);
+                                objData = {};
+                                objData = value.orderType;
+                                label.push(objData);
+                                objcolor = {};
+                                objcolor = value.codcolor;
+                                codcolors.push(objcolor);
+                                objgragcolor = {};
+                                objgragcolor = value.codcolor;
+                                gradcolors.push(objgragcolor);
+                                contador = contador + value.counts;
+                                b.push(obj);
+                            });
+                            this.productOrdersRadialBar = {
+                                chartOptions: {
+                                    labels: label,
+                                    plotOptions: {
+                                        radialBar: {
+                                            size: 165,
+                                            offsetY: -5,
+                                            hollow: {
+                                                size: "20%"
+                                            },
+                                            track: {
+                                                background: "#ebebeb",
+                                                strokeWidth: "100%",
+                                                margin: 15
+                                            },
+                                            dataLabels: {
+                                                show: true,
+                                                name: {
+                                                    fontSize: "18px"
+                                                },
+                                                value: {
+                                                    fontSize: "16px",
+                                                    color: "#636a71",
+                                                    offsetY: 11
+                                                },
+                                                total: {
+                                                    show: true,
+                                                    label: "Total",
+                                                    formatter() {
+                                                        return contador;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    responsive: [
+                                        {
+                                            breakpoint: 576,
+                                            options: {
+                                                plotOptions: {
+                                                    radialBar: {
+                                                        size: 150,
+                                                        hollow: {
+                                                            size: "20%"
+                                                        },
+                                                        track: {
+                                                            background:
+                                                                "#ebebeb",
+                                                            strokeWidth: "100%",
+                                                            margin: 15
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    colors: codcolors,
+                                    fill: {
+                                        type: "gradient",
+                                        gradient: {
+                                            // enabled: true,
+                                            shade: "dark",
+                                            type: "vertical",
+                                            shadeIntensity: 0.5,
+                                            gradientToColors: gradcolors,
+                                            inverseColors: false,
+                                            opacityFrom: 1,
+                                            opacityTo: 1,
+                                            stops: [0, 100]
+                                        }
+                                    },
+                                    stroke: {
+                                        lineCap: "round"
+                                    },
+                                    chart: {
+                                        height: 355,
+                                        dropShadow: {
+                                            enabled: true,
+                                            blur: 3,
+                                            left: 1,
+                                            top: 1,
+                                            opacity: 0.1
+                                        }
+                                    }
+                                }
+                            };
+                            let dat = {
+                                analyticsData: list,
+                                series: b
+                            };
+                            this.productsOrder = dat;
+                            this.resetI += 1;
+                        });
+                } catch (error) {
+                    console.log("Error al cargar datos");
+                }
+            }
+        },
+        cargaMas() {
+            if (sessionStorage.getItem("permiso_usuario") == 1) {
+                try {
+                    axios
+                        .all([
+                            axios.get(
+                                this.localVal + "/api/Agente/TraerServicioKPI",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal + "/api/Agente/TraerUsuarioKPI",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal + "/api/Agente/TraerCategoriaKPI",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal +
+                                    "/api/Agente/TraerTipoMantencionKPI",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                        ])
+                        .then(
+                            axios.spread((dat1, dat2, dat3, dat4) => {
+                                this.serviciom =
+                                    dat1.data[0].descripcionServicio;
+                                this.usuariom = dat2.data[0].usuariosolicitante;
+                                this.categoriam = dat3.data[0].des_categoria;
+                                this.tmantencionm =
+                                    dat4.data[0].descripcionTipoReparacion;
+                            })
+                        );
+                } catch (error) {
+                    console.log("Error de carga de datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 5) {
+                try {
+                    axios
+                        .all([
+                            axios.get(
+                                this.localVal + "/api/Agente/TraerServicioKPI",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal + "/api/Agente/TraerUsuarioKPI",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal + "/api/Agente/TraerCategoriaKPI",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal +
+                                    "/api/Agente/TraerTipoMantencionKPI",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                        ])
+                        .then(
+                            axios.spread((dat1, dat2, dat3, dat4) => {
+                                this.serviciom =
+                                    dat1.data[0].descripcionServicio;
+                                this.usuariom = dat2.data[0].usuariosolicitante;
+                                this.categoriam = dat3.data[0].des_categoria;
+                                this.tmantencionm =
+                                    dat4.data[0].descripcionTipoReparacion;
+                            })
+                        );
+                } catch (error) {
+                    console.log("Error de carga de datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 6) {
+                try {
+                    axios
+                        .all([
+                            axios.get(
+                                this.localVal +
+                                    "/api/Agente/TraerServicioKPIEM",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal + "/api/Agente/TraerUsuarioKPIEM",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal +
+                                    "/api/Agente/TraerCategoriaKPIEM",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal +
+                                    "/api/Agente/TraerTipoMantencionKPIEM",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                        ])
+                        .then(
+                            axios.spread((dat1, dat2, dat3, dat4) => {
+                                this.serviciom =
+                                    dat1.data[0].descripcionServicio;
+                                this.usuariom = dat2.data[0].usuariosolicitante;
+                                this.categoriam = dat3.data[0].des_categoria;
+                                this.tmantencionm =
+                                    dat4.data[0].descripcionTipoReparacion;
+                            })
+                        );
+                } catch (error) {
+                    console.log("Error de carga de datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 7) {
+                try {
+                    axios
+                        .all([
+                            axios.get(
+                                this.localVal +
+                                    "/api/Agente/TraerServicioKPIIND",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal +
+                                    "/api/Agente/TraerUsuarioKPIIND",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal +
+                                    "/api/Agente/TraerCategoriaKPIIND",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal +
+                                    "/api/Agente/TraerTipoMantencionKPIIND",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                        ])
+                        .then(
+                            axios.spread((dat1, dat2, dat3, dat4) => {
+                                this.serviciom =
+                                    dat1.data[0].descripcionServicio;
+                                this.usuariom = dat2.data[0].usuariosolicitante;
+                                this.categoriam = dat3.data[0].des_categoria;
+                                this.tmantencionm =
+                                    dat4.data[0].descripcionTipoReparacion;
+                            })
+                        );
+                } catch (error) {
+                    console.log("Error de carga de datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 8) {
+                try {
+                    axios
+                        .all([
+                            axios.get(
+                                this.localVal +
+                                    "/api/Agente/TraerServicioKPIAP",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal + "/api/Agente/TraerUsuarioKPIAP",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal +
+                                    "/api/Agente/TraerCategoriaKPIAP",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal +
+                                    "/api/Agente/TraerTipoMantencionKPIAP",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                        ])
+                        .then(
+                            axios.spread((dat1, dat2, dat3, dat4) => {
+                                this.serviciom =
+                                    dat1.data[0].descripcionServicio;
+                                this.usuariom = dat2.data[0].usuariosolicitante;
+                                this.categoriam = dat3.data[0].des_categoria;
+                                this.tmantencionm =
+                                    dat4.data[0].descripcionTipoReparacion;
+                            })
+                        );
+                } catch (error) {
+                    console.log("Error de carga de datos");
+                }
             }
         }
     },

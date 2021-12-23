@@ -214,4 +214,135 @@ class SolicitudTicketsApsController extends Controller
 
         return true;
     }
+
+    public function getTicketsKPITotal(){
+        try {
+            $get_all = SolicitudTicketsAps::select(DB::raw("COUNT(solicitud_tickets_aps.id) AS openTickets"),
+            DB::raw("(SELECT COUNT(solicitud_tickets_aps.id_estado) FROM solicitud_tickets_aps WHERE solicitud_tickets_aps.id_estado = 1) AS NewTickets"),
+            DB::raw("(SELECT COUNT(solicitud_tickets_aps.id_estado) FROM solicitud_tickets_aps WHERE solicitud_tickets_aps.id_estado BETWEEN 2 AND 4) AS OpenTickets"),
+            DB::raw("(SELECT COUNT(solicitud_tickets_aps.id_estado) FROM solicitud_tickets_aps WHERE solicitud_tickets_aps.id_estado BETWEEN 5 AND 6) AS FinalTicket"),
+            DB::raw("ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_aps WHERE id_estado BETWEEN 5 AND 6)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_aps),2) AS Porcentaje"))
+            ->join('estado_solicituds','solicitud_tickets_aps.id_estado','=','estado_solicituds.id')
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    //Inicio KPI
+    public function getTicketsKPI(){
+        try {
+            $get_all = SolicitudTicketsAps::select('estado_solicituds.descripcionEstado as orderType',
+            DB::raw("(CASE WHEN solicitud_tickets_aps.id_estado = 1 THEN COUNT(solicitud_tickets_aps.id_estado)
+                          WHEN solicitud_tickets_aps.id_estado = 2 THEN COUNT(solicitud_tickets_aps.id_estado)
+                          WHEN solicitud_tickets_aps.id_estado = 4 THEN COUNT(solicitud_tickets_aps.id_estado)
+                          WHEN solicitud_tickets_aps.id_estado = 6 THEN (select COUNT(solicitud_tickets_aps.id_estado) from solicitud_tickets_aps where solicitud_tickets_aps.id_estado BETWEEN 5 AND 6)
+                          WHEN solicitud_tickets_aps.id_estado = 7 THEN COUNT(solicitud_tickets_aps.id_estado)
+                          END) AS counts"),
+            DB::raw("(CASE WHEN solicitud_tickets_aps.id_estado = 1 THEN 'primary'
+                          WHEN solicitud_tickets_aps.id_estado = 2 THEN 'warning'
+                          WHEN solicitud_tickets_aps.id_estado = 4 THEN 'danger'
+                          WHEN solicitud_tickets_aps.id_estado = 6 THEN 'success'
+                          WHEN solicitud_tickets_aps.id_estado = 7 THEN 'dark'
+                          END) AS color"),
+            DB::raw("(CASE WHEN solicitud_tickets_aps.id_estado = 1 THEN '#7961F9'
+                          WHEN solicitud_tickets_aps.id_estado = 2 THEN '#FF9F43'
+                          WHEN solicitud_tickets_aps.id_estado = 4 THEN '#EA5455'
+                          WHEN solicitud_tickets_aps.id_estado = 6 THEN '#1fcd39'
+                          WHEN solicitud_tickets_aps.id_estado = 7 THEN '#000000'
+                          END) AS codcolor"),        
+            DB::raw("(CASE WHEN solicitud_tickets_aps.id_estado = 1 THEN '#9c8cfc'
+                          WHEN solicitud_tickets_aps.id_estado = 2 THEN '#FFC085'
+                          WHEN solicitud_tickets_aps.id_estado = 4 THEN '#f29292'
+                          WHEN solicitud_tickets_aps.id_estado = 6 THEN '#1fcd39'
+                          WHEN solicitud_tickets_aps.id_estado = 7 THEN '#000000'
+                          END) AS gradcolor"),                    
+            DB::raw("(CASE WHEN solicitud_tickets_aps.id_estado = 1 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_aps WHERE id_estado = 1)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_aps),1),0)
+            WHEN solicitud_tickets_aps.id_estado = 2 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_aps WHERE id_estado = 2)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_aps),1),0)
+            WHEN solicitud_tickets_aps.id_estado = 4 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_aps WHERE id_estado = 4)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_aps),1),0)
+            WHEN solicitud_tickets_aps.id_estado = 5 || solicitud_tickets_aps.id_estado = 6 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_aps WHERE id_estado = 5 || id_estado = 6)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
+            WHEN solicitud_tickets_aps.id_estado = 7 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_aps WHERE id_estado = 7)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_aps),1),0)
+            END) AS porcentaje"))
+            ->join('estado_solicituds','solicitud_tickets_aps.id_estado','=','estado_solicituds.id')
+            ->where('estado_solicituds.id','=','1')
+            ->orWhere('estado_solicituds.id','=','2')
+            ->orWhere('estado_solicituds.id','=','4')
+            ->orWhere('estado_solicituds.id','=','6')
+            ->orWhere('estado_solicituds.id','=','7')
+            ->groupby('estado_solicituds.id')
+            ->get();
+            //log::info($get_all);
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getKPIServicio(){
+        try {
+            $get_all = SolicitudTicketsAps::select("servicios.descripcionServicio",DB::raw("COUNT(servicios.descripcionServicio) AS serviciomassolicitado"))
+            ->join("servicios",'solicitud_tickets_aps.id_servicio','=','servicios.id')
+            ->groupby("servicios.id")
+            ->orderBy('serviciomassolicitado', 'desc')
+            ->limit(1)
+            ->get();
+
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getKPIUsuario(){
+        try {
+            $get_all = SolicitudTicketsAps::select("users.id",DB::raw("CONCAT(users.nombre,' ',users.apellido) AS usuariosolicitante"),
+            DB::raw("COUNT(solicitud_tickets_aps.id_user) massolicitante"))
+            ->join("users",'solicitud_tickets_aps.id_user','=','users.id')
+            ->groupby("users.id")
+            ->orderBy('massolicitante', 'desc')
+            ->limit(1)
+            ->get();
+
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getKPICategoria(){
+        try {
+            $get_all = SolicitudTicketsAps::select("categorias.des_categoria",DB::raw("COUNT(solicitud_tickets_aps.id_categoria) AS categoriamassol"))
+            ->join("categorias",'solicitud_tickets_aps.id_categoria','=','categorias.id')
+            ->groupby("categorias.id")
+            ->orderBy('categoriamassol', 'DESC')
+            ->limit(1)
+            ->get();
+
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getKPITipoMantencion(){
+        try {
+            $get_all = SolicitudTicketsAps::select("tipo_reparacions.descripcionTipoReparacion",DB::raw("COUNT(solicitud_tickets_aps.id_tipoReparacion) AS tipomassol"))
+            ->join("tipo_reparacions",'solicitud_tickets_aps.id_tipoReparacion','=','tipo_reparacions.id')
+            ->groupby("tipo_reparacions.id")
+            ->orderBy('tipomassol', 'desc')
+            ->limit(1)
+            ->get();
+
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
 }
