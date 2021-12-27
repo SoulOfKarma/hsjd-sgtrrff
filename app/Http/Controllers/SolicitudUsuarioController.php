@@ -436,10 +436,10 @@ class SolicitudUsuarioController extends Controller
             SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $response->id, 'descripcionSeguimiento' => 'Ticket creado']));
             $id = $request->id_user;
             $userSearch = Users::where('id',$id)->first();
-                $ValidarCargo = $userSearch->id_cargo_asociado;     
-                $userMail = [];
+            $ValidarCargo = $userSearch->id_cargo_asociado;     
+            $userMail = [$userSearch->email];
     
-                if($ValidarCargo == null || $ValidarCargo == 0){
+                /* if($ValidarCargo == null || $ValidarCargo == 0){
                     $userMail = Users::select('email')
                     ->Where('id',$id)
                     ->orWhere('id_cargo_asociado',$id)
@@ -450,7 +450,7 @@ class SolicitudUsuarioController extends Controller
                 ->where('id_cargo_asociado',$ValidarCargo)
                 ->orWhere('id',$ValidarCargo)
                 ->get();
-                }
+                } */
 
                 if($userMail == [] || $userMail == null){
                     $userMail[0] = 'soporte.rrff@redsalud.gov.cl';

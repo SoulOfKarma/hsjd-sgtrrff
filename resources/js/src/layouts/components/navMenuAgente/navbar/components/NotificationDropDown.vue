@@ -194,147 +194,765 @@ export default {
             return date;
         },
         abrirNotificacionP(id, uuid, id_user) {
-            try {
-                const path = {
-                    name: "AsignarSolicitudAgente",
-                    params: {
-                        id: `${id}`,
-                        uuid: `${uuid}`,
-                        id_user: `${id_user}`
-                    }
-                };
-                axios
-                    .get(
-                        this.localVal +
-                            `/api/Agente/ValidarTicketAsignado/${id}`,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+            if (sessionStorage.getItem("permiso_usuario") == 1) {
+                try {
+                    const path = {
+                        name: "AsignarSolicitudAgente",
+                        params: {
+                            id: `${id}`,
+                            uuid: `${uuid}`,
+                            id_user: `${id_user}`
+                        }
+                    };
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Agente/ValidarTicketAsignado/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
                             }
+                        )
+                        .then(res => {
+                            if (res.data == 2) {
+                                this.$vs.notify({
+                                    title: "Ticket ya asignado ",
+                                    text:
+                                        "Si necesita modificarlo vaya a Modificar Ticket ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.$route.path !== path) {
+                                this.$router.push(path).catch(err => {});
+                            }
+                        });
+                } catch (error) {
+                    console.log("Error al capturar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 5) {
+                try {
+                    const path = {
+                        name: "AsignarSolicitudAgente",
+                        params: {
+                            id: `${id}`,
+                            uuid: `${uuid}`,
+                            id_user: `${id_user}`
                         }
-                    )
-                    .then(res => {
-                        if (res.data == 2) {
-                            this.$vs.notify({
-                                title: "Ticket ya asignado ",
-                                text:
-                                    "Si necesita modificarlo vaya a Modificar Ticket ",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else if (this.$route.path !== path) {
-                            this.$router.push(path).catch(err => {});
+                    };
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Agente/ValidarTicketAsignado/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == 2) {
+                                this.$vs.notify({
+                                    title: "Ticket ya asignado ",
+                                    text:
+                                        "Si necesita modificarlo vaya a Modificar Ticket ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.$route.path !== path) {
+                                this.$router.push(path).catch(err => {});
+                            }
+                        });
+                } catch (error) {
+                    console.log("Error al capturar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 6) {
+                try {
+                    const path = {
+                        name: "AsignarSolicitudAgenteEM",
+                        params: {
+                            id: `${id}`,
+                            uuid: `${uuid}`,
+                            id_user: `${id_user}`
                         }
-                    });
-            } catch (error) {
-                console.log("Error al capturar datos");
+                    };
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Agente/ValidarTicketAsignadoEM/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == 2) {
+                                this.$vs.notify({
+                                    title: "Ticket ya asignado ",
+                                    text:
+                                        "Si necesita modificarlo vaya a Modificar Ticket ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.$route.path !== path) {
+                                this.$router.push(path).catch(err => {});
+                            }
+                        });
+                } catch (error) {
+                    console.log("Error al capturar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 7) {
+                try {
+                    const path = {
+                        name: "AsignarSolicitudAgenteIND",
+                        params: {
+                            id: `${id}`,
+                            uuid: `${uuid}`,
+                            id_user: `${id_user}`
+                        }
+                    };
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Agente/ValidarTicketAsignadoIND/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == 2) {
+                                this.$vs.notify({
+                                    title: "Ticket ya asignado ",
+                                    text:
+                                        "Si necesita modificarlo vaya a Modificar Ticket ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.$route.path !== path) {
+                                this.$router.push(path).catch(err => {});
+                            }
+                        });
+                } catch (error) {
+                    console.log("Error al capturar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 8) {
+                try {
+                    const path = {
+                        name: "AsignarSolicitudAgenteCA",
+                        params: {
+                            id: `${id}`,
+                            uuid: `${uuid}`,
+                            id_user: `${id_user}`
+                        }
+                    };
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Agente/ValidarTicketAsignadoAP/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == 2) {
+                                this.$vs.notify({
+                                    title: "Ticket ya asignado ",
+                                    text:
+                                        "Si necesita modificarlo vaya a Modificar Ticket ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.$route.path !== path) {
+                                this.$router.push(path).catch(err => {});
+                            }
+                        });
+                } catch (error) {
+                    console.log("Error al capturar datos");
+                }
             }
         },
         abrirNotificacion(id, uuid, id_user) {
-            try {
-                const path = {
-                    name: "ModificarSolicitudAgente",
-                    params: {
-                        id: `${id}`,
-                        uuid: `${uuid}`,
-                        id_user: `${id_user}`
-                    }
-                };
-                axios
-                    .get(
-                        this.localVal +
-                            `/api/Agente/ValidarTicketAsignadoMod/${id}`,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+            if (sessionStorage.getItem("permiso_usuario") == 1) {
+                try {
+                    const path = {
+                        name: "ModificarSolicitudAgente",
+                        params: {
+                            id: `${id}`,
+                            uuid: `${uuid}`,
+                            id_user: `${id_user}`
+                        }
+                    };
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Agente/ValidarTicketAsignadoMod/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
                             }
+                        )
+                        .then(res => {
+                            if (res.data == 1) {
+                                this.$vs.notify({
+                                    title: "Ticket no ha sido asignado ",
+                                    text:
+                                        "Ticket necesita ya estar asignado primero para modificarlo ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.$route.path !== path) {
+                                this.$router.push(path).catch(err => {});
+                            }
+                        });
+                } catch (error) {
+                    console.log("Error al capturar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 5) {
+                try {
+                    const path = {
+                        name: "ModificarSolicitudAgente",
+                        params: {
+                            id: `${id}`,
+                            uuid: `${uuid}`,
+                            id_user: `${id_user}`
                         }
-                    )
-                    .then(res => {
-                        if (res.data == 1) {
-                            this.$vs.notify({
-                                title: "Ticket no ha sido asignado ",
-                                text:
-                                    "Ticket necesita ya estar asignado primero para modificarlo ",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else if (this.$route.path !== path) {
-                            this.$router.push(path).catch(err => {});
+                    };
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Agente/ValidarTicketAsignadoMod/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == 1) {
+                                this.$vs.notify({
+                                    title: "Ticket no ha sido asignado ",
+                                    text:
+                                        "Ticket necesita ya estar asignado primero para modificarlo ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.$route.path !== path) {
+                                this.$router.push(path).catch(err => {});
+                            }
+                        });
+                } catch (error) {
+                    console.log("Error al capturar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 6) {
+                try {
+                    const path = {
+                        name: "ModificarSolicitudAgenteEM",
+                        params: {
+                            id: `${id}`,
+                            uuid: `${uuid}`,
+                            id_user: `${id_user}`
                         }
-                    });
-            } catch (error) {
-                console.log("Error al capturar datos");
+                    };
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Agente/ValidarTicketAsignadoModEM/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == 1) {
+                                this.$vs.notify({
+                                    title: "Ticket no ha sido asignado ",
+                                    text:
+                                        "Ticket necesita ya estar asignado primero para modificarlo ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.$route.path !== path) {
+                                this.$router.push(path).catch(err => {});
+                            }
+                        });
+                } catch (error) {
+                    console.log("Error al capturar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 7) {
+                try {
+                    const path = {
+                        name: "ModificarSolicitudAgenteIND",
+                        params: {
+                            id: `${id}`,
+                            uuid: `${uuid}`,
+                            id_user: `${id_user}`
+                        }
+                    };
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Agente/ValidarTicketAsignadoModIND/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == 1) {
+                                this.$vs.notify({
+                                    title: "Ticket no ha sido asignado ",
+                                    text:
+                                        "Ticket necesita ya estar asignado primero para modificarlo ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.$route.path !== path) {
+                                this.$router.push(path).catch(err => {});
+                            }
+                        });
+                } catch (error) {
+                    console.log("Error al capturar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 8) {
+                try {
+                    const path = {
+                        name: "ModificarSolicitudAgenteCA",
+                        params: {
+                            id: `${id}`,
+                            uuid: `${uuid}`,
+                            id_user: `${id_user}`
+                        }
+                    };
+                    axios
+                        .get(
+                            this.localVal +
+                                `/api/Agente/ValidarTicketAsignadoModAP/${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == 1) {
+                                this.$vs.notify({
+                                    title: "Ticket no ha sido asignado ",
+                                    text:
+                                        "Ticket necesita ya estar asignado primero para modificarlo ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.$route.path !== path) {
+                                this.$router.push(path).catch(err => {});
+                            }
+                        });
+                } catch (error) {
+                    console.log("Error al capturar datos");
+                }
             }
         },
         cargaNotificaciones() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Agente/TraerNotificaciones", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        let listado = [];
-                        listado = res.data;
-                        let b = [];
-                        let obj = {};
-                        listado.forEach((value, index) => {
-                            obj = {};
-                            obj = {
-                                id: value.id,
-                                uuid: value.uuid,
-                                id_user: value.id_user,
-                                index: index,
-                                title: value.descripcionTipoReparacion,
-                                msg: value.msg,
-                                icon: "MessageSquareIcon",
-                                category: "danger"
-                            };
-                            b.push(obj);
+            if (sessionStorage.getItem("permiso_usuario") == 1) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerNotificaciones",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let listado = [];
+                            listado = res.data;
+                            let b = [];
+                            let obj = {};
+                            listado.forEach((value, index) => {
+                                obj = {};
+                                obj = {
+                                    id: value.id,
+                                    uuid: value.uuid,
+                                    id_user: value.id_user,
+                                    index: index,
+                                    title: value.descripcionTipoReparacion,
+                                    msg: value.msg,
+                                    icon: "MessageSquareIcon",
+                                    category: "danger"
+                                };
+                                b.push(obj);
+                            });
+                            this.unreadNotifications = b;
                         });
-                        this.unreadNotifications = b;
-                    });
-            } catch (error) {
-                console.log("Error al recuperar datos");
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 5) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerNotificaciones",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let listado = [];
+                            listado = res.data;
+                            let b = [];
+                            let obj = {};
+                            listado.forEach((value, index) => {
+                                obj = {};
+                                obj = {
+                                    id: value.id,
+                                    uuid: value.uuid,
+                                    id_user: value.id_user,
+                                    index: index,
+                                    title: value.descripcionTipoReparacion,
+                                    msg: value.msg,
+                                    icon: "MessageSquareIcon",
+                                    category: "danger"
+                                };
+                                b.push(obj);
+                            });
+                            this.unreadNotifications = b;
+                        });
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 6) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerNotificaciones",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let listado = [];
+                            listado = res.data;
+                            let b = [];
+                            let obj = {};
+                            listado.forEach((value, index) => {
+                                obj = {};
+                                obj = {
+                                    id: value.id,
+                                    uuid: value.uuid,
+                                    id_user: value.id_user,
+                                    index: index,
+                                    title: value.descripcionTipoReparacion,
+                                    msg: value.msg,
+                                    icon: "MessageSquareIcon",
+                                    category: "danger"
+                                };
+                                b.push(obj);
+                            });
+                            this.unreadNotifications = b;
+                        });
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 7) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerNotificaciones",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let listado = [];
+                            listado = res.data;
+                            let b = [];
+                            let obj = {};
+                            listado.forEach((value, index) => {
+                                obj = {};
+                                obj = {
+                                    id: value.id,
+                                    uuid: value.uuid,
+                                    id_user: value.id_user,
+                                    index: index,
+                                    title: value.descripcionTipoReparacion,
+                                    msg: value.msg,
+                                    icon: "MessageSquareIcon",
+                                    category: "danger"
+                                };
+                                b.push(obj);
+                            });
+                            this.unreadNotifications = b;
+                        });
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 8) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerNotificaciones",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let listado = [];
+                            listado = res.data;
+                            let b = [];
+                            let obj = {};
+                            listado.forEach((value, index) => {
+                                obj = {};
+                                obj = {
+                                    id: value.id,
+                                    uuid: value.uuid,
+                                    id_user: value.id_user,
+                                    index: index,
+                                    title: value.descripcionTipoReparacion,
+                                    msg: value.msg,
+                                    icon: "MessageSquareIcon",
+                                    category: "danger"
+                                };
+                                b.push(obj);
+                            });
+                            this.unreadNotifications = b;
+                        });
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
             }
         },
         cargaNotificacionesN() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Agente/TraerNotificacionesN", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        let listado = [];
-                        listado = res.data;
-                        let b = [];
-                        let obj = {};
-                        listado.forEach((value, index) => {
-                            obj = {};
-                            obj = {
-                                id: value.id,
-                                uuid: value.uuid,
-                                id_user: value.id_user,
-                                index: index,
-                                title: value.descripcionTipoReparacion,
-                                msg: value.msg,
-                                icon: "MessageSquareIcon",
-                                category: "danger"
-                            };
-                            b.push(obj);
+            if (sessionStorage.getItem("permiso_usuario") == 1) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerNotificacionesN",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let listado = [];
+                            listado = res.data;
+                            let b = [];
+                            let obj = {};
+                            listado.forEach((value, index) => {
+                                obj = {};
+                                obj = {
+                                    id: value.id,
+                                    uuid: value.uuid,
+                                    id_user: value.id_user,
+                                    index: index,
+                                    title: value.descripcionTipoReparacion,
+                                    msg: value.msg,
+                                    icon: "MessageSquareIcon",
+                                    category: "danger"
+                                };
+                                b.push(obj);
+                            });
+                            this.unreadNotificationsN = b;
                         });
-                        this.unreadNotificationsN = b;
-                    });
-            } catch (error) {
-                console.log("Error al recuperar datos");
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 5) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerNotificacionesN",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let listado = [];
+                            listado = res.data;
+                            let b = [];
+                            let obj = {};
+                            listado.forEach((value, index) => {
+                                obj = {};
+                                obj = {
+                                    id: value.id,
+                                    uuid: value.uuid,
+                                    id_user: value.id_user,
+                                    index: index,
+                                    title: value.descripcionTipoReparacion,
+                                    msg: value.msg,
+                                    icon: "MessageSquareIcon",
+                                    category: "danger"
+                                };
+                                b.push(obj);
+                            });
+                            this.unreadNotificationsN = b;
+                        });
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 6) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerNotificacionesN",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let listado = [];
+                            listado = res.data;
+                            let b = [];
+                            let obj = {};
+                            listado.forEach((value, index) => {
+                                obj = {};
+                                obj = {
+                                    id: value.id,
+                                    uuid: value.uuid,
+                                    id_user: value.id_user,
+                                    index: index,
+                                    title: value.descripcionTipoReparacion,
+                                    msg: value.msg,
+                                    icon: "MessageSquareIcon",
+                                    category: "danger"
+                                };
+                                b.push(obj);
+                            });
+                            this.unreadNotificationsN = b;
+                        });
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 7) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerNotificacionesN",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let listado = [];
+                            listado = res.data;
+                            let b = [];
+                            let obj = {};
+                            listado.forEach((value, index) => {
+                                obj = {};
+                                obj = {
+                                    id: value.id,
+                                    uuid: value.uuid,
+                                    id_user: value.id_user,
+                                    index: index,
+                                    title: value.descripcionTipoReparacion,
+                                    msg: value.msg,
+                                    icon: "MessageSquareIcon",
+                                    category: "danger"
+                                };
+                                b.push(obj);
+                            });
+                            this.unreadNotificationsN = b;
+                        });
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 8) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerNotificacionesN",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let listado = [];
+                            listado = res.data;
+                            let b = [];
+                            let obj = {};
+                            listado.forEach((value, index) => {
+                                obj = {};
+                                obj = {
+                                    id: value.id,
+                                    uuid: value.uuid,
+                                    id_user: value.id_user,
+                                    index: index,
+                                    title: value.descripcionTipoReparacion,
+                                    msg: value.msg,
+                                    icon: "MessageSquareIcon",
+                                    category: "danger"
+                                };
+                                b.push(obj);
+                            });
+                            this.unreadNotificationsN = b;
+                        });
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
             }
         },
         cargaKPI() {
