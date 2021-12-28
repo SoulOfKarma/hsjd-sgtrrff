@@ -345,4 +345,36 @@ class SolicitudTicketsEMController extends Controller
             return false;
         }
     }
+
+    public function getNotificaciones(){
+        try {
+            $get_all = SolicitudTicketsEM::select(DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as msg"),'solicitud_tickets_e_m_s.id',
+            'solicitud_tickets_e_m_s.uuid','solicitud_tickets_e_m_s.id_user','tipo_reparacions.descripcionTipoReparacion')
+            ->join("tipo_reparacions",'solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
+            ->where("solicitud_tickets_e_m_s.id_estado","=",2)
+            ->limit(5)
+            ->orderBy('solicitud_tickets_e_m_s.id', 'desc')
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getNotificacionesN(){
+        try {
+            $get_all = SolicitudTicketsEM::select(DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as msg"),'solicitud_tickets_e_m_s.id',
+            'solicitud_tickets_e_m_s.uuid','solicitud_tickets_e_m_s.id_user','tipo_reparacions.descripcionTipoReparacion')
+            ->join("tipo_reparacions",'solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
+            ->where("solicitud_tickets_e_m_s.id_estado","=",1)
+            ->limit(5)
+            ->orderBy('solicitud_tickets_e_m_s.id', 'desc')
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
 }

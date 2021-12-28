@@ -658,7 +658,7 @@ export default {
                 try {
                     axios
                         .get(
-                            this.localVal + "/api/Agente/TraerNotificaciones",
+                            this.localVal + "/api/Agente/TraerNotificacionesEM",
                             {
                                 headers: {
                                     Authorization:
@@ -695,7 +695,8 @@ export default {
                 try {
                     axios
                         .get(
-                            this.localVal + "/api/Agente/TraerNotificaciones",
+                            this.localVal +
+                                "/api/Agente/TraerNotificacionesIND",
                             {
                                 headers: {
                                     Authorization:
@@ -732,7 +733,7 @@ export default {
                 try {
                     axios
                         .get(
-                            this.localVal + "/api/Agente/TraerNotificaciones",
+                            this.localVal + "/api/Agente/TraerNotificacionesAP",
                             {
                                 headers: {
                                     Authorization:
@@ -846,7 +847,8 @@ export default {
                 try {
                     axios
                         .get(
-                            this.localVal + "/api/Agente/TraerNotificacionesN",
+                            this.localVal +
+                                "/api/Agente/TraerNotificacionesNEM",
                             {
                                 headers: {
                                     Authorization:
@@ -883,7 +885,8 @@ export default {
                 try {
                     axios
                         .get(
-                            this.localVal + "/api/Agente/TraerNotificacionesN",
+                            this.localVal +
+                                "/api/Agente/TraerNotificacionesNIND",
                             {
                                 headers: {
                                     Authorization:
@@ -920,7 +923,8 @@ export default {
                 try {
                     axios
                         .get(
-                            this.localVal + "/api/Agente/TraerNotificacionesN",
+                            this.localVal +
+                                "/api/Agente/TraerNotificacionesNAP",
                             {
                                 headers: {
                                     Authorization:
@@ -956,21 +960,114 @@ export default {
             }
         },
         cargaKPI() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Agente/TraerKPITicketsTotal", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        let data = res.data;
-                        this.totalPTickets = data[0].OpenTickets;
-                        this.totalNTickets = data[0].NewTickets;
-                    });
-            } catch (error) {
-                console.log("Error al recuperar datos");
+            if (sessionStorage.getItem("permiso_usuario") == 1) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerKPITicketsTotal",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let data = res.data;
+                            this.totalPTickets = data[0].OpenTickets;
+                            this.totalNTickets = data[0].NewTickets;
+                        });
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 5) {
+                try {
+                    axios
+                        .get(
+                            this.localVal + "/api/Agente/TraerKPITicketsTotal",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let data = res.data;
+                            this.totalPTickets = data[0].OpenTickets;
+                            this.totalNTickets = data[0].NewTickets;
+                        });
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 6) {
+                try {
+                    axios
+                        .get(
+                            this.localVal +
+                                "/api/Agente/TraerKPITicketsTotalEM",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let data = res.data;
+                            this.totalPTickets = data[0].OpenTickets;
+                            this.totalNTickets = data[0].NewTickets;
+                        });
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 7) {
+                try {
+                    axios
+                        .get(
+                            this.localVal +
+                                "/api/Agente/TraerKPITicketsTotalIND",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let data = res.data;
+                            this.totalPTickets = data[0].OpenTickets;
+                            this.totalNTickets = data[0].NewTickets;
+                        });
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
+            } else if (sessionStorage.getItem("permiso_usuario") == 8) {
+                try {
+                    axios
+                        .get(
+                            this.localVal +
+                                "/api/Agente/TraerKPITicketsTotalAP",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let data = res.data;
+                            this.totalPTickets = data[0].OpenTickets;
+                            this.totalNTickets = data[0].NewTickets;
+                        });
+                } catch (error) {
+                    console.log("Error al recuperar datos");
+                }
             }
         }
     },

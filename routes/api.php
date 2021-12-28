@@ -569,10 +569,22 @@ use App\Mail\AutoRespuesta;
             Route::post('/Agente/TraerColorCargoI', ['middleware' => 'cors', 'uses' => 'GanttIndustrialController@GetColorCargo']);
 
             //Datos Notificaciones
-            //Traer Ultimas 5 Notificaciones en Proceso
+            //Traer Ultimas 5 Notificaciones en Proceso Infraestructura
             Route::get('/Agente/TraerNotificaciones', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getNotificaciones']);
+            //Traer Ultimas 5 Notificaciones en Proceso Equipos Medicos
+            Route::get('/Agente/TraerNotificacionesEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@getNotificaciones']);
+            //Traer Ultimas 5 Notificaciones en Proceso Industrial
+            Route::get('/Agente/TraerNotificacionesIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@getNotificaciones']);
+            //Traer Ultimas 5 Notificaciones en Proceso Apoyo Clinico
+            Route::get('/Agente/TraerNotificacionesAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@getNotificaciones']);
             //Traer Ultimas 5 Notificaciones nuevas
             Route::get('/Agente/TraerNotificacionesN', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getNotificacionesN']);
+            //Traer Ultimas 5 Notificaciones nuevas
+            Route::get('/Agente/TraerNotificacionesNEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@getNotificacionesN']);
+            //Traer Ultimas 5 Notificaciones nuevas
+            Route::get('/Agente/TraerNotificacionesNIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@getNotificacionesN']);
+            //Traer Ultimas 5 Notificaciones nuevas
+            Route::get('/Agente/TraerNotificacionesNAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@getNotificacionesN']);
 
             //Seccion de Informatica
             //Traer Tickets con sus usuarios - Informatica

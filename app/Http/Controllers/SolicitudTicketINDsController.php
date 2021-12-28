@@ -336,4 +336,36 @@ class SolicitudTicketINDsController extends Controller
             return false;
         }
     }
+
+    public function getNotificaciones(){
+        try {
+            $get_all = solicitudTickets::select(DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP) as msg"),'solicitud_ticket_i_n_ds.id',
+            'solicitud_ticket_i_n_ds.uuid','solicitud_ticket_i_n_ds.id_user','tipo_reparacions.descripcionTipoReparacion')
+            ->join("tipo_reparacions",'solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
+            ->where("solicitud_ticket_i_n_ds.id_estado","=",2)
+            ->limit(5)
+            ->orderBy('solicitud_ticket_i_n_ds.id', 'desc')
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getNotificacionesN(){
+        try {
+            $get_all = solicitudTickets::select(DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP) as msg"),'solicitud_ticket_i_n_ds.id',
+            'solicitud_ticket_i_n_ds.uuid','solicitud_ticket_i_n_ds.id_user','tipo_reparacions.descripcionTipoReparacion')
+            ->join("tipo_reparacions",'solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
+            ->where("solicitud_ticket_i_n_ds.id_estado","=",1)
+            ->limit(5)
+            ->orderBy('solicitud_ticket_i_n_ds.id', 'desc')
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
 }
