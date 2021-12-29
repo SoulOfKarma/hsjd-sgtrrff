@@ -31,7 +31,7 @@ class GestionTicketController extends Controller
 
     public function ticketsAll()
     {
-        $filtro = [1,5,6,7];
+        $filtro = [1,5,7,9];
         $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'users.apellido','categorias.des_categoria',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
              DB::raw("CONCAT(solicitud_tickets.id) as nticket"))

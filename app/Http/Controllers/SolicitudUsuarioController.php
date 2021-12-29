@@ -345,6 +345,32 @@ class SolicitudUsuarioController extends Controller
         }
     }
 
+    public function getKPIServicioJ(){
+        try {
+            $get_allI = solicitudTickets::select("servicios.descripcionServicio",DB::raw("COUNT(servicios.descripcionServicio) AS serviciomassolicitado"))
+            ->join("servicios",'solicitud_tickets.id_servicio','=','servicios.id')
+            ->groupby("servicios.id");
+            $get_allEM = SolicitudTicketsEM::select("servicios.descripcionServicio",DB::raw("COUNT(servicios.descripcionServicio) AS serviciomassolicitado"))
+            ->join("servicios",'solicitud_tickets_e_m_s.id_servicio','=','servicios.id')
+            ->groupby("servicios.id");
+            $get_allIND = SolicitudTicketINDs::select("servicios.descripcionServicio",DB::raw("COUNT(servicios.descripcionServicio) AS serviciomassolicitado"))
+            ->join("servicios",'solicitud_tickets.id_servicio','=','servicios.id')
+            ->groupby("servicios.id");
+            $get_all = SolicitudTicketsAps::select("servicios.descripcionServicio",DB::raw("COUNT(servicios.descripcionServicio) AS serviciomassolicitado"))
+            ->join("servicios",'solicitud_ticket_i_n_ds.id_servicio','=','servicios.id')
+            ->groupby("servicios.id")
+            ->union($get_allI)
+            ->union($get_allEM)
+            ->union($get_allIND)
+            ->orderBy('serviciomassolicitado', 'desc');
+
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function getKPIUsuario(){
         try {
             $get_all = solicitudTickets::select("users.id",DB::raw("CONCAT(users.nombre,' ',users.apellido) AS usuariosolicitante"),
