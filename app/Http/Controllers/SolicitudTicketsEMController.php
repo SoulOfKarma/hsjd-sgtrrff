@@ -220,8 +220,8 @@ class SolicitudTicketsEMController extends Controller
             $get_all = SolicitudTicketsEM::select(DB::raw("COUNT(solicitud_tickets_e_m_s.id) AS openTickets"),
             DB::raw("(SELECT COUNT(solicitud_tickets_e_m_s.id_estado) FROM solicitud_tickets_e_m_s WHERE solicitud_tickets_e_m_s.id_estado = 1) AS NewTickets"),
             DB::raw("(SELECT COUNT(solicitud_tickets_e_m_s.id_estado) FROM solicitud_tickets_e_m_s WHERE solicitud_tickets_e_m_s.id_estado BETWEEN 2 AND 4) AS OpenTickets"),
-            DB::raw("(SELECT COUNT(solicitud_tickets_e_m_s.id_estado) FROM solicitud_tickets_e_m_s WHERE solicitud_tickets_e_m_s.id_estado BETWEEN 5 AND 6) AS FinalTicket"),
-            DB::raw("ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s WHERE id_estado BETWEEN 5 AND 6)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s),2) AS Porcentaje"))
+            DB::raw("(SELECT COUNT(solicitud_tickets_e_m_s.id_estado) FROM solicitud_tickets_e_m_s WHERE solicitud_tickets_e_m_s.id_estado BETWEEN 5 AND 9) AS FinalTicket"),
+            DB::raw("ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s WHERE id_estado BETWEEN 5 AND 9)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s),2) AS Porcentaje"))
             ->join('estado_solicituds','solicitud_tickets_e_m_s.id_estado','=','estado_solicituds.id')
             ->get();
             return $get_all;
@@ -237,40 +237,34 @@ class SolicitudTicketsEMController extends Controller
             $get_all = SolicitudTicketsEM::select('estado_solicituds.descripcionEstado as orderType',
             DB::raw("(CASE WHEN solicitud_tickets_e_m_s.id_estado = 1 THEN COUNT(solicitud_tickets_e_m_s.id_estado)
                           WHEN solicitud_tickets_e_m_s.id_estado = 2 THEN COUNT(solicitud_tickets_e_m_s.id_estado)
-                          WHEN solicitud_tickets_e_m_s.id_estado = 4 THEN COUNT(solicitud_tickets_e_m_s.id_estado)
-                          WHEN solicitud_tickets_e_m_s.id_estado = 6 THEN (select COUNT(solicitud_tickets_e_m_s.id_estado) from solicitud_tickets_e_m_s where solicitud_tickets_e_m_s.id_estado BETWEEN 5 AND 6)
-                          WHEN solicitud_tickets_e_m_s.id_estado = 7 THEN COUNT(solicitud_tickets_e_m_s.id_estado)
+                          WHEN solicitud_tickets_e_m_s.id_estado = 4 THEN COUNT(solicitud_tickets_e_m_s.id_estado) 
+                          WHEN solicitud_tickets_e_m_s.id_estado = 6 THEN (select COUNT(solicitud_tickets_e_m_s.id_estado) from solicitud_tickets_e_m_s where solicitud_tickets_e_m_s.id_estado BETWEEN 5 AND 9)
                           END) AS counts"),
             DB::raw("(CASE WHEN solicitud_tickets_e_m_s.id_estado = 1 THEN 'primary'
                           WHEN solicitud_tickets_e_m_s.id_estado = 2 THEN 'warning'
                           WHEN solicitud_tickets_e_m_s.id_estado = 4 THEN 'danger'
                           WHEN solicitud_tickets_e_m_s.id_estado = 6 THEN 'success'
-                          WHEN solicitud_tickets_e_m_s.id_estado = 7 THEN 'dark'
                           END) AS color"),
             DB::raw("(CASE WHEN solicitud_tickets_e_m_s.id_estado = 1 THEN '#7961F9'
                           WHEN solicitud_tickets_e_m_s.id_estado = 2 THEN '#FF9F43'
-                          WHEN solicitud_tickets_e_m_s.id_estado = 4 THEN '#EA5455'
+                          WHEN solicitud_tickets_e_m_s.id_estado = 4 THEN '#EA5455' 
                           WHEN solicitud_tickets_e_m_s.id_estado = 6 THEN '#1fcd39'
-                          WHEN solicitud_tickets_e_m_s.id_estado = 7 THEN '#000000'
                           END) AS codcolor"),        
             DB::raw("(CASE WHEN solicitud_tickets_e_m_s.id_estado = 1 THEN '#9c8cfc'
                           WHEN solicitud_tickets_e_m_s.id_estado = 2 THEN '#FFC085'
-                          WHEN solicitud_tickets_e_m_s.id_estado = 4 THEN '#f29292'
+                          WHEN solicitud_tickets_e_m_s.id_estado = 4 THEN '#f29292' 
                           WHEN solicitud_tickets_e_m_s.id_estado = 6 THEN '#1fcd39'
-                          WHEN solicitud_tickets_e_m_s.id_estado = 7 THEN '#000000'
                           END) AS gradcolor"),                    
             DB::raw("(CASE WHEN solicitud_tickets_e_m_s.id_estado = 1 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s WHERE id_estado = 1)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s),1),0)
             WHEN solicitud_tickets_e_m_s.id_estado = 2 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s WHERE id_estado = 2)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s),1),0)
             WHEN solicitud_tickets_e_m_s.id_estado = 4 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s WHERE id_estado = 4)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s),1),0)
-            WHEN solicitud_tickets_e_m_s.id_estado = 5 || solicitud_tickets_e_m_s.id_estado = 6 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s WHERE id_estado = 5 || id_estado = 6)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
-            WHEN solicitud_tickets_e_m_s.id_estado = 7 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s WHERE id_estado = 7)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s),1),0)
+            WHEN solicitud_tickets_e_m_s.id_estado BETWEEN 5 AND 9 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s WHERE solicitud_tickets_e_m_s.id_estado BETWEEN 5 AND 9)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
             END) AS porcentaje"))
             ->join('estado_solicituds','solicitud_tickets_e_m_s.id_estado','=','estado_solicituds.id')
-            ->where('estado_solicituds.id','=','1')
+             ->where('estado_solicituds.id','=','1')
             ->orWhere('estado_solicituds.id','=','2')
             ->orWhere('estado_solicituds.id','=','4')
             ->orWhere('estado_solicituds.id','=','6')
-            ->orWhere('estado_solicituds.id','=','7')
             ->groupby('estado_solicituds.id')
             ->get();
             //log::info($get_all);
