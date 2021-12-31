@@ -260,6 +260,7 @@ class SolicitudTicketsEMController extends Controller
             ->orWhere('estado_solicituds.id','=','2')
             ->orWhere('estado_solicituds.id','=','6')
             ->groupby('estado_solicituds.id')
+            ->orderBy('estado_solicituds.id','desc')
             ->get();
             //log::info($get_all);
             return $get_all;

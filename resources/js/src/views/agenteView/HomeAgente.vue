@@ -198,7 +198,7 @@
             <div class="vx-col w-1/2 mb-base">
                 <vx-card
                     title="Seguimiento Tickets Equipos Medicos"
-                    :key="resetI"
+                    :key="resetIEM"
                 >
                     <!-- CARD ACTION -->
                     <!-- <template slot="actions">
@@ -260,7 +260,7 @@
                 </vx-card>
             </div>
             <div class="vx-col w-1/2 mb-base">
-                <vx-card title="Porcentaje Avance Tickets" :key="resetI">
+                <vx-card title="Porcentaje Avance Tickets" :key="resetIEM">
                     <!-- CARD ACTION -->
                     <!-- <template slot="actions">
                         <change-time-duration-dropdown />
@@ -278,20 +278,20 @@
 
                     <ul>
                         <li
-                            v-for="orderData in productsOrderEM.analyticsData"
-                            :key="orderData.orderType"
+                            v-for="orderDataEM in productsOrderEM.analyticsData"
+                            :key="orderDataEM.orderType"
                             class="flex mb-3 justify-between"
                         >
                             <span class="flex items-center">
                                 <span
                                     class="inline-block h-4 w-4 rounded-full mr-2 bg-white border-3 border-solid"
-                                    :class="`border-${orderData.color}`"
+                                    :class="`border-${orderDataEM.color}`"
                                 ></span>
                                 <span class="font-semibold">{{
-                                    orderData.orderType
+                                    orderDataEM.orderType
                                 }}</span>
                             </span>
-                            <span>{{ orderData.counts }}</span>
+                            <span>{{ orderDataEM.counts }}</span>
                         </li>
                     </ul>
                 </vx-card>
@@ -525,6 +525,9 @@ export default {
         return {
             localVal: process.env.MIX_APP_URL,
             resetI: 0,
+            resetIEM: 0,
+            resetIIND: 0,
+            resetIAP: 0,
             supportTracker: {},
             supportTrackerEM: {},
             supportTrackerIND: {},
@@ -1372,7 +1375,7 @@ export default {
                                     objgragcolorEM = value.codcolor;
                                     gradcolorsEM.push(objgragcolorEM);
                                     contadorEM = contadorEM + value.counts;
-                                    c.push(obj);
+                                    c.push(objEM);
                                 });
                                 //List Industrial
                                 let objIND = {};
@@ -1396,7 +1399,7 @@ export default {
                                     objgragcolorIND = value.codcolor;
                                     gradcolorsIND.push(objgragcolorIND);
                                     contadorIND = contadorIND + value.counts;
-                                    d.push(obj);
+                                    d.push(objIND);
                                 });
                                 //List Apoyo Clinico
                                 let objAP = {};
@@ -1420,7 +1423,7 @@ export default {
                                     objgragcolorAP = value.codcolor;
                                     gradcolorsAP.push(objgragcolorAP);
                                     contadorAP = contadorAP + value.counts;
-                                    f.push(obj);
+                                    f.push(objAP);
                                 });
                                 //Radial Infraestructura
                                 this.productOrdersRadialBar = {
@@ -1780,21 +1783,26 @@ export default {
                                 };
                                 let datEM = {
                                     analyticsData: list2,
-                                    series: b
+                                    series: c
                                 };
                                 let datIND = {
                                     analyticsData: list3,
-                                    series: b
+                                    series: d
                                 };
                                 let datAP = {
                                     analyticsData: list4,
-                                    series: b
+                                    series: f
                                 };
                                 this.productsOrder = dat;
                                 this.productsOrderEM = datEM;
                                 this.productsOrderIND = datIND;
                                 this.productsOrderAP = datAP;
+                                console.log(this.productsOrder);
+                                console.log(this.productsOrderEM);
                                 this.resetI += 1;
+                                this.resetIEM += 1;
+                                this.resetIIND += 1;
+                                this.resetIAP += 1;
                             })
                         );
                 } catch (error) {
