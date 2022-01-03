@@ -1341,6 +1341,11 @@ export default {
                                 list.forEach((value, index) => {
                                     obj = {};
                                     obj = parseInt(value.porcentaje);
+                                    if (value.porcentaje < 1) {
+                                        if (value.porcentaje > 0) {
+                                            obj = 1;
+                                        }
+                                    }
                                     objData = {};
                                     objData = value.orderType;
                                     label.push(objData);
@@ -1365,6 +1370,11 @@ export default {
                                 list2.forEach((value, index) => {
                                     objEM = {};
                                     objEM = parseInt(value.porcentaje);
+                                    if (value.porcentaje < 1) {
+                                        if (value.porcentaje > 0) {
+                                            objEM = 1;
+                                        }
+                                    }
                                     objDataEM = {};
                                     objDataEM = value.orderType;
                                     labelEM.push(objDataEM);
@@ -1389,6 +1399,11 @@ export default {
                                 list3.forEach((value, index) => {
                                     objIND = {};
                                     objIND = parseInt(value.porcentaje);
+                                    if (value.porcentaje < 1) {
+                                        if (value.porcentaje > 0) {
+                                            objIND = 1;
+                                        }
+                                    }
                                     objDataIND = {};
                                     objDataIND = value.orderType;
                                     labelIND.push(objDataIND);
@@ -1413,6 +1428,11 @@ export default {
                                 list4.forEach((value, index) => {
                                     objAP = {};
                                     objAP = parseInt(value.porcentaje);
+                                    if (value.porcentaje < 1) {
+                                        if (value.porcentaje > 0) {
+                                            objAP = 1;
+                                        }
+                                    }
                                     objDataAP = {};
                                     objDataAP = value.orderType;
                                     labelAP.push(objDataAP);
@@ -1797,8 +1817,6 @@ export default {
                                 this.productsOrderEM = datEM;
                                 this.productsOrderIND = datIND;
                                 this.productsOrderAP = datAP;
-                                console.log(this.productsOrder);
-                                console.log(this.productsOrderEM);
                                 this.resetI += 1;
                                 this.resetIEM += 1;
                                 this.resetIIND += 1;

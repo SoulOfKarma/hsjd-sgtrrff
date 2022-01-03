@@ -253,7 +253,7 @@ class SolicitudTicketsEMController extends Controller
                           END) AS gradcolor"),                    
             DB::raw("(CASE WHEN solicitud_tickets_e_m_s.id_estado = 1 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s WHERE id_estado = 1)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s),1),0)
             WHEN solicitud_tickets_e_m_s.id_estado BETWEEN 2 AND 4 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s WHERE id_estado BETWEEN 2 AND 4)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s),1),0)
-            WHEN solicitud_tickets_e_m_s.id_estado BETWEEN 5 AND 9 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s WHERE solicitud_tickets_e_m_s.id_estado BETWEEN 5 AND 9)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1)
+            WHEN solicitud_tickets_e_m_s.id_estado BETWEEN 5 AND 9 THEN ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s WHERE solicitud_tickets_e_m_s.id_estado BETWEEN 5 AND 9)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets_e_m_s),0)
             END) AS porcentaje"))
             ->join('estado_solicituds','solicitud_tickets_e_m_s.id_estado','=','estado_solicituds.id')
              ->where('estado_solicituds.id','=','1')

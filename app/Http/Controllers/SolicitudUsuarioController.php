@@ -285,7 +285,7 @@ class SolicitudUsuarioController extends Controller
                           END) AS gradcolor"),                    
             DB::raw("(CASE WHEN solicitud_tickets.id_estado = 1 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado = 1)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1),0)
             WHEN solicitud_tickets.id_estado BETWEEN 2 AND 4 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado BETWEEN 2 AND 4)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1),0)
-            WHEN solicitud_tickets.id_estado BETWEEN 5 AND 9 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado BETWEEN 5 AND 9)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),1),0)
+            WHEN solicitud_tickets.id_estado BETWEEN 5 AND 9 THEN COALESCE(ROUND(((SELECT COUNT(id_estado) FROM solicitud_tickets WHERE id_estado BETWEEN 5 AND 9)*100)/(SELECT COUNT(id_estado) FROM solicitud_tickets),0),0)
             END) AS porcentaje"))
             ->join('estado_solicituds','solicitud_tickets.id_estado','=','estado_solicituds.id')
             ->where('estado_solicituds.id','=','1')
