@@ -343,16 +343,18 @@ class SolicitudUsuarioController extends Controller
             ->join("servicios",'solicitud_tickets_e_m_s.id_servicio','=','servicios.id')
             ->groupby("servicios.id");
             $get_allIND = SolicitudTicketINDs::select("servicios.descripcionServicio",DB::raw("COUNT(servicios.descripcionServicio) AS serviciomassolicitado"))
-            ->join("servicios",'solicitud_tickets.id_servicio','=','servicios.id')
+            ->join("servicios",'solicitud_ticket_i_n_ds.id_servicio','=','servicios.id')
             ->groupby("servicios.id");
             $get_all = SolicitudTicketsAps::select("servicios.descripcionServicio",DB::raw("COUNT(servicios.descripcionServicio) AS serviciomassolicitado"))
-            ->join("servicios",'solicitud_ticket_i_n_ds.id_servicio','=','servicios.id')
+            ->join("servicios",'solicitud_tickets_aps.id_servicio','=','servicios.id')
             ->groupby("servicios.id")
             ->union($get_allI)
             ->union($get_allEM)
             ->union($get_allIND)
-            ->orderBy('serviciomassolicitado', 'desc');
-
+            ->orderBy('serviciomassolicitado', 'desc')
+            ->limit(1)
+            ->get();
+            
             return $get_all;
         } catch (\Throwable $th) {
             log::info($th);
@@ -366,6 +368,38 @@ class SolicitudUsuarioController extends Controller
             DB::raw("COUNT(solicitud_tickets.id_user) massolicitante"))
             ->join("users",'solicitud_tickets.id_user','=','users.id')
             ->groupby("users.id")
+            ->orderBy('massolicitante', 'desc')
+            ->limit(1)
+            ->get();
+
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getKPIUsuarioJ(){
+        try {
+            $get_allI = solicitudTickets::select("users.id",DB::raw("CONCAT(users.nombre,' ',users.apellido) AS usuariosolicitante"),
+            DB::raw("COUNT(solicitud_tickets.id_user) massolicitante"))
+            ->join("users",'solicitud_tickets.id_user','=','users.id')
+            ->groupby("users.id");
+            $get_allEM = SolicitudTicketsEM::select("users.id",DB::raw("CONCAT(users.nombre,' ',users.apellido) AS usuariosolicitante"),
+            DB::raw("COUNT(solicitud_tickets_e_m_s.id_user) massolicitante"))
+            ->join("users",'solicitud_tickets_e_m_s.id_user','=','users.id')
+            ->groupby("users.id");
+            $get_allIND = SolicitudTicketINDs::select("users.id",DB::raw("CONCAT(users.nombre,' ',users.apellido) AS usuariosolicitante"),
+            DB::raw("COUNT(solicitud_ticket_i_n_ds.id_user) massolicitante"))
+            ->join("users",'solicitud_ticket_i_n_ds.id_user','=','users.id')
+            ->groupby("users.id");
+            $get_all = SolicitudTicketsAps::select("users.id",DB::raw("CONCAT(users.nombre,' ',users.apellido) AS usuariosolicitante"),
+            DB::raw("COUNT(solicitud_tickets_aps.id_user) massolicitante"))
+            ->join("users",'solicitud_tickets_aps.id_user','=','users.id')
+            ->groupby("users.id")
+            ->union($get_allI)
+            ->union($get_allEM)
+            ->union($get_allIND)
             ->orderBy('massolicitante', 'desc')
             ->limit(1)
             ->get();
@@ -393,11 +427,67 @@ class SolicitudUsuarioController extends Controller
         }
     }
 
+    public function getKPICategoriaJ(){
+        try {
+            $get_allI = solicitudTickets::select("categorias.des_categoria",DB::raw("COUNT(solicitud_tickets.id_categoria) AS categoriamassol"))
+            ->join("categorias",'solicitud_tickets.id_categoria','=','categorias.id')
+            ->groupby("categorias.id");
+            $get_allEM = SolicitudTicketsEM::select("categorias.des_categoria",DB::raw("COUNT(solicitud_tickets_e_m_s.id_categoria) AS categoriamassol"))
+            ->join("categorias",'solicitud_tickets_e_m_s.id_categoria','=','categorias.id')
+            ->groupby("categorias.id");
+            $get_allIND = SolicitudTicketINDs::select("categorias.des_categoria",DB::raw("COUNT(solicitud_ticket_i_n_ds.id_categoria) AS categoriamassol"))
+            ->join("categorias",'solicitud_ticket_i_n_ds.id_categoria','=','categorias.id')
+            ->groupby("categorias.id");
+            $get_all = SolicitudTicketsAps::select("categorias.des_categoria",DB::raw("COUNT(solicitud_tickets_aps.id_categoria) AS categoriamassol"))
+            ->join("categorias",'solicitud_tickets_aps.id_categoria','=','categorias.id')
+            ->groupby("categorias.id")
+            ->union($get_allI)
+            ->union($get_allEM)
+            ->union($get_allIND)
+            ->orderBy('categoriamassol', 'DESC')
+            ->limit(1)
+            ->get();
+
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function getKPITipoMantencion(){
         try {
             $get_all = solicitudTickets::select("tipo_reparacions.descripcionTipoReparacion",DB::raw("COUNT(solicitud_tickets.id_tipoReparacion) AS tipomassol"))
             ->join("tipo_reparacions",'solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
             ->groupby("tipo_reparacions.id")
+            ->orderBy('tipomassol', 'desc')
+            ->limit(1)
+            ->get();
+
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getKPITipoMantencionJ(){
+        try {
+            $get_allI = solicitudTickets::select("tipo_reparacions.descripcionTipoReparacion",DB::raw("COUNT(solicitud_tickets.id_tipoReparacion) AS tipomassol"))
+            ->join("tipo_reparacions",'solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
+            ->groupby("tipo_reparacions.id");
+            $get_allEM = SolicitudTicketsEM::select("tipo_reparacions.descripcionTipoReparacion",DB::raw("COUNT(solicitud_tickets_e_m_s.id_tipoReparacion) AS tipomassol"))
+            ->join("tipo_reparacions",'solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
+            ->groupby("tipo_reparacions.id");
+            $get_allIND = SolicitudTicketINDs::select("tipo_reparacions.descripcionTipoReparacion",DB::raw("COUNT(solicitud_ticket_i_n_ds.id_tipoReparacion) AS tipomassol"))
+            ->join("tipo_reparacions",'solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
+            ->groupby("tipo_reparacions.id");
+            $get_all = SolicitudTicketsAps::select("tipo_reparacions.descripcionTipoReparacion",DB::raw("COUNT(solicitud_tickets_aps.id_tipoReparacion) AS tipomassol"))
+            ->join("tipo_reparacions",'solicitud_tickets_aps.id_tipoReparacion','=','tipo_reparacions.id')
+            ->groupby("tipo_reparacions.id")
+            ->union($get_allI)
+            ->union($get_allEM)
+            ->union($get_allIND)
             ->orderBy('tipomassol', 'desc')
             ->limit(1)
             ->get();

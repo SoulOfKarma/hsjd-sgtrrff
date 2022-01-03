@@ -2366,7 +2366,7 @@ export default {
                     axios
                         .all([
                             axios.get(
-                                this.localVal + "/api/Agente/TraerServicioKPI",
+                                this.localVal + "/api/Agente/TraerServicioKPIJ",
                                 {
                                     headers: {
                                         Authorization:
@@ -2376,17 +2376,7 @@ export default {
                                 }
                             ),
                             axios.get(
-                                this.localVal + "/api/Agente/TraerUsuarioKPI",
-                                {
-                                    headers: {
-                                        Authorization:
-                                            `Bearer ` +
-                                            sessionStorage.getItem("token")
-                                    }
-                                }
-                            ),
-                            axios.get(
-                                this.localVal + "/api/Agente/TraerCategoriaKPI",
+                                this.localVal + "/api/Agente/TraerUsuarioKPIJ",
                                 {
                                     headers: {
                                         Authorization:
@@ -2397,7 +2387,18 @@ export default {
                             ),
                             axios.get(
                                 this.localVal +
-                                    "/api/Agente/TraerTipoMantencionKPI",
+                                    "/api/Agente/TraerCategoriaKPIJ",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            ),
+                            axios.get(
+                                this.localVal +
+                                    "/api/Agente/TraerTipoMantencionKPIJ",
                                 {
                                     headers: {
                                         Authorization:

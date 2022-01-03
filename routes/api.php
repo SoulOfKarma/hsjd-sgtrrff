@@ -506,6 +506,14 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/TraerCategoriaKPI', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPICategoria']);
             //Traer Tipo Mantencion mas solicitante.
             Route::get('/Agente/TraerTipoMantencionKPI', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPITipoMantencion']);
+             //Traer Servicio mas solicitado Jefatura.
+             Route::get('/Agente/TraerServicioKPIJ', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPIServicioJ']);
+             //Traer usuario mas solicitante Jefatura.
+             Route::get('/Agente/TraerUsuarioKPIJ', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPIUsuarioJ']);
+             //Traer Categoria mas solicitante Jefatura.
+             Route::get('/Agente/TraerCategoriaKPIJ', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPICategoriaJ']);
+             //Traer Tipo Mantencion mas solicitante Jefatura.
+             Route::get('/Agente/TraerTipoMantencionKPIJ', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getKPITipoMantencionJ']);
             //Traer Servicio mas solicitado EM.
             Route::get('/Agente/TraerServicioKPIEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@getKPIServicio']);
             //Traer usuario mas solicitante EM.
