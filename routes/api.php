@@ -578,6 +578,8 @@ use App\Mail\AutoRespuesta;
 
             //Datos Notificaciones
             //Traer Ultimas 5 Notificaciones en Proceso Infraestructura
+            Route::get('/Agente/TraerNotificacionesJ', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getNotificacionesJ']);
+            //Traer Ultimas 5 Notificaciones en Proceso Infraestructura
             Route::get('/Agente/TraerNotificaciones', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getNotificaciones']);
             //Traer Ultimas 5 Notificaciones en Proceso Equipos Medicos
             Route::get('/Agente/TraerNotificacionesEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@getNotificaciones']);
@@ -587,6 +589,8 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/TraerNotificacionesAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@getNotificaciones']);
             //Traer Ultimas 5 Notificaciones nuevas
             Route::get('/Agente/TraerNotificacionesN', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getNotificacionesN']);
+            //Traer Ultimas 5 Notificaciones nuevas
+            Route::get('/Agente/TraerNotificacionesNJ', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getNotificacionesNJ']);
             //Traer Ultimas 5 Notificaciones nuevas
             Route::get('/Agente/TraerNotificacionesNEM', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsEMController@getNotificacionesN']);
             //Traer Ultimas 5 Notificaciones nuevas

@@ -584,7 +584,7 @@ export default {
                 try {
                     axios
                         .get(
-                            this.localVal + "/api/Agente/TraerNotificaciones",
+                            this.localVal + "/api/Agente/TraerNotificacionesJ",
                             {
                                 headers: {
                                     Authorization:
@@ -602,6 +602,7 @@ export default {
                                 obj = {};
                                 obj = {
                                     id: value.id,
+                                    idCategoria: value.id_categoria,
                                     uuid: value.uuid,
                                     id_user: value.id_user,
                                     index: index,
@@ -773,7 +774,7 @@ export default {
                 try {
                     axios
                         .get(
-                            this.localVal + "/api/Agente/TraerNotificacionesN",
+                            this.localVal + "/api/Agente/TraerNotificacionesNJ",
                             {
                                 headers: {
                                     Authorization:
@@ -791,6 +792,7 @@ export default {
                                 obj = {};
                                 obj = {
                                     id: value.id,
+                                    idCategoria: value.id_categoria,
                                     uuid: value.uuid,
                                     id_user: value.id_user,
                                     index: index,

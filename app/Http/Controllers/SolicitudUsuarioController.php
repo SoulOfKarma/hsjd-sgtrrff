@@ -505,8 +505,39 @@ class SolicitudUsuarioController extends Controller
             'solicitud_tickets.uuid','solicitud_tickets.id_user','tipo_reparacions.descripcionTipoReparacion')
             ->join("tipo_reparacions",'solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
             ->where("solicitud_tickets.id_estado","=",2)
-            ->limit(5)
             ->orderBy('solicitud_tickets.id', 'desc')
+            ->limit(5)
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getNotificacionesJ(){
+        try {
+            $get_allI = solicitudTickets::select(DB::raw("fnStripTags(solicitud_tickets.descripcionP) as msg"),'solicitud_tickets.id','solicitud_tickets.id_categoria',
+            'solicitud_tickets.uuid','solicitud_tickets.id_user','tipo_reparacions.descripcionTipoReparacion',DB::raw("solicitud_tickets.updated_at AS lastdate"))
+            ->join("tipo_reparacions",'solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
+            ->where("solicitud_tickets.id_estado","=",2);
+            $get_allEM = SolicitudTicketsEM::select(DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as msg"),'solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.id_categoria',
+            'solicitud_tickets_e_m_s.uuid','solicitud_tickets_e_m_s.id_user','tipo_reparacions.descripcionTipoReparacion',DB::raw("solicitud_tickets_e_m_s.updated_at AS lastdate"))
+            ->join("tipo_reparacions",'solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
+            ->where("solicitud_tickets_e_m_s.id_estado","=",2);
+            $get_allIND = SolicitudTicketINDs::select(DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP) as msg"),'solicitud_ticket_i_n_ds.id','solicitud_ticket_i_n_ds.id_categoria',
+            'solicitud_ticket_i_n_ds.uuid','solicitud_ticket_i_n_ds.id_user','tipo_reparacions.descripcionTipoReparacion',DB::raw("solicitud_ticket_i_n_ds.updated_at AS lastdate"))
+            ->join("tipo_reparacions",'solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
+            ->where("solicitud_ticket_i_n_ds.id_estado","=",2);
+            $get_all = SolicitudTicketsAps::select(DB::raw("fnStripTags(solicitud_tickets_aps.descripcionP) as msg"),'solicitud_tickets_aps.id','solicitud_tickets_aps.id_categoria',
+            'solicitud_tickets_aps.uuid','solicitud_tickets_aps.id_user','tipo_reparacions.descripcionTipoReparacion',DB::raw("solicitud_tickets_aps.updated_at AS lastdate"))
+            ->join("tipo_reparacions",'solicitud_tickets_aps.id_tipoReparacion','=','tipo_reparacions.id')
+            ->where("solicitud_tickets_aps.id_estado","=",2)
+            ->union($get_allI)
+            ->union($get_allEM)
+            ->union($get_allIND)
+            ->orderBy('lastdate', 'desc')
+            ->limit(5)
             ->get();
             return $get_all;
         } catch (\Throwable $th) {
@@ -523,6 +554,37 @@ class SolicitudUsuarioController extends Controller
             ->where("solicitud_tickets.id_estado","=",1)
             ->limit(5)
             ->orderBy('solicitud_tickets.id', 'desc')
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function getNotificacionesNJ(){
+        try {
+            $get_allI = solicitudTickets::select(DB::raw("fnStripTags(solicitud_tickets.descripcionP) as msg"),'solicitud_tickets.id','solicitud_tickets.id_categoria',
+            'solicitud_tickets.uuid','solicitud_tickets.id_user','tipo_reparacions.descripcionTipoReparacion',DB::raw("solicitud_tickets.updated_at AS lastdate"))
+            ->join("tipo_reparacions",'solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
+            ->where("solicitud_tickets.id_estado","=",1);
+            $get_allEM = SolicitudTicketsEM::select(DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP) as msg"),'solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.id_categoria',
+            'solicitud_tickets_e_m_s.uuid','solicitud_tickets_e_m_s.id_user','tipo_reparacions.descripcionTipoReparacion',DB::raw("solicitud_tickets_e_m_s.updated_at AS lastdate"))
+            ->join("tipo_reparacions",'solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
+            ->where("solicitud_tickets_e_m_s.id_estado","=",1);
+            $get_allIND = SolicitudTicketINDs::select(DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP) as msg"),'solicitud_ticket_i_n_ds.id','solicitud_ticket_i_n_ds.id_categoria',
+            'solicitud_ticket_i_n_ds.uuid','solicitud_ticket_i_n_ds.id_user','tipo_reparacions.descripcionTipoReparacion',DB::raw("solicitud_ticket_i_n_ds.updated_at AS lastdate"))
+            ->join("tipo_reparacions",'solicitud_ticket_i_n_ds.id_tipoReparacion','=','tipo_reparacions.id')
+            ->where("solicitud_ticket_i_n_ds.id_estado","=",1);
+            $get_all = SolicitudTicketsAps::select(DB::raw("fnStripTags(solicitud_tickets_aps.descripcionP) as msg"),'solicitud_tickets_aps.id','solicitud_tickets_aps.id_categoria',
+            'solicitud_tickets_aps.uuid','solicitud_tickets_aps.id_user','tipo_reparacions.descripcionTipoReparacion',DB::raw("solicitud_tickets_aps.updated_at AS lastdate"))
+            ->join("tipo_reparacions",'solicitud_tickets_aps.id_tipoReparacion','=','tipo_reparacions.id')
+            ->where("solicitud_tickets_aps.id_estado","=",1)
+            ->union($get_allI)
+            ->union($get_allEM)
+            ->union($get_allIND)
+            ->orderBy('lastdate', 'desc')
+            ->limit(5)
             ->get();
             return $get_all;
         } catch (\Throwable $th) {
