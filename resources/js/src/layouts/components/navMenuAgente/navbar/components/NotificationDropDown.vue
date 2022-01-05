@@ -34,7 +34,14 @@
                             v-for="ntf in unreadNotificationsN"
                             :key="ntf.index"
                             class="flex justify-between px-4 py-4 notification cursor-pointer"
-                            @click="abrirNotificacionP(ntf.id, ntf.uuid)"
+                            @click="
+                                abrirNotificacionP(
+                                    ntf.id,
+                                    ntf.uuid,
+                                    ntf.id_user,
+                                    ntf.idCategoria
+                                )
+                            "
                         >
                             <div class="flex items-start">
                                 <feather-icon
@@ -93,7 +100,12 @@
                             :key="ntf.index"
                             class="flex justify-between px-4 py-4 notification cursor-pointer"
                             @click="
-                                abrirNotificacion(ntf.id, ntf.uuid, ntf.id_user)
+                                abrirNotificacion(
+                                    ntf.id,
+                                    ntf.uuid,
+                                    ntf.id_user,
+                                    ntf.idCategoria
+                                )
                             "
                         >
                             <div class="flex items-start">
@@ -193,42 +205,146 @@ export default {
 
             return date;
         },
-        abrirNotificacionP(id, uuid, id_user) {
+        abrirNotificacionP(id, uuid, id_user, idCategoria) {
             if (sessionStorage.getItem("permiso_usuario") == 1) {
                 try {
-                    const path = {
-                        name: "AsignarSolicitudAgente",
-                        params: {
-                            id: `${id}`,
-                            uuid: `${uuid}`,
-                            id_user: `${id_user}`
-                        }
-                    };
-                    axios
-                        .get(
-                            this.localVal +
-                                `/api/Agente/ValidarTicketAsignado/${id}`,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
+                    if (idCategoria == 1) {
+                        const path = {
+                            name: "AsignarSolicitudAgente",
+                            params: {
+                                id: `${id}`,
+                                uuid: `${uuid}`,
+                                id_user: `${id_user}`
+                            }
+                        };
+                        axios
+                            .get(
+                                this.localVal +
+                                    `/api/Agente/ValidarTicketAsignado/${id}`,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
                                 }
+                            )
+                            .then(res => {
+                                if (res.data == 2) {
+                                    this.$vs.notify({
+                                        title: "Ticket ya asignado ",
+                                        text:
+                                            "Si necesita modificarlo vaya a Modificar Ticket ",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                } else if (this.$route.path !== path) {
+                                    this.$router.push(path).catch(err => {});
+                                }
+                            });
+                    } else if (idCategoria == 2) {
+                        const path = {
+                            name: "AsignarSolicitudAgenteEM",
+                            params: {
+                                id: `${id}`,
+                                uuid: `${uuid}`,
+                                id_user: `${id_user}`
                             }
-                        )
-                        .then(res => {
-                            if (res.data == 2) {
-                                this.$vs.notify({
-                                    title: "Ticket ya asignado ",
-                                    text:
-                                        "Si necesita modificarlo vaya a Modificar Ticket ",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            } else if (this.$route.path !== path) {
-                                this.$router.push(path).catch(err => {});
+                        };
+                        axios
+                            .get(
+                                this.localVal +
+                                    `/api/Agente/ValidarTicketAsignadoEM/${id}`,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                if (res.data == 2) {
+                                    this.$vs.notify({
+                                        title: "Ticket ya asignado ",
+                                        text:
+                                            "Si necesita modificarlo vaya a Modificar Ticket ",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                } else if (this.$route.path !== path) {
+                                    this.$router.push(path).catch(err => {});
+                                }
+                            });
+                    } else if (idCategoria == 3) {
+                        const path = {
+                            name: "AsignarSolicitudAgenteIND",
+                            params: {
+                                id: `${id}`,
+                                uuid: `${uuid}`,
+                                id_user: `${id_user}`
                             }
-                        });
+                        };
+                        axios
+                            .get(
+                                this.localVal +
+                                    `/api/Agente/ValidarTicketAsignadoIND/${id}`,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                if (res.data == 2) {
+                                    this.$vs.notify({
+                                        title: "Ticket ya asignado ",
+                                        text:
+                                            "Si necesita modificarlo vaya a Modificar Ticket ",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                } else if (this.$route.path !== path) {
+                                    this.$router.push(path).catch(err => {});
+                                }
+                            });
+                    } else if (idCategoria == 4) {
+                        const path = {
+                            name: "AsignarSolicitudAgenteCA",
+                            params: {
+                                id: `${id}`,
+                                uuid: `${uuid}`,
+                                id_user: `${id_user}`
+                            }
+                        };
+                        axios
+                            .get(
+                                this.localVal +
+                                    `/api/Agente/ValidarTicketAsignadoAP/${id}`,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                if (res.data == 2) {
+                                    this.$vs.notify({
+                                        title: "Ticket ya asignado ",
+                                        text:
+                                            "Si necesita modificarlo vaya a Modificar Ticket ",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                } else if (this.$route.path !== path) {
+                                    this.$router.push(path).catch(err => {});
+                                }
+                            });
+                    }
                 } catch (error) {
                     console.log("Error al capturar datos");
                 }
@@ -386,42 +502,146 @@ export default {
                 }
             }
         },
-        abrirNotificacion(id, uuid, id_user) {
+        abrirNotificacion(id, uuid, id_user, idCategoria) {
             if (sessionStorage.getItem("permiso_usuario") == 1) {
                 try {
-                    const path = {
-                        name: "ModificarSolicitudAgente",
-                        params: {
-                            id: `${id}`,
-                            uuid: `${uuid}`,
-                            id_user: `${id_user}`
-                        }
-                    };
-                    axios
-                        .get(
-                            this.localVal +
-                                `/api/Agente/ValidarTicketAsignadoMod/${id}`,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
+                    if (idCategoria == 1) {
+                        const path = {
+                            name: "ModificarSolicitudAgente",
+                            params: {
+                                id: `${id}`,
+                                uuid: `${uuid}`,
+                                id_user: `${id_user}`
+                            }
+                        };
+                        axios
+                            .get(
+                                this.localVal +
+                                    `/api/Agente/ValidarTicketAsignadoMod/${id}`,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
                                 }
+                            )
+                            .then(res => {
+                                if (res.data == 1) {
+                                    this.$vs.notify({
+                                        title: "Ticket no ha sido asignado ",
+                                        text:
+                                            "Ticket necesita ya estar asignado primero para modificarlo ",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                } else if (this.$route.path !== path) {
+                                    this.$router.push(path).catch(err => {});
+                                }
+                            });
+                    } else if (idCategoria == 2) {
+                        const path = {
+                            name: "ModificarSolicitudAgenteEM",
+                            params: {
+                                id: `${id}`,
+                                uuid: `${uuid}`,
+                                id_user: `${id_user}`
                             }
-                        )
-                        .then(res => {
-                            if (res.data == 1) {
-                                this.$vs.notify({
-                                    title: "Ticket no ha sido asignado ",
-                                    text:
-                                        "Ticket necesita ya estar asignado primero para modificarlo ",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            } else if (this.$route.path !== path) {
-                                this.$router.push(path).catch(err => {});
+                        };
+                        axios
+                            .get(
+                                this.localVal +
+                                    `/api/Agente/ValidarTicketAsignadoModEM/${id}`,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                if (res.data == 1) {
+                                    this.$vs.notify({
+                                        title: "Ticket no ha sido asignado ",
+                                        text:
+                                            "Ticket necesita ya estar asignado primero para modificarlo ",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                } else if (this.$route.path !== path) {
+                                    this.$router.push(path).catch(err => {});
+                                }
+                            });
+                    } else if (idCategoria == 3) {
+                        const path = {
+                            name: "ModificarSolicitudAgenteIND",
+                            params: {
+                                id: `${id}`,
+                                uuid: `${uuid}`,
+                                id_user: `${id_user}`
                             }
-                        });
+                        };
+                        axios
+                            .get(
+                                this.localVal +
+                                    `/api/Agente/ValidarTicketAsignadoModIND/${id}`,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                if (res.data == 1) {
+                                    this.$vs.notify({
+                                        title: "Ticket no ha sido asignado ",
+                                        text:
+                                            "Ticket necesita ya estar asignado primero para modificarlo ",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                } else if (this.$route.path !== path) {
+                                    this.$router.push(path).catch(err => {});
+                                }
+                            });
+                    } else if (idCategoria == 4) {
+                        const path = {
+                            name: "ModificarSolicitudAgenteCA",
+                            params: {
+                                id: `${id}`,
+                                uuid: `${uuid}`,
+                                id_user: `${id_user}`
+                            }
+                        };
+                        axios
+                            .get(
+                                this.localVal +
+                                    `/api/Agente/ValidarTicketAsignadoModAP/${id}`,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                if (res.data == 1) {
+                                    this.$vs.notify({
+                                        title: "Ticket no ha sido asignado ",
+                                        text:
+                                            "Ticket necesita ya estar asignado primero para modificarlo ",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                } else if (this.$route.path !== path) {
+                                    this.$router.push(path).catch(err => {});
+                                }
+                            });
+                    }
                 } catch (error) {
                     console.log("Error al capturar datos");
                 }
