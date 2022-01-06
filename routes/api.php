@@ -681,7 +681,13 @@ use App\Mail\AutoRespuesta;
             Route::post('/Agente/ListadoEquipamientoMedicoByID', ['middleware' => 'cors', 'uses' => 'TblTicketEquipamientoMedicosController@ListadoEquipamientoMedicoByID']); 
             
             //Modificar Fechas 
-            Route::post('/Agente/PutFechas', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@PutFechas']);  
+            Route::post('/Agente/PutFechasI', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@PutFechas']);  
+            //Modificar Fechas 
+            Route::post('/Agente/PutFechasEM', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@PutFechas']);  
+            //Modificar Fechas 
+            Route::post('/Agente/PutFechasIND', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@PutFechas']);  
+            //Modificar Fechas 
+            Route::post('/Agente/PutFechasAP', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@PutFechas']);  
 
             //Enviar Correo Personalizado a Usuario
             Route::post('/Agente/PostMensajeCorreo', ['middleware' => 'cors', 'uses' => 'GestionTicketController@PostMensajeCorreo']);

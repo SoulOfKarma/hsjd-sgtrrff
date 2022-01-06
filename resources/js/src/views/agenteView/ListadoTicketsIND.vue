@@ -891,7 +891,7 @@ export default {
                 };
 
                 axios
-                    .post(this.localVal + "/api/Agente/PutFechas", data, {
+                    .post(this.localVal + "/api/Agente/PutFechasIND", data, {
                         headers: {
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")

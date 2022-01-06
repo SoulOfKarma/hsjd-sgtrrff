@@ -73,6 +73,12 @@
                         <vs-chip v-if="props.row.id_estado == 8" color="danger">
                             {{ props.row.descripcionEstado }}
                         </vs-chip>
+                        <vs-chip
+                            v-if="props.row.id_estado == 9"
+                            color="primary"
+                        >
+                            {{ props.row.descripcionEstado }}
+                        </vs-chip>
                     </span>
 
                     <!-- Column: Action -->
@@ -146,6 +152,32 @@
                                 )
                             "
                         ></file-text-icon>
+                        <calendar-icon
+                            content="Cambiar Fecha de Asignacion"
+                            v-tippy
+                            size="1.5x"
+                            class="custom-class"
+                            @click="
+                                popModFechaAsig(
+                                    props.row.id,
+                                    props.row.uuid,
+                                    props.row.id_categoria
+                                )
+                            "
+                        ></calendar-icon>
+                        <edit-icon
+                            content="Enviar Mensaje Por Correo a Usuari@"
+                            v-tippy
+                            size="1.5x"
+                            class="custom-class"
+                            @click="
+                                popEnviarCorreo(
+                                    props.row.id,
+                                    props.row.uuid,
+                                    props.row.id_categoria
+                                )
+                            "
+                        ></edit-icon>
                     </span>
 
                     <!-- Column: Common -->
@@ -362,12 +394,118 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="popFechaCambiar"
+            title="Cambiar Fechas"
+            :active.sync="popFechaCambiar"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full ">
+                        <vx-card>
+                            <div class="vx-col w-full mt-5">
+                                <h6>3.1 - Fecha de Solicitud</h6>
+                                <br />
+                                <flat-pickr
+                                    class="w-full"
+                                    :config="configFromdateTimePicker"
+                                    v-model="fechaSolicitudI"
+                                    placeholder="Seleccione Fecha"
+                                />
+                            </div>
+                            <div class="vx-col w-full mt-5">
+                                <h6>3.2 - Fecha de Asignacion</h6>
+                                <br />
+                                <flat-pickr
+                                    class="w-full"
+                                    :config="configFromdateTimePicker"
+                                    v-model="fechaAsignacion"
+                                    placeholder="Seleccione Fecha"
+                                />
+                            </div>
+                            <div class="vx-col w-full mt-5">
+                                <h6>3.3 - Fecha de Termino</h6>
+                                <br />
+                                <flat-pickr
+                                    class="w-full"
+                                    :config="configFromdateTimePicker"
+                                    v-model="fechaTermino"
+                                    placeholder="Seleccione Fecha"
+                                />
+                            </div>
+                        </vx-card>
+                        <br />
+                    </div>
+                    <div class="vx-col w-full md-5">
+                        <vs-button
+                            @click="popFechaCambiar = false"
+                            color="primary"
+                            type="filled"
+                            class="w-full m-1"
+                            >Volver</vs-button
+                        >
+                        <vs-button
+                            @click="cambiarFechas"
+                            color="danger"
+                            type="filled"
+                            class="w-full m-1"
+                            >Cambiar Fechas</vs-button
+                        >
+                    </div>
+                </div>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-enviarcorreo"
+            title="Enviar Mensaje a Usuario"
+            :active.sync="popEnviarCorreoU"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full ">
+                        <vx-card>
+                            <div class="vx-col w-full mt-5">
+                                <h6>
+                                    Enviar correo a Usuario Solicitante
+                                </h6>
+                                <br />
+                                <quill-editor
+                                    v-model="mensaje"
+                                    :options="editorOption"
+                                >
+                                    <div id="toolbar" slot="toolbar"></div>
+                                </quill-editor>
+                            </div>
+                            <div class="vx-col w-full mt-5">
+                                <vs-button
+                                    class="vx-col w-full mt-5"
+                                    color="success"
+                                    type="filled"
+                                    @click="EnviarMensajeU"
+                                    >Enviar Correo</vs-button
+                                >
+                                <vs-button
+                                    class="vx-col w-full mt-5"
+                                    @click="popEnviarCorreoU = false"
+                                    color="primary"
+                                    type="filled"
+                                    >Volver</vs-button
+                                >
+                            </div>
+                        </vx-card>
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 
 <script>
 import axios from "axios";
 import router from "@/router";
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
 import { InfoIcon } from "vue-feather-icons";
 import { PlusCircleIcon } from "vue-feather-icons";
 import { Trash2Icon } from "vue-feather-icons";
@@ -385,6 +523,8 @@ import { SaveIcon } from "vue-feather-icons";
 import { FileTextIcon } from "vue-feather-icons";
 import { LoaderIcon } from "vue-feather-icons";
 import { AlertTriangleIcon } from "vue-feather-icons";
+import { CalendarIcon } from "vue-feather-icons";
+import { EditIcon } from "vue-feather-icons";
 import vSelect from "vue-select";
 import moment from "moment";
 import { PrinterIcon } from "vue-feather-icons";
@@ -409,7 +549,10 @@ export default {
         FileTextIcon,
         LoaderIcon,
         AlertTriangleIcon,
-        PrinterIcon
+        PrinterIcon,
+        CalendarIcon,
+        flatPickr,
+        EditIcon
     },
     data() {
         return {
@@ -419,6 +562,55 @@ export default {
             editorOption: {
                 modules: {
                     toolbar: [["bold", "italic", "underline", "strike"]]
+                }
+            },
+            configFromdateTimePicker: {
+                minDate: null,
+                maxDate: null,
+                locale: {
+                    firstDayOfWeek: 1,
+                    weekdays: {
+                        shorthand: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                        longhand: [
+                            "Domingo",
+                            "Lunes",
+                            "Martes",
+                            "Miércoles",
+                            "Jueves",
+                            "Viernes",
+                            "Sábado"
+                        ]
+                    },
+                    months: {
+                        shorthand: [
+                            "Ene",
+                            "Feb",
+                            "Mar",
+                            "Abr",
+                            "May",
+                            "Jun",
+                            "Jul",
+                            "Ago",
+                            "Sep",
+                            "Оct",
+                            "Nov",
+                            "Dic"
+                        ],
+                        longhand: [
+                            "Enero",
+                            "Febrero",
+                            "Мarzo",
+                            "Abril",
+                            "Mayo",
+                            "Junio",
+                            "Julio",
+                            "Agosto",
+                            "Septiembre",
+                            "Octubre",
+                            "Noviembre",
+                            "Diciembre"
+                        ]
+                    }
                 }
             },
             image: "",
@@ -435,11 +627,17 @@ export default {
             value1: "",
             value2: "",
             value3: "",
+            mensaje: "",
             validaEliminar: false,
             popupActive2: false,
             popupActive3: false,
             popupActive4: false,
             popFinTicket: false,
+            popFechaCambiar: false,
+            popEnviarCorreoU: false,
+            idSolicitudFecha: "",
+            uuidSolicitudFecha: "",
+            idCategoriaFecha: "",
             horasTrabajadas: 0,
             solicitudes: [],
             documentacion: [],
@@ -453,6 +651,9 @@ export default {
             run: sessionStorage.getItem("run"),
             idCierreTicket: "",
             uuidCierreTicket: "",
+            fechaSolicitudI: "",
+            fechaAsignacion: "",
+            fechaTermino: "",
             listadoEstado: [],
             seleccionEstado: {
                 id: 0,
@@ -576,6 +777,335 @@ export default {
                 this.uuidCierreTicket = uuid;
             } catch (error) {
                 console.log("Error al Abrir el Pop de cierre");
+            }
+        },
+        popModFechaAsig(id, uuid, id_categoria) {
+            try {
+                this.popFechaCambiar = true;
+                this.idSolicitudFecha = id;
+                this.uuidSolicitudFecha = uuid;
+                this.idCategoriaFecha = id_categoria;
+            } catch (error) {
+                console.log("Error al Abrir el Pop de cierre");
+            }
+        },
+        popEnviarCorreo(id, uuid, id_categoria) {
+            try {
+                this.idSolicitudCorreo = id;
+                this.popEnviarCorreoU = true;
+                this.idCategoriaFecha = id_categoria;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        EnviarMensajeU() {
+            try {
+                if (this.idCategoriaFecha == 1) {
+                    var newElement = document.createElement("div");
+                    newElement.innerHTML = this.mensaje;
+                    let mesagge = newElement.textContent;
+
+                    let data = {
+                        idSolicitud: this.idSolicitudCorreo,
+                        mensajeCorreo: mesagge
+                    };
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/PostMensajeCorreo",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == true) {
+                                this.$vs.notify({
+                                    title: "Completado",
+                                    text: "Correo Fue Enviado",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popEnviarCorreoU = false;
+                            } else {
+                                this.$vs.notify({
+                                    title: "Error",
+                                    text: "No se pudo enviar correo",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.idCategoriaFecha == 2) {
+                    var newElement = document.createElement("div");
+                    newElement.innerHTML = this.mensaje;
+                    let mesagge = newElement.textContent;
+
+                    let data = {
+                        idSolicitud: this.idSolicitudCorreo,
+                        mensajeCorreo: mesagge
+                    };
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/PostMensajeCorreoEM",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == true) {
+                                this.$vs.notify({
+                                    title: "Completado",
+                                    text: "Correo Fue Enviado",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popEnviarCorreoU = false;
+                            } else {
+                                this.$vs.notify({
+                                    title: "Error",
+                                    text: "No se pudo enviar correo",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.idCategoriaFecha == 3) {
+                    var newElement = document.createElement("div");
+                    newElement.innerHTML = this.mensaje;
+                    let mesagge = newElement.textContent;
+
+                    let data = {
+                        idSolicitud: this.idSolicitudCorreo,
+                        mensajeCorreo: mesagge
+                    };
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/PostMensajeCorreoIND",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == true) {
+                                this.$vs.notify({
+                                    title: "Completado",
+                                    text: "Correo Fue Enviado",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popEnviarCorreoU = false;
+                            } else {
+                                this.$vs.notify({
+                                    title: "Error",
+                                    text: "No se pudo enviar correo",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.idCategoriaFecha == 4) {
+                    var newElement = document.createElement("div");
+                    newElement.innerHTML = this.mensaje;
+                    let mesagge = newElement.textContent;
+
+                    let data = {
+                        idSolicitud: this.idSolicitudCorreo,
+                        mensajeCorreo: mesagge
+                    };
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/PostMensajeCorreoAP",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == true) {
+                                this.$vs.notify({
+                                    title: "Completado",
+                                    text: "Correo Fue Enviado",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popEnviarCorreoU = false;
+                            } else {
+                                this.$vs.notify({
+                                    title: "Error",
+                                    text: "No se pudo enviar correo",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        cambiarFechas() {
+            try {
+                let data = {
+                    idSolicitud: this.idSolicitudFecha,
+                    fechaSolicitud: this.fechaSolicitudI,
+                    fechaAsignacion: this.fechaAsignacion,
+                    fechaTermino: this.fechaTermino
+                };
+
+                if (this.idCategoriaFecha == 1) {
+                    axios
+                        .post(this.localVal + "/api/Agente/PutFechasI", data, {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        })
+                        .then(res => {
+                            let resultado = res.data;
+                            if (resultado) {
+                                this.$vs.notify({
+                                    title: "Fechas Cambiadas Correctamente ",
+                                    text: "Se recargara listado",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                                this.fechaSolicitudI = "";
+                                this.fechaAsignacion = "";
+                                this.fechaTermino = "";
+                                this.popFechaCambiar = false;
+                            } else {
+                                this.$vs.notify({
+                                    title: "Error ",
+                                    text:
+                                        "No se Pudieron Cambiar las Fechas, Revise los datos",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.idCategoriaFecha == 2) {
+                    axios
+                        .post(this.localVal + "/api/Agente/PutFechasEM", data, {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        })
+                        .then(res => {
+                            let resultado = res.data;
+                            if (resultado) {
+                                this.$vs.notify({
+                                    title: "Fechas Cambiadas Correctamente ",
+                                    text: "Se recargara listado",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                                this.fechaSolicitudI = "";
+                                this.fechaAsignacion = "";
+                                this.fechaTermino = "";
+                                this.popFechaCambiar = false;
+                            } else {
+                                this.$vs.notify({
+                                    title: "Error ",
+                                    text:
+                                        "No se Pudieron Cambiar las Fechas, Revise los datos",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.idCategoriaFecha == 3) {
+                    axios
+                        .post(
+                            this.localVal + "/api/Agente/PutFechasIND",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let resultado = res.data;
+                            if (resultado) {
+                                this.$vs.notify({
+                                    title: "Fechas Cambiadas Correctamente ",
+                                    text: "Se recargara listado",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                                this.fechaSolicitudI = "";
+                                this.fechaAsignacion = "";
+                                this.fechaTermino = "";
+                                this.popFechaCambiar = false;
+                            } else {
+                                this.$vs.notify({
+                                    title: "Error ",
+                                    text:
+                                        "No se Pudieron Cambiar las Fechas, Revise los datos",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.idCategoriaFecha == 4) {
+                    axios
+                        .post(this.localVal + "/api/Agente/PutFechasAP", data, {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        })
+                        .then(res => {
+                            let resultado = res.data;
+                            if (resultado) {
+                                this.$vs.notify({
+                                    title: "Fechas Cambiadas Correctamente ",
+                                    text: "Se recargara listado",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.cargarSolicitudes();
+                                this.fechaSolicitudI = "";
+                                this.fechaAsignacion = "";
+                                this.fechaTermino = "";
+                                this.popFechaCambiar = false;
+                            } else {
+                                this.$vs.notify({
+                                    title: "Error ",
+                                    text:
+                                        "No se Pudieron Cambiar las Fechas, Revise los datos",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
         finalizarTicket() {

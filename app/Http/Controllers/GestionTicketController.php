@@ -915,7 +915,7 @@ class GestionTicketController extends Controller
     public function PostMensajeCorreo(Request $request){
         try {
                 $solicitud = SolicitudTickets::where('id',$request->idSolicitud)
-                ->first();    
+                ->first();
 
                 $userSearch = Users::where('id',$solicitud->id_user)->first();
 
@@ -933,6 +933,27 @@ class GestionTicketController extends Controller
                     $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
                    // $message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
                 });
+
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PutFechas(Request $request){
+        try {
+            SolicitudTickets::where('id',$request->idSolicitud)
+            ->update([
+                'created_at' => $request->fechaSolicitud
+            ]);
+
+            GestionSolicitudes::where('id_solicitud',$request->idSolicitud)
+            ->update([
+                'fechaInicio' => $request->fechaAsignacion,
+                'fechaTermino' => $request->fechaTermino
+            ]);
+
             return true;
         } catch (\Throwable $th) {
             log::info($th);

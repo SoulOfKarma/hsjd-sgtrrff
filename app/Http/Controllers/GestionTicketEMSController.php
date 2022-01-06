@@ -559,4 +559,24 @@ class GestionTicketEMSController extends Controller
             return false;
         }
     }
+
+    public function PutFechas(Request $request){
+        try {
+            SolicitudTicketsEM::where('id',$request->idSolicitud)
+            ->update([
+                'created_at' => $request->fechaSolicitud
+            ]);
+
+            GestionTicketEMS::where('id_solicitud',$request->idSolicitud)
+            ->update([
+                'fechaInicio' => $request->fechaAsignacion,
+                'fechaTermino' => $request->fechaTermino
+            ]);
+
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
 }
