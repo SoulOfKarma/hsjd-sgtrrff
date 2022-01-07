@@ -923,8 +923,6 @@ class GestionTicketController extends Controller
 
                 $mensaje = $request->mensajeCorreo;
 
-                log::info($Contacto);
-    
                 /* foreach ($userMail as $key) {
                     $listContactos[$i] = $key->email;
                     $i++;

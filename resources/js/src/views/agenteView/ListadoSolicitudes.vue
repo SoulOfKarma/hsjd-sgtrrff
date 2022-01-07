@@ -783,8 +783,6 @@ export default {
 
                 let data = {};
 
-                console.log(this.correo);
-
                 if (this.correo.length > 15) {
                     data = {
                         idSolicitud: this.idSolicitudCorreo,
