@@ -436,6 +436,17 @@
                                 >
                                     <div id="toolbar" slot="toolbar"></div>
                                 </quill-editor>
+                                <br />
+                                <h6>
+                                    Envio de correo a otro usuario(No
+                                    Obligatorio).
+                                </h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full "
+                                    placeholder="Placeholder"
+                                    v-model="correo"
+                                />
                             </div>
                             <div class="vx-col w-full mt-5">
                                 <vs-button
@@ -611,6 +622,7 @@ export default {
             value2: "",
             value3: "",
             validaEliminar: false,
+            correo: "",
             mensaje: "",
             popupActive2: false,
             popupActive3: false,
@@ -705,6 +717,12 @@ export default {
         };
     },
     methods: {
+        add(index) {
+            this.correos.push({ correo: "" });
+        },
+        remove(index) {
+            this.correos.splice(index, 1);
+        },
         isNumber: function($event) {
             // console.log($event.keyCode); //keyCodes value
             let keyCode = $event.keyCode ? $event.keyCode : $event.which;
@@ -763,10 +781,23 @@ export default {
                 newElement.innerHTML = this.mensaje;
                 let mesagge = newElement.textContent;
 
-                let data = {
-                    idSolicitud: this.idSolicitudCorreo,
-                    mensajeCorreo: mesagge
-                };
+                let data = {};
+
+                console.log(this.correo);
+
+                if (this.correo.length > 15) {
+                    data = {
+                        idSolicitud: this.idSolicitudCorreo,
+                        mensajeCorreo: mesagge,
+                        correo: this.correo
+                    };
+                } else {
+                    data = {
+                        idSolicitud: this.idSolicitudCorreo,
+                        mensajeCorreo: mesagge,
+                        correo: "soporte.rrff@redsalud.gov.cl"
+                    };
+                }
                 axios
                     .post(
                         this.localVal + "/api/Agente/PostMensajeCorreo",
@@ -787,6 +818,7 @@ export default {
                                 position: "top-right"
                             });
                             this.popEnviarCorreoU = false;
+                            this.correo = "";
                         } else {
                             this.$vs.notify({
                                 title: "Error",
