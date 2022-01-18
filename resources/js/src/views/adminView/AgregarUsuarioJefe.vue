@@ -326,7 +326,7 @@ export default {
                 } else {
                     this.registroUsuario.idvalmail = 1;
                 }
-                this.rutUsuario = format(this.rutUsuario);
+                //this.rutUsuario = format(this.rutUsuario);
                 /* if (
                     this.registroUsuario.run == null ||
                     this.registroUsuario.run < 9 ||

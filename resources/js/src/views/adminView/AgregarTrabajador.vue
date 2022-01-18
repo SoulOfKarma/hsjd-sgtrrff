@@ -228,7 +228,8 @@ export default {
                 tra_apellido: "",
                 id_especialidad1: 0,
                 idvalRut: 0,
-                idvalmail: 0
+                idvalmail: 0,
+                idSupervisor: 0
             },
 
             localVal: process.env.MIX_APP_URL,
@@ -349,6 +350,7 @@ export default {
                 this.registroUsuario.anexo = this.anexoUsuario;
                 this.registroUsuario.id_cargo = 6;
                 this.registroUsuario.id_cargo_asociado = this.seleccionSupervisor[0].id;
+                this.registroUsuario.idSupervisor = this.seleccionSupervisor[0].id;
                 this.registroUsuario.id_edificio = this.seleccionEdificio[0].id;
                 this.registroUsuario.id_servicio = this.seleccionServicio[0].id;
                 this.registroUsuario.password = this.passUsuario;

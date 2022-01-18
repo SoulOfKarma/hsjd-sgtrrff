@@ -250,9 +250,11 @@ export default {
                 tra_nombre: "",
                 tra_apellido: "",
                 id_especialidad1: 0,
-                id: 0,
+                id_trabajador: 0,
                 idvalRut: 0,
-                idvalmail: 0
+                idvalmail: 0,
+                idSupervisor: 0,
+                id_user: 0
             },
             value1: "",
             validaEliminar: false,
@@ -413,6 +415,7 @@ export default {
                 this.modificarUsuario.anexo = this.anexoUsuario;
                 this.modificarUsuario.id_cargo = 6;
                 this.modificarUsuario.id_cargo_asociado = this.seleccionSupervisor[0].id;
+                this.modificarUsuario.idSupervisor = this.seleccionSupervisor[0].id;
                 this.modificarUsuario.id_edificio = this.seleccionEdificio[0].id;
                 this.modificarUsuario.id_servicio = this.seleccionServicio[0].id;
                 this.modificarUsuario.password = this.passUsuario;
@@ -421,7 +424,8 @@ export default {
                 this.modificarUsuario.tra_nombre = this.nombreUsuario;
                 this.modificarUsuario.tra_apellido = this.apellidoUsuario;
                 this.modificarUsuario.id_especialidad1 = this.seleccionEspecialidad[0].id;
-                this.modificarUsuario.id = this.seleccionTrabajador[0].id;
+                this.modificarUsuario.id_trabajador = this.seleccionTrabajador[0].id;
+                this.modificarUsuario.id_user = this.seleccionTrabajador[0].id_user;
                 this.rutUsuario = format(this.rutUsuario);
                 if (
                     this.rutUsuario == 0 ||

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use App\Supervisores;
 use App\Trabajadores;
 use App\SupCatIntermedias;
+use App\tra_sups;
 use DB;
 
 class UsersController extends Controller
@@ -41,9 +42,8 @@ class UsersController extends Controller
                 $run = $request->run_usuario;
                 $run = str_replace('.', '', $run);
                 $run = strtoupper($run); 
-       
                 Users::create([
-                   'run' =>  $request->run_usuario,
+                   'run' =>  $run,
                    'email' => $request->email,
                    'nombre' => $request->nombre,
                    'apellido' => $request->apellido,
@@ -68,8 +68,7 @@ class UsersController extends Controller
                 $run = strtoupper($run); 
        
                 Users::create([
-                   'run' =>  $request->run_usuario,
-                   //'email' => $request->email,
+                   'run' =>  $run,
                    'nombre' => $request->nombre,
                    'apellido' => $request->apellido,
                    'anexo' => $request->anexo,
@@ -90,12 +89,7 @@ class UsersController extends Controller
             }
          }else{
              if($idvalmail == 1){
-                /* $run = $request->run_usuario;
-                $run = str_replace('.', '', $run);
-                $run = strtoupper($run);  */
-       
                 Users::create([
-                   //'run' =>  $request->run_usuario,
                    'email' => $request->email,
                    'nombre' => $request->nombre,
                    'apellido' => $request->apellido,
@@ -109,13 +103,7 @@ class UsersController extends Controller
                    'api_token' => Str::random(60),
                 ]);
              }else{
-                /* $run = $request->run_usuario;
-                $run = str_replace('.', '', $run);
-                $run = strtoupper($run);  */
-       
                 Users::create([
-                   //'run' =>  $request->run_usuario,
-                   //'email' => $request->email,
                    'nombre' => $request->nombre,
                    'apellido' => $request->apellido,
                    'anexo' => $request->anexo,
@@ -141,15 +129,11 @@ class UsersController extends Controller
         try {
             $idvalrun = $request->idvalRut;
             $idvalmail = $request->idvalmail;
-            log::info($idvalrun);
-            log::info($idvalmail);
             if($idvalrun == 1){
                 if($idvalmail == 1){
                     $run = $request->run_usuario;
                     $run = str_replace('.', '', $run);
                     $run = strtoupper($run);
-                    log::info($run);
-                    log::info($request);
                     Users::where('id',$request->id)
                     ->update([
                         'run' => $run,
@@ -181,7 +165,6 @@ class UsersController extends Controller
                     Users::where('id',$request->id)
                     ->update([
                         'run' => $run,
-                        //'email' => $request->email,
                         'nombre' => $request->nombre,
                         'apellido' => $request->apellido,
                         'anexo' => $request->anexo,
@@ -203,10 +186,6 @@ class UsersController extends Controller
                 }
              }else{
                  if($idvalmail == 1){
-                   /*  $run = $request->run_usuario;
-                    $run = str_replace('.', '', $run);
-                    $run = strtoupper($run); */
-
                     Users::where('id',$request->id)
                     ->update([
                         'email' => $request->email,
@@ -220,19 +199,10 @@ class UsersController extends Controller
                         'id_unidadEspecifica' => $request->id_unidadEspecifica,
                         'password' => Hash::make($request->password),
                         'api_token' => Str::random(60),
-                    ]);
-
-                    /* DB::table('tbl_permiso_usuarios')
-                    ->updateOrInsert([
-                        'run_usuario' => $run,
-                        'permiso_usuario' => $request->permiso_usuario,
-                        'estado_login' =>  $request->estado_login
-                    ]); */
-                    
+                    ]);        
                  }else{
                     Users::where('id',$request->id)
                     ->update([
-                        //'email' => $request->email,
                         'nombre' => $request->nombre,
                         'apellido' => $request->apellido,
                         'anexo' => $request->anexo,
@@ -852,7 +822,7 @@ class UsersController extends Controller
                     'api_token' => Str::random(60),
                 ]);
 
-                Trabajadores::create([
+                $response = Trabajadores::create([
                     'tra_run' => $run,
                     'tra_nombre' => $request->nombre,
                     'tra_apellido' => $request->apellido,
@@ -863,6 +833,11 @@ class UsersController extends Controller
                     'run_usuario' => $run,
                     'permiso_usuario' => $request->permiso_usuario,
                     'estado_login' =>  $request->estado_login
+                ]);
+
+                tra_sups::create([
+                    'id_trabajador' => $response->id,
+                    'id_supervisor' => $request->idSupervisor
                 ]);
 
             }else{
@@ -884,7 +859,7 @@ class UsersController extends Controller
                     'api_token' => Str::random(60),
                 ]);
 
-                Trabajadores::create([
+                $response = Trabajadores::create([
                     'tra_run' => $run,
                     'tra_nombre' => $request->nombre,
                     'tra_apellido' => $request->apellido,
@@ -895,6 +870,11 @@ class UsersController extends Controller
                     'run_usuario' => $run,
                     'permiso_usuario' => $request->permiso_usuario,
                     'estado_login' =>  $request->estado_login
+                ]);
+
+                tra_sups::create([
+                    'id_trabajador' => $response->id,
+                    'id_supervisor' => $request->idSupervisor
                 ]);
             }
          }else{
@@ -918,11 +898,16 @@ class UsersController extends Controller
                     'api_token' => Str::random(60),
                 ]);
 
-                Trabajadores::create([
+                $response = Trabajadores::create([
                     'tra_run' => null,
                     'tra_nombre' => $request->nombre,
                     'tra_apellido' => $request->apellido,
                     'id_especialidad1' => $request->id_especialidad1,
+                ]);
+
+                tra_sups::create([
+                    'id_trabajador' => $response->id,
+                    'id_supervisor' => $request->idSupervisor
                 ]);
 
                 /* tblPermisoUsuarios::create([
@@ -950,11 +935,16 @@ class UsersController extends Controller
                     'api_token' => Str::random(60),
                 ]);
 
-                Trabajadores::create([
+                $response = Trabajadores::create([
                     'tra_run' => null,
                     'tra_nombre' => $request->nombre,
                     'tra_apellido' => $request->apellido,
                     'id_especialidad1' => $request->id_especialidad1,
+                ]);
+
+                tra_sups::create([
+                    'id_trabajador' => $response->id,
+                    'id_supervisor' => $request->idSupervisor
                 ]);
 
                 /* tblPermisoUsuarios::create([
@@ -985,7 +975,7 @@ class UsersController extends Controller
                     $run = str_replace('.', '', $run);
                     $run = strtoupper($run);
 
-                    Users::where('id',$request->id)
+                    Users::where('id',$request->id_user)
                     ->update([
                         'run' => $run,
                         'email' => $request->email,
@@ -1006,6 +996,11 @@ class UsersController extends Controller
                         'tra_nombre' => $request->nombre,
                         'tra_apellido' => $request->apellido,
                         'id_especialidad1' => $request->id_especialidad1,
+                    ]);
+
+                    tra_sups::UpdateOrCreate([
+                        'id_trabajador' => $request->id_trabajador,
+                        'id_supervisor' => $request->idSupervisor
                     ]);
 
                     tblPermisoUsuarios::where('run_usuario',$run)
@@ -1019,7 +1014,7 @@ class UsersController extends Controller
                     $run = str_replace('.', '', $run);
                     $run = strtoupper($run);
 
-                    Users::where('id',$request->id)
+                    Users::where('id',$request->id_user)
                     ->update([
                         'run' => $run,
                         //'email' => $request->email,
@@ -1042,6 +1037,12 @@ class UsersController extends Controller
                         'id_especialidad1' => $request->id_especialidad1,
                     ]);
 
+                    tra_sups::UpdateOrCreate([
+                        'id_trabajador' => $request->id_trabajador,
+                        'id_supervisor' => $request->idSupervisor
+                    ]);
+
+
                     tblPermisoUsuarios::where('run_usuario',$run)
                     ->update([
                         'permiso_usuario' => $request->permiso_usuario,
@@ -1054,7 +1055,7 @@ class UsersController extends Controller
                     $run = str_replace('.', '', $run);
                     $run = strtoupper($run); */
 
-                    Users::where('id',$request->id)
+                    Users::where('id',$request->id_user)
                     ->update([
                         //'run' => $run,
                         'email' => $request->email,
@@ -1077,6 +1078,12 @@ class UsersController extends Controller
                         'id_especialidad1' => $request->id_especialidad1,
                     ]);
 
+                    tra_sups::UpdateOrCreate([
+                        'id_trabajador' => $request->id_trabajador,
+                        'id_supervisor' => $request->idSupervisor
+                    ]);
+
+
                    /*  tblPermisoUsuarios::where('run_usuario',$run)
                     ->update([
                         'permiso_usuario' => $request->permiso_usuario,
@@ -1088,7 +1095,7 @@ class UsersController extends Controller
                     $run = str_replace('.', '', $run);
                     $run = strtoupper($run); */
 
-                    Users::where('id',$request->id)
+                    Users::where('id',$request->id_user)
                     ->update([
                         //'run' => $run,
                         //'email' => $request->email,
@@ -1110,6 +1117,12 @@ class UsersController extends Controller
                         'tra_apellido' => $request->apellido,
                         'id_especialidad1' => $request->id_especialidad1,
                     ]);
+
+                    tra_sups::UpdateOrCreate([
+                        'id_trabajador' => $request->id_trabajador,
+                        'id_supervisor' => $request->idSupervisor
+                    ]);
+
 
                    /*  tblPermisoUsuarios::where('run_usuario',$run)
                     ->update([
@@ -1137,7 +1150,7 @@ class UsersController extends Controller
     }
 
     public function getSoloTrabajadoresRRFF(){
-        $get_all = Users::select('users.*','trabajadores.*',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombreTrabajador"))
+        $get_all = Users::select('users.*','users.id as id_user','trabajadores.*',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombreTrabajador"))
         ->join('trabajadores','users.run','=','trabajadores.tra_run')
         ->where('id_cargo',[6])
         ->get();
