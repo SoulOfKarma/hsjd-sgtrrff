@@ -376,6 +376,53 @@ class GestionTicketController extends Controller
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_tickets.id_categoria', 1)
             ->union($ticket)
+            ->where('solicitud_tickets.created_at','>',DB::raw('DATE_SUB(now(), INTERVAL 6 MONTH)'))
+            ->orderBy('id','desc')
+            ->get();
+            return $uticket;
+        } catch (\Throwable $th) {
+           log::info($th);
+           return false;
+        }
+        
+    }
+
+    public function getSolicitudUsuariosJoinH()
+    {
+        try {
+            $ticket = SolicitudTickets::select('solicitud_tickets.id','solicitud_tickets.id_user','solicitud_tickets.id_categoria','solicitud_tickets.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets.descripcionP','solicitud_tickets.id_estado',
+            'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
+            DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
+            DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
+            DB::raw("(CASE WHEN solicitud_tickets.created_at IS NULL THEN  DATE_FORMAT(solicitud_tickets.created_at,'%d/%m/%Y')
+            ELSE DATE_FORMAT(solicitud_tickets.created_at,'%d/%m/%Y') END) AS fechaSolicitud"),
+            DB::raw("'PENDIENTE' AS nombreTra"))
+            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
+            ->join('tipo_reparacions','solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
+            ->join('servicios','solicitud_tickets.id_servicio','=','servicios.id')
+            ->where('solicitud_tickets.id_categoria', 1)
+            ->where('solicitud_tickets.id_estado', 1)
+            ->orWhere('solicitud_tickets.id_estado', 9);
+
+            $uticket = SolicitudTickets::select('solicitud_tickets.id','solicitud_tickets.id_user','solicitud_tickets.id_categoria','solicitud_tickets.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets.descripcionP','solicitud_tickets.id_estado',
+            'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'),
+            DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
+            DB::raw("fnStripTags(solicitud_tickets.descripcionP) as desFormat"),
+            DB::raw("(CASE WHEN gestion_solicitudes.fechaInicio IS NULL THEN 'PENDIENTE'
+            ELSE DATE_FORMAT(gestion_solicitudes.fechaInicio,'%d/%m/%Y') END) AS fechaSolicitud"),
+            DB::raw("(CASE WHEN gestion_solicitudes.id_trabajador IS NULL THEN 'PENDIENTE'
+             ELSE CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) END) AS nombreTra"))
+            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
+            ->join('tipo_reparacions','solicitud_tickets.id_tipoReparacion','=','tipo_reparacions.id')
+            ->join('servicios','solicitud_tickets.id_servicio','=','servicios.id')
+            ->join('gestion_solicitudes', 'solicitud_tickets.id', '=', 'gestion_solicitudes.id_solicitud')
+            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->where('solicitud_tickets.id_categoria', 1)
+            ->union($ticket)
             ->orderBy('id','desc')
             ->get();
             return $uticket;

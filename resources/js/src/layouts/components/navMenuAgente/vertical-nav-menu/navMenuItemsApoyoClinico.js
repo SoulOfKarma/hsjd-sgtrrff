@@ -33,6 +33,12 @@ export default [
                         icon: "FileIcon"
                     },
                     {
+                        url: "/agenteView/ListadoTicketsCAHistorico",
+                        name: "Listado Historico",
+                        slug: "ListadoTicketsCAHistorico",
+                        icon: "FileIcon"
+                    },
+                    {
                         url: "/agenteView/GenerarTicketCA",
                         name: "Generar Ticket",
                         slug: "GenerarTicketCA",

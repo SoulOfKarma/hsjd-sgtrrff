@@ -156,8 +156,16 @@ use App\Mail\AutoRespuesta;
             Route::get('/Agente/GetSolicitudTicketsEM', ['middleware' => 'cors', 'uses' => 'GestionTicketEMSController@getSolicitudUsuariosJoinEM']);
             //Traer Tickets con sus usuarios Industrial
             Route::get('/Agente/GetSolicitudTicketsIND', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@getSolicitudUsuariosJoinIND']);
-            //Traer Tickets con sus usuarios CA
+            //Traer Tickets con sus usuarios Apoyo Clinico
             Route::get('/Agente/GetSolicitudTicketsCA', ['middleware' => 'cors', 'uses' => 'GestionTicketsApsController@getSolicitudUsuariosJoinCA']);
+            //Traer Tickets con sus usuarios Infraestructura Historico
+            Route::get('/Agente/GetSolicitudTicketsH', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getSolicitudUsuariosJoinH']);
+            //Traer Tickets con sus usuarios Equipos Medicos Historico
+            Route::get('/Agente/GetSolicitudTicketsEMH', ['middleware' => 'cors', 'uses' => 'GestionTicketEMSController@getSolicitudUsuariosJoinEMH']);
+            //Traer Tickets con sus usuarios Industrial Historico
+            Route::get('/Agente/GetSolicitudTicketsINDH', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@getSolicitudUsuariosJoinINDH']);
+            //Traer Tickets con sus usuarios CA Historico
+            Route::get('/Agente/GetSolicitudTicketsCAH', ['middleware' => 'cors', 'uses' => 'GestionTicketsApsController@getSolicitudUsuariosJoinCAH']);
             //Traer Todos Los tickets Existentes
             Route::get('/Agente/GetTicketsTotales', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetTicketsTotales']);
             //Traer Turno

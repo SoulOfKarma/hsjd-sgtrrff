@@ -552,6 +552,38 @@ const router = new Router({
                     name: "ReportesJefatura",
                     component: () =>
                         import("./views/agenteView/ReportesJefatura.vue")
+                },
+                {
+                    path: "/agenteView/ListadoSolicitudesHistorico",
+                    name: "ListadoSolicitudesHistorico",
+                    component: () =>
+                        import(
+                            "./views/agenteView/ListadoSolicitudesHistorico.vue"
+                        )
+                },
+                {
+                    path: "/agenteView/ListadoTicketsEMHistorico",
+                    name: "ListadoTicketsEMHistorico",
+                    component: () =>
+                        import(
+                            "./views/agenteView/ListadoTicketsEMHistorico.vue"
+                        )
+                },
+                {
+                    path: "/agenteView/ListadoTicketsINDHistorico",
+                    name: "ListadoTicketsINDHistorico",
+                    component: () =>
+                        import(
+                            "./views/agenteView/ListadoTicketsINDHistorico.vue"
+                        )
+                },
+                {
+                    path: "/agenteView/ListadoTicketsCAHistorico",
+                    name: "ListadoTicketsCAHistorico",
+                    component: () =>
+                        import(
+                            "./views/agenteView/ListadoTicketsCAHistorico.vue"
+                        )
                 }
             ]
         },

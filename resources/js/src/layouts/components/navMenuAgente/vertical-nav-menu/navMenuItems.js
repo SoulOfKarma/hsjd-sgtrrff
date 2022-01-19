@@ -27,9 +27,9 @@ export default [
                 icon: "SendIcon",
                 submenu: [
                     {
-                        url: "/agenteView/ListadoSolicitudes",
-                        name: "Listado Tickets",
-                        slug: "ListadoSolicitudes",
+                        url: "/agenteView/ListadoSolicitudesHistorico",
+                        name: "Listado Solicitudes",
+                        slug: "ListadoSolicitudesHistorico",
                         icon: "FileIcon"
                     },
                     {
@@ -53,9 +53,9 @@ export default [
                 icon: "SendIcon",
                 submenu: [
                     {
-                        url: "/agenteView/ListadoTicketsEM",
-                        name: "Listado Tickets ",
-                        slug: "ListadoTicketsEM",
+                        url: "/agenteView/ListadoTicketsEMHistorico",
+                        name: "Listado Solicitudes ",
+                        slug: "ListadoTicketsEMHistorico",
                         icon: "FileIcon"
                     },
                     {
@@ -79,9 +79,9 @@ export default [
                 icon: "SendIcon",
                 submenu: [
                     {
-                        url: "/agenteView/ListadoTicketsIND",
-                        name: "Listado Tickets",
-                        slug: "ListadoTicketsIND",
+                        url: "/agenteView/ListadoTicketsINDHistorico",
+                        name: "Listado Solicitudes",
+                        slug: "ListadoTicketsINDHistorico",
                         icon: "FileIcon"
                     },
                     {
@@ -105,9 +105,9 @@ export default [
                 icon: "SendIcon",
                 submenu: [
                     {
-                        url: "/agenteView/ListadoTicketsCA",
-                        name: "Listado Tickets",
-                        slug: "ListadoSolicitudesCA",
+                        url: "/agenteView/ListadoTicketsCAHistorico",
+                        name: "Listado Solicitudes",
+                        slug: "ListadoTicketsCAHistorico",
                         icon: "FileIcon"
                     },
                     {
