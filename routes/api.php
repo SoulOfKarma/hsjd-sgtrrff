@@ -15,6 +15,7 @@ use App\Mail\AutoRespuesta;
 |
 */
         Route::group(['middleware' => ['jwt.verify']], function() {
+            //Rutas Protegidas con JWT , agregalas aca.
             //Retornar Login
             Route::get('/auth/user', 'LoginController@getAuthenticatedUser');
             //Retorna Ultimo ID Ingresado de las solicitudes
@@ -119,8 +120,6 @@ use App\Mail\AutoRespuesta;
             Route::get('/Usuario/destroyTicketIND/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@destroy']);
             //Eliminar Ticket
             Route::get('/Usuario/destroyTicketAP/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@destroy']);
-                        /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/
-
             //Gestion Agentes
             //Traer supervisores
             Route::get('/Agente/GetSupervisores', ['middleware' => 'cors', 'uses' => 'SupervisorController@index']);
@@ -709,6 +708,7 @@ use App\Mail\AutoRespuesta;
             //Enviar Correo Personalizado a Usuario Industrial
             Route::post('/Agente/PostMensajeCorreoIND', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@PostMensajeCorreo']);
       });
+      //Rutas sin JWT
       //Generar Excel	
       Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');
       //Generar Excel	Por Fechas

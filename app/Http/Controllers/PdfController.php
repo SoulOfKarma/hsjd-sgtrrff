@@ -299,8 +299,6 @@ class PdfController extends Controller
             if($equipomedico == ""){
               $validador = true;
             }
-
-            log::info($data);
     
             $idApoyo1 = $data->idApoyo1;
             $idApoyo2 = $data->idApoyo2;
@@ -595,6 +593,22 @@ class PdfController extends Controller
             ->join('duracion_solicitudes', 'gestion_tickets_aps.idDuracion', '=', 'duracion_solicitudes.id')
             ->where('gestion_tickets_aps.id_solicitud', $id)
             ->first();
+    
+            $apoyoclinico = GestionTicketsAps::select(DB::raw("IF (equipamiento_apoyo_clinicos.equipo IS NULL ,CONCAT('PENDIENTE'), equipamiento_apoyo_clinicos.equipo) as equipo"),
+            DB::raw("IF (equipamiento_apoyo_clinicos.marca IS NULL ,CONCAT('PENDIENTE'), equipamiento_apoyo_clinicos.marca) as marca"),
+            DB::raw("IF (equipamiento_apoyo_clinicos.modelo IS NULL ,CONCAT('PENDIENTE'), equipamiento_apoyo_clinicos.modelo) as modelo"),
+            DB::raw("IF (equipamiento_apoyo_clinicos.serie IS NULL ,CONCAT('PENDIENTE'), equipamiento_apoyo_clinicos.serie) as serie"),
+            DB::raw("IF (equipamiento_apoyo_clinicos.ninventario IS NULL ,CONCAT('PENDIENTE'), equipamiento_apoyo_clinicos.ninventario) as ninventario")) 
+            ->join('tbl_ticket_equipamiento_medicos', 'gestion_tickets_aps.id_solicitud', '=', 'tbl_ticket_equipamiento_medicos.id_solicitud')
+            ->join('equipamiento_apoyo_clinicos', 'tbl_ticket_equipamiento_medicos.id_equipamiento_medico', '=', 'equipamiento_apoyo_clinicos.id')
+            ->where('gestion_tickets_aps.id_solicitud', $id)
+            ->first();
+
+            $validador = false;
+    
+            if($apoyoclinico == ""){
+              $validador = true;
+            }
 
         $idApoyo1 = $data->idApoyo1;
         $idApoyo2 = $data->idApoyo2;
@@ -654,6 +668,28 @@ class PdfController extends Controller
         $anexo = $data->anexo;
         $duracionSolicitudes = $data->descripcion_duracion;
         $descripcionTraRealizado = $data->descripcionTraRealizado;
+        $email = $data->email;
+
+        $equipo = "";
+        $marca = "";
+        $modelo = "";
+        $serie = "";
+        $ninventario = "";
+
+        if($validador){
+            $equipo = "PENDIENTE";
+            $marca = "PENDIENTE";
+            $modelo = "PENDIENTE";
+            $serie = "PENDIENTE";
+            $ninventario = "PENDIENTE";
+        }else{
+            $equipo = $apoyoclinico->equipo;
+            $marca = $apoyoclinico->marca;
+            $modelo = $apoyoclinico->modelo;
+            $serie = $apoyoclinico->serie;
+            $ninventario = $apoyoclinico->ninventario;
+        }
+
 
         $data = [
             'nombreTra' =>  $nombreTra,
@@ -675,10 +711,16 @@ class PdfController extends Controller
             'nomApoyo3' => $nom3,
             'apeApoyo3' => $ape3,
             'descripcionPro' => $descripcionPro,
-            'descripcionTraRealizado' => $descripcionTraRealizado,
+            'desresolucionresultados' => $descripcionTraRealizado,
             'nombreUsuario' => $nombreUsuario,
             'descripcionTurno' =>$turno,
+            'email' => $email,
             'anexo' => $anexo,
+            'equipo' => $equipo,
+            'marca' => $marca,
+            'modelo' => $modelo,
+            'serie' => $serie,
+            'ninventario' => $ninventario,
             'duracionSolicitudes' => $duracionSolicitudes
         ];
 

@@ -969,7 +969,7 @@ table.table-bordered > tbody > tr > td{
                  </tr>
                  <tr>
                    <td colspan="2"></td>
-                   <td colspan="1">Fecha de Fermino</td>
+                   <td colspan="1">Fecha de Termino</td>
                    <td colspan="1">{{$fechaS}}</td>
                  </tr>
                  <tr>

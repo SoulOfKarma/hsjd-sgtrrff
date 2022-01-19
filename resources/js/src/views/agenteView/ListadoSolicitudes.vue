@@ -760,6 +760,25 @@ export default {
         }, */
         popCerrarTicket(id, uuid) {
             try {
+                let data = {
+                    id: id
+                };
+                /* axios
+                    .post(
+                        this.localVal + "/api/Agente/GetFechaProgramada",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let fecha = res.data;
+                        console.log(fecha);
+                    }); */
+
                 this.popFinTicket = true;
                 this.idCierreTicket = id;
                 this.uuidCierreTicket = uuid;
