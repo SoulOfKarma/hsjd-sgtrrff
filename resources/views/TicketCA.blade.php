@@ -960,7 +960,7 @@ table.table-bordered > tbody > tr > td{
               <table class="table table-bordered ">
                <tbody>
                  <tr>
-                   <td colspan="4" >Uso Exclusivo Equipos Medicos</td>
+                   <td colspan="4" >Uso Exclusivo Apoyo Clinico</td>
                  </tr>
                  <tr>
                    <td colspan="2">Resolucion y Resultados</td>
