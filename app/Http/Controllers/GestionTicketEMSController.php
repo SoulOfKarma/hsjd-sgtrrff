@@ -202,7 +202,7 @@ class GestionTicketEMSController extends Controller
             ->where('solicitud_tickets_e_m_s.id_categoria', 2)
             ->where('solicitud_tickets_e_m_s.id_estado','!=', 7)
             ->union($ticket)
-            ->where('solicitud_tickets.created_at','>',DB::raw('DATE_SUB(now(), INTERVAL 6 MONTH)'))
+            ->where('solicitud_tickets_e_m_s.created_at','>',DB::raw('DATE_SUB(now(), INTERVAL 6 MONTH)'))
             ->orderBy('id','desc')
             ->get();
             return $uticket;

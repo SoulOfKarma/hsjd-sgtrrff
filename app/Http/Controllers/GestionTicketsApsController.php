@@ -191,7 +191,7 @@ class GestionTicketsApsController extends Controller
             ->join('trabajadores', 'gestion_tickets_aps.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_tickets_aps.id_categoria', 4)
             ->union($ticket)
-            ->where('solicitud_tickets.created_at','>',DB::raw('DATE_SUB(now(), INTERVAL 6 MONTH)'))
+            ->where('solicitud_tickets_aps.created_at','>',DB::raw('DATE_SUB(now(), INTERVAL 6 MONTH)'))
             ->orderBy('id','desc')
             ->get();
             return $uticket;

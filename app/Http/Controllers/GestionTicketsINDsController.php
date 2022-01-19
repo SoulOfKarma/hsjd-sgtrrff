@@ -204,7 +204,7 @@ class GestionTicketsINDsController extends Controller
             ->join('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_ticket_i_n_ds.id_categoria', 3)
             ->union($ticket)
-            ->where('solicitud_tickets.created_at','>',DB::raw('DATE_SUB(now(), INTERVAL 6 MONTH)'))
+            ->where('solicitud_ticket_i_n_ds.created_at','>',DB::raw('DATE_SUB(now(), INTERVAL 6 MONTH)'))
             ->orderBy('id','desc')
             ->get();
             return $uticket;
