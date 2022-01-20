@@ -707,6 +707,9 @@ use App\Mail\AutoRespuesta;
 
             //Enviar Correo Personalizado a Usuario Industrial
             Route::post('/Agente/PostMensajeCorreoIND', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@PostMensajeCorreo']);
+
+            //Traer Fecha Programada para finalizar solicitud Infraestructura
+            Route::post('/Agente/GetFechaProgramada', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetFechaProgramada']);
       });
       //Rutas sin JWT
       //Generar Excel	

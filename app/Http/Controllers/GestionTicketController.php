@@ -1007,4 +1007,19 @@ class GestionTicketController extends Controller
             return false;
         }
     }
+
+    public function GetFechaProgramada(Request $request){
+        try {
+            $get_all = GestionSolicitudes::firstWhere('id_solicitud',$request->id);
+            if ($get_all === null) {
+                return false;
+            } else {
+                return $get_all;
+            }
+            
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
 }
