@@ -763,7 +763,7 @@ export default {
                 let data = {
                     id: id
                 };
-                 axios
+                axios
                     .post(
                         this.localVal + "/api/Agente/GetFechaProgramada",
                         data,
@@ -776,8 +776,9 @@ export default {
                     )
                     .then(res => {
                         let fecha = res.data;
-                        console.log(fecha);
-                    }); 
+                        let fechaProg = fecha.fechaInicio;
+                        this.fechaTermino = fechaProg;
+                    });
 
                 this.popFinTicket = true;
                 this.idCierreTicket = id;

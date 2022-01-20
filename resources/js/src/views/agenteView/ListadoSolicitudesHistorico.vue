@@ -777,9 +777,7 @@ export default {
                     .then(res => {
                         let fecha = res.data;
                         let fechaProg = fecha.fechaInicio;
-                        //let horaProg = fecha.horaInicio;
                         this.fechaTermino = fechaProg;
-                        //this.horaTermino = horaProg;
                     });
                 this.popFinTicket = true;
                 this.idCierreTicket = id;
