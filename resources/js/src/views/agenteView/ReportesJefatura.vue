@@ -264,61 +264,17 @@ export default {
         GenerarExcelTodo() {
             let newWindow = window.open();
             if (this.seleccionCategoria.id == 1) {
-                axios
-                    .get(this.localVal + "/api/Agente/generarExcelTodoJ", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        newWindow.location =
-                            "http://" +
-                            window.location.hostname +
-                            ":8001/api/Agente/generarExcelTodoJ";
-                    });
+                newWindow.location =
+                    this.localVal + "/api/Agente/generarExcelTodoJ";
             } else if (this.seleccionCategoria.id == 2) {
-                axios
-                    .get(this.localVal + "/api/Agente/generarExcelTodoEMJ", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        newWindow.location =
-                            "http://" +
-                            window.location.hostname +
-                            ":8001/api/Agente/generarExcelTodoEMJ";
-                    });
+                newWindow.location =
+                    this.localVal + "/api/Agente/generarExcelTodoEMJ";
             } else if (this.seleccionCategoria.id == 3) {
-                axios
-                    .get(this.localVal + "/api/Agente/generarExcelTodoIJ", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        newWindow.location =
-                            "http://" +
-                            window.location.hostname +
-                            ":8001/api/Agente/generarExcelTodoIJ";
-                    });
+                newWindow.location =
+                    this.localVal + "/api/Agente/generarExcelTodoIJ";
             } else if (this.seleccionCategoria.id == 4) {
-                axios
-                    .get(this.localVal + "/api/Agente/generarExcelTodoAPJ", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        newWindow.location =
-                            "http://" +
-                            window.location.hostname +
-                            ":8001/api/Agente/generarExcelTodoAPJ";
-                    });
+                newWindow.location =
+                    this.localVal + "/api/Agente/generarExcelTodoAPJ";
             }
         },
         GenerarExcel() {

@@ -6,6 +6,10 @@ use App\GestionSolicitudes;
 use App\GestionTicketsAps;
 use App\GestionTicketEMS;
 use App\GestionTicketsINDs;
+use App\SolicitudTickets;
+use App\SolicitudTicketsEM;
+use App\SolicitudTicketINDs;
+use App\SolicitudTicketsAps;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -25,7 +29,7 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
     public function collection()
     {
         $filtro = [1];
-        return GestionSolicitudes::select(
+        return SolicitudTickets::select(
             DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at,'%H:%i:%s')) as horaSolicitud"),
@@ -52,16 +56,16 @@ class GestionExport implements FromCollection, WithHeadings, ShouldAutoSize
              ELSE gestion_solicitudes.horaTermino END) AS horaTermino"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
-            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
-            ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
-            ->join('solicitud_tickets', 'gestion_solicitudes.id_solicitud', '=', 'solicitud_tickets.id')
+            ->leftjoin('gestion_solicitudes','solicitud_tickets.id','=','gestion_solicitudes.id_solicitud')
+            ->leftjoin('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->leftjoin('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
             ->join('edificios', 'solicitud_tickets.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_tickets.id_servicio', '=', 'servicios.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
-            ->join('turnos','gestion_solicitudes.idTurno', '=', 'turnos.id')
-            ->join('duracion_solicitudes','gestion_solicitudes.idDuracion', '=', 'duracion_solicitudes.id')
+            ->leftjoin('turnos','gestion_solicitudes.idTurno', '=', 'turnos.id')
+            ->leftjoin('duracion_solicitudes','gestion_solicitudes.idDuracion', '=', 'duracion_solicitudes.id')
             ->where('solicitud_tickets.id_categoria',$filtro)
             ->orderBy('solicitud_tickets.id')
             ->get();
@@ -105,7 +109,7 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
     public function collection()
     {
         $filtro = [2];
-        return GestionTicketEMS::select(
+        return SolicitudTicketsEM::select(
             DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets_e_m_s.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%H:%i:%s')) as horaSolicitud"),
@@ -132,16 +136,16 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
              ELSE gestion_ticket_e_m_s.horaTermino END) AS horaTermino"),
              DB::raw("DATE_FORMAT(gestion_ticket_e_m_s.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
-            ->join('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
-            ->join('supervisores', 'gestion_ticket_e_m_s.id_supervisor', '=', 'supervisores.id')
-            ->join('solicitud_tickets_e_m_s', 'gestion_ticket_e_m_s.id_solicitud', '=', 'solicitud_tickets_e_m_s.id')
+            ->leftjoin('gestion_ticket_e_m_s', 'solicitud_tickets_e_m_s.id', '=', 'gestion_ticket_e_m_s.id_solicitud')
+            ->leftjoin('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
+            ->leftjoin('supervisores', 'gestion_ticket_e_m_s.id_supervisor', '=', 'supervisores.id')
             ->join('edificios', 'solicitud_tickets_e_m_s.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_tickets_e_m_s.id_servicio', '=', 'servicios.id')
             ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets_e_m_s.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
-            ->join('turnos','gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
-            ->join('duracion_solicitudes','gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
+            ->leftjoin('turnos','gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
+            ->leftjoin('duracion_solicitudes','gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
             ->where('solicitud_tickets_e_m_s.id_categoria',$filtro)
             ->orderBy('solicitud_tickets_e_m_s.id')
             ->get();
@@ -186,7 +190,7 @@ class GestionExportAP implements FromCollection, WithHeadings, ShouldAutoSize
     public function collection()
     {
         $filtro = [4];
-        return GestionTicketsAps::select(
+        return SolicitudTicketsAps::select(
             DB::raw("CONCAT(solicitud_tickets_aps.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets_aps.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_aps.created_at,'%H:%i:%s')) as horaSolicitud"),
@@ -213,16 +217,17 @@ class GestionExportAP implements FromCollection, WithHeadings, ShouldAutoSize
              ELSE gestion_tickets_aps.horaTermino END) AS horaTermino"),
              DB::raw("DATE_FORMAT(gestion_tickets_aps.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
-            ->join('trabajadores', 'gestion_tickets_aps.id_trabajador', '=', 'trabajadores.id')
-            ->join('supervisores', 'gestion_tickets_aps.id_supervisor', '=', 'supervisores.id')
+            ->leftjoin('gestion_tickets_aps', 'solicitud_tickets_aps.id', '=', 'gestion_tickets_aps.id_solicitud')
+            ->leftjoin('trabajadores', 'gestion_tickets_aps.id_trabajador', '=', 'trabajadores.id')
+            ->leftjoin('supervisores', 'gestion_tickets_aps.id_supervisor', '=', 'supervisores.id')
             ->join('solicitud_tickets_aps', 'gestion_tickets_aps.id_solicitud', '=', 'solicitud_tickets_aps.id')
             ->join('edificios', 'solicitud_tickets_aps.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_tickets_aps.id_servicio', '=', 'servicios.id')
             ->join('estado_solicituds', 'solicitud_tickets_aps.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets_aps.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets_aps.id_user', '=', 'users.id')
-            ->join('turnos','gestion_tickets_aps.idTurno', '=', 'turnos.id')
-            ->join('duracion_solicitudes','gestion_tickets_aps.idDuracion', '=', 'duracion_solicitudes.id')
+            ->leftjoin('turnos','gestion_tickets_aps.idTurno', '=', 'turnos.id')
+            ->leftjoin('duracion_solicitudes','gestion_tickets_aps.idDuracion', '=', 'duracion_solicitudes.id')
             ->where('solicitud_tickets_aps.id_categoria',$filtro)
             ->orderBy('solicitud_tickets_aps.id')
             ->get();
@@ -267,7 +272,7 @@ class GestionExportI implements FromCollection, WithHeadings, ShouldAutoSize
     public function collection()
     {
         $filtro = [3];
-        return GestionTicketsINDs::select(
+        return SolicitudTicketINDs::select(
             DB::raw("CONCAT(solicitud_ticket_i_n_ds.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_ticket_i_n_ds.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_ticket_i_n_ds.created_at,'%H:%i:%s')) as horaSolicitud"),
@@ -294,16 +299,16 @@ class GestionExportI implements FromCollection, WithHeadings, ShouldAutoSize
              ELSE gestion_tickets_i_n_ds.horaTermino END) AS horaTermino"),
              DB::raw("DATE_FORMAT(gestion_tickets_i_n_ds.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
-            ->join('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
-            ->join('supervisores', 'gestion_tickets_i_n_ds.id_supervisor', '=', 'supervisores.id')
-            ->join('solicitud_ticket_i_n_ds', 'gestion_tickets_i_n_ds.id_solicitud', '=', 'solicitud_ticket_i_n_ds.id')
+            ->leftJoin('gestion_tickets_i_n_ds', 'solicitud_ticket_i_n_ds.id', '=', 'gestion_tickets_i_n_ds.id_solicitud')
+            ->leftJoin('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
+            ->leftJoin('supervisores', 'gestion_tickets_i_n_ds.id_supervisor', '=', 'supervisores.id')
             ->join('edificios', 'solicitud_ticket_i_n_ds.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_ticket_i_n_ds.id_servicio', '=', 'servicios.id')
             ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_ticket_i_n_ds.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
-            ->join('turnos','gestion_tickets_i_n_ds.idTurno', '=', 'turnos.id')
-            ->join('duracion_solicitudes','gestion_tickets_i_n_ds.idDuracion', '=', 'duracion_solicitudes.id')
+            ->leftJoin('turnos','gestion_tickets_i_n_ds.idTurno', '=', 'turnos.id')
+            ->leftJoin('duracion_solicitudes','gestion_tickets_i_n_ds.idDuracion', '=', 'duracion_solicitudes.id')
             ->where('solicitud_ticket_i_n_ds.id_categoria',$filtro)
             ->orderBy('solicitud_ticket_i_n_ds.id')
             ->get();
@@ -356,7 +361,7 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
         $fechaT = $this->fechaTermino;
         $filtro = [1];
 
-        $data = GestionSolicitudes::select(
+        $data = SolicitudTickets::select(
             DB::raw("CONCAT(solicitud_tickets.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at,'%H:%i:%s')) as horaSolicitud"),
@@ -383,16 +388,16 @@ class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoS
              ELSE gestion_solicitudes.horaTermino END) AS horaTermino"),
              DB::raw("DATE_FORMAT(gestion_solicitudes.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
-            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
-            ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
-            ->join('solicitud_tickets', 'gestion_solicitudes.id_solicitud', '=', 'solicitud_tickets.id')
+            ->leftjoin('gestion_solicitudes', 'solicitud_tickets.id', '=', 'solicitud_tickets.id_solicitud')
+            ->leftjoin('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->leftjoin('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
             ->join('edificios', 'solicitud_tickets.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_tickets.id_servicio', '=', 'servicios.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
-            ->join('turnos','gestion_solicitudes.idTurno', '=', 'turnos.id')
-            ->join('duracion_solicitudes','gestion_solicitudes.idDuracion', '=', 'duracion_solicitudes.id')
+            ->leftjoin('turnos','gestion_solicitudes.idTurno', '=', 'turnos.id')
+            ->leftjoin('duracion_solicitudes','gestion_solicitudes.idDuracion', '=', 'duracion_solicitudes.id')
             ->orderBy('solicitud_tickets.id')
             ->where('solicitud_tickets.id_categoria',$filtro)
             ->whereBetween('solicitud_tickets.created_at', [$fechaI, $fechaT])
@@ -448,7 +453,7 @@ class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAut
         $fechaT = $this->fechaTermino;
         $filtro = [2];
 
-        $data = GestionTicketEMS::select(
+        $data = SolicitudTicketsEM::select(
             DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets_e_m_s.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%H:%i:%s')) as horaSolicitud"),
@@ -475,16 +480,16 @@ class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAut
              ELSE gestion_ticket_e_m_s.horaTermino END) AS horaTermino"),
              DB::raw("DATE_FORMAT(gestion_ticket_e_m_s.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
-            ->join('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
-            ->join('supervisores', 'gestion_ticket_e_m_s.id_supervisor', '=', 'supervisores.id')
-            ->join('solicitud_tickets_e_m_s', 'gestion_ticket_e_m_s.id_solicitud', '=', 'solicitud_tickets_e_m_s.id')
+            ->leftJoin('gestion_ticket_e_m_s', 'solicitud_tickets_e_m_s.id', '=', 'gestion_ticket_e_m_s.id_solicitud')
+            ->leftJoin('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
+            ->leftJoin('supervisores', 'gestion_ticket_e_m_s.id_supervisor', '=', 'supervisores.id')
             ->join('edificios', 'solicitud_tickets_e_m_s.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_tickets_e_m_s.id_servicio', '=', 'servicios.id')
             ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets_e_m_s.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
-            ->join('turnos','gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
-            ->join('duracion_solicitudes','gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
+            ->leftJoin('turnos','gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
+            ->leftJoin('duracion_solicitudes','gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
             ->orderBy('solicitud_tickets_e_m_s.id')
             ->where('solicitud_tickets_e_m_s.id_categoria',$filtro)
             ->whereBetween('solicitud_tickets_e_m_s.created_at', [$fechaI, $fechaT])
@@ -540,7 +545,7 @@ class GestionExportByFechasAP implements FromCollection, WithHeadings, ShouldAut
         $fechaT = $this->fechaTermino;
         $filtro = [4];
 
-        $data = GestionTicketsAps::select(
+        $data = SolicitudTicketsAps::select(
             DB::raw("CONCAT(solicitud_tickets_aps.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets_aps.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_aps.created_at,'%H:%i:%s')) as horaSolicitud"),
@@ -567,16 +572,17 @@ class GestionExportByFechasAP implements FromCollection, WithHeadings, ShouldAut
              ELSE gestion_tickets_aps.horaTermino END) AS horaTermino"),
              DB::raw("DATE_FORMAT(gestion_tickets_aps.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
-            ->join('trabajadores', 'gestion_tickets_aps.id_trabajador', '=', 'trabajadores.id')
-            ->join('supervisores', 'gestion_tickets_aps.id_supervisor', '=', 'supervisores.id')
+            ->leftjoin('gestion_tickets_aps', 'solicitud_tickets_aps.id', '=', 'gestion_tickets_aps.id_solicitud')
+            ->leftjoin('trabajadores', 'gestion_tickets_aps.id_trabajador', '=', 'trabajadores.id')
+            ->leftjoin('supervisores', 'gestion_tickets_aps.id_supervisor', '=', 'supervisores.id')
             ->join('solicitud_tickets_aps', 'gestion_tickets_aps.id_solicitud', '=', 'solicitud_tickets_aps.id')
             ->join('edificios', 'solicitud_tickets_aps.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_tickets_aps.id_servicio', '=', 'servicios.id')
             ->join('estado_solicituds', 'solicitud_tickets_aps.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets_aps.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets_aps.id_user', '=', 'users.id')
-            ->join('turnos','gestion_tickets_aps.idTurno', '=', 'turnos.id')
-            ->join('duracion_solicitudes','gestion_tickets_aps.idDuracion', '=', 'duracion_solicitudes.id')
+            ->leftjoin('turnos','gestion_tickets_aps.idTurno', '=', 'turnos.id')
+            ->leftjoin('duracion_solicitudes','gestion_tickets_aps.idDuracion', '=', 'duracion_solicitudes.id')
             ->orderBy('solicitud_tickets_aps.id')
             ->where('solicitud_tickets_aps.id_categoria',$filtro)
             ->whereBetween('solicitud_tickets_aps.created_at', [$fechaI, $fechaT])
@@ -632,7 +638,7 @@ class GestionExportByFechasI implements FromCollection, WithHeadings, ShouldAuto
         $fechaT = $this->fechaTermino;
         $filtro = [3];
 
-        $data = GestionTicketsINDs::select(
+        $data = SolicitudTicketINDs::select(
             DB::raw("CONCAT(solicitud_ticket_i_n_ds.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_ticket_i_n_ds.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_ticket_i_n_ds.created_at,'%H:%i:%s')) as horaSolicitud"),
@@ -659,16 +665,16 @@ class GestionExportByFechasI implements FromCollection, WithHeadings, ShouldAuto
              ELSE gestion_tickets_i_n_ds.horaTermino END) AS horaTermino"),
              DB::raw("DATE_FORMAT(gestion_tickets_i_n_ds.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
-            ->join('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
-            ->join('supervisores', 'gestion_tickets_i_n_ds.id_supervisor', '=', 'supervisores.id')
-            ->join('solicitud_ticket_i_n_ds', 'gestion_tickets_i_n_ds.id_solicitud', '=', 'solicitud_ticket_i_n_ds.id')
+            ->leftjoin('gestion_tickets_i_n_ds', 'solicitud_ticket_i_n_ds.id', '=', 'solicitud_ticket_i_n_ds.id_solicitud')
+            ->leftjoin('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
+            ->leftjoin('supervisores', 'gestion_tickets_i_n_ds.id_supervisor', '=', 'supervisores.id')
             ->join('edificios', 'solicitud_ticket_i_n_ds.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_ticket_i_n_ds.id_servicio', '=', 'servicios.id')
             ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_ticket_i_n_ds.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
-            ->join('turnos','gestion_tickets_i_n_ds.idTurno', '=', 'turnos.id')
-            ->join('duracion_solicitudes','gestion_tickets_i_n_ds.idDuracion', '=', 'duracion_solicitudes.id')
+            ->leftjoin('turnos','gestion_tickets_i_n_ds.idTurno', '=', 'turnos.id')
+            ->leftjoin('duracion_solicitudes','gestion_tickets_i_n_ds.idDuracion', '=', 'duracion_solicitudes.id')
             ->orderBy('solicitud_ticket_i_n_ds.id')
             ->where('solicitud_ticket_i_n_ds.id_categoria',$filtro)
             ->whereBetween('solicitud_ticket_i_n_ds.created_at', [$fechaI, $fechaT])
