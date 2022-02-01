@@ -619,9 +619,9 @@ use App\Mail\AutoRespuesta;
 
             Route::post('/Agente/GetMantencionesAPAnio', ['middleware' => 'cors', 'uses' => 'MantencionApProgramadasController@GetListadoMantencion']);
 
-            Route::post('/Agente/PostDocumentoAP', ['middleware' => 'cors', 'uses' => 'DocumentacionAPTablesController@PostDocumentoAP']);
+            Route::post('/Agente/PostDocumentoAP', ['middleware' => 'cors', 'uses' => 'DocumentacionApTablesController@PostDocumentoAP']);
 
-            Route::post('/Agente/GetDocumentosMAP', ['middleware' => 'cors', 'uses' => 'DocumentacionAPTablesController@showRegistroEspecifico']);
+            Route::post('/Agente/GetDocumentosMAP', ['middleware' => 'cors', 'uses' => 'DocumentacionApTablesController@showRegistroEspecifico']);
 
             Route::post('/Agente/PutCodMantencionAP', ['middleware' => 'cors', 'uses' => 'MantencionApProgramadasController@PostCodMantencionN']);
 
@@ -633,7 +633,7 @@ use App\Mail\AutoRespuesta;
 
             Route::post('/Agente/PutModificarCodigoMAP', ['middleware' => 'cors', 'uses' => 'MantencionApProgramadasController@PutModificarCodigoM']);
 
-            Route::post('/Agente/PostDeleteDocumentoAP', ['middleware' => 'cors', 'uses' => 'DocumentacionAPTablesController@DestroyDocReg']);
+            Route::post('/Agente/PostDeleteDocumentoAP', ['middleware' => 'cors', 'uses' => 'DocumentacionApTablesController@DestroyDocReg']);
 
             Route::post('/Agente/PostDeleteMantencionAP', ['middleware' => 'cors', 'uses' => 'MantencionApProgramadasController@PostDeleteMantencion']);
 
