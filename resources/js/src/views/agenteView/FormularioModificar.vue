@@ -624,7 +624,6 @@ export default {
 
         configdateTimePicker: {
             enableTime: true,
-            //enableSeconds: true,
             noCalendar: true,
             time_24hr: true,
             dateFormat: "H:i"
@@ -842,7 +841,6 @@ export default {
                     this.gestionTicket.diasEjecucion = 1;
                 }
                 return this.gestionTicket.diasEjecucion;
-                // this.diaCalculado = this.fromDate - this.toDate;
             }
         }
     },
@@ -971,33 +969,7 @@ export default {
                 } else {
                     this.registroUsuario.idvalmail = 1;
                 }
-                //this.rutUsuario = format(this.rutUsuario);
-                /* if (
-                    this.registroUsuario.run == null ||
-                    this.registroUsuario.run < 9 ||
-                    !validate(this.rutUsuario)
-                ) {
-                    this.$vs.notify({
-                        title: "Error en rut",
-                        text:
-                            "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
-                        color: "danger",
-                        position: "top-right",
-                        time: 3000
-                    });
-                } else if (
-                    this.registroUsuario.email == null ||
-                    this.registroUsuario.email < 10
-                ) {
-                    this.$vs.notify({
-                        title: "Error en correo",
-                        text:
-                            "Debe Escribir un correo valido y que no este el campo vacio",
-                        color: "danger",
-                        position: "top-right",
-                        time: 3000
-                    });
-                }  else */ if (
+                if (
                     this.registroUsuario.nombre == null ||
                     this.registroUsuario.nombre < 3
                 ) {
@@ -1100,7 +1072,6 @@ export default {
             this.registroUsuario.id_cargo = 0;
             this.registroUsuario.id_edificio = 0;
             this.registroUsuario.id_servicio = 0;
-            //this.registroUsuario.id_unidadEspecifica = 42;
             this.registroUsuario.password = "";
             this.registroUsuario.run_usuario = "";
             this.registroUsuario.tra_run = "";
@@ -1578,10 +1549,6 @@ export default {
                 .then(res => {
                     this.datosSolicitud = res.data;
                     this.gestionTicket.id_usuarioSolicitante = this.datosSolicitud[0].id_user;
-
-                    /* this.cargaEstado();
-                    this.cargaTipoReparacion();
-                    this.cargarUSE(); */
                 });
         },
         errorDrop(mensajeError) {
@@ -1652,21 +1619,7 @@ export default {
             ) {
                 this.mensajeError = "la fecha de inicio ";
                 this.errorDrop(this.mensajeError);
-            } /* else if (
-                    this.gestionTicket.fechaTermino == null ||
-                    this.gestionTicket.fechaTermino < hoy.getDate()
-                ) {
-                    this.mensajeError = "la fecha de termino";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.gestionTicket.horasEjecucion == 0) {
-                    this.mensajeError = "Las horas calculadas no pueden ser 0";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.gestionTicket.diasEjecucion == 0) {
-                    this.mensajeError = "Los dias calculados no pueden ser 0";
-                    this.errorDrop(this.mensajeError);
-                } */ else if (
-                this.seleccionPrioridad.id == 0
-            ) {
+            } else if (this.seleccionPrioridad.id == 0) {
                 this.mensajeError = "la prioridad ";
                 this.errorDrop(this.mensajeError);
             } else {
@@ -1968,8 +1921,6 @@ export default {
                 this.seleccionApoyo2.id = idApo2NomApe;
                 this.seleccionApoyo2.tra_nombre_apellido = desApo2TraNomApe;
             }
-
-            //this.seleccionApoyo2 = b;
 
             c = JSON.parse(JSON.stringify(this.listadoTrabajadoresData));
             b = [];

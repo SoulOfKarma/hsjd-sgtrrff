@@ -221,6 +221,7 @@ class GestionTicketController extends Controller
             $id_user = $request->id_user;
             $id_usuarioSolicitante = $request->id_usuarioSolicitante;
 
+
             SeguimientoSolicitudes::create($request->all());
             //Insertando Ticket
             $response2 = SolicitudTickets::where('id', $request->id_solicitud)
@@ -245,28 +246,7 @@ class GestionTicketController extends Controller
                     $userMail[0] = 'soporte.rrff@redsalud.gov.cl';
                 }
 
-            /* if($ValidarCargo == null || $ValidarCargo == 0){
-                $userMail = Users::select('email')
-                ->Where('id',$id_usuarioSolicitante)
-                ->orWhere('id_cargo_asociado',$id_usuarioSolicitante)
-                ->first();
-            }else{
-               
-            $userMail = Users::select('email')
-            ->where('id_cargo_asociado',$ValidarCargo)
-            ->orWhere('id',$ValidarCargo)
-            ->first();
-            }
-            
-
-            $listContactos = [$userMail->email]; */
             $i = 0;
-            //log::info($userMail);
-
-            /* foreach ($userMail as $key) {
-                $listContactos[$i] = $key->email;
-                $i++;
-            } */
 
             if($validador == true){
                 if($count == 0){
@@ -295,10 +275,6 @@ class GestionTicketController extends Controller
         } 
     }
 
-    
-
-    
-
     public function PostCierreTicket(Request $request){
         try {
             $res3 = TicketCadenas::where('ticket_cadenas.idTicketNuevo',$request->id_solicitud)
@@ -309,6 +285,11 @@ class GestionTicketController extends Controller
                  ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
                  $res2 = SolicitudTickets::where('id',$request->id_solicitud)
                  ->update(['id_estado' => $request->id_estado]);
+
+                 detallesolicitudinfraestructuras::updateOrCreate([
+                    'id_solicitud' => $request->id_solicitud,
+                    'desresolucionresultados' => $request->desresolucionresultados
+                  ]);
                 
             }else{
                 $res4 = [];
@@ -327,7 +308,12 @@ class GestionTicketController extends Controller
                     ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
                     SolicitudTickets::where('id',$ticketCadena->idTicketNuevo)
                     ->update(['id_estado' => $request->id_estado]);
+                    detallesolicitudinfraestructuras::updateOrCreate([
+                        'id_solicitud' => $ticketCadena->idTicketNuevo,
+                        'desresolucionresultados' => $request->desresolucionresultados
+                      ]);
                 }
+                
             }
             return true;
         } catch (\Throwable $th) {
@@ -648,28 +634,9 @@ class GestionTicketController extends Controller
                 if($userMail == [] || $userMail == null){
                     $userMail[0] = 'soporte.rrff@redsalud.gov.cl';
                 }
-    
-                /* if($ValidarCargo == null || $ValidarCargo == 0){
-                    $userMail = Users::select('email')
-                    ->Where('id',$id_user)
-                    ->orWhere('id_cargo_asociado',$id_user)
-                    ->first();
-                }else{
-                   
-                $userMail = Users::select('email')
-                ->where('id_cargo_asociado',$ValidarCargo)
-                ->orWhere('id',$ValidarCargo)
-                ->first();
-                }
-    
-                $listContactos = [$userMail->email]; */
+
                 $i = 0;
-                /* log::info($userMail);
-                foreach ($userMail as $key) {
-                    $listContactos[$i] = $key->email;
-                    $i++;
-                } */
-    
+
             $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
     
             $idTrabajador = $request->id_trabajador;
@@ -787,28 +754,7 @@ class GestionTicketController extends Controller
                 if($userMail == [] || $userMail == null){
                     $userMail[0] = 'soporte.rrff@redsalud.gov.cl';
                 }
-
-            /* if($ValidarCargo == null || $ValidarCargo == 0){
-                $userMail = Users::select('email')
-                ->Where('id',$id_busqueda_solicitante)
-                ->orWhere('id_cargo_asociado',$id_busqueda_solicitante)
-                ->first();
-            }else{
-               
-            $userMail = Users::select('email')
-            ->where('id_cargo_asociado',$ValidarCargo)
-            ->orWhere('id',$ValidarCargo)
-            ->first();
-            }
-            $listContactos = [$userMail->email]; */
             $i = 0;
-
-            /* foreach ($userMail as $key) {
-                $listContactos[$i] = $key->email;
-                $i++;
-            } */
-
-            
             Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor , 'razon' => $razoncambio], function ($message) use($userMail){
                 $message->setTo($userMail)->setSubject('Modificacion de ticket');
                 $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
@@ -831,9 +777,6 @@ class GestionTicketController extends Controller
     {   
         $validador = false;
         try {
-            
-             /* GestionSolicitudes::where('id_solicitud', $id)->delete();
-        SolicitudTickets::where('id', $id)->delete(); */
         $id = $request->id_solicitud;
         $nombre = $request->nombre;
         $razon = $request->razonEliminacion;
@@ -853,28 +796,7 @@ class GestionTicketController extends Controller
                 if($userMail == [] || $userMail == null){
                     $userMail[0] = 'soporte.rrff@redsalud.gov.cl';
                 }
-    
-                /* if($ValidarCargo == null || $ValidarCargo == 0){
-                    $userMail = Users::select('email')
-                    ->Where('id',$idUser)
-                    ->orWhere('id_cargo_asociado',$idUser)
-                    ->first();
-                }else{
-                   
-                $userMail = Users::select('email')
-                ->where('id_cargo_asociado',$ValidarCargo)
-                ->orWhere('id',$ValidarCargo)
-                ->first();
-                }
-    
-                $listContactos = [$userMail->email]; */
                 $i = 0;
-    
-                /* foreach ($userMail as $key) {
-                    $listContactos[$i] = $key->email;
-                    $i++;
-                } */
-
                 Mail::send('/Mails/TicketEliminado', ['nombre' => $nombre, 'id_solicitud' => $id, 'descripcionSeguimiento' => $razon], function ($message) use($userMail) {
                     $message->setTo($userMail)->setSubject('Seguimiento de ticket');
                     $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
@@ -890,9 +812,6 @@ class GestionTicketController extends Controller
               return false;
               }
         }
-       
-
-        
     }
 
     public function FinalizarTicket(Request $request){
@@ -916,28 +835,7 @@ class GestionTicketController extends Controller
                 if($userMail == [] || $userMail == null){
                     $userMail[0] = 'soporte.rrff@redsalud.gov.cl';
                 }
-    
-/*                 if($ValidarCargo == null || $ValidarCargo == 0){
-                    $userMail = Users::select('email')
-                    ->Where('id',$idUser)
-                    ->orWhere('id_cargo_asociado',$idUser)
-                    ->first();
-                }else{
-                   
-                $userMail = Users::select('email')
-                ->where('id_cargo_asociado',$ValidarCargo)
-                ->orWhere('id',$ValidarCargo)
-                ->first();
-                } */
-    
-                //$listContactos = [$userMail->email];
                 $i = 0;
-    
-                /* foreach ($userMail as $key) {
-                    $listContactos[$i] = $key->email;
-                    $i++;
-                } */
-
                 Mail::send('/Mails/TicketFinalizado', ['nombre' => $nombre, 'id_solicitud' => $id], function ($message) use($userMail) {
                     $message->setTo($userMail)->setSubject('Finalizacion de ticket');
                     $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');

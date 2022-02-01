@@ -963,8 +963,10 @@ table.table-bordered > tbody > tr > td{
                   ?></td>
                  </tr>
                  <tr>
-                   <td rowspan="3" >Observaciones</td>
-                   <td rowspan="3" colspan="3"></td>
+                   <td >Observaciones</td>
+                   <td  colspan="3"><?php
+                    echo "<ul>$desresolucionresultados </ul>";
+                  ?></td>
                  </tr>
                </tbody>
               </table>

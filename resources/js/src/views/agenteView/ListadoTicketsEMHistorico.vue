@@ -160,6 +160,15 @@
                             class="custom-class"
                             @click="cargarListadoEquipoMedico(props.row.id)"
                         ></columns-icon>
+                        <alert-triangle-icon
+                            content="Finalizar Solicitud"
+                            v-tippy
+                            size="1.5x"
+                            class="custom-class"
+                            @click="
+                                popCerrarTicket(props.row.id, props.row.uuid)
+                            "
+                        ></alert-triangle-icon>
                         <edit-icon
                             content="Enviar Mensaje Por Correo a Usuari@"
                             v-tippy
@@ -361,6 +370,36 @@
                                 :options="listadoEstado"
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
+                            <br />
+                            <h6>
+                                Seleccione Tipo Daño Equipamiento Medico
+                            </h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionDanios"
+                                placeholder="Seleccione Tipo Daño"
+                                class="w-full select-large"
+                                label="desdanioseq"
+                                :options="listadoDaniosEM"
+                            ></v-select>
+                            <br />
+                            <h6>Resolucion y Resultados</h6>
+                            <br />
+                            <quill-editor
+                                v-model="resolucionresultados"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
+                            <h6>Observaciones</h6>
+                            <br />
+                            <quill-editor
+                                v-model="desobservaciones"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
                         </vx-card>
                         <br />
                     </div>
@@ -617,6 +656,13 @@ export default {
             solicitudes: [],
             documentacion: [],
             dataDocumentacion: [],
+            resolucionresultados: "",
+            desobservaciones: "",
+            seleccionDanios: {
+                id: 1,
+                desdanioseq: "Deterioro"
+            },
+            listadoDaniosEM: [],
             localVal: process.env.MIX_APP_URL,
             urlDocumentos: process.env.MIX_APP_URL_DOCUMENTOS,
             dataEliminacion: {
@@ -855,6 +901,9 @@ export default {
                     horasEjecucion: this.horasTrabajadas,
                     id: this.idCierreTicket,
                     id_estado: this.seleccionEstado[0].id,
+                    desresolucionresultados: this.resolucionresultados,
+                    desobservaciones: this.desobservaciones,
+                    id_danoEQ: this.seleccionDanios.id,
                     horaTermino: moment(new Date()).format("H:mm"),
                     fechaTermino: moment(new Date()).format("YYYY-MM-DD")
                 };
@@ -1278,6 +1327,18 @@ export default {
                     this.listadoEstado = res.data;
                 });
         },
+        cargarDaniosEM() {
+            axios
+                .get(this.localVal + "/api/Agente/GetListadoDanio", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoDaniosEM = res.data;
+                });
+        },
         arrayEstado(id) {
             let c = JSON.parse(JSON.stringify(this.listadoEstado));
             let b = [];
@@ -1296,7 +1357,7 @@ export default {
         this.cargarSolicitudes();
         this.openLoadingColor();
         this.forceRerender();
-        //this.cargarDocumentacion();
+        this.cargarDaniosEM();
         this.cargarEstado();
     }
 };

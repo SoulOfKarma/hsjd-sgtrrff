@@ -27,6 +27,12 @@ export default [
                 icon: "SendIcon",
                 submenu: [
                     {
+                        url: "/agenteView/ListadoSolicitudes",
+                        name: "Listado Tickets",
+                        slug: "ListadoSolicitudes",
+                        icon: "FileIcon"
+                    },
+                    {
                         url: "/agenteView/ListadoSolicitudesHistorico",
                         name: "Listado Solicitudes",
                         slug: "ListadoSolicitudesHistorico",

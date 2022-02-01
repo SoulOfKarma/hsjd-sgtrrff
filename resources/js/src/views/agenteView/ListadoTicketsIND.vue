@@ -513,6 +513,16 @@
                                 :options="listadoEstado"
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
+                            <br />
+                            <h6>Resolucion y Resultados</h6>
+                            <br />
+                            <quill-editor
+                                v-model="resolucionresultados"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
                         </vx-card>
                         <br />
                     </div>
@@ -793,6 +803,7 @@ export default {
             solicitudes: [],
             documentacion: [],
             dataDocumentacion: [],
+            resolucionresultados: "",
             localVal: process.env.MIX_APP_URL,
             urlDocumentos: process.env.MIX_APP_URL_DOCUMENTOS,
             nombre:
@@ -1024,6 +1035,7 @@ export default {
                     horasEjecucion: this.horasTrabajadas,
                     id: this.idCierreTicket,
                     id_estado: this.seleccionEstado[0].id,
+                    desresolucionresultados: this.resolucionresultados,
                     horaTermino: moment(new Date()).format("H:mm"),
                     fechaTermino: moment(new Date()).format("YYYY-MM-DD")
                 };

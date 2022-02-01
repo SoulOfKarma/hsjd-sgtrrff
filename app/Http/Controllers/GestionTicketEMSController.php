@@ -229,8 +229,8 @@ class GestionTicketEMSController extends Controller
             ->join('servicios','solicitud_tickets_e_m_s.id_servicio','=','servicios.id')
             ->where('solicitud_tickets_e_m_s.id_categoria', 2)
             ->where('solicitud_tickets_e_m_s.id_estado', 1)
-            ->orWhere('solicitud_tickets_e_m_s.id_estado', 9)
-            ->orWhere('solicitud_tickets_e_m_s.id_estado', 7);
+            ->orWhere('solicitud_tickets_e_m_s.id_estado', 7)
+            ->orWhere('solicitud_tickets_e_m_s.id_estado', 9);
 
             $uticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.id_categoria','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_e_m_s.descripcionP','solicitud_tickets_e_m_s.id_estado',
@@ -245,8 +245,8 @@ class GestionTicketEMSController extends Controller
             ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions','solicitud_tickets_e_m_s.id_tipoReparacion','=','tipo_reparacions.id')
             ->join('servicios','solicitud_tickets_e_m_s.id_servicio','=','servicios.id')
-            ->join('gestion_ticket_e_m_s', 'solicitud_tickets_e_m_s.id', '=', 'gestion_ticket_e_m_s.id_solicitud')
-            ->join('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
+            ->leftjoin('gestion_ticket_e_m_s', 'solicitud_tickets_e_m_s.id', '=', 'gestion_ticket_e_m_s.id_solicitud')
+            ->leftjoin('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_tickets_e_m_s.id_categoria', 2)
             ->where('solicitud_tickets_e_m_s.id_estado','!=', 7)
             ->union($ticket)
@@ -403,8 +403,6 @@ class GestionTicketEMSController extends Controller
                 $ValidarCargo = $userSearch->id_cargo_asociado;     
                 $userMail = [];
 
-                
-    
                 if($ValidarCargo == null || $ValidarCargo == 0){
                     $userMail = Users::select('email')
                     ->Where('id',$id_busqueda_solicitante)
@@ -420,11 +418,7 @@ class GestionTicketEMSController extends Controller
     
                 $listContactos = [$userMail->email];
                 $i = 0;
-    
-                /* foreach ($userMail as $key) {
-                    $listContactos[$i] = $key->email;
-                    $i++;
-                } */
+
                 Mail::send('/Mails/TicketModificadoAgente',['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor, 'razon' => $razoncambio], function ($message) use($listContactos){
                     $message->setTo($listContactos)->setSubject('Modificacion de ticket');
                     $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
@@ -449,6 +443,14 @@ class GestionTicketEMSController extends Controller
                  ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
                  $res2 = SolicitudTicketsEM::where('id',$request->id_solicitud)
                  ->update(['id_estado' => $request->id_estado]);
+
+                 DetalleSolicitudEMs::updateOrCreate([
+                    'id_solicitud' => $request->id_solicitud,
+                ],[
+                    'desresolucionresultados' => $request->desresolucionresultados,
+                    'desobservaciones' => $request->desobservaciones,
+                    'id_danoEQ' => $request->id_danoEQ
+                ]);
             return true;
         } catch (\Throwable $th) {
             log::info($th);

@@ -442,6 +442,7 @@ class PdfController extends Controller
             'turnos.descripcionTurno',
             'users.anexo',
             'duracion_solicitudes.descripcion_duracion',
+            'detallesolicitudinds.desresolucionresultados',
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
@@ -462,6 +463,7 @@ class PdfController extends Controller
             ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
             ->join('turnos', 'gestion_tickets_i_n_ds.idTurno', '=', 'turnos.id')
             ->join('duracion_solicitudes', 'gestion_tickets_i_n_ds.idDuracion', '=', 'duracion_solicitudes.id')
+            ->join('detallesolicitudinds','gestion_tickets_i_n_ds.id_solicitud','=', 'detallesolicitudinds.id_solicitud')
             ->where('gestion_tickets_i_n_ds.id_solicitud', $id)
             ->first();
 
@@ -524,6 +526,7 @@ class PdfController extends Controller
         $turno = $data->descripcionTurno;
         $anexo = $data->anexo;
         $duracionSolicitudes = $data->descripcion_duracion;
+        $desresolucionresultados = $data->desresolucionresultados;
 
         $data = [
             'nombreTra' =>  $nombreTra,
@@ -548,7 +551,8 @@ class PdfController extends Controller
             'nombreUsuario' => $nombreUsuario,
             'descripcionTurno' =>$turno,
             'anexo' => $anexo,
-            'duracionSolicitudes' => $duracionSolicitudes
+            'duracionSolicitudes' => $duracionSolicitudes,
+            'desresolucionresultados' => $desresolucionresultados
         ];
 
         $pdf = App::make("dompdf.wrapper");

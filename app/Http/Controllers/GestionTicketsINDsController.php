@@ -446,6 +446,10 @@ class GestionTicketsINDsController extends Controller
                  ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
                  $res2 = SolicitudTicketINDs::where('id',$request->id_solicitud)
                  ->update(['id_estado' => $request->id_estado]);
+                 detallesolicitudinds::updateOrCreate([
+                    'id_solicitud' => $request->id_solicitud,
+                    'desresolucionresultados' => $request->desresolucionresultados
+                  ]); 
             return true;
         } catch (\Throwable $th) {
             log::info($th);

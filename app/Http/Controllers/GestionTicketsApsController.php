@@ -438,7 +438,7 @@ class GestionTicketsApsController extends Controller
     public function PostCierreTicket(Request $request){
         try {
                 $res = GestionTicketsAps::where('id_solicitud',$request->id_solicitud)
-                 ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino]);
+                 ->update(['horasEjecucion' => $request->horasEjecucion,'horaTermino' => $request->horaTermino,'fechaTermino' => $request->fechaTermino,'descripcionTraRealizado' => $request->desresolucionresultados]);
                  $res2 = SolicitudTicketsAps::where('id',$request->id_solicitud)
                  ->update(['id_estado' => $request->id_estado]);
             return true;

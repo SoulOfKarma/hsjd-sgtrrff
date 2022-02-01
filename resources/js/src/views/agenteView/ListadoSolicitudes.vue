@@ -17,7 +17,6 @@
                 }"
             >
                 <template slot="table-row" slot-scope="props">
-                    <!-- Column: Name -->
                     <span
                         v-if="props.column.field === 'fullName'"
                         class="text-nowrap"
@@ -80,8 +79,6 @@
                             {{ props.row.descripcionEstado }}
                         </vs-chip>
                     </span>
-
-                    <!-- Column: Action -->
                     <span v-else-if="props.column.field === 'action'">
                         <plus-circle-icon
                             content="Asignar Solicitud"
@@ -184,8 +181,6 @@
                             "
                         ></edit-icon>
                     </span>
-
-                    <!-- Column: Common -->
                     <span v-else>
                         {{ props.formattedRow[props.column.field] }}
                     </span>
@@ -393,6 +388,15 @@
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
                             <br />
+                            <h6>Resolucion y Resultados</h6>
+                            <br />
+                            <quill-editor
+                                v-model="resolucionresultados"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
                         </div>
 
                         <div class="vx-col w-full md-5">
@@ -490,7 +494,6 @@ import VueTippy, { TippyComponent } from "vue-tippy";
 import Datepicker from "vuejs-datepicker";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
-//import Vuesax from "vuesax";
 import { SaveIcon } from "vue-feather-icons";
 import { FileTextIcon } from "vue-feather-icons";
 import { LoaderIcon } from "vue-feather-icons";
@@ -499,7 +502,6 @@ import vSelect from "vue-select";
 import moment from "moment";
 import { PrinterIcon } from "vue-feather-icons";
 import { EditIcon } from "vue-feather-icons";
-// import the styles
 import "vue-good-table/dist/vue-good-table.css";
 import VueGoodTablePlugin from "vue-good-table";
 Vue.use(VueGoodTablePlugin);
@@ -609,12 +611,10 @@ export default {
             },
             configdateTimePicker: {
                 enableTime: true,
-                //enableSeconds: true,
                 noCalendar: true,
                 time_24hr: true,
                 dateFormat: "H:i"
             },
-
             fechaTermino: null,
             horaTermino: null,
             colorLoading: "#ff8000",
@@ -634,6 +634,7 @@ export default {
             solicitudes: [],
             documentacion: [],
             dataDocumentacion: [],
+            resolucionresultados: "",
             localVal: process.env.MIX_APP_URL,
             urlDocumentos: process.env.MIX_APP_URL_DOCUMENTOS,
             nombre:
@@ -702,9 +703,6 @@ export default {
                 {
                     label: "Fecha Programada",
                     field: "fechaSolicitud",
-                    // type: "date",
-                    // dateInputFormat: "dd/MM/yyyy",
-                    // dateOutputFormat: "dd/MM/yyyy",
                     filterOptions: {
                         enabled: true
                     }
@@ -724,19 +722,13 @@ export default {
             this.correos.splice(index, 1);
         },
         isNumber: function($event) {
-            // console.log($event.keyCode); //keyCodes value
             let keyCode = $event.keyCode ? $event.keyCode : $event.which;
-
-            // only allow number and one dot
             if (
                 (keyCode < 48 || keyCode > 57) &&
                 (keyCode !== 46 || this.price.indexOf(".") != -1)
             ) {
-                // 46 is dot
                 $event.preventDefault();
             }
-
-            // restrict to 2 decimal places
             if (
                 this.price != null &&
                 this.price.indexOf(".") > -1 &&
@@ -745,19 +737,6 @@ export default {
                 $event.preventDefault();
             }
         },
-        /* isNumber: function(evt) {
-            evt = evt ? evt : window.event;
-            var charCode = evt.which ? evt.which : evt.keyCode;
-            if (
-                charCode > 31 &&
-                (charCode < 48 || charCode > 57) &&
-                charCode !== 46
-            ) {
-                evt.preventDefault();
-            } else {
-                return true;
-            }
-        }, */
         popCerrarTicket(id, uuid) {
             try {
                 let data = {
@@ -852,17 +831,16 @@ export default {
         },
         finalizarTicket() {
             try {
-                console.log(this.horaTermino);
                 let data = {
                     id_solicitud: this.idCierreTicket,
                     uuid: this.uuidCierreTicket,
                     horasEjecucion: this.horasTrabajadas,
                     id: this.idCierreTicket,
                     id_estado: this.seleccionEstado[0].id,
+                    desresolucionresultados: this.resolucionresultados,
                     horaTermino: this.horaTermino,
                     fechaTermino: moment(this.fechaTermino).format("YYYY-MM-DD")
                 };
-                console.log(data);
                 axios
                     .post(
                         this.localVal + "/api/Agente/PostCierreTicket",
@@ -906,13 +884,10 @@ export default {
             window.open(url, "_blank");
         },
         getImage(event) {
-            //Asignamos la imagen a  nuestra data
             this.image = event.target.files[0];
         },
         uploadImage() {
-            //Creamos el formData
             var data = new FormData();
-            //Añadimos la imagen seleccionada
             data.append("avatar", this.image);
             data.append("id", this.value3);
 
@@ -979,7 +954,6 @@ export default {
                     let listado = res.data;
                     this.documentacion = JSON.parse(JSON.stringify(listado));
                 });
-            //let c = this.dataDocumentacion;
         },
         forceRerender() {
             this.componentKey += 1;
@@ -1090,7 +1064,6 @@ export default {
             });
         },
         asignarSolicitud(id, uuid) {
-            // router.push(`/agenteView/FormularioAsignar/${id}`);
             axios
                 .get(
                     this.localVal + `/api/Agente/ValidarTicketAsignado/${id}`,
@@ -1122,7 +1095,6 @@ export default {
                 });
         },
         modificarSolicitud(id, uuid, id_user) {
-            //router.push(`/agenteView/FormularioModificar/${id}`);
             axios
                 .get(
                     this.localVal +
@@ -1248,7 +1220,6 @@ export default {
         this.cargarSolicitudes();
         this.openLoadingColor();
         this.forceRerender();
-        //this.cargarDocumentacion();
         this.cargarEstado();
     }
 };

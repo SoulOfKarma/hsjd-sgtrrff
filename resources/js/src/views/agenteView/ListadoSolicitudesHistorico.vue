@@ -393,6 +393,15 @@
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
                             <br />
+                            <h6>Resolucion y Resultados</h6>
+                            <br />
+                            <quill-editor
+                                v-model="resolucionresultados"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                            <br />
                         </div>
 
                         <div class="vx-col w-full md-5">
@@ -634,6 +643,7 @@ export default {
             solicitudes: [],
             documentacion: [],
             dataDocumentacion: [],
+            resolucionresultados: "",
             localVal: process.env.MIX_APP_URL,
             urlDocumentos: process.env.MIX_APP_URL_DOCUMENTOS,
             nombre:
@@ -745,19 +755,6 @@ export default {
                 $event.preventDefault();
             }
         },
-        /* isNumber: function(evt) {
-            evt = evt ? evt : window.event;
-            var charCode = evt.which ? evt.which : evt.keyCode;
-            if (
-                charCode > 31 &&
-                (charCode < 48 || charCode > 57) &&
-                charCode !== 46
-            ) {
-                evt.preventDefault();
-            } else {
-                return true;
-            }
-        }, */
         popCerrarTicket(id, uuid) {
             try {
                 let data = {
@@ -851,17 +848,16 @@ export default {
         },
         finalizarTicket() {
             try {
-                console.log(this.horaTermino);
                 let data = {
                     id_solicitud: this.idCierreTicket,
                     uuid: this.uuidCierreTicket,
                     horasEjecucion: this.horasTrabajadas,
                     id: this.idCierreTicket,
                     id_estado: this.seleccionEstado[0].id,
+                    desresolucionresultados: this.resolucionresultados,
                     horaTermino: this.horaTermino,
                     fechaTermino: moment(this.fechaTermino).format("YYYY-MM-DD")
                 };
-                console.log(data);
                 axios
                     .post(
                         this.localVal + "/api/Agente/PostCierreTicket",
