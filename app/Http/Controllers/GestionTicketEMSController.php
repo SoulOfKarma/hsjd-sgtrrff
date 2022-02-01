@@ -248,8 +248,9 @@ class GestionTicketEMSController extends Controller
             ->leftjoin('gestion_ticket_e_m_s', 'solicitud_tickets_e_m_s.id', '=', 'gestion_ticket_e_m_s.id_solicitud')
             ->leftjoin('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
             ->where('solicitud_tickets_e_m_s.id_categoria', 2)
-            ->where('solicitud_tickets_e_m_s.id_estado','!=', 7)
             ->where('solicitud_tickets_e_m_s.id_estado','!=', 1)
+            ->where('solicitud_tickets_e_m_s.id_estado','!=', 7)
+            ->where('solicitud_tickets_e_m_s.id_estado','!=', 9)
             ->union($ticket)
             ->orderBy('id','desc')
             ->get();
