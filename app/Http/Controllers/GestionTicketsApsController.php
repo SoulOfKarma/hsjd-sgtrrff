@@ -7,6 +7,8 @@ use App\SolicitudTicketsAps;
 use Illuminate\Http\Request;
 use App\Mail\TicketAsignado;
 use App\seguimientoAPSolicitudes;
+use App\TicketEquipamientoApoyoClinicos;
+use App\EquipamientoApoyoClinicos;
 use App\Mail\AutoRespuesta;
 use App\Supervisores;
 use App\Trabajadores;
@@ -255,6 +257,13 @@ class GestionTicketsApsController extends Controller
             $id = SolicitudTicketsAps::create(array_merge($request->all(), ['uuid' => $uuid]))->id;
     
             $response = GestionTicketsAps::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
+
+            if($request->id_equipamiento_apoyoclinico > 0){
+                TicketEquipamientoApoyoClinicos::create(['id_solicitud' => $id,'id_equipamiento_apoyoclinico' => $request->id_equipamiento_apoyoclinico]);
+            }else{
+                $resp = EquipamientoApoyoClinicos::create(['equipo' => $request->equipo,'marca' => $request->marca,'modelo' => $request->modelo,'serie' => $request->serie,'ninventario' => $request->ninventario]);
+                TicketEquipamientoApoyoClinicos::create(['id_solicitud' => $id,'id_equipamiento_apoyoclinico' => $resp->id]);
+            }
     
     
             $nombre = $request->nombre;
@@ -452,8 +461,6 @@ class GestionTicketsApsController extends Controller
     {
         $validador = false;
         try {
-            /* GestionSolicitudes::where('id_solicitud', $id)->delete();
-        SolicitudTickets::where('id', $id)->delete(); */
         $id = $request->id_solicitud;
         $nombre = $request->nombre;
         $razon = $request->razonEliminacion;

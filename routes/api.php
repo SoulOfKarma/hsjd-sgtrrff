@@ -348,6 +348,9 @@ use App\Mail\AutoRespuesta;
              //Modificar Equipamiento Medico 
              Route::post('/Agente/PutEquipamientoMedico', ['middleware' => 'cors', 'uses' => 'EquipamientoMedicosController@PutEquipamientoMedico']);
 
+             //Modificar Equipamiento Apoyo Clinico
+             Route::post('/Agente/PutEquipamientoApoyoClinico', ['middleware' => 'cors', 'uses' => 'EquipamientoApoyoClinicosController@PutEquipamientoApoyoClinico']);
+
 
             //Traer Listado Equipamiento Apoyo Clinico
             Route::get('/Agente/GetTodoEquipamientoApoyoClinico', ['middleware' => 'cors', 'uses' => 'EquipamientoApoyoClinicosController@GetTodoEquipamientoApoyoClinico']);
@@ -685,7 +688,10 @@ use App\Mail\AutoRespuesta;
               Route::post('/Agente/ExportarDataPDF', ['middleware' => 'cors', 'uses' => 'PdfController@ExportarDataPDF']);
 
             //Listado Equipamiento Medicos  
-            Route::post('/Agente/ListadoEquipamientoMedicoByID', ['middleware' => 'cors', 'uses' => 'TblTicketEquipamientoMedicosController@ListadoEquipamientoMedicoByID']); 
+            Route::post('/Agente/ListadoEquipamientoMedicoByID', ['middleware' => 'cors', 'uses' => 'TblTicketEquipamientoMedicosController@ListadoEquipamientoMedicoByID']);
+            
+            //Listado Equipamiento Medicos  
+            Route::post('/Agente/ListadoEquipamientoApoyoClinicoByID', ['middleware' => 'cors', 'uses' => 'TicketEquipamientoApoyoClinicosController@ListadoEquipamientoApoyoClinicoByID']);
             
             //Modificar Fechas 
             Route::post('/Agente/PutFechasI', ['middleware' => 'cors', 'uses' => 'GestionTicketsINDsController@PutFechas']);  

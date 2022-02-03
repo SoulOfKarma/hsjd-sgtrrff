@@ -162,6 +162,13 @@
                                 GenerarTicketBID(props.row.id, props.row.uuid)
                             "
                         ></loader-icon>
+                        <columns-icon
+                            content="Equipamiento de Apoyo medico a revisar"
+                            v-tippy
+                            size="1.5x"
+                            class="custom-class"
+                            @click="cargarListadoEApoyoClinico(props.row.id)"
+                        ></columns-icon>
                         <alert-triangle-icon
                             content="Finalizar Solicitud"
                             v-tippy
@@ -241,6 +248,105 @@
                     </div>
                 </div>
             </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popEquipamientoAP"
+            title="Modificar Equipamiento Apoyo Clinico"
+            :active.sync="popModificarEqAP"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-1/3 mb-base">
+                        <h6>Equipo</h6>
+                        <vs-input
+                            v-model="equipamientoApoyoClinico.equipo"
+                            class="w-full"
+                        />
+                    </div>
+                    <div class="vx-col w-1/3 mb-base">
+                        <h6>Marca</h6>
+                        <vs-input
+                            v-model="equipamientoApoyoClinico.marca"
+                            class="w-full"
+                        />
+                    </div>
+                    <div class="vx-col w-1/3 mb-base">
+                        <h6>Modelo</h6>
+                        <vs-input
+                            v-model="equipamientoApoyoClinico.modelo"
+                            class="w-full"
+                        />
+                    </div>
+                    <div class="vx-col w-1/2 mb-base">
+                        <h6>Serie</h6>
+                        <vs-input
+                            v-model="equipamientoApoyoClinico.serie"
+                            class="w-full"
+                        />
+                    </div>
+                    <div class="vx-col w-1/2 mb-base">
+                        <h6>N° Inventario</h6>
+                        <vs-input
+                            v-model="equipamientoApoyoClinico.ninventario"
+                            class="w-full"
+                        />
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="PutModificarEquipamientoApoyoClinico()"
+                            >Modificar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/2">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popModificarEqAP = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popup-example"
+            title="Equipo Apoyo Clinico a Revisar"
+            :active.sync="popListadoEquipoAP"
+        >
+            <vue-good-table
+                :columns="colEquipoAP"
+                :rows="listadoEquipoAP"
+                :pagination-options="{
+                    enabled: true,
+                    perPage: 10
+                }"
+            >
+                <template slot="table-row" slot-scope="props">
+                    <!-- Column: Name -->
+                    <span
+                        v-if="props.column.field === 'fullName'"
+                        class="text-nowrap"
+                    >
+                    </span>
+                    <span v-else-if="props.column.field === 'action'">
+                        <plus-circle-icon
+                            content="Modificar Equipo Apoyo Clinico"
+                            v-tippy
+                            size="1.5x"
+                            class="custom-class"
+                            @click="popModificarEquipo(props.row.id_solicitud)"
+                        ></plus-circle-icon>
+                    </span>
+                    <!-- Column: Common -->
+                    <span v-else>
+                        {{ props.formattedRow[props.column.field] }}
+                    </span>
+                </template></vue-good-table
+            >
         </vs-popup>
         <vs-popup
             classContent="popup-example"
@@ -464,6 +570,7 @@ import { SaveIcon } from "vue-feather-icons";
 import { FileTextIcon } from "vue-feather-icons";
 import { LoaderIcon } from "vue-feather-icons";
 import { AlertTriangleIcon } from "vue-feather-icons";
+import { ColumnsIcon } from "vue-feather-icons";
 import vSelect from "vue-select";
 import moment from "moment";
 import { PrinterIcon } from "vue-feather-icons";
@@ -492,6 +599,7 @@ export default {
         LoaderIcon,
         AlertTriangleIcon,
         PrinterIcon,
+        ColumnsIcon,
         EditIcon
     },
     data() {
@@ -535,6 +643,7 @@ export default {
             popupActive4: false,
             popFinTicket: false,
             popEnviarCorreoU: false,
+            popListadoEquipoAP: false,
             idSolicitudCorreo: 0,
             horasTrabajadas: 0,
             solicitudes: [],
@@ -551,10 +660,68 @@ export default {
             idCierreTicket: "",
             uuidCierreTicket: "",
             listadoEstado: [],
+            listadoEquipoAP: [],
+            popModificarEqAP: false,
+            equipamientoApoyoClinico: {
+                id: "",
+                equipo: "",
+                marca: "",
+                modelo: "",
+                serie: "",
+                ninventario: ""
+            },
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: "Seleccione Estado"
             },
+            colEquipoAP: [
+                {
+                    label: "N° Ticket",
+                    field: "id_solicitud",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Equipo",
+                    field: "equipo",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Marca",
+                    field: "marca",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Modelo",
+                    field: "modelo",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Serie",
+                    field: "serie",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "N° Inventario",
+                    field: "ninventario",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
+                }
+            ],
             columns: [
                 {
                     label: "N° Ticket",
@@ -644,6 +811,76 @@ export default {
             ) {
                 $event.preventDefault();
             }
+        },
+        cargarListadoEApoyoClinico(id) {
+            let data = {
+                id: id
+            };
+            axios
+                .post(
+                    this.localVal +
+                        "/api/Agente/ListadoEquipamientoApoyoClinicoByID",
+                    data,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(res => {
+                    this.listadoEquipoAP = res.data;
+                    this.equipamientoApoyoClinico.id = this.listadoEquipoAP[0].id_equipamiento_apoyoclinico;
+                    this.equipamientoApoyoClinico.equipo = this.listadoEquipoAP[0].equipo;
+                    this.equipamientoApoyoClinico.marca = this.listadoEquipoAP[0].marca;
+                    this.equipamientoApoyoClinico.modelo = this.listadoEquipoAP[0].modelo;
+                    this.equipamientoApoyoClinico.serie = this.listadoEquipoAP[0].serie;
+                    this.equipamientoApoyoClinico.ninventario = this.listadoEquipoAP[0].ninventario;
+                    this.popListadoEquipoAP = true;
+                });
+        },
+        PutModificarEquipamientoApoyoClinico() {
+            try {
+                let data = this.equipamientoApoyoClinico;
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Agente/PutEquipamientoApoyoClinico",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data == true) {
+                            this.$vs.notify({
+                                title:
+                                    "Equipo Apoyo Clinico fue modificado correctamente",
+                                text: "Se volvera a cargar el listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.cargarListadoEApoyoClinico(this.idSolicitudEQ);
+                            this.popModificarEqAP = false;
+                        } else {
+                            this.$vs.notify({
+                                title: "No se pudieron modificar los datos",
+                                text: "Intente nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popModificarEquipo(id) {
+            this.idSolicitudEQ = id;
+            this.popModificarEqAP = true;
         },
         popCerrarTicket(id, uuid) {
             try {

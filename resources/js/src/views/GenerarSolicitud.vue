@@ -527,7 +527,7 @@ export default {
         desactivarSeleccionEQ() {
             try {
                 if (this.checkEQ == false) {
-                    //this.solicitud.equipo = "";
+                    this.solicitud.equipo = "";
                     this.solicitud.marca = "";
                     this.solicitud.modelo = "";
                     this.solicitud.serie = "";
@@ -607,7 +607,7 @@ export default {
                 c.forEach((value, index) => {
                     a = value.id;
                     if (a == idGeneral) {
-                        //this.solicitud.equipo = value.equipo;
+                        this.solicitud.equipo = value.equipo;
                         this.solicitud.marca = value.marca;
                         this.solicitud.modelo = value.modelo;
                         this.solicitud.serie = value.serie;
@@ -627,7 +627,7 @@ export default {
                 c.forEach((value, index) => {
                     a = value.id;
                     if (a == idGeneral) {
-                        //this.solicitud.equipo = value.equipo;
+                        this.solicitud.equipo = value.equipo;
                         this.solicitud.marca = value.marca;
                         this.solicitud.modelo = value.modelo;
                         this.solicitud.serie = value.serie;

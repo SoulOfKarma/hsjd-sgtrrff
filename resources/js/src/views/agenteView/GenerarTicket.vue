@@ -277,14 +277,6 @@
                                 :options="listadoDuracion"
                             ></v-select>
                             <br />
-                            <!-- <h6>5.4 - Titulo del problema</h6>
-                            <br />
-                            <vs-input
-                                placeholder="Ej. Falla de red en equipo x"
-                                v-model="gestionTicket.tituloP"
-                                class="w-full"
-                            />
-                            <br /> -->
                             <h6>5.5 - Descripcion del problema</h6>
                             <br />
                             <quill-editor
@@ -1271,33 +1263,7 @@ export default {
                 } else {
                     this.registroUsuario.idvalmail = 1;
                 }
-                //this.rutUsuario = format(this.rutUsuario);
-                /* if (
-                    this.registroUsuario.run == null ||
-                    this.registroUsuario.run < 9 ||
-                    !validate(this.rutUsuario)
-                ) {
-                    this.$vs.notify({
-                        title: "Error en rut",
-                        text:
-                            "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
-                        color: "danger",
-                        position: "top-right",
-                        time: 3000
-                    });
-                } else if (
-                    this.registroUsuario.email == null ||
-                    this.registroUsuario.email < 10
-                ) {
-                    this.$vs.notify({
-                        title: "Error en correo",
-                        text:
-                            "Debe Escribir un correo valido y que no este el campo vacio",
-                        color: "danger",
-                        position: "top-right",
-                        time: 3000
-                    });
-                }  else */ if (
+                if (
                     this.registroUsuario.nombre == null ||
                     this.registroUsuario.nombre < 3
                 ) {
@@ -1408,12 +1374,10 @@ export default {
             this.registroUsuario.tra_apellido = "";
             this.registroUsuario.id_especialidad1 = 0;
 
-            this.seleccionCargo = [
-                {
-                    id: 0,
-                    descripcionCargo: "Seleccione Cargo"
-                }
-            ];
+            this.seleccionCargo = {
+                id: 0,
+                descripcionCargo: "Seleccione Cargo"
+            };
             this.seleccionEdificio = {
                 id: 0,
                 descripcionEdificio: "Seleccione Edificio"
@@ -1844,7 +1808,6 @@ export default {
                 })
                 .then(res => {
                     this.listadoUsuarios = res.data;
-                    this.resetI += 1;
                 });
         },
         cargarServicios() {
@@ -2045,7 +2008,6 @@ export default {
             this.gestionTicket.idTurno = this.seleccionTurno.id;
             this.gestionTicket.idDuracion = this.seleccionDuracion.id;
             this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
-            //this.gestionTicket.id_categoria = this.seleccionCategoria[0].id;
             var newElement = document.createElement("div");
             newElement.innerHTML = this.gestionTicket.descripcionP;
             this.gestionTicket.descripcionCorreo = newElement.textContent;
@@ -2511,31 +2473,7 @@ export default {
                 } else {
                     this.registroUsuarioU.idvalmail = 1;
                 }
-                //this.rutUsuarioU = format(this.rutUsuarioU);
-                /* if (
-                    this.registroUsuarioU.run == null ||
-                    this.registroUsuarioU.run < 9 ||
-                    !validate(this.rutUsuarioU)
-                ) {
-                    this.$vs.notify({
-                        title: "Error en rut",
-                        text:
-                            "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (
-                    this.registroUsuarioU.email == null ||
-                    this.registroUsuarioU.email < 10
-                ) {
-                    this.$vs.notify({
-                        title: "Error en correo",
-                        text:
-                            "Debe Escribir un correo valido y que no este el campo vacio",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else */ if (
+                if (
                     this.registroUsuarioU.nombre == null ||
                     this.registroUsuarioU.nombre < 3
                 ) {

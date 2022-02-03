@@ -136,7 +136,6 @@
                                 class="w-full select-large"
                                 label="descripcionTurno"
                                 :options="listadoTurno"
-                                @input="arrayTurno(seleccionTurno.id)"
                             ></v-select>
                         </div>
                     </div>
