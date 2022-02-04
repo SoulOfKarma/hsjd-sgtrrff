@@ -219,7 +219,7 @@
             </div>
             <!-- Informacion del problema -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="5. Informacion del problema" code-toggler>
+                <vx-card title="5. Informacion del problema">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
                             <h6>5.1 - Tipo de Reparacion</h6>
@@ -1103,7 +1103,7 @@ export default {
         nombreUsuarioU: "",
         apellidoUsuarioU: "",
         anexoUsuarioU: 0,
-        correoUsuarioU: "mantencion.hsjd@edsalud.gov.cl",
+        correoUsuarioU: "mantencion.hsjd@redsalud.gov.cl",
         rutUsuarioU: null,
         passUsuarioU: "",
         listadoCargoU: [],
@@ -1133,7 +1133,7 @@ export default {
         },
         registroUsuarioU: {
             run: null,
-            email: "mantencion.hsjd@edsalud.gov.cl",
+            email: "mantencion.hsjd@redsalud.gov.cl",
             nombre: "",
             apellido: "",
             anexo: "",

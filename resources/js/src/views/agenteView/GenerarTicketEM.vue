@@ -99,9 +99,6 @@
                                 class="w-full select-large"
                                 label="sup_nombre_apellido"
                                 :options="listadoSupervisores"
-                                @input="
-                                    arraySupervisores(seleccionSupervisor.id)
-                                "
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -233,9 +230,6 @@
                                 class="w-full select-large"
                                 label="descripcionTipoReparacion"
                                 :options="listadoTipoRep"
-                                @input="
-                                    arrayTipoReparacion(seleccionReparacion.id)
-                                "
                             ></v-select>
                             <br />
                             <h6>5.2 - Estado Ticket</h6>
@@ -266,17 +260,8 @@
                                 class="w-full select-large"
                                 label="descripcion_duracion"
                                 :options="listadoDuracion"
-                                @input="arrayDuracion(seleccionDuracion.id)"
                             ></v-select>
                             <br />
-                            <!-- <h6>5.4 - Titulo del problema</h6>
-                            <br />
-                            <vs-input
-                                placeholder="Ej. Falla de red en equipo x"
-                                v-model="gestionTicket.tituloP"
-                                class="w-full"
-                            />
-                            <br /> -->
                             <h6>
                                 5.5 - Seleccione Tipo Daño Equipamiento Medico
                             </h6>
@@ -410,7 +395,6 @@
                                 class="w-full select-large"
                                 label="sup_nombre_apellido"
                                 :options="listadoSupervisores"
-                                @input="arraySupervisor"
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -422,7 +406,6 @@
                                 class="w-full select-large"
                                 label="descripcionEspecialidad"
                                 :options="listadoEspecialidad"
-                                @input="arrayEspecialidad"
                             ></v-select>
                         </div>
                     </div>
@@ -967,30 +950,22 @@ export default {
             id: 1,
             desdanioseq: "Deterioro"
         },
-        seleccionApoyo1: [
-            {
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            }
-        ],
-        seleccionApoyo2: [
-            {
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            }
-        ],
-        seleccionApoyo3: [
-            {
-                id: 1,
-                tra_nombre_apellido: "Sin Asignar"
-            }
-        ],
-        seleccionDuracion: [
-            {
-                id: 1,
-                descripcion_duracion: "Chequeo"
-            }
-        ],
+        seleccionApoyo1: {
+            id: 1,
+            tra_nombre_apellido: "Sin Asignar"
+        },
+        seleccionApoyo2: {
+            id: 1,
+            tra_nombre_apellido: "Sin Asignar"
+        },
+        seleccionApoyo3: {
+            id: 1,
+            tra_nombre_apellido: "Sin Asignar"
+        },
+        seleccionDuracion: {
+            id: 1,
+            descripcion_duracion: "Chequeo"
+        },
         listadoDuracion: [],
         variablePrueba: 0,
         mensajeError: "",
@@ -1010,7 +985,7 @@ export default {
         nombreUsuarioU: "",
         apellidoUsuarioU: "",
         anexoUsuarioU: 0,
-        correoUsuarioU: "mantencion.hsjd@edsalud.gov.cl",
+        correoUsuarioU: "mantencion.hsjd@redsalud.gov.cl",
         rutUsuarioU: null,
         passUsuarioU: "",
         listadoCargoU: [],
@@ -1020,24 +995,18 @@ export default {
         listadoDaniosEM: [],
         validaEliminar2: false,
         val_runU: false,
-        seleccionCargoU: [
-            {
-                id: 0,
-                descripcionCargo: "Seleccione Cargo"
-            }
-        ],
-        seleccionEdificioU: [
-            {
-                id: 0,
-                descripcionEdificio: "Seleccione Edificio"
-            }
-        ],
-        seleccionServicioU: [
-            {
-                id: 0,
-                descripcionServicio: "Seleccione Servicio"
-            }
-        ],
+        seleccionCargoU: {
+            id: 0,
+            descripcionCargo: "Seleccione Cargo"
+        },
+        seleccionEdificioU: {
+            id: 0,
+            descripcionEdificio: "Seleccione Edificio"
+        },
+        seleccionServicioU: {
+            id: 0,
+            descripcionServicio: "Seleccione Servicio"
+        },
         dataUsuarioCreadorU: {
             nombre:
                 sessionStorage.getItem("nombre") +
@@ -1047,7 +1016,7 @@ export default {
         },
         registroUsuarioU: {
             run: null,
-            email: "mantencion.hsjd@edsalud.gov.cl",
+            email: "mantencion.hsjd@redsalud.gov.cl",
             nombre: "",
             apellido: "",
             anexo: "",
@@ -1175,8 +1144,8 @@ export default {
         },
         guardarTrabajador() {
             if (
-                this.seleccionSupervisor[0] == null ||
-                this.seleccionSupervisor[0].id == 0
+                this.seleccionSupervisor == null ||
+                this.seleccionSupervisor.id == 0
             ) {
                 this.$vs.notify({
                     title: "Error en Seleccionar al supervisor",
@@ -1186,8 +1155,8 @@ export default {
                     time: 3000
                 });
             } else if (
-                this.seleccionEspecialidad[0] == null ||
-                this.seleccionEspecialidad[0].id == 0
+                this.seleccionEspecialidad == null ||
+                this.seleccionEspecialidad.id == 0
             ) {
                 this.$vs.notify({
                     title: "Error en Seleccionar la especialidad",
@@ -1197,8 +1166,8 @@ export default {
                     time: 3000
                 });
             } else if (
-                this.seleccionEdificio[0] == null ||
-                this.seleccionEdificio[0].id == null
+                this.seleccionEdificio == null ||
+                this.seleccionEdificio.id == null
             ) {
                 this.$vs.notify({
                     title: "Error en Seleccionar el edificio",
@@ -1208,8 +1177,8 @@ export default {
                     time: 3000
                 });
             } else if (
-                this.seleccionServicio[0] == null ||
-                this.seleccionServicio[0].id == 0
+                this.seleccionServicio == null ||
+                this.seleccionServicio.id == 0
             ) {
                 this.$vs.notify({
                     title: "Error en Seleccionar el servicio",
@@ -1225,16 +1194,16 @@ export default {
                 this.registroUsuario.apellido = this.apellidoUsuario;
                 this.registroUsuario.anexo = this.anexoUsuario;
                 this.registroUsuario.id_cargo = 6;
-                this.registroUsuario.id_cargo_asociado = this.seleccionSupervisor[0].id;
-                this.registroUsuario.idSupervisor = this.seleccionSupervisor[0].id;
-                this.registroUsuario.id_edificio = this.seleccionEdificio[0].id;
-                this.registroUsuario.id_servicio = this.seleccionServicio[0].id;
+                this.registroUsuario.id_cargo_asociado = this.seleccionSupervisor.id;
+                this.registroUsuario.idSupervisor = this.seleccionSupervisor.id;
+                this.registroUsuario.id_edificio = this.seleccionEdificio.id;
+                this.registroUsuario.id_servicio = this.seleccionServicio.id;
                 this.registroUsuario.password = this.passUsuario;
                 this.registroUsuario.run_usuario = this.rutUsuario;
                 this.registroUsuario.tra_run = this.rutUsuario;
                 this.registroUsuario.tra_nombre = this.nombreUsuario;
                 this.registroUsuario.tra_apellido = this.apellidoUsuario;
-                this.registroUsuario.id_especialidad1 = this.seleccionEspecialidad[0].id;
+                this.registroUsuario.id_especialidad1 = this.seleccionEspecialidad.id;
 
                 if (
                     this.rutUsuario == 0 ||
@@ -1258,33 +1227,7 @@ export default {
                 } else {
                     this.registroUsuario.idvalmail = 1;
                 }
-                //this.rutUsuario = format(this.rutUsuario);
-                /* if (
-                    this.registroUsuario.run == null ||
-                    this.registroUsuario.run < 9 ||
-                    !validate(this.rutUsuario)
-                ) {
-                    this.$vs.notify({
-                        title: "Error en rut",
-                        text:
-                            "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
-                        color: "danger",
-                        position: "top-right",
-                        time: 3000
-                    });
-                } else if (
-                    this.registroUsuario.email == null ||
-                    this.registroUsuario.email < 10
-                ) {
-                    this.$vs.notify({
-                        title: "Error en correo",
-                        text:
-                            "Debe Escribir un correo valido y que no este el campo vacio",
-                        color: "danger",
-                        position: "top-right",
-                        time: 3000
-                    });
-                }  else */ if (
+                if (
                     this.registroUsuario.nombre == null ||
                     this.registroUsuario.nombre < 3
                 ) {
@@ -1360,19 +1303,6 @@ export default {
                 }
             }
         },
-        arrayEspecialidad() {
-            let id = this.seleccionEspecialidad.id;
-            let c = JSON.parse(JSON.stringify(this.listadoEspecialidad));
-            let b = [];
-            let a = 0;
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionEspecialidad = b;
-        },
         cargarEspecialidad() {
             axios
                 .get(this.localVal + "/api/Agente/getEspecialidad", {
@@ -1408,30 +1338,22 @@ export default {
             this.registroUsuario.tra_apellido = "";
             this.registroUsuario.id_especialidad1 = 0;
 
-            this.seleccionCargo = [
-                {
-                    id: 0,
-                    descripcionCargo: "Seleccione Cargo"
-                }
-            ];
-            this.seleccionEdificio = [
-                {
-                    id: 0,
-                    descripcionEdificio: "Seleccione Edificio"
-                }
-            ];
-            this.seleccionServicio = [
-                {
-                    id: 0,
-                    descripcionServicio: "Seleccione Servicio"
-                }
-            ];
-            this.seleccionEspecialidad = [
-                {
-                    id: 0,
-                    descripcionEspecialidad: "Seleccion Especialidad"
-                }
-            ];
+            this.seleccionCargo = {
+                id: 0,
+                descripcionCargo: "Seleccione Cargo"
+            };
+            this.seleccionEdificio = {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            };
+            this.seleccionServicio = {
+                id: 0,
+                descripcionServicio: "Seleccione Servicio"
+            };
+            this.seleccionEspecialidad = {
+                id: 0,
+                descripcionEspecialidad: "Seleccion Especialidad"
+            };
             this.nombreUsuario = "";
             this.apellidoUsuario = "";
             this.anexoUsuario = 0;
@@ -1490,24 +1412,18 @@ export default {
                 id: 0,
                 tra_nombre_apellido: "Seleccione al Trabajador"
             };
-            this.seleccionApoyo1 = [
-                {
-                    id: 1,
-                    tra_nombre_apellido: "Sin Asignar"
-                }
-            ];
-            this.seleccionApoyo2 = [
-                {
-                    id: 1,
-                    tra_nombre_apellido: "Sin Asignar"
-                }
-            ];
-            this.seleccionApoyo3 = [
-                {
-                    id: 1,
-                    tra_nombre_apellido: "Sin Asignar"
-                }
-            ];
+            this.seleccionApoyo1 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo2 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo3 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
         },
         filtroSegunEdificio() {
             if (this.seleccionEdificio == null || this.seleccionEdificio == 0) {
@@ -1538,7 +1454,11 @@ export default {
                     }
                 });
 
-                this.seleccionEdificio = b;
+                let idEdificio = b[0].id;
+                let desEdificio = b[0].descripcionEdificio;
+
+                this.seleccionEdificio.id = idEdificio;
+                this.seleccionEdificio.descripcionEdificio = desEdificio;
             }
         },
         guardarServicio() {
@@ -1555,11 +1475,6 @@ export default {
                 ) {
                     servicio = {
                         id_edificio: this.seleccionEdificio.id,
-                        descripcionServicio: this.value3
-                    };
-                } else {
-                    servicio = {
-                        id_edificio: this.seleccionEdificio[0].id,
                         descripcionServicio: this.value3
                     };
                 }
@@ -1616,7 +1531,7 @@ export default {
                 };
 
                 servicioU = {
-                    id_edificio: this.seleccionEdificioU[0].id,
+                    id_edificio: this.seleccionEdificioU.id,
                     descripcionServicio: this.value4
                 };
 
@@ -1671,10 +1586,7 @@ export default {
                     this.seleccionServicio.id == 0 ||
                     this.seleccionServicio.id == null
                 ) {
-                    if (
-                        this.seleccionEdificio.id == 0 ||
-                        this.seleccionEdificio[0].id == 0
-                    ) {
+                    if (this.seleccionEdificio.id == 0) {
                         this.$vs.notify({
                             time: 3000,
                             title: "Error",
@@ -1719,9 +1631,15 @@ export default {
                                 b.push(value);
                             }
                         });
-                        this.seleccionServicio = b;
+
+                        let idServicio = b[0].id;
+                        let desServicio = b[0].descripcionServicio;
+
+                        this.seleccionServicio.id = idServicio;
+                        this.seleccionServicio.descripcionServicio = desServicio;
+
                         idGeneral = 0;
-                        idGeneral = this.seleccionServicio[0].id_edificio;
+                        idGeneral = b[0].id_edificio;
                         b = [];
 
                         c = JSON.parse(JSON.stringify(this.listadoEdificios));
@@ -1733,78 +1651,17 @@ export default {
                             }
                         });
 
-                        this.seleccionEdificio = b;
+                        let idEdificio = b[0].id;
+                        let desEdificio = b[0].descripcionEdificio;
+
+                        this.seleccionEdificio.id = idEdificio;
+                        this.seleccionEdificio.descripcionEdificio = desEdificio;
                     }
                 }
             } catch (error) {
                 console.log("Error en servicio");
                 console.log(error);
             }
-        },
-        arrayEstado(id) {
-            let c = JSON.parse(JSON.stringify(this.listadoEstado));
-            let b = [];
-            var a = 0;
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionEstado = b;
-        },
-        arrayDuracion(id) {
-            let c = JSON.parse(JSON.stringify(this.listadoDuracion));
-            let b = [];
-            var a = 0;
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionDuracion = b;
-        },
-        arrayTipoReparacion(id) {
-            let c = JSON.parse(JSON.stringify(this.listadoTipoRep));
-            let b = [];
-            var a = 0;
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionReparacion = b;
-        },
-        arraySupervisores(id) {
-            let c = JSON.parse(JSON.stringify(this.listadoSupervisores));
-            let b = [];
-            var a = 0;
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionSupervisor = b;
-        },
-        arraySupervisor() {
-            let id = this.seleccionSupervisor.id;
-            let c = JSON.parse(JSON.stringify(this.listadoSupervisores));
-            let b = [];
-            let a = 0;
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionSupervisor = b;
         },
         arrayTrabajadores(id) {
             if (id == 0 || id == null) {
@@ -1822,7 +1679,11 @@ export default {
                         b.push(value);
                     }
                 });
-                this.seleccionTrabajador = b;
+
+                let idTra = b[0].id;
+                let desTra = b[0].tra_nombre_apellido;
+                this.seleccionTrabajador.id = idTra;
+                this.seleccionTrabajador.tra_nombre_apellido = desTra;
 
                 b = [];
                 a = 0;
@@ -1850,7 +1711,12 @@ export default {
                     b.push(value);
                 }
             });
-            this.seleccionApoyo1 = b;
+
+            let idSA1 = b[0].id;
+            let desSA1 = b[0].tra_nombre_apellido;
+
+            this.seleccionApoyo1.id = idSA1;
+            this.seleccionApoyo1.tra_nombre_apellido = desSA1;
 
             b = [];
             a = 0;
@@ -1880,7 +1746,12 @@ export default {
                     b.push(value);
                 }
             });
-            this.seleccionApoyo2 = b;
+
+            let idSA2 = b[0].id;
+            let desSA2 = b[0].tra_nombre_apellido;
+
+            this.seleccionApoyo2.id = idSA2;
+            this.seleccionApoyo2.tra_nombre_apellido = desSA2;
 
             b = [];
             a = 0;
@@ -1909,7 +1780,12 @@ export default {
                     b.push(value);
                 }
             });
-            this.seleccionApoyo3 = b;
+
+            let idSA3 = b[0].id;
+            let desSA3 = b[0].tra_nombre_apellido;
+
+            this.seleccionApoyo3.id = idSA3;
+            this.seleccionApoyo3.tra_nombre_apellido = desSA3;
         },
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
@@ -2079,119 +1955,68 @@ export default {
         },
         validarFormulario() {
             var hoy = new Date();
-            try {
-                if (this.seleccionEdificio[0].id == 0) {
-                    this.mensajeError = "el Edificio";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionServicio[0].id == 0) {
-                    this.mensajeError = "el servicio";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionUsuario.id == 0) {
-                    this.mensajeError = "el usuario";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionReparacion[0].id == 0) {
-                    this.mensajeError = "el tipo de reparacion";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionEstado.id == 0) {
-                    this.mensajeError = "el estado";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionSupervisor[0].id == 0) {
-                    this.mensajeError = "el supervisor";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionTrabajador[0].id == 0) {
-                    this.mensajeError = "el trabajador";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionApoyo1[0].id == 0) {
-                    this.mensajeError = "el apoyo 1";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionApoyo2[0].id == 0) {
-                    this.mensajeError = "el apoyo 2";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionApoyo3[0].id == 0) {
-                    this.mensajeError = "el apoyo 3";
-                    this.errorDrop(this.mensajeError);
-                } else if (
-                    this.gestionTicket.fechaInicio == null ||
-                    this.gestionTicket.fechaInicio < hoy.getDate()
-                ) {
-                    this.mensajeError = "la fecha de inicio ";
-                    this.errorDrop(this.mensajeError);
-                } else if (
-                    this.gestionTicket.descripcionP.trim() === "" ||
-                    this.gestionTicket.descripcionP.length < 15
-                ) {
-                    this.mensajeError =
-                        "La descripcion no puede ser menor a 15 caracteres";
-                    this.errorDescripcion(this.mensajeError);
-                } else if (this.seleccionPrioridad.id == 0) {
-                    this.mensajeError = "la prioridad ";
-                    this.errorDrop(this.mensajeError);
-                } else {
-                    this.guardarFormulario();
-                }
-            } catch (error) {
-                if (this.seleccionEdificio.id == 0) {
-                    this.mensajeError = "el Edificio";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionServicio.id == 0) {
-                    this.mensajeError = "el servicio";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionUsuario.id == 0) {
-                    this.mensajeError = "el usuario";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionReparacion.id == 0) {
-                    this.mensajeError = "el tipo de reparacion";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionEstado.id == 0) {
-                    this.mensajeError = "el estado";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionSupervisor.id == 0) {
-                    this.mensajeError = "el supervisor";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionTrabajador.id == 0) {
-                    this.mensajeError = "el trabajador";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionApoyo1.id == 0) {
-                    this.mensajeError = "el apoyo 1";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionApoyo2.id == 0) {
-                    this.mensajeError = "el apoyo 2";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionApoyo3.id == 0) {
-                    this.mensajeError = "el apoyo 3";
-                    this.errorDrop(this.mensajeError);
-                } else if (
-                    this.gestionTicket.fechaInicio == null ||
-                    this.gestionTicket.fechaInicio < hoy.getDate()
-                ) {
-                    this.mensajeError = "la fecha de inicio ";
-                    this.errorDrop(this.mensajeError);
-                } else if (
-                    this.gestionTicket.descripcionP.trim() === "" ||
-                    this.gestionTicket.descripcionP.length < 15
-                ) {
-                    this.mensajeError =
-                        "La descripcion no puede ser menor a 15 caracteres";
-                    this.errorDescripcion(this.mensajeError);
-                } else if (this.seleccionPrioridad.id == 0) {
-                    this.mensajeError = "la prioridad ";
-                    this.errorDrop(this.mensajeError);
-                } else {
-                    this.guardarFormulario();
-                }
+
+            if (this.seleccionEdificio.id == 0) {
+                this.mensajeError = "el Edificio";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionServicio.id == 0) {
+                this.mensajeError = "el servicio";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionUsuario.id == 0) {
+                this.mensajeError = "el usuario";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionReparacion.id == 0) {
+                this.mensajeError = "el tipo de reparacion";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionEstado.id == 0) {
+                this.mensajeError = "el estado";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionSupervisor.id == 0) {
+                this.mensajeError = "el supervisor";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionTrabajador.id == 0) {
+                this.mensajeError = "el trabajador";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionApoyo1.id == 0) {
+                this.mensajeError = "el apoyo 1";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionApoyo2.id == 0) {
+                this.mensajeError = "el apoyo 2";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionApoyo3.id == 0) {
+                this.mensajeError = "el apoyo 3";
+                this.errorDrop(this.mensajeError);
+            } else if (
+                this.gestionTicket.fechaInicio == null ||
+                this.gestionTicket.fechaInicio < hoy.getDate()
+            ) {
+                this.mensajeError = "la fecha de inicio ";
+                this.errorDrop(this.mensajeError);
+            } else if (
+                this.gestionTicket.descripcionP.trim() === "" ||
+                this.gestionTicket.descripcionP.length < 15
+            ) {
+                this.mensajeError =
+                    "La descripcion no puede ser menor a 15 caracteres";
+                this.errorDescripcion(this.mensajeError);
+            } else if (this.seleccionPrioridad.id == 0) {
+                this.mensajeError = "la prioridad ";
+                this.errorDrop(this.mensajeError);
+            } else {
+                this.guardarFormulario();
             }
         },
         guardarFormulario() {
             this.gestionTicket.id_user = this.seleccionUsuario.id;
-            this.gestionTicket.id_edificio = this.seleccionEdificio[0].id;
-            this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
-            this.gestionTicket.id_tipoReparacion = this.seleccionReparacion[0].id;
+            this.gestionTicket.id_edificio = this.seleccionEdificio.id;
+            this.gestionTicket.id_servicio = this.seleccionServicio.id;
+            this.gestionTicket.id_tipoReparacion = this.seleccionReparacion.id;
             this.gestionTicket.id_estado = this.seleccionEstado.id;
-            this.gestionTicket.id_supervisor = this.seleccionSupervisor[0].id;
-            this.gestionTicket.id_trabajador = this.seleccionTrabajador[0].id;
-            this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
-            this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
-            this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
+            this.gestionTicket.id_supervisor = this.seleccionSupervisor.id;
+            this.gestionTicket.id_trabajador = this.seleccionTrabajador.id;
+            this.gestionTicket.idApoyo1 = this.seleccionApoyo1.id;
+            this.gestionTicket.idApoyo2 = this.seleccionApoyo2.id;
+            this.gestionTicket.idApoyo3 = this.seleccionApoyo3.id;
             this.gestionTicket.idTurno = this.seleccionTurno.id;
             this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
             this.gestionTicket.id_danoEQ = this.seleccionDanios.id;
@@ -2201,7 +2026,7 @@ export default {
             this.gestionTicket.tituloP = "Sin Titulo";
             this.gestionTicket.id_categoria = 2;
             this.gestionTicket.nombre = this.nombre;
-            this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
+            this.gestionTicket.idDuracion = this.seleccionDuracion.id;
             const ticket = this.gestionTicket;
             this.openLoadingColor();
             axios
@@ -2243,58 +2068,42 @@ export default {
                 id: 0,
                 descripcionTurno: "Seleccione Turno"
             };
-            this.seleccionEdificio = [
-                {
-                    id: 0,
-                    descripcionEdificio: "Seleccione Edificio"
-                }
-            ];
-            this.seleccionServicio = [
-                {
-                    id: 0,
-                    descripcionServicio: "Seleccione Servicio"
-                }
-            ];
-            this.seleccionReparacion = [
-                {
-                    id: 0,
-                    descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
-                }
-            ];
+            this.seleccionEdificio = {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            };
+            this.seleccionServicio = {
+                id: 0,
+                descripcionServicio: "Seleccione Servicio"
+            };
+            this.seleccionReparacion = {
+                id: 0,
+                descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+            };
             this.seleccionEstado = {
                 id: 0,
                 descripcionEstado: "Seleccione Estado"
             };
-            this.seleccionSupervisor = [
-                {
-                    id: 0,
-                    sup_nombre_apellido: "Seleccione al Supervisor"
-                }
-            ];
-            this.seleccionTrabajador = [
-                {
-                    id: 0,
-                    tra_nombre_apellido: "Seleccione al Trabajador"
-                }
-            ];
-            this.seleccionApoyo1 = [
-                {
-                    id: 1,
-                    tra_nombre_apellido: "Sin Asignar"
-                }
-            ];
-            this.seleccionApoyo2 = [
-                {
-                    id: 1,
-                    tra_nombre_apellido: "Sin Asignar"
-                }
-            ];
-            this.seleccionApoyo3 = [
-                {
-                    id: 1,
-                    tra_nombre_apellido: "Sin Asignar"
-                }
-            ];
+            this.seleccionSupervisor = {
+                id: 0,
+                sup_nombre_apellido: "Seleccione al Supervisor"
+            };
+            this.seleccionTrabajador = {
+                id: 0,
+                tra_nombre_apellido: "Seleccione al Trabajador"
+            };
+            this.seleccionApoyo1 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo2 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo3 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
         },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
@@ -2328,24 +2137,18 @@ export default {
             this.registroUsuarioU.password = "";
             this.registroUsuarioU.run_usuario = "";
 
-            this.seleccionCargoU = [
-                {
-                    id: 0,
-                    descripcionCargo: "Seleccione Cargo"
-                }
-            ];
-            this.seleccionEdificioU = [
-                {
-                    id: 0,
-                    descripcionEdificio: "Seleccione Edificio"
-                }
-            ];
-            this.seleccionServicioU = [
-                {
-                    id: 0,
-                    descripcionServicio: "Seleccione Servicio"
-                }
-            ];
+            this.seleccionCargoU = {
+                id: 0,
+                descripcionCargo: "Seleccione Cargo"
+            };
+            this.seleccionEdificioU = {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            };
+            this.seleccionServicioU = {
+                id: 0,
+                descripcionServicio: "Seleccione Servicio"
+            };
             this.nombreUsuarioU = "";
             this.apellidoUsuarioU = "";
             this.anexoUsuarioU = 0;
@@ -2368,10 +2171,7 @@ export default {
                     this.seleccionServicioU.id == 0 ||
                     this.seleccionServicioU.id == null
                 ) {
-                    if (
-                        this.seleccionEdificioU.id == 0 ||
-                        this.seleccionEdificioU[0].id == 0
-                    ) {
+                    if (this.seleccionEdificioU.id == 0) {
                         this.$vs.notify({
                             time: 3000,
                             title: "Error",
@@ -2418,9 +2218,14 @@ export default {
                                 b.push(value);
                             }
                         });
-                        this.seleccionServicioU = b;
+                        let idServicio = b[0].id;
+                        let desServicio = b[0].descripcionServicio;
+
+                        this.seleccionServicioU.id = idServicio;
+                        this.seleccionServicioU.descripcionServicio = desServicio;
+
                         idGeneral = 0;
-                        idGeneral = this.seleccionServicioU[0].id_edificio;
+                        idGeneral = b[0].id_edificio;
                         b = [];
 
                         c = this.listadoEdificiosU;
@@ -2432,7 +2237,11 @@ export default {
                             }
                         });
 
-                        this.seleccionEdificioU = b;
+                        let idEdificio = b[0].id;
+                        let desEdificio = b[0].descripcionEdificio;
+
+                        this.seleccionEdificioU.id = idEdificio;
+                        this.seleccionEdificioU.descripcionEdificio = desEdificio;
                     }
                 }
             } catch (error) {
@@ -2442,9 +2251,9 @@ export default {
         },
         guardarUsuarioU() {
             if (
-                this.seleccionEdificioU[0] == null ||
-                this.seleccionEdificioU[0].id == 0 ||
-                this.seleccionEdificioU[0].id == null
+                this.seleccionEdificioU == null ||
+                this.seleccionEdificioU.id == 0 ||
+                this.seleccionEdificioU.id == null
             ) {
                 this.$vs.notify({
                     title: "Error al seleccionar el edificio",
@@ -2453,9 +2262,9 @@ export default {
                     position: "top-right"
                 });
             } else if (
-                this.seleccionServicioU[0] == null ||
-                this.seleccionServicioU[0].id == 0 ||
-                this.seleccionServicioU[0].id == null
+                this.seleccionServicioU == null ||
+                this.seleccionServicioU.id == 0 ||
+                this.seleccionServicioU.id == null
             ) {
                 this.$vs.notify({
                     title: "Error al seleccionar el servicio",
@@ -2470,8 +2279,8 @@ export default {
                 this.registroUsuarioU.apellido = this.apellidoUsuarioU;
                 this.registroUsuarioU.anexo = this.anexoUsuarioU;
                 this.registroUsuarioU.id_cargo = 1;
-                this.registroUsuarioU.id_edificio = this.seleccionEdificioU[0].id;
-                this.registroUsuarioU.id_servicio = this.seleccionServicioU[0].id;
+                this.registroUsuarioU.id_edificio = this.seleccionEdificioU.id;
+                this.registroUsuarioU.id_servicio = this.seleccionServicioU.id;
                 this.registroUsuarioU.password = this.passUsuarioU;
                 this.registroUsuarioU.run_usuario = this.rutUsuarioU;
 
@@ -2497,29 +2306,7 @@ export default {
                 } else {
                     this.registroUsuarioU.idvalmail = 1;
                 }
-                /* if (
-          this.registroUsuarioU.run == null ||
-          this.registroUsuarioU.run < 9 ||
-          !validate(this.rutUsuarioU)
-        ) {
-          this.$vs.notify({
-            title: "Error en rut",
-            text:
-              "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
-            color: "danger",
-            position: "top-right",
-          });
-        } else if (
-          this.registroUsuarioU.email == null ||
-          this.registroUsuarioU.email < 10
-        ) {
-          this.$vs.notify({
-            title: "Error en correo",
-            text: "Debe Escribir un correo valido y que no este el campo vacio",
-            color: "danger",
-            position: "top-right",
-          });
-        } else */ if (
+                if (
                     this.registroUsuarioU.nombre == null ||
                     this.registroUsuarioU.nombre < 3
                 ) {
@@ -2652,7 +2439,11 @@ export default {
                     }
                 });
 
-                this.seleccionEdificioU = b;
+                let idEdificio = b[0].id;
+                let desEdificio = b[0].descripcionEdificio;
+
+                this.seleccionEdificioU.id = idEdificio;
+                this.seleccionEdificioU.descripcionEdificio = desEdificio;
             }
         },
         cargarDaniosEM() {
