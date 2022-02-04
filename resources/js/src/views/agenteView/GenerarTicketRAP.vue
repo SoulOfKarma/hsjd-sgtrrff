@@ -3,7 +3,7 @@
         <vs-row>
             <div
                 class="router-header flex flex-wrap items-center mb-8"
-                style="margin-left: 10px"
+                style="margin-left:10px;"
             >
                 <div
                     class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
@@ -25,13 +25,16 @@
                 color="primary"
                 icon="new_releases"
                 active="true"
-                style="margin-bottom: 10px"
+                style="margin-bottom: 10px;"
             >
                 <p>Recuerda que todos los campos son obligatorios!</p>
             </vs-alert>
             <!-- Usuario -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="1. Seleccionar Usuario Solicitante" c>
+                <vx-card
+                    title="1. Seleccionar Usuario Solicitante"
+                    code-toggler
+                >
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
                             <h6>1.1 - Seleccione Al usuario</h6>
@@ -117,7 +120,6 @@
                             <h6>3.3 - Seleccione al Apoyo 1</h6>
                             <br />
                             <v-select
-                                taggable
                                 v-model="seleccionApoyo1"
                                 placeholder="Seleccione al Apoyo"
                                 class="w-full select-large"
@@ -193,7 +195,7 @@
                                 @on-change="onToChange"
                             />
                             <flat-pickr
-                                :config="configdateToTimePicker"
+                                :config="configdateTimePicker"
                                 v-model="gestionTicket.horaTermino"
                                 placeholder="Seleccione Hora"
                             />
@@ -217,20 +219,9 @@
             </div>
             <!-- Informacion del problema -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="5. Informacion del problema">
+                <vx-card title="5. Informacion del problema" code-toggler>
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
-                            <h6>Ticket Repetido?</h6>
-                            <h6>
-                                <vs-checkbox
-                                    v-model="esRepetido"
-                                    @input="validarExistenciaRepetido"
-                                    >Marque si es un Ticket Repetido, Sino
-                                    desmarquelo
-                                </vs-checkbox>
-                            </h6>
-                            <br />
-
                             <h6>5.1 - Tipo de Reparacion</h6>
                             <br />
                             <v-select
@@ -277,12 +268,146 @@
                                 v-model="gestionTicket.descripcionP"
                                 :options="editorOption"
                             >
+                                <div
+                                    id="toolbar"
+                                    slot="toolbar"
+                                ></div> </quill-editor
+                            ><br />
+                            <h6>5.6 - Descripcion Trabajo Realizado</h6>
+                            <br />
+                            <quill-editor
+                                v-model="gestionTicket.descripcionTraRealizado"
+                                :options="editorOption"
+                            >
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
                         </div>
                     </div>
                 </vx-card>
             </div>
+            <!-- Menu Adicional Para agregar el equipamiento de Equipos Medicos o Apoyo Clinico -->
+
+            <vx-card title="6. Informacion Equipo">
+                <div class="vx-row mb-12">
+                    <div class="vx-col w-full mt-5">
+                        <ul class="centerx">
+                            <li>
+                                <vs-checkbox
+                                    v-model="checkEQ"
+                                    class="w-full"
+                                    @click="desactivarSeleccionEQ"
+                                    >chequee si la solicitud no requiere la
+                                    revision de un equipamiento de Apoyo
+                                    Clinico</vs-checkbox
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <br />
+                    <div class="vx-col w-1/2 mt-5">
+                        <h6>Seleccione la Serie del equipo a Revisar</h6>
+                        <br />
+                        <v-select
+                            v-model="seleccionSerieAp"
+                            placeholder="Seleccione el Equipamiento a Revisar"
+                            class="w-full select-large"
+                            label="serie"
+                            :options="listadoEApoyoClinico"
+                            @input="cargaEquipoPorSerieAp"
+                            :disabled="this.checkEQ"
+                        ></v-select>
+                        <br />
+                    </div>
+                    <div class="vx-col w-1/2 mt-5">
+                        <h6>
+                            Seleccione el Inventario del equipo a Revisar
+                        </h6>
+                        <br />
+                        <v-select
+                            v-model="seleccionSerieAp"
+                            placeholder="Seleccione el Equipamiento a Revisar"
+                            class="w-full select-large"
+                            label="ninventario"
+                            :options="listadoEApoyoClinico"
+                            @input="cargaEquipoPorNInventarioAp"
+                            :disabled="this.checkEQ"
+                        ></v-select>
+                        <br />
+                    </div>
+                    <div class="vx-col w-full mt-5">
+                        <vs-button
+                            color="warning"
+                            class="mr-3 mb-2 w-full"
+                            @click="limpiarSerieInv"
+                            >Limpiar Seleccion Serie o Inventario</vs-button
+                        >
+                        <br />
+                    </div>
+                    <div class="vx-col w-1/3 mt-5">
+                        <h6>6.1 - Equipo</h6>
+                        <br />
+                        <vs-input
+                            placeholder="Ej. MSI"
+                            :disabled="this.checkEQ"
+                            v-model="gestionTicket.equipo"
+                            class="w-full"
+                            name="Marca"
+                        />
+
+                        <br />
+                    </div>
+                    <div class="vx-col w-1/3 mt-5">
+                        <h6>6.2 - Marca</h6>
+                        <br />
+                        <vs-input
+                            placeholder="Ej. MSI"
+                            :disabled="this.checkEQ"
+                            v-model="gestionTicket.marca"
+                            class="w-full"
+                            name="Marca"
+                        />
+
+                        <br />
+                    </div>
+                    <div class="vx-col w-1/3 mt-5">
+                        <h6>6.3 - Modelo</h6>
+                        <br />
+                        <vs-input
+                            placeholder="Ej. B550"
+                            :disabled="this.checkEQ"
+                            v-model="gestionTicket.modelo"
+                            class="w-full"
+                            name="Modelo"
+                        />
+                        <br />
+                    </div>
+                    <div class="vx-col w-1/2 mt-5">
+                        <h6>6.4 - Serie</h6>
+                        <br />
+                        <vs-input
+                            placeholder="Ej. A26548W866F9B"
+                            :disabled="this.checkEQ"
+                            v-model="gestionTicket.serie"
+                            class="w-full"
+                            name="Serie"
+                        />
+                        <br />
+                    </div>
+                    <div class="vx-col w-1/2 mt-5">
+                        <h6>6.5 - Inventario</h6>
+                        <br />
+                        <vs-input
+                            placeholder="Ej. 15-54112"
+                            :disabled="this.checkEQ"
+                            v-model="gestionTicket.ninventario"
+                            class="w-full"
+                            name="Inventario"
+                        />
+                        <br />
+                    </div>
+                </div>
+            </vx-card>
+            <br />
             <!-- Enviar o Limpiar Formulario -->
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <div class="vx-row">
@@ -321,7 +446,7 @@
                                 v-on:blur="formatear_run"
                             />
                             <span
-                                style="font-size: 10px; color: red; margin-left: 10px"
+                                style="font-size: 10px; color: red; margin-left: 10px;"
                                 v-if="val_run"
                                 >Run incorrecto</span
                             >
@@ -374,7 +499,6 @@
                                 class="w-full select-large"
                                 label="sup_nombre_apellido"
                                 :options="listadoSupervisores"
-                                @input="arraySupervisor"
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -451,7 +575,6 @@
                 </div>
             </div>
         </vs-popup>
-        <!-- Lado del nuevo usuario -->
         <vs-popup
             classContent="popup-example"
             title="Guardar Nuevo Usuario?"
@@ -699,7 +822,6 @@ export default {
         configFromdateTimePicker: {
             minDate: null,
             maxDate: null,
-            defaultDate: moment().format("YYYY-MM-DD"),
             locale: {
                 firstDayOfWeek: 1,
                 weekdays: {
@@ -797,6 +919,7 @@ export default {
 
         configdateTimePicker: {
             enableTime: true,
+            //enableSeconds: true,
             noCalendar: true,
             time_24hr: true,
             dateFormat: "H:i"
@@ -834,28 +957,26 @@ export default {
         listadoTrabajadoresData: [],
         listadoEstado: [],
         listadoCorreo: [],
-        listadoTurno: [],
-        listadoServiciosData: [],
-        seleccionTurno: {
-            id: 1,
-            descripcionTurno: "Dia"
-        },
+        listadoCategoria: [],
         listadoUsuarios: [],
+        listadoServiciosData: [],
         listadoPrioridad: [],
+        listadoEApoyoClinico: [],
+        checkEQ: false,
         gestionTicket: {
             id_user: 0,
             uuid: "",
             id_solicitud: 0,
-            id_edificio: 0,
-            id_servicio: 0,
+            id_edificio: 2,
+            id_servicio: 2,
             id_ubicacionEx: 42,
-            id_tipoReparacion: 0,
-            id_estado: 1,
-            id_supervisor: 0,
-            id_trabajador: 0,
-            idApoyo1: 1,
-            idApoyo2: 1,
-            idApoyo3: 1,
+            id_tipoReparacion: 3,
+            id_estado: 4,
+            id_supervisor: 4,
+            id_trabajador: 5,
+            idApoyo1: 5,
+            idApoyo2: 5,
+            idApoyo3: 5,
             idTurno: 0,
             fechaInicio: null,
             fechaTermino: null,
@@ -865,13 +986,18 @@ export default {
             diasEjecucion: 0,
             tituloP: ".",
             descripcionP: "",
-            id_categoria: 1,
-            nombre: "",
+            descripcionTraRealizado: "",
+            id_categoria: 0,
             descripcionCorreo: "",
+            nombre: "",
             idDuracion: 0,
-            esCadena: false,
-            idTicketPrincipal: 0,
-            id_prioridad: 0
+            id_prioridad: 0,
+            equipo: "",
+            marca: "",
+            modelo: "",
+            serie: "",
+            ninventario: "",
+            id_equipamiento_apoyoclinico: 0
         },
         registroUsuario: {
             run: null,
@@ -895,6 +1021,16 @@ export default {
             idvalRut: 0,
             idvalmail: 0,
             idSupervisor: 0
+        },
+        listadoTurno: [],
+        seleccionSerieAp: {
+            id: 0,
+            serie: "Seleccione Serie",
+            ninventario: "Seleccione Inventario"
+        },
+        seleccionTurno: {
+            id: 1,
+            descripcionTurno: "Dia"
         },
         seleccionEdificio: {
             id: 0,
@@ -940,9 +1076,13 @@ export default {
             id: 1,
             tra_nombre_apellido: "Sin Asignar"
         },
+        seleccionCategoria: {
+            id: 0,
+            des_categoria: "Seleccione Categoria"
+        },
         seleccionDuracion: {
-            id: 2,
-            descripcion_duracion: "Trabajo Diario"
+            id: 1,
+            descripcion_duracion: "Chequeo"
         },
         listadoDuracion: [],
         variablePrueba: 0,
@@ -950,20 +1090,20 @@ export default {
         colorLoading: "#ff8000",
         localVal: process.env.MIX_APP_URL,
         value1: "",
-        value2: "",
-        value3: "",
-        value4: "",
         validaEliminar: false,
         popupActive2: false,
         popupActive3: false,
         popAServicio: false,
         popAServicioU: false,
+        value2: "",
+        value3: "",
+        value4: "",
         componentKey: 0,
         //Lado data crear nuevo usuario
         nombreUsuarioU: "",
         apellidoUsuarioU: "",
         anexoUsuarioU: 0,
-        correoUsuarioU: "mantencion.hsjd@redsalud.gov.cl",
+        correoUsuarioU: "mantencion.hsjd@edsalud.gov.cl",
         rutUsuarioU: null,
         passUsuarioU: "",
         listadoCargoU: [],
@@ -993,7 +1133,7 @@ export default {
         },
         registroUsuarioU: {
             run: null,
-            email: "mantencion.hsjd@redsalud.gov.cl",
+            email: "mantencion.hsjd@edsalud.gov.cl",
             nombre: "",
             apellido: "",
             anexo: "",
@@ -1008,10 +1148,7 @@ export default {
             estado_login: 1,
             idvalRut: 0,
             idvalmail: 0
-        },
-        listadoTicketByID: [],
-        esRepetido: false,
-        listadoTicketPrincipal: []
+        }
     }),
     computed: {
         calcularHorasTrabajo() {
@@ -1040,24 +1177,18 @@ export default {
             }
         },
         diasCalculados() {
-            if (
-                this.gestionTicket.fechaInicio != null &&
-                this.gestionTicket.horaInicio != null &&
-                this.gestionTicket.fechaTermino != null &&
-                this.gestionTicket.horaTermino != null
-            ) {
-                this.fecha1 = moment(this.gestionTicket.fechaInicio);
-                this.fecha2 = moment(this.gestionTicket.fechaTermino);
-                this.gestionTicket.diasEjecucion = this.fecha2.diff(
-                    this.fecha1,
-                    "days"
-                );
+            this.fecha1 = moment(this.gestionTicket.fechaInicio);
+            this.fecha2 = moment(this.gestionTicket.fechaTermino);
+            this.gestionTicket.diasEjecucion = this.fecha2.diff(
+                this.fecha1,
+                "days"
+            );
 
-                if (this.fecha1.isSame(this.fecha2)) {
-                    this.gestionTicket.diasEjecucion = 1;
-                }
-                return this.gestionTicket.diasEjecucion;
+            if (this.fecha1.isSame(this.fecha2)) {
+                this.gestionTicket.diasEjecucion = 1;
             }
+            return this.gestionTicket.diasEjecucion;
+            // this.diaCalculado = this.fromDate - this.toDate;
         }
     },
     methods: {
@@ -1069,6 +1200,21 @@ export default {
             return search.length
                 ? fuse.search(search).map(({ item }) => item)
                 : fuse.list;
+        },
+        desactivarSeleccionEQ() {
+            try {
+                if (this.checkEQ == false) {
+                    this.gestionTicket.equipo = "";
+                    this.gestionTicket.marca = "";
+                    this.gestionTicket.modelo = "";
+                    this.gestionTicket.serie = "";
+                    this.gestionTicket.ninventario = "";
+                } else {
+                    this.checkEQ = true;
+                }
+            } catch (error) {
+                console.log(error);
+            }
         },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
@@ -1086,36 +1232,24 @@ export default {
         volverTra() {
             this.popCrearTrabajador = false;
         },
-        validarExistenciaRepetido() {
-            try {
-                if (this.esRepetido == true) {
-                    let obj = { idTicket: this.$route.params.id };
-                    console.log(obj);
-                    axios
-                        .post(
-                            this.localVal + "/api/Agente/GetTicketCadena",
-                            obj,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        )
-                        .then(res => {
-                            this.listadoTicketPrincipal = res.data;
-                            if (
-                                this.listadoTicketPrincipal == null ||
-                                this.listadoTicketPrincipal.length < 1
-                            ) {
-                                this.listadoTicketPrincipal = [];
-                            }
-                            console.log(this.listadoTicketPrincipal);
-                        });
-                }
-            } catch (error) {
-                console.log(error);
+        cargarPrioridades() {
+            axios
+                .get(this.localVal + "/api/Usuario/GetPrioridades", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoPrioridad = res.data;
+                });
+        },
+        formatear_run() {
+            if (this.rutUsuario == "" || this.rutUsuario == null) {
+                this.val_run = false;
+            } else {
+                this.rutUsuario = format(this.rutUsuario);
+                this.val_run = !validate(this.rutUsuario);
             }
         },
         agregarNuevoUsuario() {
@@ -1124,7 +1258,6 @@ export default {
                     id: 0,
                     nombre: "Seleccione Usuario"
                 };
-
                 if (
                     this.seleccionUsuario.id == null ||
                     this.seleccionUsuario == null ||
@@ -1137,28 +1270,8 @@ export default {
                 console.log(error);
             }
         },
-        formatear_run() {
-            if (this.rutUsuario == "" || this.rutUsuario == null) {
-                this.val_run = false;
-            } else {
-                this.rutUsuario = format(this.rutUsuario);
-                this.val_run = !validate(this.rutUsuario);
-            }
-        },
         volver() {
             router.back();
-        },
-        cargarPrioridades() {
-            axios
-                .get(this.localVal + "/api/Usuario/GetPrioridades", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoPrioridad = res.data;
-                });
         },
         guardarTrabajador() {
             if (
@@ -1356,12 +1469,10 @@ export default {
             this.registroUsuario.tra_apellido = "";
             this.registroUsuario.id_especialidad1 = 0;
 
-            this.seleccionCargo = [
-                {
-                    id: 0,
-                    descripcionCargo: "Seleccione Cargo"
-                }
-            ];
+            this.seleccionCargo = {
+                id: 0,
+                descripcionCargo: "Seleccione Cargo"
+            };
             this.seleccionEdificio = {
                 id: 0,
                 descripcionEdificio: "Seleccione Edificio"
@@ -1380,6 +1491,70 @@ export default {
             this.correoUsuario = "";
             this.rutUsuario = null;
             this.passUsuario = "";
+        },
+        limpiar() {
+            this.gestionTicket = {
+                uuid: "",
+                id_solicitud: 0,
+                id_edificio: 0,
+                id_servicio: 0,
+                id_ubicacionEx: 42,
+                id_tipoReparacion: 0,
+                id_estado: 1,
+                id_supervisor: 0,
+                id_trabajador: 0,
+                idApoyo1: 1,
+                idApoyo2: 1,
+                idApoyo3: 1,
+                idTurno: 0,
+                fechaInicio: moment().format("YYYY-MM-DD"),
+                fechaTermino: null,
+                horaInicio: moment().format("H:mm"),
+                horaTermino: null,
+                horasEjecucion: 0,
+                diasEjecucion: 0,
+                idDuracion: 0
+            };
+            this.seleccionTurno = {
+                id: 0,
+                descripcionTurno: "Seleccione Turno"
+            };
+            this.seleccionEdificio = {
+                id: 0,
+                descripcionEdificio: "Seleccione Edificio"
+            };
+            this.seleccionServicio = {
+                id: 0,
+                descripcionServicio: "Seleccione Servicio"
+            };
+            this.seleccionReparacion = {
+                id: 0,
+                descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+            };
+            this.seleccionEstado = {
+                id: 2,
+                descripcionEstado: "En Proceso"
+            };
+            this.seleccionSupervisor = {
+                id: 0,
+                sup_nombre_apellido: "Seleccione al Supervisor"
+            };
+            this.seleccionTrabajador = {
+                id: 0,
+                tra_nombre_apellido: "Seleccione al Trabajador"
+            };
+            this.seleccionApoyo1 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo2 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
+            this.seleccionApoyo3 = {
+                id: 1,
+                tra_nombre_apellido: "Sin Asignar"
+            };
         },
         filtroSegunEdificio() {
             if (this.seleccionEdificio == null || this.seleccionEdificio == 0) {
@@ -1587,6 +1762,7 @@ export default {
                                 b.push(value);
                             }
                         });
+
                         let idServicio = b[0].id;
                         let desServicio = b[0].descripcionServicio;
 
@@ -1605,6 +1781,7 @@ export default {
                                 b.push(value);
                             }
                         });
+
                         let idEdificio = b[0].id;
                         let desEdificio = b[0].descripcionEdificio;
 
@@ -1616,49 +1793,6 @@ export default {
                 console.log("Error en servicio");
                 console.log(error);
             }
-        },
-        arrayTipoReparacion(id) {
-            let c = JSON.parse(JSON.stringify(this.listadoTipoRep));
-            let b = [];
-            var a = 0;
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            let idTipoRep = b[0].id;
-            let desTipoRep = b[0].descripcionTipoReparacion;
-
-            this.seleccionReparacion.id = idTipoRep;
-            this.seleccionReparacion.descripcionTipoReparacion = desTipoRep;
-        },
-        arraySupervisores(id) {
-            let c = JSON.parse(JSON.stringify(this.listadoSupervisores));
-            let b = [];
-            var a = 0;
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionSupervisor = b;
-        },
-        arraySupervisor() {
-            let id = this.seleccionSupervisor.id;
-            let c = JSON.parse(JSON.stringify(this.listadoSupervisores));
-            let b = [];
-            let a = 0;
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionSupervisor = b;
         },
         arrayTrabajadores(id) {
             if (id == 0 || id == null) {
@@ -1708,6 +1842,7 @@ export default {
                     b.push(value);
                 }
             });
+
             let idSA1 = b[0].id;
             let desSA1 = b[0].tra_nombre_apellido;
 
@@ -1950,6 +2085,7 @@ export default {
         },
         validarFormulario() {
             var hoy = new Date();
+
             if (this.seleccionEdificio.id == 0) {
                 this.mensajeError = "el Edificio";
                 this.errorDrop(this.mensajeError);
@@ -2001,53 +2137,51 @@ export default {
             }
         },
         guardarFormulario() {
-            this.gestionTicket.id_user = this.seleccionUsuario.id;
-            this.gestionTicket.id_edificio = this.seleccionEdificio.id;
-            this.gestionTicket.id_servicio = this.seleccionServicio.id;
-            this.gestionTicket.id_tipoReparacion = this.seleccionReparacion.id;
-            this.gestionTicket.id_estado = this.seleccionEstado.id;
-            this.gestionTicket.id_supervisor = this.seleccionSupervisor.id;
-            this.gestionTicket.id_trabajador = this.seleccionTrabajador.id;
-            this.gestionTicket.idApoyo1 = this.seleccionApoyo1.id;
-            this.gestionTicket.idApoyo2 = this.seleccionApoyo2.id;
-            this.gestionTicket.idApoyo3 = this.seleccionApoyo3.id;
-            this.gestionTicket.idTurno = this.seleccionTurno.id;
-            this.gestionTicket.idDuracion = this.seleccionDuracion.id;
-            var newElement = document.createElement("div");
-            newElement.innerHTML = this.gestionTicket.descripcionP;
-            this.gestionTicket.descripcionCorreo = newElement.textContent;
-            this.gestionTicket.tituloP = "Sin Titulo";
-            this.gestionTicket.id_categoria = 1;
-            this.gestionTicket.nombre = this.seleccionUsuario.nombre;
-            this.gestionTicket.esCadena = this.esRepetido;
-
-            if (this.esRepetido == true) {
-                if (this.listadoTicketPrincipal.idTicketPrincipal > 0) {
-                    this.gestionTicket.idTicketPrincipal = this.listadoTicketPrincipal.idTicketPrincipal;
+            try {
+                this.gestionTicket.id_user = this.seleccionUsuario.id;
+                this.gestionTicket.id_edificio = this.seleccionEdificio.id;
+                this.gestionTicket.id_servicio = this.seleccionServicio.id;
+                this.gestionTicket.id_tipoReparacion = this.seleccionReparacion.id;
+                this.gestionTicket.id_estado = this.seleccionEstado.id;
+                this.gestionTicket.id_supervisor = this.seleccionSupervisor.id;
+                this.gestionTicket.id_trabajador = this.seleccionTrabajador.id;
+                this.gestionTicket.idApoyo1 = this.seleccionApoyo1.id;
+                this.gestionTicket.idApoyo2 = this.seleccionApoyo2.id;
+                this.gestionTicket.idApoyo3 = this.seleccionApoyo3.id;
+                this.gestionTicket.idTurno = this.seleccionTurno.id;
+                this.gestionTicket.idDuracion = this.seleccionDuracion.id;
+                this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
+                var newElement = document.createElement("div");
+                newElement.innerHTML = this.gestionTicket.descripcionP;
+                this.gestionTicket.descripcionCorreo = newElement.textContent;
+                this.gestionTicket.tituloP = "Sin Titulo";
+                this.gestionTicket.id_categoria = 4;
+                this.gestionTicket.nombre = this.seleccionUsuario.nombre;
+                if (this.seleccionSerieAp.id > 0) {
+                    this.gestionTicket.id_equipamiento_apoyoclinico = this.seleccionSerieAp.id;
                 } else {
-                    this.gestionTicket.idTicketPrincipal = this.$route.params.id;
+                    this.gestionTicket.id_equipamiento_apoyoclinico = 0;
                 }
+                const ticket = this.gestionTicket;
+                this.openLoadingColor();
+                axios
+                    .post(
+                        this.localVal + "/api/Agente/PostNuevoTicketCA",
+                        ticket,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        const ticketServer = res.data;
+                        this.mensajeGuardado();
+                    });
+            } catch (error) {
+                console.log(error);
             }
-
-            const ticket = this.gestionTicket;
-            this.openLoadingColor();
-            axios
-                .post(this.localVal + "/api/Agente/PostNuevoTicket", ticket, {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    const ticketServer = res.data;
-                    this.mensajeGuardado();
-                });
-        },
-        openLoadingColor() {
-            this.$vs.loading({ color: this.colorLoading });
-            setTimeout(() => {
-                this.$vs.loading.close();
-            }, 2000);
         },
         limpiar() {
             this.gestionTicket = {
@@ -2089,8 +2223,8 @@ export default {
                 descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
             };
             this.seleccionEstado = {
-                id: 2,
-                descripcionEstado: "En Proceso"
+                id: 0,
+                descripcionEstado: "Seleccione Estado"
             };
             this.seleccionSupervisor = {
                 id: 0,
@@ -2113,6 +2247,28 @@ export default {
                 tra_nombre_apellido: "Sin Asignar"
             };
         },
+        limpiarSerieInv() {
+            try {
+                this.seleccionSerieAp = {
+                    id: 0,
+                    serie: "Seleccione Serie",
+                    ninventario: "Seleccione Inventario"
+                };
+                this.gestionTicket.equipo = "";
+                this.gestionTicket.marca = "";
+                this.gestionTicket.modelo = "";
+                this.gestionTicket.serie = "";
+                this.gestionTicket.ninventario = "";
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        openLoadingColor() {
+            this.$vs.loading({ color: this.colorLoading });
+            setTimeout(() => {
+                this.$vs.loading.close();
+            }, 2000);
+        },
         cargarDuracion() {
             axios
                 .get(this.localVal + "/api/Agente/GetDuracion", {
@@ -2124,6 +2280,62 @@ export default {
                 .then(res => {
                     this.listadoDuracion = res.data;
                 });
+        },
+        cargarEquipamientoApoyoClinico() {
+            axios
+                .get(
+                    this.localVal +
+                        "/api/Agente/GetTodoEquipamientoApoyoClinico",
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(res => {
+                    this.listadoEApoyoClinico = res.data;
+                });
+        },
+        cargaEquipoPorSerieAp() {
+            try {
+                var idGeneral = this.seleccionSerieAp.id;
+                let c = JSON.parse(JSON.stringify(this.listadoEApoyoClinico));
+                let b = [];
+                var a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        this.gestionTicket.equipo = value.equipo;
+                        this.gestionTicket.marca = value.marca;
+                        this.gestionTicket.modelo = value.modelo;
+                        this.gestionTicket.serie = value.serie;
+                        this.gestionTicket.ninventario = value.ninventario;
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        cargaEquipoPorNInventarioAp() {
+            try {
+                var idGeneral = this.seleccionSerieAp.id;
+                let c = JSON.parse(JSON.stringify(this.listadoEApoyoClinico));
+                let b = [];
+                var a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGeneral) {
+                        this.gestionTicket.equipo = value.equipo;
+                        this.gestionTicket.marca = value.marca;
+                        this.gestionTicket.modelo = value.modelo;
+                        this.gestionTicket.serie = value.serie;
+                        this.gestionTicket.ninventario = value.ninventario;
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
         },
         // Lado Crear Usuarios
         limpiar2() {
@@ -2219,7 +2431,6 @@ export default {
                                 b.push(value);
                             }
                         });
-
                         let idServicio = b[0].id;
                         let desServicio = b[0].descripcionServicio;
 
@@ -2285,6 +2496,7 @@ export default {
                 this.registroUsuarioU.id_servicio = this.seleccionServicioU.id;
                 this.registroUsuarioU.password = this.passUsuarioU;
                 this.registroUsuarioU.run_usuario = this.rutUsuarioU;
+
                 if (
                     this.rutUsuarioU == 0 ||
                     this.rutUsuarioU == null ||
@@ -2466,7 +2678,7 @@ export default {
                 let id = this.$route.params.id;
                 axios
                     .get(
-                        this.localVal + `/api/Agente/GetTicketAsignado/${id}`,
+                        this.localVal + `/api/Agente/GetTicketAsignadoAP/${id}`,
                         {
                             headers: {
                                 Authorization:
@@ -2714,6 +2926,7 @@ export default {
         this.cargarEspecialidad();
         this.cargarCargoUsuarioU();
         this.cargarHoras();
+        this.cargarEquipamientoApoyoClinico();
         setTimeout(() => {
             this.cargarPrioridades();
             this.cargarDataByID();
@@ -2733,7 +2946,6 @@ export default {
 .con-vs-popup .vs-popup {
   width: 1000px;
 }
-
 .examplex {
   display: flex;
   align-items: center;

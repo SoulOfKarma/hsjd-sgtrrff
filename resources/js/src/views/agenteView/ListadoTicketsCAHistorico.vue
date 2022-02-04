@@ -851,7 +851,7 @@ export default {
         GenerarTicketBID(id, uuid) {
             try {
                 this.$router.push({
-                    name: "GenerarTicketIDBase",
+                    name: "GenerarTicketRAP",
                     params: {
                         id: `${id}`,
                         uuid: `${uuid}`

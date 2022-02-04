@@ -1794,20 +1794,6 @@ export default {
                 console.log(error);
             }
         },
-        cargarCategoria() {
-            this.csrf_token;
-
-            axios
-                .get(this.localVal + "/api/Agente/GetCategoria", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoCategoria = res.data;
-                });
-        },
         arrayTrabajadores(id) {
             if (id == 0 || id == null) {
                 this.popCrearTrabajador = true;
@@ -2696,7 +2682,6 @@ export default {
         this.cargarTrabajadores();
         this.cargarEstado();
         this.cargarUsuarios();
-        this.cargarCategoria();
         this.cargarTurnos();
         this.cargarDuracion();
         this.cargarEspecialidad();
