@@ -654,6 +654,7 @@ export default {
             fechaSolicitudI: "",
             fechaAsignacion: "",
             fechaTermino: "",
+            activeLoading: false,
             listadoEstado: [],
             seleccionEstado: {
                 id: 0,
@@ -1202,9 +1203,11 @@ export default {
         },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
-            setTimeout(() => {
-                this.$vs.loading.close();
-            }, 1000);
+            if (this.activeLoading) {
+                setTimeout(() => {
+                    this.$vs.loading.close();
+                }, 1000);
+            }
         },
         abrirPop(id, uuid) {
             this.validaEliminar = true;
@@ -1258,6 +1261,8 @@ export default {
                 })
                 .then(res => {
                     this.solicitudes = res.data;
+                    this.activeLoading = true;
+                    this.openLoadingColor();
                 });
         },
         cargarDocumentacion() {

@@ -657,6 +657,7 @@ export default {
             documentacion: [],
             dataDocumentacion: [],
             resolucionresultados: "",
+            activeLoading: false,
             desobservaciones: "",
             seleccionDanios: {
                 id: 1,
@@ -1003,9 +1004,11 @@ export default {
         },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
-            setTimeout(() => {
-                this.$vs.loading.close();
-            }, 1000);
+            if (this.activeLoading) {
+                setTimeout(() => {
+                    this.$vs.loading.close();
+                }, 1000);
+            }
         },
         abrirPop(id, uuid) {
             this.validaEliminar = true;
@@ -1091,6 +1094,8 @@ export default {
                 })
                 .then(res => {
                     this.solicitudes = res.data;
+                    this.activeLoading = true;
+                    this.openLoadingColor();
                 });
         },
         cargarListadoEquipoMedico(id) {

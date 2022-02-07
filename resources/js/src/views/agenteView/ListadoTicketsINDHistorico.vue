@@ -804,6 +804,7 @@ export default {
             documentacion: [],
             dataDocumentacion: [],
             resolucionresultados: "",
+            activeLoading: false,
             localVal: process.env.MIX_APP_URL,
             urlDocumentos: process.env.MIX_APP_URL_DOCUMENTOS,
             nombre:
@@ -1135,9 +1136,11 @@ export default {
         },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
-            setTimeout(() => {
-                this.$vs.loading.close();
-            }, 1000);
+            if (this.activeLoading) {
+                setTimeout(() => {
+                    this.$vs.loading.close();
+                }, 1000);
+            }
         },
         abrirPop(id, uuid) {
             this.validaEliminar = true;
@@ -1181,6 +1184,8 @@ export default {
                 })
                 .then(res => {
                     this.solicitudes = res.data;
+                    this.activeLoading = true;
+                    this.openLoadingColor();
                 });
         },
         generarTicket(id, uuid) {
