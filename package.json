@@ -82,6 +82,7 @@
         "xlsx": "^0.15.0"
     },
     "dependencies": {
+        "@adamdehaven/vue-custom-tooltip": "^1.4.4",
         "@fullcalendar/core": "^5.8.0",
         "@fullcalendar/daygrid": "^5.8.0",
         "@fullcalendar/interaction": "^5.8.0",

@@ -63,16 +63,20 @@
 
                     <!-- Column: Action -->
                     <span v-else-if="props.column.field === 'action'">
-                        <plus-circle-icon
-                            size="1.5x"
-                            class="custom-class"
-                            @click="modificarCodigo(props.row.id)"
-                        ></plus-circle-icon>
-                        <trash-2-icon
-                            size="1.5x"
-                            class="custom-class"
-                            @click="popEliminarMantencion(props.row.id)"
-                        ></trash-2-icon>
+                        <vue-custom-tooltip label="Modificar Codigo Especifico">
+                            <plus-circle-icon
+                                size="1.5x"
+                                class="custom-class"
+                                @click="modificarCodigo(props.row.id)"
+                            ></plus-circle-icon>
+                        </vue-custom-tooltip>
+                        <vue-custom-tooltip label="Eliminar Programacion">
+                            <trash-2-icon
+                                size="1.5x"
+                                class="custom-class"
+                                @click="popEliminarMantencion(props.row.id)"
+                            ></trash-2-icon>
+                        </vue-custom-tooltip>
                     </span>
                     <!-- Column: Common -->
                     <span v-else>
@@ -88,12 +92,6 @@
                 title="Porcentaje Avance Mantenciones por Equipo"
                 :key="resetI"
             >
-                <!-- CARD ACTION -->
-                <!-- <template slot="actions">
-                        <change-time-duration-dropdown />
-                    </template> -->
-
-                <!-- Chart -->
                 <div slot="no-body">
                     <vue-apex-charts
                         type="radialBar"
@@ -249,11 +247,6 @@
         >
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <div class="vx-row">
-                    <!-- <div class="vx-col w-full mb-base">
-                        <h6>Ingrese Estado</h6>
-                        <vs-input v-model="anio" class="w-full" type="number" />
-                    </div> -->
-
                     <div class="vx-col w-1/2">
                         <h6>Estado Mantencion</h6>
                         <v-select
@@ -313,81 +306,87 @@
             classContent="popup-example"
             :title="descripcionDoc"
             :active.sync="popFormDoc"
+            :key="resetP"
         >
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <div class="vx-row">
-                    <div class="vx-col w-full">
-                        <h6>Estado y Responsable Mantencion</h6>
-                    </div>
-                    <vue-good-table
-                        class="w-full m-2"
-                        :columns="columnasEstRes"
-                        :rows="ListadoEstRes"
-                        :pagination-options="{
-                            enabled: true,
-                            perPage: 10
-                        }"
-                    >
-                        <template slot="table-row" slot-scope="props">
-                            <!-- Column: Name -->
-                            <span
-                                v-if="props.column.field === 'fullName'"
-                                class="text-nowrap"
-                            >
-                            </span>
+            <!--<div class="vx-col md:w-1/1 w-full mb-base">-->
+            <vx-card class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-col w-full">
+                    <h6>Estado y Responsable Mantencion</h6>
+                </div>
+                <vue-good-table
+                    class="w-full m-2"
+                    :columns="columnasEstRes"
+                    :rows="ListadoEstRes"
+                    :pagination-options="{
+                        enabled: true,
+                        perPage: 10
+                    }"
+                >
+                    <template slot="table-row" slot-scope="props">
+                        <!-- Column: Name -->
+                        <span
+                            v-if="props.column.field === 'fullName'"
+                            class="text-nowrap"
+                        >
+                        </span>
 
-                            <!-- Column: Action -->
-                            <span v-else-if="props.column.field === 'action'">
+                        <!-- Column: Action -->
+                        <span v-else-if="props.column.field === 'action'">
+                            <vue-custom-tooltip
+                                label="Agregar o Modificar Estado"
+                            >
                                 <plus-circle-icon
-                                    content="Agregar o Modificar Estado"
-                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="AgregarModificarEstado()"
                                 ></plus-circle-icon>
+                            </vue-custom-tooltip>
+                            <vue-custom-tooltip
+                                label="Agregar o Modificar Responsable"
+                            >
                                 <save-icon
-                                    content="Agregar o Modificar Responsable"
-                                    v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="AgregarModificarResponsable()"
                                 ></save-icon>
-                            </span>
-                            <!-- Column: Common -->
-                            <span v-else>
-                                {{ props.formattedRow[props.column.field] }}
-                            </span>
-                        </template></vue-good-table
-                    >
-                    <div class="vx-col w-full">
-                        <h6>Adjuntar Documentacion</h6>
-                    </div>
-                    <div class="vx-col w-full mt-5">
-                        <vs-input
-                            type="file"
-                            @change="getImage"
-                            class="form-control w-full"
-                        />
-                    </div>
-                    <vue-good-table
-                        class="w-full m-2"
-                        :columns="columnasDoc"
-                        :rows="Documentos"
-                        :pagination-options="{
-                            enabled: true,
-                            perPage: 10
-                        }"
-                    >
-                        <template slot="table-row" slot-scope="props">
-                            <!-- Column: Name -->
-                            <span
-                                v-if="props.column.field === 'fullName'"
-                                class="text-nowrap"
-                            >
-                            </span>
+                            </vue-custom-tooltip>
+                        </span>
+                        <!-- Column: Common -->
+                        <span v-else>
+                            {{ props.formattedRow[props.column.field] }}
+                        </span>
+                    </template></vue-good-table
+                >
+                <div class="vx-col w-full">
+                    <h6>Adjuntar Documentacion</h6>
+                </div>
+                <div class="vx-col w-full mt-5">
+                    <vs-input
+                        type="file"
+                        @change="getImage"
+                        class="form-control w-full"
+                    />
+                </div>
+                <vue-good-table
+                    class="w-full m-2"
+                    :columns="columnasDoc"
+                    :rows="Documentos"
+                    :pagination-options="{
+                        enabled: true,
+                        perPage: 10
+                    }"
+                >
+                    <template slot="table-row" slot-scope="props">
+                        <!-- Column: Name -->
+                        <span
+                            v-if="props.column.field === 'fullName'"
+                            class="text-nowrap"
+                        >
+                        </span>
 
-                            <!-- Column: Action -->
-                            <span v-else-if="props.column.field === 'action'">
+                        <!-- Column: Action -->
+                        <span v-else-if="props.column.field === 'action'">
+                            <vue-custom-tooltip label="Abrir Documento">
                                 <plus-circle-icon
                                     size="1.5x"
                                     class="custom-class"
@@ -397,37 +396,40 @@
                                         )
                                     "
                                 ></plus-circle-icon>
+                            </vue-custom-tooltip>
+                            <vue-custom-tooltip label="Eliminar Documento">
                                 <trash-2-icon
                                     size="1.5x"
                                     class="custom-class"
                                     @click="ConfirmarDelDoc(props.row.id)"
                                 ></trash-2-icon>
-                            </span>
-                            <!-- Column: Common -->
-                            <span v-else>
-                                {{ props.formattedRow[props.column.field] }}
-                            </span>
-                        </template></vue-good-table
+                            </vue-custom-tooltip>
+                        </span>
+                        <!-- Column: Common -->
+                        <span v-else>
+                            {{ props.formattedRow[props.column.field] }}
+                        </span>
+                    </template></vue-good-table
+                >
+                <div class="vx-col w-full">
+                    <vs-button
+                        color="danger"
+                        type="filled"
+                        class="w-full m-2"
+                        @click="uploadImage"
+                        >Guardar Documento</vs-button
                     >
-                    <div class="vx-col w-full">
-                        <vs-button
-                            color="danger"
-                            type="filled"
-                            class="w-full m-2"
-                            @click="uploadImage"
-                            >Guardar Documento</vs-button
-                        >
 
-                        <vs-button
-                            class="w-full m-2"
-                            @click="popFormDoc = false"
-                            color="primary"
-                            type="filled"
-                            >Volver</vs-button
-                        >
-                    </div>
+                    <vs-button
+                        class="w-full m-2"
+                        @click="popFormDoc = false"
+                        color="primary"
+                        type="filled"
+                        >Volver</vs-button
+                    >
                 </div>
-            </div>
+            </vx-card>
+            <!-- </div> -->
         </vs-popup>
         <vs-popup
             classContent="popup-example"
@@ -599,8 +601,6 @@
 <script>
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
-import moment from "moment";
-import router from "@/router";
 import axios from "axios";
 import Vue from "vue";
 import "vue-good-table/dist/vue-good-table.css";
@@ -615,9 +615,8 @@ import ChangeTimeDurationDropdown from "@/components/ChangeTimeDurationDropdown.
 import VxTimeline from "@/components/timeline/VxTimeline";
 Vue.use(VueGoodTablePlugin);
 import vSelect from "vue-select";
-import VueTippy, { TippyComponent } from "vue-tippy";
-Vue.use(VueTippy);
-Vue.component("tippy", TippyComponent);
+import VueCustomTooltip from "@adamdehaven/vue-custom-tooltip";
+Vue.use(VueCustomTooltip);
 export default {
     components: {
         flatPickr,
@@ -761,6 +760,7 @@ export default {
             desDoc: "",
             idParam: 0,
             resetI: 0,
+            resetP: 0,
             idListadoMan: 0,
             supportTracker: {},
             productsOrder: {},
@@ -1131,6 +1131,7 @@ export default {
                 this.idDocDel = id;
                 this.popConfirmarEliminacionDoc = true;
                 this.popFormDoc = false;
+                this.resetP += 1;
             } catch (error) {
                 console.log(error);
             }

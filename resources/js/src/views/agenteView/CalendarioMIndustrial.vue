@@ -63,16 +63,20 @@
 
                     <!-- Column: Action -->
                     <span v-else-if="props.column.field === 'action'">
-                        <plus-circle-icon
-                            size="1.5x"
-                            class="custom-class"
-                            @click="modificarCodigo(props.row.id)"
-                        ></plus-circle-icon>
-                        <trash-2-icon
-                            size="1.5x"
-                            class="custom-class"
-                            @click="popEliminarMantencion(props.row.id)"
-                        ></trash-2-icon>
+                        <vue-custom-tooltip label="Modificar Codigo Especifico">
+                            <plus-circle-icon
+                                size="1.5x"
+                                class="custom-class"
+                                @click="modificarCodigo(props.row.id)"
+                            ></plus-circle-icon>
+                        </vue-custom-tooltip>
+                        <vue-custom-tooltip label="Eliminar Programacion">
+                            <trash-2-icon
+                                size="1.5x"
+                                class="custom-class"
+                                @click="popEliminarMantencion(props.row.id)"
+                            ></trash-2-icon>
+                        </vue-custom-tooltip>
                     </span>
                     <!-- Column: Common -->
                     <span v-else>
@@ -88,12 +92,6 @@
                 title="Porcentaje Avance Mantenciones por Equipo"
                 :key="resetI"
             >
-                <!-- CARD ACTION -->
-                <!-- <template slot="actions">
-                        <change-time-duration-dropdown />
-                    </template> -->
-
-                <!-- Chart -->
                 <div slot="no-body">
                     <vue-apex-charts
                         type="radialBar"
@@ -296,20 +294,24 @@
 
                             <!-- Column: Action -->
                             <span v-else-if="props.column.field === 'action'">
-                                <plus-circle-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        abrirDocumento(
-                                            props.row.nombreDocumento
-                                        )
-                                    "
-                                ></plus-circle-icon>
-                                <trash-2-icon
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="ConfirmarDelDoc(props.row.id)"
-                                ></trash-2-icon>
+                                <vue-custom-tooltip label="Abrir Documento">
+                                    <plus-circle-icon
+                                        size="1.5x"
+                                        class="custom-class"
+                                        @click="
+                                            abrirDocumento(
+                                                props.row.nombreDocumento
+                                            )
+                                        "
+                                    ></plus-circle-icon>
+                                </vue-custom-tooltip>
+                                <vue-custom-tooltip label="Eliminar Documento">
+                                    <trash-2-icon
+                                        size="1.5x"
+                                        class="custom-class"
+                                        @click="ConfirmarDelDoc(props.row.id)"
+                                    ></trash-2-icon>
+                                </vue-custom-tooltip>
                             </span>
                             <!-- Column: Common -->
                             <span v-else>
@@ -507,8 +509,6 @@
 <script>
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
-import moment from "moment";
-import router from "@/router";
 import axios from "axios";
 import Vue from "vue";
 import "vue-good-table/dist/vue-good-table.css";
@@ -521,6 +521,8 @@ import analyticsData from "../ui-elements/card/analyticsData.js";
 import ChangeTimeDurationDropdown from "@/components/ChangeTimeDurationDropdown.vue";
 import VxTimeline from "@/components/timeline/VxTimeline";
 Vue.use(VueGoodTablePlugin);
+import VueCustomTooltip from "@adamdehaven/vue-custom-tooltip";
+Vue.use(VueCustomTooltip);
 import vSelect from "vue-select";
 export default {
     components: {
