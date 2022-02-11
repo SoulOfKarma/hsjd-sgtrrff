@@ -478,7 +478,6 @@
 
 <script>
 import axios from "axios";
-import router from "@/router";
 import { InfoIcon } from "vue-feather-icons";
 import { PlusCircleIcon } from "vue-feather-icons";
 import { Trash2Icon } from "vue-feather-icons";
@@ -491,7 +490,6 @@ import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
-import Datepicker from "vuejs-datepicker";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import { SaveIcon } from "vue-feather-icons";

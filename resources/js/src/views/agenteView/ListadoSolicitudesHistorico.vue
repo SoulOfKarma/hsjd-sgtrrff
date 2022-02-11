@@ -483,7 +483,6 @@
 
 <script>
 import axios from "axios";
-import router from "@/router";
 import { InfoIcon } from "vue-feather-icons";
 import { PlusCircleIcon } from "vue-feather-icons";
 import { Trash2Icon } from "vue-feather-icons";
@@ -496,10 +495,8 @@ import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
-import Datepicker from "vuejs-datepicker";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
-//import Vuesax from "vuesax";
 import { SaveIcon } from "vue-feather-icons";
 import { FileTextIcon } from "vue-feather-icons";
 import { LoaderIcon } from "vue-feather-icons";
@@ -508,7 +505,6 @@ import vSelect from "vue-select";
 import moment from "moment";
 import { PrinterIcon } from "vue-feather-icons";
 import { EditIcon } from "vue-feather-icons";
-// import the styles
 import "vue-good-table/dist/vue-good-table.css";
 import VueGoodTablePlugin from "vue-good-table";
 Vue.use(VueGoodTablePlugin);
