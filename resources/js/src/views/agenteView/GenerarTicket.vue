@@ -657,11 +657,8 @@
 </template>
 
 <script>
-import Datepicker from "vuejs-datepicker";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
-import { FormWizard, TabContent } from "vue-form-wizard";
-import "vue-form-wizard/dist/vue-form-wizard.min.css";
 import moment from "moment";
 import axios from "axios";
 import vSelect from "vue-select";
@@ -811,7 +808,6 @@ export default {
 
         configdateTimePicker: {
             enableTime: true,
-            //enableSeconds: true,
             noCalendar: true,
             time_24hr: true,
             dateFormat: "H:i"
@@ -978,7 +974,7 @@ export default {
         nombreUsuarioU: "",
         apellidoUsuarioU: "",
         anexoUsuarioU: 0,
-        correoUsuarioU: "mantencion.hsjd@edsalud.gov.cl",
+        correoUsuarioU: "mantencion.hsjd@redsalud.gov.cl",
         rutUsuarioU: null,
         passUsuarioU: "",
         listadoCargoU: [],
@@ -1074,7 +1070,6 @@ export default {
                     this.gestionTicket.diasEjecucion = 1;
                 }
                 return this.gestionTicket.diasEjecucion;
-                // this.diaCalculado = this.fromDate - this.toDate;
             }
         },
         labelColor() {
@@ -2558,24 +2553,7 @@ export default {
                 }
             }
         },
-        cargarCargoUsuarioU() {
-            axios
-                .get(this.localVal + "/api/Agente/GetCargos", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoCargoU = res.data;
-                    let b = [];
-                    let c = this.listadoCargoU;
-                    c.forEach((value, index) => {
-                        b.push(value);
-                    });
-                    this.listadoCargoU = b;
-                });
-        },
+
         filtroSegunEdificioU() {
             if (
                 this.seleccionEdificioU == null ||

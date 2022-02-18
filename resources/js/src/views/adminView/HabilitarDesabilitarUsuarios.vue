@@ -120,6 +120,45 @@
                             color="danger"
                             type="filled"
                             class="w-full m-1"
+                            >Habilitar o Cambiar Perfil Usuario</vs-button
+                        >
+                    </div>
+                </div>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="popSeleccionarHabilitar"
+            title="Seleccionar Perfil Usuario"
+            :active.sync="popSeleccionHabilitar"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col w-full md-5">
+                        <h6>Seleccion Perfil</h6>
+                        <br />
+                        <v-select
+                            v-model="seleccionPerfil"
+                            placeholder="Servicio"
+                            class="w-full select-large"
+                            label="nombre"
+                            :options="dataPerfil"
+                        ></v-select>
+                        <br />
+                    </div>
+                    <div class="vx-col w-full md-5">
+                        <vs-button
+                            @click="volverHabilitarDesabilitar()"
+                            color="primary"
+                            type="filled"
+                            class="w-full m-1"
+                            >Volver</vs-button
+                        >
+                        <vs-button
+                            @click="habilitarSeleccionUsuario(tblID)"
+                            color="danger"
+                            type="filled"
+                            class="w-full m-1"
                             >Habilitar Usuario</vs-button
                         >
                     </div>
@@ -156,8 +195,38 @@ export default {
                 sessionStorage.getItem("apellido"),
             popDesabilitar: false,
             popHabilitar: false,
+            popSeleccionHabilitar: false,
             rows: [],
             tblID: 0,
+            dataPerfil: [
+                { id: 1, nombre: "Jefatura CR" },
+                { id: 2, nombre: "Usuarios" },
+                {
+                    id: 3,
+                    nombre: "trabajadores"
+                },
+                {
+                    id: 5,
+                    nombre: "Infraestructura"
+                },
+                {
+                    id: 6,
+                    nombre: "Equipos Medicos"
+                },
+                {
+                    id: 7,
+                    nombre: "Industrial"
+                },
+                { id: 8, nombre: "Apoyo Clinico" },
+                {
+                    id: 9,
+                    nombre: "Desabilitado"
+                }
+            ],
+            seleccionPerfil: {
+                id: 2,
+                nombre: "Usuarios"
+            },
             columns: [
                 {
                     label: "Rut",
@@ -246,13 +315,40 @@ export default {
                 });
             }
         },
+        volverHabilitarDesabilitar() {
+            try {
+                this.popSeleccionHabilitar = false;
+                this.popHabilitar = true;
+            } catch (error) {
+                this.$vs.notify({
+                    title: "Error ",
+                    time: 4000,
+                    text: "No es posible abrir la ventana, intente nuevamente",
+                    color: "danger",
+                    position: "top-right"
+                });
+            }
+        },
+        habilitarUsuario() {
+            try {
+                this.popSeleccionHabilitar = true;
+                this.popHabilitar = false;
+            } catch (error) {
+                this.$vs.notify({
+                    title: "Error ",
+                    time: 4000,
+                    text: "No es posible abrir la ventana, intente nuevamente",
+                    color: "danger",
+                    position: "top-right"
+                });
+            }
+        },
         desabilitarUsuario(id) {
             try {
-                let data = { idPermiso: id, estado_login: 0 };
+                let data = { id: id, estado_login: 0 };
                 axios
                     .post(
-                        this.localVal +
-                            "/api/Agente/desabilitarHabilitarUsuario",
+                        this.localVal + "/api/Agente/PutDesabilitarUsuario",
                         data,
                         {
                             headers: {
@@ -285,13 +381,17 @@ export default {
                 });
             }
         },
-        habilitarUsuario(id) {
+
+        habilitarSeleccionUsuario(id) {
             try {
-                let data = { idPermiso: id, estado_login: 1 };
+                let data = {
+                    id: id,
+                    permiso_usuario: this.seleccionPerfil.id,
+                    estado_login: 1
+                };
                 axios
                     .post(
-                        this.localVal +
-                            "/api/Agente/desabilitarHabilitarUsuario",
+                        this.localVal + "/api/Agente/PutHabilitarUsuario",
                         data,
                         {
                             headers: {
@@ -311,6 +411,7 @@ export default {
                             position: "top-right"
                         });
                         this.popHabilitar = false;
+                        this.popSeleccionHabilitar = false;
                         this.cargarListadoUsuariosPermisos();
                     });
             } catch (error) {

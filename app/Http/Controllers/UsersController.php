@@ -1059,10 +1059,23 @@ class UsersController extends Controller
         }
     }
 
-    public function PutDesabilitarHabilitarUsuario(Request $request){
+    public function PutDesabilitarUsuario(Request $request){
         try {
-             $res = tblPermisoUsuarios::where('id',$request->idPermiso)
+             $res = tblPermisoUsuarios::where('id',$request->id)
              ->update([
+               'estado_login' => $request->estado_login
+              ]);
+              return $res;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    public function PutHabilitarUsuario(Request $request){
+        try {
+             $res = tblPermisoUsuarios::where('id',$request->id)
+             ->update([
+               'permiso_usuario' => $request->permiso_usuario,
                'estado_login' => $request->estado_login
               ]);
               return $res;

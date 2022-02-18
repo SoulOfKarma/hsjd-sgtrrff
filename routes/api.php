@@ -284,7 +284,9 @@ use App\Mail\AutoRespuesta;
             //Traer Usuarios Con su estado
             Route::get('/Agente/TraerUsuariosPermisos', ['middleware' => 'cors', 'uses' => 'UsersController@GetUsuariosPermisos']);
             //Desabilitar Usuario
-            Route::post('/Agente/desabilitarHabilitarUsuario', ['middleware' => 'cors', 'uses' => 'UsersController@PutDesabilitarHabilitarUsuario']);
+            Route::post('/Agente/PutDesabilitarUsuario', ['middleware' => 'cors', 'uses' => 'UsersController@PutDesabilitarUsuario']);
+            //Habilitar Usuario
+            Route::post('/Agente/PutHabilitarUsuario', ['middleware' => 'cors', 'uses' => 'UsersController@PutHabilitarUsuario']);
             //Modificar Usuario Jefatura
             Route::post('/Agente/ModificarUsuarioJefe', ['middleware' => 'cors', 'uses' => 'UsersController@modificarUsuarioJefe']);
             //Guardar Nuevo Usuario Sub
