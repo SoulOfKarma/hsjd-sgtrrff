@@ -108,7 +108,6 @@ export default {
             }
         };
     },
-    computed: {},
     methods: {
         limpiar() {
             this.seleccionReparacion = {
@@ -175,6 +174,17 @@ export default {
                                 position: "top-right"
                             });
                         }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             }
         },
@@ -230,6 +240,17 @@ export default {
                                 position: "top-right"
                             });
                         }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             }
         },
@@ -243,11 +264,24 @@ export default {
                 })
                 .then(res => {
                     this.listReparacion = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         }
     },
     created() {
-        this.listadoReparacion();
+        setTimeout(() => {
+            this.listadoReparacion();
+        }, 1000);
     }
 };
 </script>

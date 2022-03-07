@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use JWTAuth;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
 class JwtMiddleware extends BaseMiddleware
@@ -21,23 +22,16 @@ class JwtMiddleware extends BaseMiddleware
         try {
             $user = JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
-            if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
-                return response()->json(['status' => 'Token is Invalid']);
-            }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
-                try
-                {
-                  $refreshed = JWTAuth::refresh(JWTAuth::getToken());
-                  $user = JWTAuth::setToken($refreshed)->toUser();
-                  $request->headers->set('Authorization','Bearer '.$refreshed);
-                }catch (JWTException $e){
-                    return response()->json([
-                        'code'   => 103,
-                        'message' => 'Token cannot be refreshed, please Login again'
-                    ]);
-                }
-                //return response()->json(['status' => 'Token is Expired']);
+            if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
+                //$refreshed = JWTAuth::parseToken()->refresh();
+                return response()->json(['success'=> false,'status' => 'expired'],401);
+                //return response()->json(['success'=> false,'token'=>$refreshed,'status' => 'expired'],401);
+                
+            }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
+                return response()->json(['success'=> false,'status' => 'Token is Invalid'],401);
             }else{
-                return response()->json(['status' => 'Authorization Token not found']);
+                log::info($e);
+                return response()->json(['success'=> false,'status' => 'Authorization Token not found'],401);
             }
         }
         return $next($request);

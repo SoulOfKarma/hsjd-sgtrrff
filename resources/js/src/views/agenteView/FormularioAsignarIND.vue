@@ -1782,9 +1782,7 @@ export default {
                     this.gestionTicket.tituloP = this.datosSolicitud[0].tituloP;
                     this.gestionTicket.idDuracion = this.seleccionDuracion[0].id;
                     this.gestionTicket.id_prioridad = this.seleccionPrioridad.id;
-                    /* var newElement = document.createElement("div");
-                    newElement.innerHTML = this.datosSolicitud[0].descripcionP; */
-                    //this.gestionTicket.descripcionP = newElement.textContent;
+
                     this.gestionTicket.descripcionP = this.descripcionP;
                     this.gestionTicket.nombre = this.nombre;
                     var fechaCreacionT = moment(
@@ -1829,6 +1827,17 @@ export default {
                             setTimeout(() => {
                                 router.back();
                             }, 5000);
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
                         });
                 }
             } catch (error) {
@@ -1886,6 +1895,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoDuracion = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarInicial() {

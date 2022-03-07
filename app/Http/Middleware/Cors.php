@@ -12,11 +12,6 @@ class Cors
         'http://bodegarrff.xcl',
         'http://localhost',
         'http://127.0.0.1:8000',
-        'https://gstc.neuronet.io',
-        'http://gstc.neuronet.io',
-        'http://10.66.248.200:8001',
-        'http://10.66.248.200:8002',
-        'http://192.168.0.131:8001',
         'http://10.4.237.120:80',
         'http://10.4.237.120:8001',
         'http://10.4.237.120:8003'
@@ -27,11 +22,6 @@ class Cors
     private static $allowedOrigin = ['http://10.66.248.51:8000','http://10.4.237.33:80','http://bodegarrff.xcl',
     'http://localhost',
     'http://127.0.0.1:8000',
-    'https://gstc.neuronet.io',
-    'http://gstc.neuronet.io',
-    'http://10.66.248.200:8001',
-    'http://10.66.248.200:8002',
-    'http://192.168.0.131:8001',
     'http://10.4.237.120:80',
     'http://10.4.237.120:8001',
     'http://10.4.237.120:8003',];

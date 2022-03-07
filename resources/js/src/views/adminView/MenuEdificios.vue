@@ -168,6 +168,17 @@ export default {
                                 position: "top-right"
                             });
                         }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             }
         },
@@ -221,6 +232,17 @@ export default {
                                 position: "top-right"
                             });
                         }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             }
         },
@@ -234,6 +256,17 @@ export default {
                 })
                 .then(res => {
                     this.listEdificios = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         }
     },

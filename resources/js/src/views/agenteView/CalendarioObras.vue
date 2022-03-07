@@ -604,6 +604,17 @@ export default {
                                     position: "top-right"
                                 });
                             }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
                         });
                 }
             } catch (error) {
@@ -685,6 +696,17 @@ export default {
                                     text: "No se pudieron guardar los datos",
                                     color: "success",
                                     position: "top-right"
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
                                 });
                             }
                         });
@@ -770,6 +792,17 @@ export default {
                                     text: "No se pudieron guardar los datos",
                                     color: "success",
                                     position: "top-right"
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
                                 });
                             }
                         });
@@ -867,7 +900,18 @@ export default {
                             this.valCalendar = true;
                             this.resetI += 1;
                         })
-                    );
+                    )
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
+                    });
             } catch (error) {
                 this.$vs.notify({
                     time: 3000,
@@ -898,6 +942,17 @@ export default {
                             this.eventcolor = "#148f77";
                         } else {
                             this.eventcolor = "#5dade2";
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
                         }
                     });
             } catch (error) {

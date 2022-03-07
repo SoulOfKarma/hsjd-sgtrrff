@@ -276,6 +276,17 @@ export default {
                     })
                     .then(res => {
                         this.rows = res.data;
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 this.$vs.notify({
@@ -369,6 +380,17 @@ export default {
                         });
                         this.popDesabilitar = false;
                         this.cargarListadoUsuariosPermisos();
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 this.$vs.notify({
@@ -413,6 +435,17 @@ export default {
                         this.popHabilitar = false;
                         this.popSeleccionHabilitar = false;
                         this.cargarListadoUsuariosPermisos();
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 this.$vs.notify({

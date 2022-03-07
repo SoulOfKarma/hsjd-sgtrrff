@@ -774,11 +774,8 @@ export default {
                     }
                 },
                 {
-                    label: "Fecha Solicitud",
+                    label: "Fecha Programada",
                     field: "fechaSolicitud",
-                    type: "date",
-                    dateInputFormat: "dd/MM/yyyy",
-                    dateOutputFormat: "dd/MM/yyyy",
                     filterOptions: {
                         enabled: true
                     }
@@ -838,6 +835,17 @@ export default {
                     this.equipamientoApoyoClinico.serie = this.listadoEquipoAP[0].serie;
                     this.equipamientoApoyoClinico.ninventario = this.listadoEquipoAP[0].ninventario;
                     this.popListadoEquipoAP = true;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         PutModificarEquipamientoApoyoClinico() {
@@ -872,6 +880,17 @@ export default {
                                 text: "Intente nuevamente",
                                 color: "danger",
                                 position: "top-right"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
                             });
                         }
                     });
@@ -938,6 +957,17 @@ export default {
                                 position: "top-right"
                             });
                         }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 console.log(error);
@@ -984,6 +1014,17 @@ export default {
                                     "Verifique los campos e intente Nuevamente",
                                 color: "danger",
                                 position: "top-right"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
                             });
                         }
                     });
@@ -1034,6 +1075,17 @@ export default {
                             position: "top-right"
                         });
                     }
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         openLoadingColor() {
@@ -1075,6 +1127,17 @@ export default {
                     let listado = res.data;
 
                     this.documentacion = JSON.parse(JSON.stringify(listado));
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
             //let c = this.dataDocumentacion;
         },
@@ -1129,6 +1192,17 @@ export default {
                             id;
                         window.open(url, "_blank");
                     }
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarSolicitudes() {
@@ -1143,6 +1217,17 @@ export default {
                     this.solicitudes = res.data;
                     this.activeLoading = true;
                     this.openLoadingColor();
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         detalleSolicitud(id, uuid) {
@@ -1202,6 +1287,17 @@ export default {
                             }
                         });
                     }
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         modificarSolicitud(id, uuid, id_user) {
@@ -1234,6 +1330,17 @@ export default {
                                 uuid: `${uuid}`,
                                 id_user: `${id_user}`
                             }
+                        });
+                    }
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
                         });
                     }
                 });
@@ -1297,6 +1404,17 @@ export default {
                                 });
                                 this.cargarSolicitudes();
                             }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
                         });
                 }
             }
@@ -1311,6 +1429,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoEstado = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         arrayEstado(id) {

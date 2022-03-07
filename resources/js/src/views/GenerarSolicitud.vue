@@ -104,17 +104,27 @@
                             >
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
-                            <br />
-
-                            <div class="vx-col w-full mt-5">
-                                <h6>Adjuntar Documento</h6>
-                                <br />
-                                <vs-input
-                                    type="file"
-                                    @change="getImage"
-                                    class="form-control w-full"
-                                />
-                            </div>
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="Adjuntar Documento">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/8 mt-5">
+                            <vs-input
+                                type="file"
+                                id="archivo"
+                                @change="getImage"
+                                class="form-control w-full"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h5 class="w-full ">
+                                <p class="pt-4 text-justify">
+                                    {{ nombrearchivo }}
+                                </p>
+                            </h5>
                         </div>
                     </div>
                 </vx-card>
@@ -402,23 +412,15 @@
 </template>
 
 <script>
-import Datepicker from "vuejs-datepicker";
-import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
-import { FormWizard, TabContent } from "vue-form-wizard";
 import "vue-form-wizard/dist/vue-form-wizard.min.css";
 import axios from "axios";
 import vSelect from "vue-select";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
-import { Validator } from "vee-validate";
 import router from "@/router";
-import moment from "moment";
-
-import { create } from "axios-add-jsonp";
 import { quillEditor } from "vue-quill-editor";
-import Axios from "axios";
 
 export default {
     data: () => ({
@@ -450,7 +452,6 @@ export default {
         listadoEquipamiento: [],
         localVal: process.env.MIX_APP_URL,
         uuidC: "",
-
         solicitud: {
             nombre:
                 sessionStorage.getItem("nombre") +
@@ -478,6 +479,7 @@ export default {
             id_equipamiento_medico: 0,
             id_equipamiento_apoyoclinico: 0
         },
+        nombrearchivo: "No se ha adjuntado documento",
         listadoEApoyoClinico: [],
         datosCorreo: {
             nombre: "",
@@ -541,7 +543,9 @@ export default {
         },
         getImage(event) {
             //Asignamos la imagen a  nuestra data
+
             this.image = event.target.files[0];
+            this.nombrearchivo = this.image.name;
         },
         volver() {
             router.back();
@@ -1736,6 +1740,9 @@ export default {
 </script>
 
 <style lang="stylus">
+#archivo{
+   width: 118px;
+}
 .examplex {
   display: flex;
   align-items: center;

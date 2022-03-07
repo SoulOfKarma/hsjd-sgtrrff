@@ -732,7 +732,7 @@ use App\Mail\AutoRespuesta;
       Route::get('/Agente/generarExcelTodoAP', 'ExcelController@generarExcelTodoAP');
       //Generar Excel	Por Fechas
       Route::get('/Agente/generarExcelByFechaAP/{fechaInicio}/{fechaTermino}', 'ExcelController@generarExcelByFechaAP');
-      //Generar Excel	
+      //Generar Excel	-
       Route::get('/Agente/generarExcelTodoI', 'ExcelController@generarExcelTodoI');
       //Generar Excel	Por Fechas
       Route::get('/Agente/generarExcelByFechaI/{fechaInicio}/{fechaTermino}', 'ExcelController@generarExcelByFechaI');
@@ -744,10 +744,14 @@ use App\Mail\AutoRespuesta;
       //Guardar Solicitud Comodin para Backend
     Route::post('/Usuario/PostSolicitudInformatica', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@createTicketInformatica']);
 
-    Route::post('/Login/GetUsers', ['middleware' => 'cors', 'uses' => 'LoginController@getUsuarios']);
-    Route::post('/Login/LoginByRut', ['middleware' => 'cors', 'uses' => 'LoginController@GetUsersByExternalRut']);
-    Route::post('/Login/getpr', ['middleware' => 'cors', 'uses' => 'LoginController@adminPr']);
-    Route::post('/Login/Salir', ['middleware' => 'cors', 'uses' => 'LoginController@salir']);
+    //Route::post('/Login/GetUsers', ['middleware' => 'cors', 'uses' => 'LoginController@getUsuarios']);
+    Route::post('/Login/GetUsers', 'LoginController@getUsuarios');
+    //Route::post('/Login/LoginByRut', ['middleware' => 'cors', 'uses' => 'LoginController@GetUsersByExternalRut']);
+    Route::post('/Login/LoginByRut', 'LoginController@GetUsersByExternalRut');
+    //Route::post('/Login/getpr', ['middleware' => 'cors', 'uses' => 'LoginController@adminPr']);
+    Route::post('/Login/getpr', 'LoginController@adminPr');
+    //Route::post('/Login/Salir', ['middleware' => 'cors', 'uses' => 'LoginController@salir']);
+    Route::post('/Login/Salir', 'LoginController@salir');
 
     //Imprimir Ticket Infraestructura
     Route::get('/Agente/imprimirPorTicketINFRA/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketINFRA']);

@@ -347,7 +347,6 @@ export default {
         } else {
             router.push("/pages/login").catch(err => {});
         }
-
         const color =
             this.navbarColor === "#fff" && this.isThemeDark
                 ? "#10163a"

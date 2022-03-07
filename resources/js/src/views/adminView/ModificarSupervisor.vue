@@ -541,32 +541,8 @@ export default {
                 } else {
                     this.modificarSupervisor.idvalmail = 1;
                 }
-                /*  if (
-                    this.modificarSupervisor.run == null ||
-                    this.modificarSupervisor.run < 9 ||
-                    !validate(this.rutUsuario)
-                ) {
-                    this.$vs.notify({
-                        title: "Error en rut",
-                        text:
-                            "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
-                        color: "danger",
-                        position: "top-right",
-                        time: 3000
-                    });
-                } else if (
-                    this.modificarSupervisor.email == null ||
-                    this.modificarSupervisor.email < 10
-                ) {
-                    this.$vs.notify({
-                        title: "Error en correo",
-                        text:
-                            "Debe Escribir un correo valido y que no este el campo vacio",
-                        color: "danger",
-                        position: "top-right",
-                        time: 3000
-                    });
-                } else */ if (
+
+                if (
                     this.modificarSupervisor.nombre == "" ||
                     this.modificarSupervisor.nombre == null
                 ) {
@@ -640,20 +616,7 @@ export default {
                         position: "top-right",
                         time: 3000
                     });
-                } /*  else if (
-                    this.modificarSupervisor.id_unidadEspecifica == 0 ||
-                    this.modificarSupervisor.id_unidadEspecifica == null
-                ) {
-                    this.$vs.notify({
-                        title:
-                            "Error en la ubicacion especifica del Supervisor",
-                        text:
-                            "Debe Seleccionar una ubicacion especifica al cual pertenece",
-                        color: "danger",
-                        position: "top-right",
-                        time: 3000
-                    });
-                }  */ else if (
+                } else if (
                     this.modificarSupervisor.password == null ||
                     this.modificarSupervisor.password == "" ||
                     this.modificarSupervisor.password.length < 4
@@ -714,6 +677,17 @@ export default {
                                         "Supervisor Modificado Correctamente",
                                     text: "Se recargaran los campos",
                                     color: "success",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
                                     position: "top-right",
                                     time: 3000
                                 });
@@ -804,6 +778,17 @@ export default {
                         b.push(value);
                     });
                     this.listadoSupervisor = b;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarListadoUsuarios() {
@@ -822,6 +807,17 @@ export default {
                         b.push(value);
                     });
                     this.listadoUsuariosCargo = b;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarEdificios() {
@@ -840,6 +836,17 @@ export default {
                         b.push(value);
                     });
                     this.listadoEdificios = b;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarTipoRep() {
@@ -852,6 +859,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoTipoRep = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarEspecialidad() {
@@ -870,6 +888,17 @@ export default {
                         b.push(value);
                     });
                     this.listadoEspecialidad = b;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarServicios() {
@@ -889,6 +918,17 @@ export default {
                         b.push(value);
                     });
                     this.listadoServicios = b;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         }
     },

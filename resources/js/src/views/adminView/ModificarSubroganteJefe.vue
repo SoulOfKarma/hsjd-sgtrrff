@@ -510,30 +510,7 @@ export default {
                     this.modificarUsuario.idvalmail = 1;
                 }
 
-                /* if (
-                    this.modificarUsuario.run == null ||
-                    this.modificarUsuario.run < 9 ||
-                    !validate(this.rutUsuario)
-                ) {
-                    this.$vs.notify({
-                        title: "Error en rut",
-                        text:
-                            "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (
-                    this.modificarUsuario.email == null ||
-                    this.modificarUsuario.email < 10
-                ) {
-                    this.$vs.notify({
-                        title: "Error en correo",
-                        text:
-                            "Debe Escribir un correo valido y que no este el campo vacio",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else */ if (
+                if (
                     this.modificarUsuario.nombre == null ||
                     this.modificarUsuario.nombre < 3
                 ) {
@@ -613,6 +590,17 @@ export default {
                                 });
                                 this.limpiar();
                                 this.cargarSubrogantes();
+                            }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
                             }
                         });
                 }
@@ -696,6 +684,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoCargo = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarListadoUsuarios() {
@@ -710,6 +709,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoUsuariosCargo = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarSubrogantes() {
@@ -728,6 +738,17 @@ export default {
                         b.push(value);
                     });
                     this.listadoSubrogante = b;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarEdificios() {
@@ -742,6 +763,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoEdificios = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
 
@@ -758,6 +790,17 @@ export default {
                 .then(res => {
                     this.listadoServicios = res.data;
                     this.listadoServiciosData = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         }
     },

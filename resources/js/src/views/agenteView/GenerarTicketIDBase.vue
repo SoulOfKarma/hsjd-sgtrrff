@@ -1112,6 +1112,17 @@ export default {
                                 this.listadoTicketPrincipal = [];
                             }
                             console.log(this.listadoTicketPrincipal);
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
                         });
                 }
             } catch (error) {
@@ -1158,6 +1169,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoPrioridad = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         guardarTrabajador() {
@@ -1337,6 +1359,17 @@ export default {
                         b.push(value);
                     });
                     this.listadoEspecialidad = b;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         limpiarTrabajador() {
@@ -1472,6 +1505,17 @@ export default {
                                 position: "top-right"
                             });
                         }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 console.log(
@@ -1527,6 +1571,17 @@ export default {
                                 text: "Hubo una falla al agregar servicio",
                                 color: "danger",
                                 position: "top-right"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
                             });
                         }
                     });
@@ -1802,6 +1857,17 @@ export default {
                     this.listadoEdificiosU = JSON.parse(
                         JSON.stringify(this.listadoEdificios)
                     );
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarUsuarios() {
@@ -1814,6 +1880,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoUsuarios = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarServicios() {
@@ -1834,6 +1911,17 @@ export default {
                     this.listadoServiciosDataU = JSON.parse(
                         JSON.stringify(this.listadoServicios)
                     );
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarTipoRep() {
@@ -1846,6 +1934,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoTipoRep = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarSupervisores() {
@@ -1858,6 +1957,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoSupervisores = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarTurnos() {
@@ -1870,6 +1980,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoTurno = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarTrabajadores() {
@@ -1882,6 +2003,17 @@ export default {
                 })
                 .then(res => {
                     this.cargarApoyosArray(res.data);
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarApoyosArray(listadoApoyo) {
@@ -1913,6 +2045,17 @@ export default {
                         id: 2,
                         descripcionEstado: "En Proceso"
                     };
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         errorDrop(mensajeError) {
@@ -2041,6 +2184,17 @@ export default {
                 .then(res => {
                     const ticketServer = res.data;
                     this.mensajeGuardado();
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         openLoadingColor() {
@@ -2123,6 +2277,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoDuracion = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         // Lado Crear Usuarios
@@ -2388,6 +2553,17 @@ export default {
                                 this.popCrearUsuario = false;
                                 this.cargarUsuarios();
                             }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
                         });
                 }
             }
@@ -2408,6 +2584,17 @@ export default {
                         b.push(value);
                     });
                     this.listadoCargoU = b;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         filtroSegunEdificioU() {
@@ -2695,6 +2882,17 @@ export default {
                         let nombreU = b[0].nombre;
                         this.seleccionUsuario.id = iduser;
                         this.seleccionUsuario.nombre = nombreU;
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 console.log("No es posible cargar data con el id indicado");

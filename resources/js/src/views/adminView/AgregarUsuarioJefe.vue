@@ -326,31 +326,7 @@ export default {
                 } else {
                     this.registroUsuario.idvalmail = 1;
                 }
-                //this.rutUsuario = format(this.rutUsuario);
-                /* if (
-                    this.registroUsuario.run == null ||
-                    this.registroUsuario.run < 9 ||
-                    !validate(this.rutUsuario)
-                ) {
-                    this.$vs.notify({
-                        title: "Error en rut",
-                        text:
-                            "Debe Escribir un rut valido,que no este el campo vacio y que sea mayor a 9 caracteres",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (
-                    this.registroUsuario.email == null ||
-                    this.registroUsuario.email < 10
-                ) {
-                    this.$vs.notify({
-                        title: "Error en correo",
-                        text:
-                            "Debe Escribir un correo valido y que no este el campo vacio",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else */ if (
+                if (
                     this.registroUsuario.nombre == null ||
                     this.registroUsuario.nombre < 3
                 ) {
@@ -428,6 +404,17 @@ export default {
                                     position: "top-right"
                                 });
                                 this.limpiar();
+                            }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
                             }
                         });
                 }
@@ -515,6 +502,17 @@ export default {
                         b.push(value);
                     });
                     this.listadoCargo = b;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarEdificios() {
@@ -533,6 +531,17 @@ export default {
                         b.push(value);
                     });
                     this.listadoEdificios = b;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
 
@@ -553,6 +562,17 @@ export default {
                         b.push(value);
                     });
                     this.listadoServicios = b;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         }
     },

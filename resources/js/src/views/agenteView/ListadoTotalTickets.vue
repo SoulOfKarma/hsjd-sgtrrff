@@ -721,9 +721,6 @@ export default {
                 {
                     label: "Fecha Programada",
                     field: "fechaSolicitud",
-                    // type: "date",
-                    // dateInputFormat: "dd/MM/yyyy",
-                    // dateOutputFormat: "dd/MM/yyyy",
                     filterOptions: {
                         enabled: true
                     }
@@ -839,6 +836,17 @@ export default {
                                     position: "top-right"
                                 });
                             }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
                         });
                 } else if (this.idCategoriaFecha == 2) {
                     var newElement = document.createElement("div");
@@ -876,6 +884,17 @@ export default {
                                     text: "No se pudo enviar correo",
                                     color: "danger",
                                     position: "top-right"
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
                                 });
                             }
                         });
@@ -917,6 +936,17 @@ export default {
                                     position: "top-right"
                                 });
                             }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
                         });
                 } else if (this.idCategoriaFecha == 4) {
                     var newElement = document.createElement("div");
@@ -954,6 +984,17 @@ export default {
                                     text: "No se pudo enviar correo",
                                     color: "danger",
                                     position: "top-right"
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
                                 });
                             }
                         });
@@ -1002,6 +1043,17 @@ export default {
                                     position: "top-right"
                                 });
                             }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
                         });
                 } else if (this.idCategoriaFecha == 2) {
                     axios
@@ -1032,6 +1084,17 @@ export default {
                                         "No se Pudieron Cambiar las Fechas, Revise los datos",
                                     color: "danger",
                                     position: "top-right"
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
                                 });
                             }
                         });
@@ -1071,6 +1134,17 @@ export default {
                                     position: "top-right"
                                 });
                             }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
                         });
                 } else if (this.idCategoriaFecha == 4) {
                     axios
@@ -1101,6 +1175,17 @@ export default {
                                         "No se Pudieron Cambiar las Fechas, Revise los datos",
                                     color: "danger",
                                     position: "top-right"
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
                                 });
                             }
                         });
@@ -1151,6 +1236,17 @@ export default {
                                 position: "top-right"
                             });
                         }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 console.log("Error al Guardar guardar cambios");
@@ -1199,6 +1295,17 @@ export default {
                             position: "top-right"
                         });
                     }
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         openLoadingColor() {
@@ -1235,16 +1342,18 @@ export default {
                 })
                 .then(res => {
                     let listado = res.data;
-                    /* let b = [];
-                    let a = 0;
-                    listado.forEach((value, index) => {
-                        a = value.id_solicitud;
-                        if (a == id) {
-                            b.push(value);
-                        }
-                    }); */
-
                     this.documentacion = JSON.parse(JSON.stringify(listado));
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
             //let c = this.dataDocumentacion;
         },
@@ -1263,6 +1372,17 @@ export default {
                     this.solicitudes = res.data;
                     this.activeLoading = true;
                     this.openLoadingColor();
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarDocumentacion() {
@@ -1276,6 +1396,17 @@ export default {
                 .then(res => {
                     this.documentacion = res.data;
                     this.dataDocumentacion = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         detalleSolicitud(id, uuid) {
@@ -1338,6 +1469,17 @@ export default {
                             id;
                         window.open(url, "_blank");
                     }
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         detalleSolicitudEliminados(id, uuid) {
@@ -1359,7 +1501,6 @@ export default {
             });
         },
         asignarSolicitud(id, uuid) {
-            // router.push(`/agenteView/FormularioAsignar/${id}`);
             axios
                 .get(
                     this.localVal + `/api/Agente/ValidarTicketAsignado/${id}`,
@@ -1388,10 +1529,20 @@ export default {
                             }
                         });
                     }
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         modificarSolicitud(id, uuid, id_user) {
-            //router.push(`/agenteView/FormularioModificar/${id}`);
             axios
                 .get(
                     this.localVal +
@@ -1420,6 +1571,17 @@ export default {
                                 uuid: `${uuid}`,
                                 id_user: `${id_user}`
                             }
+                        });
+                    }
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
                         });
                     }
                 });
@@ -1483,6 +1645,17 @@ export default {
                                 });
                                 this.cargarSolicitudes();
                             }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
                         });
                 }
             }
@@ -1497,6 +1670,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoEstado = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         arrayEstado(id) {

@@ -1528,6 +1528,17 @@ export default {
                         let a = [];
                         a.push(res.data);
                         this.listadoDet = a;
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
 
                 this.listValidaciones.idDAdm = idDAdm;
@@ -1684,6 +1695,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoCalendarioOxigenistas = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         //Carga de los edificios
@@ -1697,6 +1719,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoEdificios = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         //Carga de turnos
@@ -1723,6 +1756,17 @@ export default {
                 })
                 .then(res => {
                     this.cargarApoyosArray(res.data);
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         //Carga de los dias Administrativos
@@ -1736,6 +1780,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoDataDAdministrativo = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         //Carga de las Vacaciones
@@ -1749,6 +1804,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoDataVacaciones = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         //Carga de Reemplazos
@@ -1762,6 +1828,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoDataReemplazo = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         //Carga de los Turnos Extras
@@ -1775,6 +1852,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoDataTurnoExtra = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarApoyosArray(listadoApoyo) {
@@ -1914,6 +2002,17 @@ export default {
                                 this.simpleCalendarEvents();
                             } else {
                                 console.log("Error");
+                            }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
                             }
                         });
 
@@ -2480,6 +2579,17 @@ export default {
                                     }
                                 } else {
                                     console.log("Error");
+                                }
+                            })
+                            .catch(error => {
+                                if (error.response.status === 401) {
+                                    this.$vs.notify({
+                                        title: "Token Invalido ",
+                                        text: "Debe iniciar sesion nuevamente",
+                                        color: "danger",
+                                        position: "top-right",
+                                        time: 3000
+                                    });
                                 }
                             });
 

@@ -168,6 +168,17 @@ export default {
                     this.infoSeguimiento.nombre = this.solicitudes[0].nombre;
                     this.infoSeguimiento.edificio = this.solicitudes[0].descripcionEdificio;
                     this.infoSeguimiento.servicio = this.solicitudes[0].descripcionServicio;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargaSeguimiento() {
@@ -181,6 +192,17 @@ export default {
                 })
                 .then(res => {
                     this.seguimiento = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         guardarSeguimiento() {
@@ -224,6 +246,17 @@ export default {
                 .then(res => {
                     const seguimientoServer = res.data;
                     this.cargaSeguimiento();
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         openLoadingColor() {

@@ -847,15 +847,7 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-        } /* ,
-        Redirigir(id, uuid) {
-            console.log(id);
-            console.log(uuid);
-        },
-        probar() {
-            console.log(this.fechaModificar);
-            console.log(this.fechaEliminar);
-        } */
+        }
     },
     beforeMount() {
         this.cargarSolicitudes();

@@ -15,11 +15,16 @@ use Illuminate\Support\Facades\Auth;
 use App\Users;
 use Carbon\Carbon;
 use Validator;
-use JWTAuth;
+//use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LoginController extends Controller
 {
+
+  public function __construct(){
+    $this->middleware('jwt.verify', ['except' => ['login','adminPr','getUsuarios','salir','GetUsersByExternalRut','generarToken']]);
+  }
 
   public function getUsuarios(Request $request)
   {
@@ -28,11 +33,11 @@ class LoginController extends Controller
     $rut = strtoupper($rut);
     $token = Str::random(60);
 
-        Users::where('run',$rut)
+      Users::where('run',$rut)
         ->update(['api_token' => $token]);
-    $get_all = DB::table('users')
-      ->where('run', '=', $rut)
-      ->get();
+      $get_all = DB::table('users')
+        ->where('run', '=', $rut)
+        ->get();
       $hashedPassword = "";
 
       Users::where('run',$rut)
@@ -49,30 +54,6 @@ class LoginController extends Controller
        }
       }
   }
-
-/*   public function GetUsersByToken(Request $request)
-  {
-    
-    $rut = str_replace('.', '', $request->input('rut'));
-    $rut = strtoupper($rut);
-    $get_all = DB::table('users')
-      ->where('run', '=', $rut)
-      ->get();
-
-      Users::where('run',$rut)
-        ->update(['api_token' => Hash::make($request->input('token'))]);
-      $tokenBD = "";
-      foreach ($get_all as $p) {
-        $tokenBD = $p->api_token;
-       // if($request->input('token') == $tokenBD){
-        if(Hash::check($request->input('token'), $tokenBD)){
-        return $get_all;
-        }  
-        else{
-        return 1;
-       }
-      }
-  } */
 
   public function GetUsersByExternalRut(Request $request)
   {

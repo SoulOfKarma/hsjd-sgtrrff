@@ -898,6 +898,17 @@ export default {
                             }
                         ];
                         this.popFormModCod = true;
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 console.log(error);
@@ -948,6 +959,17 @@ export default {
                                     position: "top-right"
                                 });
                             }
+                        })
+                        .catch(error => {
+                            if (error.response.status === 401) {
+                                this.$vs.notify({
+                                    title: "Token Invalido ",
+                                    text: "Debe iniciar sesion nuevamente",
+                                    color: "danger",
+                                    position: "top-right",
+                                    time: 3000
+                                });
+                            }
                         });
                 } catch (error) {
                     console.log(error);
@@ -967,6 +989,17 @@ export default {
                 })
                 .then(res => {
                     this.Documentos = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         ConfirmarDelDoc(id) {
@@ -1022,6 +1055,17 @@ export default {
                                 position: "top-right"
                             });
                         }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 console.log(error);
@@ -1069,6 +1113,17 @@ export default {
                                 position: "top-right"
                             });
                         }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 console.log(error);
@@ -1103,6 +1158,17 @@ export default {
                             )
                             .then(res => {
                                 this.Documentos = res.data;
+                            })
+                            .catch(error => {
+                                if (error.response.status === 401) {
+                                    this.$vs.notify({
+                                        title: "Token Invalido ",
+                                        text: "Debe iniciar sesion nuevamente",
+                                        color: "danger",
+                                        position: "top-right",
+                                        time: 3000
+                                    });
+                                }
                             });
                     }
                 } else if (params.column.field == "codManFeb") {
@@ -1132,6 +1198,17 @@ export default {
                             )
                             .then(res => {
                                 this.Documentos = res.data;
+                            })
+                            .catch(error => {
+                                if (error.response.status === 401) {
+                                    this.$vs.notify({
+                                        title: "Token Invalido ",
+                                        text: "Debe iniciar sesion nuevamente",
+                                        color: "danger",
+                                        position: "top-right",
+                                        time: 3000
+                                    });
+                                }
                             });
                     }
                 } else if (params.column.field == "codManMar") {
@@ -1161,6 +1238,17 @@ export default {
                             )
                             .then(res => {
                                 this.Documentos = res.data;
+                            })
+                            .catch(error => {
+                                if (error.response.status === 401) {
+                                    this.$vs.notify({
+                                        title: "Token Invalido ",
+                                        text: "Debe iniciar sesion nuevamente",
+                                        color: "danger",
+                                        position: "top-right",
+                                        time: 3000
+                                    });
+                                }
                             });
                     }
                 } else if (params.column.field == "codManAbr") {
@@ -1190,6 +1278,17 @@ export default {
                             )
                             .then(res => {
                                 this.Documentos = res.data;
+                            })
+                            .catch(error => {
+                                if (error.response.status === 401) {
+                                    this.$vs.notify({
+                                        title: "Token Invalido ",
+                                        text: "Debe iniciar sesion nuevamente",
+                                        color: "danger",
+                                        position: "top-right",
+                                        time: 3000
+                                    });
+                                }
                             });
                     }
                 } else if (params.column.field == "codManMay") {
@@ -1219,6 +1318,17 @@ export default {
                             )
                             .then(res => {
                                 this.Documentos = res.data;
+                            })
+                            .catch(error => {
+                                if (error.response.status === 401) {
+                                    this.$vs.notify({
+                                        title: "Token Invalido ",
+                                        text: "Debe iniciar sesion nuevamente",
+                                        color: "danger",
+                                        position: "top-right",
+                                        time: 3000
+                                    });
+                                }
                             });
                     }
                 } else if (params.column.field == "codManJun") {
@@ -1248,6 +1358,17 @@ export default {
                             )
                             .then(res => {
                                 this.Documentos = res.data;
+                            })
+                            .catch(error => {
+                                if (error.response.status === 401) {
+                                    this.$vs.notify({
+                                        title: "Token Invalido ",
+                                        text: "Debe iniciar sesion nuevamente",
+                                        color: "danger",
+                                        position: "top-right",
+                                        time: 3000
+                                    });
+                                }
                             });
                     }
                 } else if (params.column.field == "codManJul") {
@@ -1277,6 +1398,17 @@ export default {
                             )
                             .then(res => {
                                 this.Documentos = res.data;
+                            })
+                            .catch(error => {
+                                if (error.response.status === 401) {
+                                    this.$vs.notify({
+                                        title: "Token Invalido ",
+                                        text: "Debe iniciar sesion nuevamente",
+                                        color: "danger",
+                                        position: "top-right",
+                                        time: 3000
+                                    });
+                                }
                             });
                     }
                 } else if (params.column.field == "codManAgo") {
@@ -1306,6 +1438,17 @@ export default {
                             )
                             .then(res => {
                                 this.Documentos = res.data;
+                            })
+                            .catch(error => {
+                                if (error.response.status === 401) {
+                                    this.$vs.notify({
+                                        title: "Token Invalido ",
+                                        text: "Debe iniciar sesion nuevamente",
+                                        color: "danger",
+                                        position: "top-right",
+                                        time: 3000
+                                    });
+                                }
                             });
                     }
                 } else if (params.column.field == "codManSep") {
@@ -1335,6 +1478,17 @@ export default {
                             )
                             .then(res => {
                                 this.Documentos = res.data;
+                            })
+                            .catch(error => {
+                                if (error.response.status === 401) {
+                                    this.$vs.notify({
+                                        title: "Token Invalido ",
+                                        text: "Debe iniciar sesion nuevamente",
+                                        color: "danger",
+                                        position: "top-right",
+                                        time: 3000
+                                    });
+                                }
                             });
                     }
                 } else if (params.column.field == "codManOct") {
@@ -1364,6 +1518,17 @@ export default {
                             )
                             .then(res => {
                                 this.Documentos = res.data;
+                            })
+                            .catch(error => {
+                                if (error.response.status === 401) {
+                                    this.$vs.notify({
+                                        title: "Token Invalido ",
+                                        text: "Debe iniciar sesion nuevamente",
+                                        color: "danger",
+                                        position: "top-right",
+                                        time: 3000
+                                    });
+                                }
                             });
                     }
                 } else if (params.column.field == "codManNov") {
@@ -1393,6 +1558,17 @@ export default {
                             )
                             .then(res => {
                                 this.Documentos = res.data;
+                            })
+                            .catch(error => {
+                                if (error.response.status === 401) {
+                                    this.$vs.notify({
+                                        title: "Token Invalido ",
+                                        text: "Debe iniciar sesion nuevamente",
+                                        color: "danger",
+                                        position: "top-right",
+                                        time: 3000
+                                    });
+                                }
                             });
                     }
                 } else if (params.column.field == "codManDic") {
@@ -1422,6 +1598,17 @@ export default {
                             )
                             .then(res => {
                                 this.Documentos = res.data;
+                            })
+                            .catch(error => {
+                                if (error.response.status === 401) {
+                                    this.$vs.notify({
+                                        title: "Token Invalido ",
+                                        text: "Debe iniciar sesion nuevamente",
+                                        color: "danger",
+                                        position: "top-right",
+                                        time: 3000
+                                    });
+                                }
                             });
                     }
                 }
@@ -1560,6 +1747,17 @@ export default {
                                 position: "top-right"
                             });
                         }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 console.log(error);
@@ -1599,6 +1797,17 @@ export default {
                                     "Verifique los datos y intente nuevamente",
                                 color: "danger",
                                 position: "top-right"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
                             });
                         }
                     });
@@ -1654,6 +1863,17 @@ export default {
                             position: "top-right"
                         });
                     }
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         recargaDocumentacion() {
@@ -1672,6 +1892,17 @@ export default {
                     )
                     .then(res => {
                         this.Documentos = res.data;
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 console.log(error);
@@ -1897,6 +2128,17 @@ export default {
                                 position: "top-right"
                             });
                         }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 console.log(error);
@@ -1912,6 +2154,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoEdificios = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarEstadoMIndustrial() {
@@ -1924,6 +2177,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoEstadoMIndustrial = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarTMantencion() {
@@ -1936,6 +2200,17 @@ export default {
                 })
                 .then(res => {
                     this.listadoTMantencion = res.data;
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
                 });
         },
         cargarAnios() {
@@ -1949,6 +2224,17 @@ export default {
                     })
                     .then(res => {
                         this.listadoAnios = res.data;
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 console.log(error);
@@ -1971,6 +2257,17 @@ export default {
                     .then(res => {
                         this.cargaColumnas();
                         this.mantenciones = res.data;
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 console.log(error);
@@ -2004,6 +2301,17 @@ export default {
                                 text: "Hubo una falla al agregar el Año",
                                 color: "danger",
                                 position: "top-right"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
                             });
                         }
                     });
@@ -2143,6 +2451,17 @@ export default {
                         };
                         this.productsOrder = dat;
                         this.resetI += 1;
+                    })
+                    .catch(error => {
+                        if (error.response.status === 401) {
+                            this.$vs.notify({
+                                title: "Token Invalido ",
+                                text: "Debe iniciar sesion nuevamente",
+                                color: "danger",
+                                position: "top-right",
+                                time: 3000
+                            });
+                        }
                     });
             } catch (error) {
                 console.log("Error al cargar datos");
