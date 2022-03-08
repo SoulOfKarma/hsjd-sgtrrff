@@ -3246,7 +3246,7 @@ export default {
                     this.registroUsuarioU.idvalRut = 0;
                 } else {
                     this.rutUsuarioU = format(this.rutUsuarioU);
-                    this.registroUsuariou.idvalRut = 1;
+                    this.registroUsuarioU.idvalRut = 1;
                 }
                 if (
                     this.correoUsuarioU == 0 ||
