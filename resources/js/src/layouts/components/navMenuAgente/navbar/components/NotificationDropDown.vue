@@ -1654,6 +1654,12 @@ export default {
                 return Promise.reject(error);
             }
         );
+
+        this.abrirNotificacionP();
+        this.abrirNotificacion();
+        this.cargaNotificaciones();
+        this.cargaNotificacionesN();
+        this.cargaKPI();
     }
 };
 </script>
