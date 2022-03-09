@@ -264,15 +264,11 @@
 <script>
 import "@fullcalendar/core/vdom"; // solves problem with Vite
 import FullCalendar from "@fullcalendar/vue";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
-import esLocale from "@fullcalendar/core/locales/es";
-import Datepicker from "vuejs-datepicker";
+import allLocales from "@fullcalendar/core/locales-all";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import moment from "moment";
-import router from "@/router";
 import axios from "axios";
 import Vue from "vue";
 import "vue-good-table/dist/vue-good-table.css";
@@ -330,6 +326,7 @@ export default {
             title: "",
             id: 0,
             resourceAsociado: "",
+            currentDate: new Date(),
             calendarOptions: {
                 customButtons: {
                     NObra: {
@@ -341,25 +338,34 @@ export default {
                         click: () => this.$set(this, "popCrearSubCatObra", true)
                     }
                 },
-                plugins: [
-                    dayGridPlugin,
-                    interactionPlugin,
-                    resourceTimelinePlugin
-                ],
+                plugins: [resourceTimelinePlugin],
                 headerToolbar: {
                     left: "today prev,next NObra NSubObra",
                     center: "title",
                     right:
-                        "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth"
+                        "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth,timelineCustom"
                 },
-                //eventColor: "#378006",
-                //dateClick: this.handleDateClick,
                 eventClick: this.eventModificar,
-                locale: esLocale,
-                //selectable: true,
+                locales: allLocales,
+                locale: "es",
                 resourceAreaHeaderContent: "Calendario de Obras",
                 resources: {},
                 events: {},
+                views: {
+                    timelineCustom: {
+                        type: "timeline",
+                        buttonText: "Año",
+                        dateIncrement: { years: 1 },
+                        duration: { years: 1 },
+                        slotDuration: { months: 1 },
+                        visibleRange: function() {
+                            var startDate = new Date(moment().startOf("year"));
+                            var endDate = new Date(moment().endOf("year"));
+
+                            return { start: startDate, end: endDate };
+                        }
+                    }
+                },
                 initialView: "resourceTimelineDay",
                 schedulerLicenseKey:
                     "CC-Attribution-NonCommercial-NoDerivatives"
