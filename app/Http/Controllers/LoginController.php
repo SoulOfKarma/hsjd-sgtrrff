@@ -23,7 +23,7 @@ class LoginController extends Controller
 {
 
   public function __construct(){
-    $this->middleware('jwt.verify', ['except' => ['login','adminPr','getUsuarios','salir','GetUsersByExternalRut','generarToken']]);
+    $this->middleware('jwt.verify', ['except' => ['login','adminPr','getUsuarios','salir','GetUsersByExternalRut','generarToken','checkToken']]);
   }
 
   public function getUsuarios(Request $request)
