@@ -468,6 +468,23 @@ use App\Mail\AutoRespuesta;
             //Traer data especifica Gasfiters
             Route::post('/Agente/GetDataCalenOxigenistas', ['middleware' => 'cors', 'uses' => 'CalendarioOxigenistasController@get_data_esp_asc']);
 
+            //Agregar Nuevo Calendario Taller Industrial
+            Route::post('/Agente/PostCalendarioTIndustrial', ['middleware' => 'cors', 'uses' => 'CalendarioTallerIndustrialController@postNuevoTCalendario']);
+            //Traer Todo Calendario Taller Industrial
+            Route::get('/Agente/GetCalendarioTIndustrial', ['middleware' => 'cors', 'uses' => 'CalendarioTallerIndustrialController@getTodoCalendario']);
+            //Modificar o Agregar Items Calendario Taller Industrial
+            Route::post('/Agente/PutCalendarioTIndustrial', ['middleware' => 'cors', 'uses' => 'CalendarioTallerIndustrialController@PutNuevoTCalendario']);
+            //Get Dia Administrativo Taller Industrial
+            Route::get('/Agente/DAdminTIndustrial', ['middleware' => 'cors', 'uses' => 'DiaAdministrativoTIndustrialsController@get_dia_adm']);
+            //Get Reemplazos Taller Industrial
+            Route::get('/Agente/RTIndustrial', ['middleware' => 'cors', 'uses' => 'ReemplazotindustrialsController@get_reemplazo']);
+            //Get Turno Extra Taller Industrial
+            Route::get('/Agente/TurExtTIndustrial', ['middleware' => 'cors', 'uses' => 'TurnoExtratindustrialsController@get_turnoExtra']);
+            //Get Vacaciones Taller Industrial
+            Route::get('/Agente/VTIndustrial', ['middleware' => 'cors', 'uses' => 'VacacionestindustrialsController@get_vacaciones']);
+            //Traer data especifica Taller Industrial
+            Route::post('/Agente/GetDataCalenTIndustrial', ['middleware' => 'cors', 'uses' => 'CalendarioTallerIndustrialController@get_data_esp_asc']);
+
             //Retorna Categorias Sin Informatica
             Route::get('/Usuario/getCategoriaSI', ['middleware' => 'cors', 'uses' => 'CategoriaController@getCategoriaSI']);
             //Retorna Tipo Reparacion

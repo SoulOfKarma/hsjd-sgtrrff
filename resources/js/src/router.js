@@ -186,6 +186,14 @@ const router = new Router({
                         import("./views/agenteView/CalendarioOxigenistas.vue")
                 },
                 {
+                    path: "/agenteView/CalendarioTallerIndustrial",
+                    name: "CalendarioTallerIndustrial",
+                    component: () =>
+                        import(
+                            "./views/agenteView/CalendarioTallerIndustrial.vue"
+                        )
+                },
+                {
                     path: "/agenteView/CalendarioTGasfiter",
                     name: "CalendarioTGasfiter",
                     component: () =>

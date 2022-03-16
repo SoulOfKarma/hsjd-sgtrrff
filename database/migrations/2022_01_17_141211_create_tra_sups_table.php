@@ -13,12 +13,14 @@ class CreateTraSupsTable extends Migration
      */
     public function up()
     {
+        if ( !Schema::hasTable('tra_sups') ) {
         Schema::create('tra_sups', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('id_trabajador')->nullable();
             $table->bigInteger('id_supervisor')->nullable();
             $table->timestamps();
         });
+    }
     }
 
     /**
