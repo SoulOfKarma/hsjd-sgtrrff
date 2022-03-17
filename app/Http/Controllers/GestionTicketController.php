@@ -740,11 +740,10 @@ class GestionTicketController extends Controller
                     'fechaTermino' => $request->fechaTermino
                 ]); 
 
-            detallesolicitudinfraestructuras::updateOrCreate([
-                 'id_solicitud' => $request->id_solicitud,
-                 //],[
-                  'desresolucionresultados' => $request->desresolucionresultados
-              ]);   
+            detallesolicitudinfraestructuras::where('id_solicitud', $request->id_solicitud)
+            ->update([
+                'desresolucionresultados' => $request->desresolucionresultados
+              ]);
 
             $validador = true;
 

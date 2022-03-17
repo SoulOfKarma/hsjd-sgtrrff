@@ -54,8 +54,9 @@ class GestionTicketsINDsController extends Controller
     public function GetTicketAsignado($id)
     {
         try {
-            $users = GestionTicketsINDs::select('gestion_tickets_i_n_ds.*','solicitud_ticket_i_n_ds.*',)
+            $users = GestionTicketsINDs::select('gestion_tickets_i_n_ds.*','solicitud_ticket_i_n_ds.*','detallesolicitudinds.desresolucionresultados')
         ->join('solicitud_ticket_i_n_ds','gestion_tickets_i_n_ds.id_solicitud','=','solicitud_ticket_i_n_ds.id')
+        ->join('detallesolicitudinds','gestion_tickets_i_n_ds.id_solicitud','=','detallesolicitudinds.id_solicitud')
         ->where('gestion_tickets_i_n_ds.id_solicitud',$id)
         ->get();
         return $users;
@@ -166,7 +167,7 @@ class GestionTicketsINDsController extends Controller
     public function getSolicitudUsuariosJoinIND()
     {
         try {
-            $ticket = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.id','solicitud_ticket_i_n_ds.id_categoria','solicitud_ticket_i_n_ds.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            $ticket = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.id','solicitud_ticket_i_n_ds.id_user','solicitud_ticket_i_n_ds.id_categoria','solicitud_ticket_i_n_ds.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_ticket_i_n_ds.descripcionP','solicitud_ticket_i_n_ds.id_estado',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_ticket_i_n_ds.created_at,NOW()) AS Horas'),
             DB::raw("CONCAT(solicitud_ticket_i_n_ds.id) as nticket"),
@@ -184,7 +185,7 @@ class GestionTicketsINDsController extends Controller
             ->orWhere('solicitud_ticket_i_n_ds.id_estado', 9);
             //->orderBy('solicitud_tickets.id', 'desc')
             //->get();
-            $uticket = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.id','solicitud_ticket_i_n_ds.id_categoria','solicitud_ticket_i_n_ds.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            $uticket = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.id','solicitud_ticket_i_n_ds.id_user','solicitud_ticket_i_n_ds.id_categoria','solicitud_ticket_i_n_ds.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_ticket_i_n_ds.descripcionP','solicitud_ticket_i_n_ds.id_estado',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_ticket_i_n_ds.created_at,NOW()) AS Horas'),
             DB::raw("CONCAT(solicitud_ticket_i_n_ds.id) as nticket"),
@@ -217,7 +218,7 @@ class GestionTicketsINDsController extends Controller
     public function getSolicitudUsuariosJoinINDH()
     {
         try {
-            $ticket = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.id','solicitud_ticket_i_n_ds.id_categoria','solicitud_ticket_i_n_ds.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            $ticket = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.id','solicitud_ticket_i_n_ds.id_user','solicitud_ticket_i_n_ds.id_categoria','solicitud_ticket_i_n_ds.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_ticket_i_n_ds.descripcionP','solicitud_ticket_i_n_ds.id_estado',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_ticket_i_n_ds.created_at,NOW()) AS Horas'),
             DB::raw("CONCAT(solicitud_ticket_i_n_ds.id) as nticket"),
@@ -235,7 +236,7 @@ class GestionTicketsINDsController extends Controller
             ->orWhere('solicitud_ticket_i_n_ds.id_estado', 9);
             //->orderBy('solicitud_tickets.id', 'desc')
             //->get();
-            $uticket = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.id','solicitud_ticket_i_n_ds.id_categoria','solicitud_ticket_i_n_ds.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            $uticket = SolicitudTicketINDs::select('solicitud_ticket_i_n_ds.id','solicitud_ticket_i_n_ds.id_user','solicitud_ticket_i_n_ds.id_categoria','solicitud_ticket_i_n_ds.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_ticket_i_n_ds.descripcionP','solicitud_ticket_i_n_ds.id_estado',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_ticket_i_n_ds.created_at,NOW()) AS Horas'),
             DB::raw("CONCAT(solicitud_ticket_i_n_ds.id) as nticket"),
@@ -391,16 +392,15 @@ class GestionTicketsINDsController extends Controller
                     'fechaTermino' => $request->fechaTermino
                 ]);
 
-                detallesolicitudinds::updateOrCreate([
-                    'id_solicitud' => $request->id_solicitud,
-                  //],[
+                detallesolicitudinds::where('id_solicitud', $request->id_solicitud)
+                ->update([
                     'desresolucionresultados' => $request->desresolucionresultados
                   ]);
 
                 $validador = true;
 
                 $userSearch = Users::where('id',$id_busqueda_solicitante)->first();
-                $ValidarCargo = $userSearch->id_cargo_asociado;     
+                $ValidarCargo = $userSearch->id_cargo_asociado;
                 $userMail = [];
     
                 if($ValidarCargo == null || $ValidarCargo == 0){

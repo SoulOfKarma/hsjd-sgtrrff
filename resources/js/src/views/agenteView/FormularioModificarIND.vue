@@ -2101,6 +2101,7 @@ export default {
                     this.descripcionP = this.datosTicketAsignado[0].descripcionP;
                     var datoidTipoReparacion = this.datosTicketAsignado[0]
                         .id_tipoReparacion;
+                    this.gestionTicket.desresolucionresultados = this.datosTicketAsignado[0].desresolucionresultados;
                     this.cargarSTA(
                         datoidSupervisor,
                         datoidTrabajador,

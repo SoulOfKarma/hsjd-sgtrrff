@@ -167,7 +167,7 @@ class GestionTicketEMSController extends Controller
     public function getSolicitudUsuariosJoinEM()
     {
         try {
-            $ticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.id_categoria','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            $ticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.id_user','solicitud_tickets_e_m_s.id_categoria','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_e_m_s.descripcionP','solicitud_tickets_e_m_s.id_estado',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_e_m_s.created_at,NOW()) AS Horas'),
             DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
@@ -184,7 +184,7 @@ class GestionTicketEMSController extends Controller
             ->orWhere('solicitud_tickets_e_m_s.id_estado', 9)
             ->orWhere('solicitud_tickets_e_m_s.id_estado', 7);
 
-            $uticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.id_categoria','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            $uticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.id_user','solicitud_tickets_e_m_s.id_categoria','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_e_m_s.descripcionP','solicitud_tickets_e_m_s.id_estado',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_e_m_s.created_at,NOW()) AS Horas'),
             DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
@@ -215,7 +215,7 @@ class GestionTicketEMSController extends Controller
     public function getSolicitudUsuariosJoinEMH()
     {
         try {
-            $ticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.id_categoria','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            $ticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.id_user','solicitud_tickets_e_m_s.id_categoria','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_e_m_s.descripcionP','solicitud_tickets_e_m_s.id_estado',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_e_m_s.created_at,NOW()) AS Horas'),
             DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
@@ -232,7 +232,7 @@ class GestionTicketEMSController extends Controller
             ->orWhere('solicitud_tickets_e_m_s.id_estado', 7)
             ->orWhere('solicitud_tickets_e_m_s.id_estado', 9);
 
-            $uticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.id_categoria','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            $uticket = SolicitudTicketsEM::select('solicitud_tickets_e_m_s.id','solicitud_tickets_e_m_s.id_user','solicitud_tickets_e_m_s.id_categoria','solicitud_tickets_e_m_s.uuid',DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'servicios.descripcionServicio','tipo_reparacions.descripcionTipoReparacion','solicitud_tickets_e_m_s.descripcionP','solicitud_tickets_e_m_s.id_estado',
             'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets_e_m_s.created_at,NOW()) AS Horas'),
             DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
