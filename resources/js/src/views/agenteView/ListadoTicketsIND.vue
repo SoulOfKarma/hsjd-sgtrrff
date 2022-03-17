@@ -100,7 +100,8 @@
                                 @click="
                                     modificarSolicitud(
                                         props.row.id,
-                                        props.row.uuid
+                                        props.row.uuid,
+                                        props.row.id_user
                                     )
                                 "
                             ></upload-icon>
@@ -215,7 +216,8 @@
                                 @click="
                                     modificarSolicitud(
                                         props.row.id,
-                                        props.row.uuid
+                                        props.row.uuid,
+                                        props.row.id_user
                                     )
                                 "
                             ></upload-icon>
