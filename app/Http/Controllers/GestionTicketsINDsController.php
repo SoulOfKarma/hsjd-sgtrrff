@@ -311,11 +311,6 @@ class GestionTicketsINDsController extends Controller
             $listContactos = [$userMail->email];
             $i = 0;
 
-            /* foreach ($userMail as $key) {
-                $listContactos[$i] = $key->email;
-                $i++;
-            } */
-
         $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
 
         $idTrabajador = $request->id_trabajador;
@@ -332,7 +327,6 @@ class GestionTicketsINDsController extends Controller
         Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) use($listContactos){
             $message->setTo($listContactos)->setSubject('Nueva Creacion de ticket');
             $message->setFrom('soporte.rrff@redsalud.gov.cl', 'Mantencion');
-            //$message->setBcc(['ricardo.soto.g@redsalud.gov.cl'=> 'Ricardo Soto Gomez']);
         });
 
         return true;
