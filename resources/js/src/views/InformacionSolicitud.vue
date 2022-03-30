@@ -141,10 +141,12 @@ export default {
             try {
                 let id = this.$route.params.id;
                 let id_categoria = this.$route.params.id_categoria;
+                let data = { id: id };
                 if (id_categoria == 1) {
                     axios
-                        .get(
-                            this.localVal + `/api/Usuario/TraerSolicitud/${id}`,
+                        .post(
+                            this.localVal + "/api/Usuario/TraerSegSolicitud",
+                            data,
                             {
                                 headers: {
                                     Authorization:
@@ -163,9 +165,9 @@ export default {
                         });
                 } else if (id_categoria == 2) {
                     axios
-                        .get(
-                            this.localVal +
-                                `/api/Usuario/TraerSolicitudEM/${id}`,
+                        .post(
+                            this.localVal + "/api/Usuario/TraerSegSolicitudEM",
+                            data,
                             {
                                 headers: {
                                     Authorization:
@@ -184,9 +186,9 @@ export default {
                         });
                 } else if (id_categoria == 3) {
                     axios
-                        .get(
-                            this.localVal +
-                                `/api/Usuario/TraerSolicitudIND/${id}`,
+                        .post(
+                            this.localVal + "/api/Usuario/TraerSegSolicitudIND",
+                            data,
                             {
                                 headers: {
                                     Authorization:
@@ -205,9 +207,9 @@ export default {
                         });
                 } else if (id_categoria == 4) {
                     axios
-                        .get(
-                            this.localVal +
-                                `/api/Usuario/TraerSolicitudAP/${id}`,
+                        .post(
+                            this.localVal + "/api/Usuario/TraerSegSolicitudAP",
+                            data,
                             {
                                 headers: {
                                     Authorization:
@@ -248,12 +250,18 @@ export default {
         cargaSeguimiento() {
             try {
                 let uuid = this.$route.params.uuid;
+                let id = this.$route.params.id;
                 let id_categoria = this.$route.params.id_categoria;
+                let data = {
+                    id: id,
+                    uuid: uuid,
+                    id_categoria: id_categoria
+                };
                 if (id_categoria == 1) {
                     axios
-                        .get(
-                            this.localVal +
-                                `/api/Usuario/TraerSeguimiento/${uuid}`,
+                        .post(
+                            this.localVal + "/api/Usuario/TraerSeguimiento",
+                            data,
                             {
                                 headers: {
                                     Authorization:
@@ -267,9 +275,9 @@ export default {
                         });
                 } else if (id_categoria == 2) {
                     axios
-                        .get(
-                            this.localVal +
-                                `/api/Usuario/TraerSeguimientoEM/${uuid}`,
+                        .post(
+                            this.localVal + "/api/Usuario/TraerSeguimientoEM",
+                            data,
                             {
                                 headers: {
                                     Authorization:
@@ -283,9 +291,9 @@ export default {
                         });
                 } else if (id_categoria == 3) {
                     axios
-                        .get(
-                            this.localVal +
-                                `/api/Usuario/TraerSeguimientoIND/${uuid}`,
+                        .post(
+                            this.localVal + "/api/Usuario/TraerSeguimientoIND",
+                            data,
                             {
                                 headers: {
                                     Authorization:
@@ -299,9 +307,9 @@ export default {
                         });
                 } else if (id_categoria == 4) {
                     axios
-                        .get(
-                            this.localVal +
-                                `/api/Usuario/TraerSeguimientoAP/${uuid}`,
+                        .post(
+                            this.localVal + "/api/Usuario/TraerSeguimientoAP",
+                            data,
                             {
                                 headers: {
                                     Authorization:
@@ -372,6 +380,8 @@ export default {
                         this.seguimientos.id_solicitud = id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
+                        this.seguimientos.descripcionSeguimiento =
+                            newElement.textContent;
                         this.seguimientos.descripcionCorreo =
                             newElement.textContent;
                         /* var iduser = localStorage.getItem("id");
@@ -388,8 +398,7 @@ export default {
                         };
                         axios
                             .post(
-                                this.localVal +
-                                    `/api/Usuario/GuardarSeguimiento/${uuid}`,
+                                this.localVal + "/api/GuardarSeguimiento",
                                 seguimientoNuevo,
                                 {
                                     headers: {
@@ -429,6 +438,8 @@ export default {
                         this.seguimientos.id_solicitud = id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
+                        this.seguimientos.descripcionSeguimiento =
+                            newElement.textContent;
                         this.seguimientos.descripcionCorreo =
                             newElement.textContent;
                         /* var iduser = localStorage.getItem("id");
@@ -445,8 +456,7 @@ export default {
                         };
                         axios
                             .post(
-                                this.localVal +
-                                    `/api/Usuario/GuardarSeguimientoEM/${uuid}`,
+                                this.localVal + "/api/GuardarSeguimientoEM",
                                 seguimientoNuevo,
                                 {
                                     headers: {
@@ -486,6 +496,8 @@ export default {
                         this.seguimientos.id_solicitud = id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
+                        this.seguimientos.descripcionSeguimiento =
+                            newElement.textContent;
                         this.seguimientos.descripcionCorreo =
                             newElement.textContent;
                         /* var iduser = localStorage.getItem("id");
@@ -502,8 +514,7 @@ export default {
                         };
                         axios
                             .post(
-                                this.localVal +
-                                    `/api/Usuario/GuardarSeguimientoIND/${uuid}`,
+                                this.localVal + "/api/GuardarSeguimientoIND",
                                 seguimientoNuevo,
                                 {
                                     headers: {
@@ -543,6 +554,8 @@ export default {
                         this.seguimientos.id_solicitud = id;
                         var newElement = document.createElement("div");
                         newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
+                        this.seguimientos.descripcionSeguimiento =
+                            newElement.textContent;
                         this.seguimientos.descripcionCorreo =
                             newElement.textContent;
                         /* var iduser = localStorage.getItem("id");
@@ -559,8 +572,7 @@ export default {
                         };
                         axios
                             .post(
-                                this.localVal +
-                                    `/api/Usuario/GuardarSeguimientoAP/${uuid}`,
+                                this.localVal + "/api/GuardarSeguimientoAP",
                                 seguimientoNuevo,
                                 {
                                     headers: {

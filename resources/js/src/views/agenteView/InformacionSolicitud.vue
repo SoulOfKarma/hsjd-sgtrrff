@@ -276,9 +276,10 @@ export default {
             this.popupActive2 = true;
         },
         cargaSolicitudEspecifica() {
-            let id = this.$route.params.uuid;
+            let id = this.$route.params.id;
+            let data = { id: id };
             axios
-                .get(this.localVal + `/api/Agente/TraerSolicitud/${id}`, {
+                .post(this.localVal + "/api/Agente/TraerSegSolicitud", data, {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -314,8 +315,13 @@ export default {
         },
         cargaSeguimiento() {
             let uuid = this.$route.params.uuid;
+            let id = this.$route.params.id;
+            let data = {
+                id: id,
+                uuid: uuid
+            };
             axios
-                .get(this.localVal + `/api/Agente/TraerSeguimiento/${uuid}`, {
+                .post(this.localVal + "/api/Agente/TraerSeguimiento", data, {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -338,6 +344,7 @@ export default {
         },
         guardarSeguimiento() {
             let uuid = this.$route.params.uuid;
+            let id = this.$route.params.id;
 
             if (
                 this.seguimientos.descripcionSeguimiento.trim() === "" ||
@@ -352,14 +359,13 @@ export default {
                 });
                 return;
             }
-            var id = this.solicitudes[0].id;
             this.seguimientos.id_usuarioEspecifico = this.solicitudes[0].id_user;
-
-            this.seguimientos.id = id;
+            this.seguimientos.id_solicitud = id;
             this.seguimientos.uuid = uuid;
             var newElement = document.createElement("div");
             newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
             this.seguimientos.descripcionCorreo = newElement.textContent;
+            this.seguimientos.descripcionSeguimiento = newElement.textContent;
             const seguimientoNuevo = this.seguimientos;
             this.seguimientos = {
                 descripcionSeguimiento: "",
@@ -371,7 +377,7 @@ export default {
             this.openLoadingColor();
             axios
                 .post(
-                    this.localVal + `/api/Agente/GuardarSeguimiento/${uuid}`,
+                    this.localVal + "/api/GuardarSeguimiento",
                     seguimientoNuevo,
                     {
                         headers: {

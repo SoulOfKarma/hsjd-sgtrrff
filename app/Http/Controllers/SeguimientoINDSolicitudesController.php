@@ -13,7 +13,7 @@ use App\Mail\AutoRespuesta;
 
 class SeguimientoINDSolicitudesController extends Controller
 {
-    public function store(Request $request, $uuid)
+    public function store(Request $request)
     {
         seguimientoINDSolicitudes::create($request->all());
         $descripcionSeguimiento = $request->descripcionCorreo;
@@ -166,18 +166,18 @@ class SeguimientoINDSolicitudesController extends Controller
        
     }
 
-    public function indexSeguimiento($uuid)
+    public function indexSeguimiento(Request $request)
     {
         $users = seguimientoINDSolicitudes::select('seguimiento_i_n_d_solicitudes.*', 'users.nombre', 'users.apellido')
             ->join('users', 'seguimiento_i_n_d_solicitudes.id_user', '=', 'users.id')
-            ->where('seguimiento_i_n_d_solicitudes.uuid', '=', $uuid)
+            ->where('seguimiento_i_n_d_solicitudes.id_solicitud', '=' , $request->id)
             ->orderBy('seguimiento_i_n_d_solicitudes.id', 'desc')
             ->get();
 
         return  $users;
     }
 
-    public function indexEspecifico($id)
+    public function indexEspecifico(Request $request)
     {
 
         $users = DB::table('solicitud_ticket_i_n_ds')
@@ -185,8 +185,8 @@ class SeguimientoINDSolicitudesController extends Controller
             ->join('edificios', 'solicitud_ticket_i_n_ds.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_ticket_i_n_ds.id_servicio', '=', 'servicios.id')
             ->join('unidad_esps', 'solicitud_ticket_i_n_ds.id_ubicacionEx', '=', 'unidad_esps.id')
-            ->select('solicitud_ticket_i_n_ds.*', 'users.nombre','users.apellido', 'edificios.descripcionEdificio', 'servicios.descripcionServicio', 'unidad_esps.descripcionUnidadEsp',DB::raw("CONCAT(DATE_FORMAT(solicitud_ticket_i_n_ds.created_at, '%d%m%Y'),'-',solicitud_ticket_i_n_ds.id,'-',solicitud_ticket_i_n_ds.id_user) as nticket"))
-            ->where('solicitud_ticket_i_n_ds.uuid', '=', $id)
+            ->select('solicitud_ticket_i_n_ds.*', 'users.nombre','users.apellido', 'edificios.descripcionEdificio', 'servicios.descripcionServicio', 'unidad_esps.descripcionUnidadEsp',DB::raw("CONCAT(solicitud_ticket_i_n_ds.id) as nticket"))
+            ->where('solicitud_ticket_i_n_ds.id', '=', $request->id)
             ->get();
 
         return  $users;

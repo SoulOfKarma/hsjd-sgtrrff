@@ -113,7 +113,8 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/informaticaView/InformacionSolicitudAgenteI",
+                    path:
+                        "/informaticaView/InformacionSolicitudAgenteI/:id,:uuid",
                     name: "InformacionSolicitudAgenteI",
                     component: () =>
                         import(
@@ -121,7 +122,8 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/informaticaView/InformacionSolicitudEliminadosI",
+                    path:
+                        "/informaticaView/InformacionSolicitudEliminadosI/:id,:uuid",
                     name: "InformacionSolicitudEliminadosI",
                     component: () =>
                         import(
@@ -129,7 +131,8 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/informaticaView/InformacionSolicitudFinalizadosI",
+                    path:
+                        "/informaticaView/InformacionSolicitudFinalizadosI/:id,:uuid",
                     name: "InformacionSolicitudFinalizadosI",
                     component: () =>
                         import(
@@ -309,31 +312,32 @@ const router = new Router({
                         import("./views/agenteView/ListadoSolicitudes.vue")
                 },
                 {
-                    path: "/agenteView/InformacionSolicitud",
+                    path: "/agenteView/InformacionSolicitud/:id,:uuid",
                     name: "InformacionSolicitudAgente",
                     component: () =>
                         import("./views/agenteView/InformacionSolicitud.vue")
                 },
                 {
-                    path: "/agenteView/InformacionSolicitudCA",
+                    path: "/agenteView/InformacionSolicitudCA/:id,:uuid",
                     name: "InformacionSolicitudAgenteCA",
                     component: () =>
                         import("./views/agenteView/InformacionSolicitudCA.vue")
                 },
                 {
-                    path: "/agenteView/InformacionSolicitudEM",
+                    path: "/agenteView/InformacionSolicitudEM/:id,:uuid",
                     name: "InformacionSolicitudAgenteEM",
                     component: () =>
                         import("./views/agenteView/InformacionSolicitudEM.vue")
                 },
                 {
-                    path: "/agenteView/InformacionSolicitudIND",
+                    path: "/agenteView/InformacionSolicitudIND/:id,:uuid",
                     name: "InformacionSolicitudAgenteIND",
                     component: () =>
                         import("./views/agenteView/InformacionSolicitudIND.vue")
                 },
                 {
-                    path: "/agenteView/InformacionSolicitudEliminados",
+                    path:
+                        "/agenteView/InformacionSolicitudEliminados/:id,:uuid",
                     name: "InformacionSolicitudEliminados",
                     component: () =>
                         import(
@@ -341,7 +345,8 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/agenteView/InformacionSolicitudEliminadosCA",
+                    path:
+                        "/agenteView/InformacionSolicitudEliminadosCA/:id,:uuid",
                     name: "InformacionSolicitudEliminadosCA",
                     component: () =>
                         import(
@@ -349,7 +354,8 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/agenteView/InformacionSolicitudEliminadosEM",
+                    path:
+                        "/agenteView/InformacionSolicitudEliminadosEM/:id,:uuid",
                     name: "InformacionSolicitudEliminadosEM",
                     component: () =>
                         import(
@@ -357,7 +363,8 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/agenteView/InformacionSolicitudEliminadosIND",
+                    path:
+                        "/agenteView/InformacionSolicitudEliminadosIND/:id,:uuid",
                     name: "InformacionSolicitudEliminadosIND",
                     component: () =>
                         import(
@@ -365,7 +372,8 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/agenteView/InformacionSolicitudFinalizadosCA",
+                    path:
+                        "/agenteView/InformacionSolicitudFinalizadosCA/:id,:uuid",
                     name: "InformacionSolicitudFinalizadosCA",
                     component: () =>
                         import(
@@ -373,7 +381,8 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/agenteView/InformacionSolicitudFinalizadosEM",
+                    path:
+                        "/agenteView/InformacionSolicitudFinalizadosEM/:id,:uuid",
                     name: "InformacionSolicitudFinalizadosEM",
                     component: () =>
                         import(
@@ -381,7 +390,8 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/agenteView/InformacionSolicitudFinalizadosIND",
+                    path:
+                        "/agenteView/InformacionSolicitudFinalizadosIND/:id,:uuid",
                     name: "InformacionSolicitudFinalizadosIND",
                     component: () =>
                         import(
@@ -389,7 +399,8 @@ const router = new Router({
                         )
                 },
                 {
-                    path: "/agenteView/InformacionSolicitudFinalizadosINF",
+                    path:
+                        "/agenteView/InformacionSolicitudFinalizadosINF/:id,:uuid",
                     name: "InformacionSolicitudFinalizadosINF",
                     component: () =>
                         import(

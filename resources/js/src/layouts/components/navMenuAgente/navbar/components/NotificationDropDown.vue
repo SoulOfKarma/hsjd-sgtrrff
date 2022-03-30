@@ -1655,8 +1655,6 @@ export default {
             }
         );
 
-        this.abrirNotificacionP();
-        this.abrirNotificacion();
         this.cargaNotificaciones();
         this.cargaNotificacionesN();
         this.cargaKPI();

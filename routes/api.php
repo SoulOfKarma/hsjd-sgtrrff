@@ -88,22 +88,52 @@ use App\Mail\AutoRespuesta;
             Route::post('/Usuario/PutSolicitudIND', ['middleware' => 'cors', 'uses' => 'SolicitudTicketINDsController@ModificarSolicitud']);
             //Modificar Solicitud
             Route::post('/Usuario/PutSolicitudAP', ['middleware' => 'cors', 'uses' => 'SolicitudTicketsApsController@ModificarSolicitud']);
+            ////////////////////////////////////////////
+            //Traer datos especificos
+            Route::post('/Usuario/TraerSegSolicitud', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexEspecifico']);
+            //Traer datos especificos
+            Route::post('/Agente/TraerSegSolicitud', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexEspecifico']);
             //Traer seguimiento
-            Route::get('/Usuario/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexSeguimiento']);
+            Route::post('/Usuario/TraerSeguimiento', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexSeguimiento']);
             //Traer seguimiento
-            Route::get('/Usuario/TraerSeguimientoEM/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoEMSolicitudesController@indexSeguimiento']);
+            Route::post('/Agente/TraerSeguimiento', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexSeguimiento']);
+            ////////////////////////////////////////////
             //Traer seguimiento
-            Route::get('/Usuario/TraerSeguimientoIND/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoINDSolicitudesController@indexSeguimiento']);
+            Route::post('/Usuario/TraerSeguimientoEM', ['middleware' => 'cors', 'uses' => 'SeguimientoEMSolicitudesController@indexSeguimiento']);
             //Traer seguimiento
-            Route::get('/Usuario/TraerSeguimientoAP/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoAPSolicitudesController@indexSeguimiento']);
+            Route::post('/Agente/TraerSeguimientoEM', ['middleware' => 'cors', 'uses' => 'SeguimientoEMSolicitudesController@indexSeguimiento']);
+            //Traer datos especificos
+            Route::post('/Usuario/TraerSegSolicitudEM', ['middleware' => 'cors', 'uses' => 'SeguimientoEMSolicitudesController@indexEspecifico']);
+            //Traer datos especificos
+            Route::post('/Agente/TraerSegSolicitudEM', ['middleware' => 'cors', 'uses' => 'SeguimientoEMSolicitudesController@indexEspecifico']);
+            /////////////////////////////////////////////
+            //Traer seguimiento
+            Route::post('/Usuario/TraerSeguimientoIND', ['middleware' => 'cors', 'uses' => 'SeguimientoINDSolicitudesController@indexSeguimiento']);
+            //Traer seguimiento Agente
+            Route::post('/Agente/TraerSeguimientoIND', ['middleware' => 'cors', 'uses' => 'SeguimientoINDSolicitudesController@indexSeguimiento']);
+            //Traer datos especificos
+            Route::post('/Usuario/TraerSegSolicitudIND', ['middleware' => 'cors', 'uses' => 'SeguimientoINDSolicitudesController@indexEspecifico']);
+            //Traer datos especificos
+            Route::post('/Agente/TraerSegSolicitudIND', ['middleware' => 'cors', 'uses' => 'SeguimientoINDSolicitudesController@indexEspecifico']);
+            //////////////////////////////////////////////
+            //Traer datos especificos
+            Route::post('/Usuario/TraerSegSolicitudAP', ['middleware' => 'cors', 'uses' => 'SeguimientoAPSolicitudesController@indexEspecifico']);
+            //Traer datos especificos
+            Route::post('/Agente/TraerSegSolicitudAP', ['middleware' => 'cors', 'uses' => 'SeguimientoAPSolicitudesController@indexEspecifico']);
+            //Traer seguimiento
+            Route::post('/Usuario/TraerSeguimientoAP', ['middleware' => 'cors', 'uses' => 'SeguimientoAPSolicitudesController@indexSeguimiento']);
+            //Traer seguimiento
+            Route::post('/Agente/TraerSeguimientoAP', ['middleware' => 'cors', 'uses' => 'SeguimientoAPSolicitudesController@indexSeguimiento']);
+            //////////////////////////////////////////////
             //Guardar Seguimiento
-            Route::post('/Usuario/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);
+            Route::post('/GuardarSeguimiento', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);
             //Guardar Seguimiento
-            Route::post('/Usuario/GuardarSeguimientoEM/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoEMSolicitudesController@store']);
+            Route::post('/GuardarSeguimientoEM', ['middleware' => 'cors', 'uses' => 'SeguimientoEMSolicitudesController@store']);
             //Guardar Seguimiento
-            Route::post('/Usuario/GuardarSeguimientoIND/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoINDSolicitudesController@store']);
+            Route::post('/GuardarSeguimientoIND', ['middleware' => 'cors', 'uses' => 'SeguimientoINDSolicitudesController@store']);
             //Guardar Seguimiento
-            Route::post('/Usuario/GuardarSeguimientoAP/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoAPSolicitudesController@store']);
+            Route::post('/GuardarSeguimientoAP', ['middleware' => 'cors', 'uses' => 'SeguimientoAPSolicitudesController@store']);
+            //////////////////////////////////////////////
             //Traer Datos para el listado de tickets
             Route::post('/Usuario/GetSolicitudCreada', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@GetSolicitudCreada']);
             //Traer Datos para el listado de tickets

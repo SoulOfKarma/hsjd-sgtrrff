@@ -230,7 +230,7 @@ export default {
             const seguimientoNuevo = this.seguimientos;
             axios
                 .post(
-                    this.localVal + "/api/Agente/FinalizarTicket",
+                    this.localVal + "/api/Agente/FinalizarTicketIND",
                     seguimientoNuevo,
                     {
                         headers: {
@@ -271,14 +271,19 @@ export default {
             this.popupActive2 = true;
         },
         cargaSolicitudEspecifica() {
-            let id = this.$route.params.uuid;
+            let id = this.$route.params.id;
+            let data = { id: id };
             axios
-                .get(this.localVal + `/api/Agente/TraerSolicitud/${id}`, {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
+                .post(
+                    this.localVal + "/api/Agente/TraerSegSolicitudIND",
+                    data,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
                     }
-                })
+                )
                 .then(res => {
                     this.solicitudes = res.data;
                     try {
@@ -309,8 +314,13 @@ export default {
         },
         cargaSeguimiento() {
             let uuid = this.$route.params.uuid;
+            let id = this.$route.params.id;
+            let data = {
+                id: id,
+                uuid: uuid
+            };
             axios
-                .get(this.localVal + `/api/Agente/TraerSeguimiento/${uuid}`, {
+                .post(this.localVal + "/api/Agente/TraerSeguimientoIND", data, {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -333,7 +343,7 @@ export default {
         },
         guardarSeguimiento() {
             let uuid = this.$route.params.uuid;
-
+            let id = this.$route.params.id;
             if (
                 this.seguimientos.descripcionSeguimiento.trim() === "" ||
                 this.seguimientos.descripcionSeguimiento < 15
@@ -348,25 +358,24 @@ export default {
                 return;
             }
             this.seguimientos.id_usuarioEspecifico = this.solicitudes[0].id_user;
-            console.log(this.seguimientos.id_usuarioEspecifico);
-            var id = this.solicitudes[0].id;
-            this.seguimientos.id = id;
+            this.seguimientos.id_solicitud = id;
             this.seguimientos.uuid = uuid;
             var newElement = document.createElement("div");
             newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
+            this.seguimientos.descripcionSeguimiento = newElement.textContent;
             this.seguimientos.descripcionCorreo = newElement.textContent;
             const seguimientoNuevo = this.seguimientos;
             this.seguimientos = {
                 descripcionSeguimiento: "",
-                id_solicitud: this.$route.params.id,
-                uuid: this.$route.params.uuid,
+                id_solicitud: id,
+                uuid: uuid,
                 nombre: sessionStorage.getItem("nombre"),
                 id_user: sessionStorage.getItem("id")
             };
             this.openLoadingColor();
             axios
                 .post(
-                    this.localVal + `/api/Agente/GuardarSeguimiento/${uuid}`,
+                    this.localVal + "/api/GuardarSeguimientoIND",
                     seguimientoNuevo,
                     {
                         headers: {

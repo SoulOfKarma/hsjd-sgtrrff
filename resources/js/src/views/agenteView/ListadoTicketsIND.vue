@@ -194,6 +194,18 @@
                                     )
                                 "
                             ></alert-triangle-icon>
+                            <clipboard-icon
+                                content="Seguimiento Solicitud"
+                                v-tippy
+                                size="1.5x"
+                                class="custom-class"
+                                @click="
+                                    detalleSolicitud(
+                                        props.row.id,
+                                        props.row.uuid
+                                    )
+                                "
+                            ></clipboard-icon>
                         </div>
                         <div v-else>
                             <plus-circle-icon
@@ -322,6 +334,18 @@
                                     )
                                 "
                             ></edit-icon>
+                            <clipboard-icon
+                                content="Seguimiento Solicitud"
+                                v-tippy
+                                size="1.5x"
+                                class="custom-class"
+                                @click="
+                                    detalleSolicitud(
+                                        props.row.id,
+                                        props.row.uuid
+                                    )
+                                "
+                            ></clipboard-icon>
                         </div>
                     </span>
 
@@ -660,26 +684,29 @@ import axios from "axios";
 import router from "@/router";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
-import { InfoIcon } from "vue-feather-icons";
-import { PlusCircleIcon } from "vue-feather-icons";
-import { Trash2Icon } from "vue-feather-icons";
-import { UploadIcon } from "vue-feather-icons";
-import { CornerDownRightIcon } from "vue-feather-icons";
-import { ArchiveIcon } from "vue-feather-icons";
+import {
+    InfoIcon,
+    PlusCircleIcon,
+    Trash2Icon,
+    UploadIcon,
+    CornerDownRightIcon,
+    ArchiveIcon,
+    SaveIcon,
+    FileTextIcon,
+    LoaderIcon,
+    AlertTriangleIcon,
+    FilePlusIcon,
+    CalendarIcon,
+    EditIcon,
+    PrinterIcon,
+    ClipboardIcon
+} from "vue-feather-icons";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
-import { SaveIcon } from "vue-feather-icons";
-import { FileTextIcon } from "vue-feather-icons";
-import { LoaderIcon } from "vue-feather-icons";
-import { AlertTriangleIcon } from "vue-feather-icons";
-import { FilePlusIcon } from "vue-feather-icons";
-import { CalendarIcon } from "vue-feather-icons";
-import { EditIcon } from "vue-feather-icons";
 import vSelect from "vue-select";
 import moment from "moment";
-import { PrinterIcon } from "vue-feather-icons";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
 // import the styles
@@ -707,7 +734,8 @@ export default {
         FilePlusIcon,
         CalendarIcon,
         flatPickr,
-        EditIcon
+        EditIcon,
+        ClipboardIcon
     },
     data() {
         return {

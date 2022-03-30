@@ -180,6 +180,15 @@
                                 popEnviarCorreo(props.row.id, props.row.uuid)
                             "
                         ></edit-icon>
+                        <clipboard-icon
+                            content="Seguimiento Solicitud"
+                            v-tippy
+                            size="1.5x"
+                            class="custom-class"
+                            @click="
+                                detalleSolicitud(props.row.id, props.row.uuid)
+                            "
+                        ></clipboard-icon>
                     </span>
                     <span v-else>
                         {{ props.formattedRow[props.column.field] }}
@@ -478,12 +487,21 @@
 
 <script>
 import axios from "axios";
-import { InfoIcon } from "vue-feather-icons";
-import { PlusCircleIcon } from "vue-feather-icons";
-import { Trash2Icon } from "vue-feather-icons";
-import { UploadIcon } from "vue-feather-icons";
-import { CornerDownRightIcon } from "vue-feather-icons";
-import { ArchiveIcon } from "vue-feather-icons";
+import {
+    InfoIcon,
+    PlusCircleIcon,
+    Trash2Icon,
+    UploadIcon,
+    CornerDownRightIcon,
+    ArchiveIcon,
+    SaveIcon,
+    FileTextIcon,
+    LoaderIcon,
+    AlertTriangleIcon,
+    PrinterIcon,
+    EditIcon,
+    ClipboardIcon
+} from "vue-feather-icons";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
@@ -492,14 +510,8 @@ import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
-import { SaveIcon } from "vue-feather-icons";
-import { FileTextIcon } from "vue-feather-icons";
-import { LoaderIcon } from "vue-feather-icons";
-import { AlertTriangleIcon } from "vue-feather-icons";
 import vSelect from "vue-select";
 import moment from "moment";
-import { PrinterIcon } from "vue-feather-icons";
-import { EditIcon } from "vue-feather-icons";
 import "vue-good-table/dist/vue-good-table.css";
 import VueGoodTablePlugin from "vue-good-table";
 Vue.use(VueGoodTablePlugin);
@@ -522,7 +534,8 @@ export default {
         AlertTriangleIcon,
         PrinterIcon,
         flatPickr,
-        EditIcon
+        EditIcon,
+        ClipboardIcon
     },
     data() {
         return {

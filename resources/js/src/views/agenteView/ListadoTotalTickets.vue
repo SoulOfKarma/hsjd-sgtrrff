@@ -178,6 +178,19 @@
                                 )
                             "
                         ></edit-icon>
+                        <clipboard-icon
+                            content="Seguimiento Solicitud"
+                            v-tippy
+                            size="1.5x"
+                            class="custom-class"
+                            @click="
+                                detalleSolicitud(
+                                    props.row.id,
+                                    props.row.uuid,
+                                    props.row.id_categoria
+                                )
+                            "
+                        ></clipboard-icon>
                     </span>
 
                     <!-- Column: Common -->
@@ -506,28 +519,30 @@ import axios from "axios";
 import router from "@/router";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
-import { InfoIcon } from "vue-feather-icons";
-import { PlusCircleIcon } from "vue-feather-icons";
-import { Trash2Icon } from "vue-feather-icons";
-import { UploadIcon } from "vue-feather-icons";
-import { CornerDownRightIcon } from "vue-feather-icons";
-import { ArchiveIcon } from "vue-feather-icons";
+import {
+    InfoIcon,
+    ClipboardIcon,
+    PlusCircleIcon,
+    Trash2Icon,
+    UploadIcon,
+    CornerDownRightIcon,
+    ArchiveIcon,
+    SaveIcon,
+    FileTextIcon,
+    LoaderIcon,
+    AlertTriangleIcon,
+    CalendarIcon,
+    EditIcon,
+    PrinterIcon
+} from "vue-feather-icons";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
-//import Vuesax from "vuesax";
-import { SaveIcon } from "vue-feather-icons";
-import { FileTextIcon } from "vue-feather-icons";
-import { LoaderIcon } from "vue-feather-icons";
-import { AlertTriangleIcon } from "vue-feather-icons";
-import { CalendarIcon } from "vue-feather-icons";
-import { EditIcon } from "vue-feather-icons";
 import vSelect from "vue-select";
 import moment from "moment";
-import { PrinterIcon } from "vue-feather-icons";
 // import the styles
 import "vue-good-table/dist/vue-good-table.css";
 import VueGoodTablePlugin from "vue-good-table";
@@ -552,7 +567,8 @@ export default {
         PrinterIcon,
         CalendarIcon,
         flatPickr,
-        EditIcon
+        EditIcon,
+        ClipboardIcon
     },
     data() {
         return {
@@ -1409,14 +1425,40 @@ export default {
                     }
                 });
         },
-        detalleSolicitud(id, uuid) {
-            this.$router.push({
-                name: "InformacionSolicitudAgente",
-                params: {
-                    id: `${id}`,
-                    uuid: `${uuid}`
-                }
-            });
+        detalleSolicitud(id, uuid, id_categoria) {
+            if (id_categoria == 1) {
+                this.$router.push({
+                    name: "InformacionSolicitudAgente",
+                    params: {
+                        id: `${id}`,
+                        uuid: `${uuid}`
+                    }
+                });
+            } else if (id_categoria == 2) {
+                this.$router.push({
+                    name: "InformacionSolicitudAgenteEM",
+                    params: {
+                        id: `${id}`,
+                        uuid: `${uuid}`
+                    }
+                });
+            } else if (id_categoria == 3) {
+                this.$router.push({
+                    name: "InformacionSolicitudAgenteIND",
+                    params: {
+                        id: `${id}`,
+                        uuid: `${uuid}`
+                    }
+                });
+            } else if (id_categoria == 4) {
+                this.$router.push({
+                    name: "InformacionSolicitudAgenteCA",
+                    params: {
+                        id: `${id}`,
+                        uuid: `${uuid}`
+                    }
+                });
+            }
         },
         cambiarCategoria(id, uuid, id_categoria) {
             this.$router.push({

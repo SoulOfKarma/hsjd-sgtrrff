@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 
 class SeguimientoController extends Controller
 {
-    public function store(Request $request, $uuid)
+    public function store(Request $request)
     {
         SeguimientoSolicitudes::create($request->all());
         $descripcionSeguimiento = $request->descripcionCorreo;
@@ -167,18 +167,18 @@ class SeguimientoController extends Controller
        
     }
 
-    public function indexSeguimiento($uuid)
+    public function indexSeguimiento(Request $request)
     {
         $users = SeguimientoSolicitudes::select('seguimiento_solicitudes.*', 'users.nombre', 'users.apellido')
             ->join('users', 'seguimiento_solicitudes.id_user', '=', 'users.id')
-            ->where('seguimiento_solicitudes.uuid', '=', $uuid)
+            ->where('seguimiento_solicitudes.id_solicitud', '=', $request->id)
             ->orderBy('seguimiento_solicitudes.id', 'desc')
             ->get();
 
         return  $users;
     }
 
-    public function indexEspecifico($id)
+    public function indexEspecifico(Request $request)
     {
 
         $users = DB::table('solicitud_tickets')
@@ -186,8 +186,8 @@ class SeguimientoController extends Controller
             ->join('edificios', 'solicitud_tickets.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_tickets.id_servicio', '=', 'servicios.id')
             ->join('unidad_esps', 'solicitud_tickets.id_ubicacionEx', '=', 'unidad_esps.id')
-            ->select('solicitud_tickets.*', 'users.nombre','users.apellido', 'edificios.descripcionEdificio', 'servicios.descripcionServicio', 'unidad_esps.descripcionUnidadEsp',DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
-            ->where('solicitud_tickets.uuid', '=', $id)
+            ->select('solicitud_tickets.*', 'users.nombre','users.apellido', 'edificios.descripcionEdificio', 'servicios.descripcionServicio', 'unidad_esps.descripcionUnidadEsp',DB::raw("CONCAT(solicitud_tickets.id) as nticket"))
+            ->where('solicitud_tickets.id', '=', $request->id)
             ->get();
 
         return  $users;

@@ -22,6 +22,7 @@ class SolicitudTicketINDsController extends Controller
             return $get_all;
         } catch (\Throwable $th) {
             log::info($th);
+            return false;
         }
     }
 
