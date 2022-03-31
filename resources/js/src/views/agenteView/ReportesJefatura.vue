@@ -77,7 +77,7 @@
             <!-- Enviar o Limpiar Formulario -->
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <div class="vx-row mb-12">
-                    <div class="vx-col w-1/3 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <vs-button
                             color="warning"
                             class="mb-2 w-full"
@@ -85,7 +85,7 @@
                             >Volver</vs-button
                         >
                     </div>
-                    <div class="vx-col w-1/3 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <vs-button
                             class="mb-2 w-full"
                             color="success"
@@ -93,12 +93,21 @@
                             >Generar Reporte Por Fechas</vs-button
                         >
                     </div>
-                    <div class="vx-col w-1/3 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <vs-button
                             class="mb-2 w-full"
                             color="success"
                             @click="GenerarExcelTodo"
                             >Generar Reporte Completo</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/4 mt-5">
+                        <vs-button
+                            class="mb-2 w-full"
+                            color="success"
+                            @click="GenerarExcelTodasCategorias"
+                            >Generar Reporte Completo Todas las
+                            Categorias</vs-button
                         >
                     </div>
                 </div>
@@ -276,6 +285,11 @@ export default {
                 newWindow.location =
                     this.localVal + "/api/Agente/generarExcelTodoAPJ";
             }
+        },
+        GenerarExcelTodasCategorias() {
+            let newWindow = window.open();
+            newWindow.location =
+                this.localVal + "/api/Agente/generarExcelTodasCategorias";
         },
         GenerarExcel() {
             if (this.seleccionCategoria.id == 1) {

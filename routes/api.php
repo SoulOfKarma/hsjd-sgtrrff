@@ -828,6 +828,8 @@ use App\Mail\AutoRespuesta;
     Route::get('/Agente/generarExcelTodoIJ', 'ExcelJefaturaController@generarExcelTodoI');
     //Generar Excel	Por Fechas
     Route::get('/Agente/generarExcelByFechaIJ/{fechaInicio}/{fechaTermino}', 'ExcelJefaturaController@generarExcelByFechaI');
+    //Generar Excel	Jefatura
+    Route::get('/Agente/generarExcelTodasCategorias', 'ExcelJefaturaController@generarExcelTodasCategorias');
     
 
 

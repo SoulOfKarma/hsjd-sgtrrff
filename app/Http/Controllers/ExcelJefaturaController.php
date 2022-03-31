@@ -343,6 +343,224 @@ class GestionExportI implements FromCollection, WithHeadings, ShouldAutoSize
     }
 }
 
+//Reporte EXCEL 4 Categorias
+
+class GestionExportTodasCategorias implements FromCollection, WithHeadings, ShouldAutoSize
+{
+
+    use Exportable;
+
+    public function collection()
+    {
+        try {
+            $filtro = [3];
+            $reportI = SolicitudTicketINDs::select(
+            DB::raw("CONCAT(solicitud_ticket_i_n_ds.id)"),
+            'categorias.des_categoria',
+            DB::raw("DATE_FORMAT(solicitud_ticket_i_n_ds.created_at, '%d/%m/%Y')"),
+            DB::raw("CONCAT(DATE_FORMAT(solicitud_ticket_i_n_ds.created_at,'%H:%i:%s'))"),
+            'servicios.descripcionServicio',
+            'edificios.descripcionEdificio',
+            'tipo_reparacions.descripcionTipoReparacion',
+            DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido)"),
+            DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_tickets_i_n_ds.idApoyo1)"),
+            DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_tickets_i_n_ds.idApoyo2)"),
+            DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_tickets_i_n_ds.idApoyo3)"),
+            DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido)"),
+            DB::raw("DATE_FORMAT(gestion_tickets_i_n_ds.fechaInicio, '%d/%m/%Y')"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_tickets_i_n_ds.horaInicio,'%H:%i:%s'))"),
+            DB::raw("(CASE WHEN gestion_tickets_i_n_ds.horasEjecucion IS NULL THEN '0'
+             ELSE gestion_tickets_i_n_ds.horasEjecucion END)"),
+            DB::raw("(CASE WHEN gestion_tickets_i_n_ds.diasEjecucion IS NULL THEN '0'
+             ELSE gestion_tickets_i_n_ds.diasEjecucion END)"),
+            'estado_solicituds.descripcionEstado',
+            DB::raw("fnStripTags(solicitud_ticket_i_n_ds.descripcionP)"),
+            'turnos.descripcionTurno',
+            DB::raw("CONCAT(users.nombre,' ',users.apellido)"),
+            'duracion_solicitudes.descripcion_duracion',
+            DB::raw("(CASE WHEN gestion_tickets_i_n_ds.horaTermino IS NULL THEN '0'
+             ELSE gestion_tickets_i_n_ds.horaTermino END)"),
+             DB::raw("DATE_FORMAT(gestion_tickets_i_n_ds.fechaTermino,'%d/%m/%Y')")
+            )
+            ->leftJoin('gestion_tickets_i_n_ds', 'solicitud_ticket_i_n_ds.id', '=', 'gestion_tickets_i_n_ds.id_solicitud')
+            ->leftJoin('trabajadores', 'gestion_tickets_i_n_ds.id_trabajador', '=', 'trabajadores.id')
+            ->leftJoin('supervisores', 'gestion_tickets_i_n_ds.id_supervisor', '=', 'supervisores.id')
+            ->join('edificios', 'solicitud_ticket_i_n_ds.id_edificio', '=', 'edificios.id')
+            ->join('servicios', 'solicitud_ticket_i_n_ds.id_servicio', '=', 'servicios.id')
+            ->join('categorias','solicitud_ticket_i_n_ds.id_categoria', '=', 'categorias.id')
+            ->join('estado_solicituds', 'solicitud_ticket_i_n_ds.id_estado', '=', 'estado_solicituds.id')
+            ->join('tipo_reparacions', 'solicitud_ticket_i_n_ds.id_tipoReparacion', '=', 'tipo_reparacions.id')
+            ->join('users', 'solicitud_ticket_i_n_ds.id_user', '=', 'users.id')
+            ->leftJoin('turnos','gestion_tickets_i_n_ds.idTurno', '=', 'turnos.id')
+            ->leftJoin('duracion_solicitudes','gestion_tickets_i_n_ds.idDuracion', '=', 'duracion_solicitudes.id');
+
+            $filtro = [4];
+            $reportAp = SolicitudTicketsAps::select(
+            DB::raw("CONCAT(solicitud_tickets_aps.id)"),
+            'categorias.des_categoria',
+            DB::raw("DATE_FORMAT(solicitud_tickets_aps.created_at, '%d/%m/%Y')"),
+            DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_aps.created_at,'%H:%i:%s'))"),
+            'servicios.descripcionServicio',
+            'edificios.descripcionEdificio',
+            'tipo_reparacions.descripcionTipoReparacion',
+            DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido)"),
+            DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_tickets_aps.idApoyo1)"),
+            DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_tickets_aps.idApoyo2)"),
+            DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_tickets_aps.idApoyo3)"),
+            DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido)"),
+            DB::raw("DATE_FORMAT(gestion_tickets_aps.fechaInicio, '%d/%m/%Y')"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_tickets_aps.horaInicio,'%H:%i:%s'))"),
+            DB::raw("(CASE WHEN gestion_tickets_aps.horasEjecucion IS NULL THEN '0'
+             ELSE gestion_tickets_aps.horasEjecucion END)"),
+            DB::raw("(CASE WHEN gestion_tickets_aps.diasEjecucion IS NULL THEN '0'
+             ELSE gestion_tickets_aps.diasEjecucion END)"),
+            'estado_solicituds.descripcionEstado',
+            DB::raw("fnStripTags(solicitud_tickets_aps.descripcionP)"),
+            'turnos.descripcionTurno',
+            DB::raw("CONCAT(users.nombre,' ',users.apellido)"),
+            'duracion_solicitudes.descripcion_duracion',
+            DB::raw("(CASE WHEN gestion_tickets_aps.horaTermino IS NULL THEN '0'
+             ELSE gestion_tickets_aps.horaTermino END)"),
+             DB::raw("DATE_FORMAT(gestion_tickets_aps.fechaTermino,'%d/%m/%Y')")
+            )
+            ->leftjoin('gestion_tickets_aps', 'solicitud_tickets_aps.id', '=', 'gestion_tickets_aps.id_solicitud')
+            ->leftjoin('trabajadores', 'gestion_tickets_aps.id_trabajador', '=', 'trabajadores.id')
+            ->leftjoin('supervisores', 'gestion_tickets_aps.id_supervisor', '=', 'supervisores.id')
+            ->join('edificios', 'solicitud_tickets_aps.id_edificio', '=', 'edificios.id')
+            ->join('servicios', 'solicitud_tickets_aps.id_servicio', '=', 'servicios.id')
+            ->join('categorias','solicitud_tickets_aps.id_categoria', '=', 'categorias.id')
+            ->join('estado_solicituds', 'solicitud_tickets_aps.id_estado', '=', 'estado_solicituds.id')
+            ->join('tipo_reparacions', 'solicitud_tickets_aps.id_tipoReparacion', '=', 'tipo_reparacions.id')
+            ->join('users', 'solicitud_tickets_aps.id_user', '=', 'users.id')
+            ->leftjoin('turnos','gestion_tickets_aps.idTurno', '=', 'turnos.id')
+            ->leftjoin('duracion_solicitudes','gestion_tickets_aps.idDuracion', '=', 'duracion_solicitudes.id');
+
+            $filtro = [2];
+            $reportEm = SolicitudTicketsEM::select(
+            DB::raw("CONCAT(solicitud_tickets_e_m_s.id)"),
+            'categorias.des_categoria',
+            DB::raw("DATE_FORMAT(solicitud_tickets_e_m_s.created_at, '%d/%m/%Y')"),
+            DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%H:%i:%s'))"),
+            'servicios.descripcionServicio',
+            'edificios.descripcionEdificio',
+            'tipo_reparacions.descripcionTipoReparacion',
+            DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido)"),
+            DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo1)"),
+            DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo2)"),
+            DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo3)"),
+            DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
+            DB::raw("DATE_FORMAT(gestion_ticket_e_m_s.fechaInicio, '%d/%m/%Y')"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_ticket_e_m_s.horaInicio,'%H:%i:%s'))"),
+            DB::raw("(CASE WHEN gestion_ticket_e_m_s.horasEjecucion IS NULL THEN '0'
+             ELSE gestion_ticket_e_m_s.horasEjecucion END)"),
+            DB::raw("(CASE WHEN gestion_ticket_e_m_s.diasEjecucion IS NULL THEN '0'
+             ELSE gestion_ticket_e_m_s.diasEjecucion END)"),
+            'estado_solicituds.descripcionEstado',
+            DB::raw("fnStripTags(solicitud_tickets_e_m_s.descripcionP)"),
+            'turnos.descripcionTurno',
+            DB::raw("CONCAT(users.nombre,' ',users.apellido)"),
+            'duracion_solicitudes.descripcion_duracion',
+            DB::raw("(CASE WHEN gestion_ticket_e_m_s.horaTermino IS NULL THEN '0'
+             ELSE gestion_ticket_e_m_s.horaTermino END)"),
+             DB::raw("DATE_FORMAT(gestion_ticket_e_m_s.fechaTermino,'%d/%m/%Y')")
+            )
+            ->leftjoin('gestion_ticket_e_m_s', 'solicitud_tickets_e_m_s.id', '=', 'gestion_ticket_e_m_s.id_solicitud')
+            ->leftjoin('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
+            ->leftjoin('supervisores', 'gestion_ticket_e_m_s.id_supervisor', '=', 'supervisores.id')
+            ->join('edificios', 'solicitud_tickets_e_m_s.id_edificio', '=', 'edificios.id')
+            ->join('servicios', 'solicitud_tickets_e_m_s.id_servicio', '=', 'servicios.id')
+            ->join('categorias','solicitud_tickets_e_m_s.id_categoria', '=', 'categorias.id')
+            ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
+            ->join('tipo_reparacions', 'solicitud_tickets_e_m_s.id_tipoReparacion', '=', 'tipo_reparacions.id')
+            ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
+            ->leftjoin('turnos','gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
+            ->leftjoin('duracion_solicitudes','gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id');
+
+            $filtro = [1];
+            $datos = SolicitudTickets::select(
+            DB::raw("CONCAT(solicitud_tickets.id)"),
+            'categorias.des_categoria',
+            DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y')"),
+            DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at,'%H:%i:%s'))"),
+            'servicios.descripcionServicio',
+            'edificios.descripcionEdificio',
+            'tipo_reparacions.descripcionTipoReparacion',
+            DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido)"),
+            DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo1)"),
+            DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo2)"),
+            DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_solicitudes.idApoyo3)"),
+            DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido)"),
+            DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y')"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_solicitudes.horaInicio,'%H:%i:%s'))"),
+            DB::raw("(CASE WHEN gestion_solicitudes.horasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.horasEjecucion END)"),
+            DB::raw("(CASE WHEN gestion_solicitudes.diasEjecucion IS NULL THEN '0'
+             ELSE gestion_solicitudes.diasEjecucion END)"),
+            'estado_solicituds.descripcionEstado',
+            DB::raw("fnStripTags(solicitud_tickets.descripcionP)"),
+            'turnos.descripcionTurno',
+            DB::raw("CONCAT(users.nombre,' ',users.apellido)"),
+            'duracion_solicitudes.descripcion_duracion',
+            DB::raw("(CASE WHEN gestion_solicitudes.horaTermino IS NULL THEN '0'
+             ELSE gestion_solicitudes.horaTermino END)"),
+            DB::raw("DATE_FORMAT(gestion_solicitudes.fechaTermino,'%d/%m/%Y')")
+            )
+            ->leftjoin('gestion_solicitudes','solicitud_tickets.id','=','gestion_solicitudes.id_solicitud')
+            ->leftjoin('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->leftjoin('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
+            ->join('edificios', 'solicitud_tickets.id_edificio', '=', 'edificios.id')
+            ->join('servicios', 'solicitud_tickets.id_servicio', '=', 'servicios.id')
+            ->join('categorias','solicitud_tickets.id_categoria', '=', 'categorias.id')
+            ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
+            ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
+            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->leftjoin('turnos','gestion_solicitudes.idTurno', '=', 'turnos.id')
+            ->leftjoin('duracion_solicitudes','gestion_solicitudes.idDuracion', '=', 'duracion_solicitudes.id')
+            ->union($reportI)
+            ->union($reportAp)
+            ->union($reportEm)
+            //->orderBy('id','desc')
+            ->get();
+
+            return $datos;
+        } catch (\Throwable $th) {
+           log::info($th);
+        }
+            
+    }
+
+    
+
+    public function headings(): array
+    {
+        return [
+            'N° Ticket',
+            'Categoria',
+            'Fecha Solicitud',
+            'Hora Solicitud',
+            'Servicio',
+            'Edificio',
+            'Especialidad',
+            'Responsable',
+            'Apoyo 1',
+            'Apoyo 2',
+            'Apoyo 3',
+            'Supervisor a Cargo',
+            'Fecha de Programacion - Visita',
+            'Hora de Programacion - Visita',
+            'Horas de Ejecucion',
+            'Dias de Ejecucion',
+            'Estado Ticket',
+            'Descripcion del Servicio Solicitado ',
+            'Turno',
+            'Nombre Solicitante',
+            'Tipo de Trabajo',
+            'Hora Termino',
+            'Fecha Termino',
+        ];
+    }
+}
+
 //Infraestructura Reporte Fechas Excel
 
 class GestionExportByFechas implements FromCollection, WithHeadings, ShouldAutoSize
@@ -715,6 +933,11 @@ class GestionExportByFechasI implements FromCollection, WithHeadings, ShouldAuto
 
 class ExcelJefaturaController extends Controller
 {
+    public function generarExcelTodasCategorias(Request $request)
+    {
+        return \Excel::download(new GestionExportTodasCategorias, 'Reporte.xlsx');
+    }
+
     public function generarExcelTodo(Request $request)
     {
         return \Excel::download(new GestionExport, 'Reporte.xlsx');
