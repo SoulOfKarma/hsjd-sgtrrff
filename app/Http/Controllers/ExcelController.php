@@ -6,6 +6,10 @@ use App\GestionSolicitudes;
 use App\GestionTicketsAps;
 use App\GestionTicketEMS;
 use App\GestionTicketsINDs;
+use App\SolicitudTickets;
+use App\SolicitudTicketsEM;
+use App\SolicitudTicketINDs;
+use App\SolicitudTicketsAps;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -99,18 +103,21 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
     public function collection()
     {
         $filtro = [2];
-        return GestionTicketEMS::select(
+        return SolicitudTicketsEM::select(
             DB::raw("CONCAT(solicitud_tickets_e_m_s.id) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets_e_m_s.created_at, '%d/%m/%Y') as nfechaS"),
+            DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets_e_m_s.created_at,'%H:%i:%s')) as horaSolicitud"),
             'servicios.descripcionServicio',
             'edificios.descripcionEdificio',
             'tipo_reparacions.descripcionTipoReparacion',
+            'equipamientomedicodanios.desdanioseq',
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo1) as apoyo1"),
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo2) as apoyo2"),
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo3) as apoyo3"),
             DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("DATE_FORMAT(gestion_ticket_e_m_s.fechaInicio, '%d/%m/%Y') as nfechaI"),
+            DB::raw("CONCAT(DATE_FORMAT(gestion_ticket_e_m_s.horaInicio,'%H:%i:%s')) as horaProgramada"),
             DB::raw("(CASE WHEN gestion_ticket_e_m_s.horasEjecucion IS NULL THEN '0'
              ELSE gestion_ticket_e_m_s.horasEjecucion END) AS horasEjecucion"),
             DB::raw("(CASE WHEN gestion_ticket_e_m_s.diasEjecucion IS NULL THEN '0'
@@ -121,18 +128,21 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
             DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
             'duracion_solicitudes.descripcion_duracion',
             DB::raw("(CASE WHEN gestion_ticket_e_m_s.horaTermino IS NULL THEN '0'
-             ELSE gestion_ticket_e_m_s.horaTermino END) AS horaTermino")
+             ELSE gestion_ticket_e_m_s.horaTermino END) AS horaTermino"),
+             DB::raw("DATE_FORMAT(gestion_ticket_e_m_s.fechaTermino,'%d/%m/%Y') AS fechaTermino")
         )
-            ->join('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
-            ->join('supervisores', 'gestion_ticket_e_m_s.id_supervisor', '=', 'supervisores.id')
-            ->join('solicitud_tickets_e_m_s', 'gestion_ticket_e_m_s.id_solicitud', '=', 'solicitud_tickets_e_m_s.id')
+            ->leftjoin('gestion_ticket_e_m_s', 'solicitud_tickets_e_m_s.id', '=', 'gestion_ticket_e_m_s.id_solicitud')
+            ->leftjoin('trabajadores', 'gestion_ticket_e_m_s.id_trabajador', '=', 'trabajadores.id')
+            ->leftjoin('supervisores', 'gestion_ticket_e_m_s.id_supervisor', '=', 'supervisores.id')
             ->join('edificios', 'solicitud_tickets_e_m_s.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_tickets_e_m_s.id_servicio', '=', 'servicios.id')
             ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets_e_m_s.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
-            ->join('turnos','gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
-            ->join('duracion_solicitudes','gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
+            ->join('detalle_solicitud_e_ms','solicitud_tickets_e_m_s.id','=', 'detalle_solicitud_e_ms.id_solicitud')
+            ->join('equipamientomedicodanios','detalle_solicitud_e_ms.id_danoEQ','=', 'equipamientomedicodanios.id')
+            ->leftjoin('turnos','gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
+            ->leftjoin('duracion_solicitudes','gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
             ->where('solicitud_tickets_e_m_s.id_categoria',$filtro)
             ->orderBy('solicitud_tickets_e_m_s.id')
             ->get();
@@ -143,15 +153,18 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
         return [
             'N° Ticket',
             'Fecha Solicitud',
+            'Hora Solicitud',
             'Servicio',
             'Edificio',
             'Especialidad',
+            'Tipo de Daño',
             'Responsable',
             'Apoyo 1',
             'Apoyo 2',
             'Apoyo 3',
             'Supervisor a Cargo',
             'Fecha de Programacion - Visita',
+            'Hora de Programacion - Visita',
             'Horas de Ejecucion',
             'Dias de Ejecucion',
             'Estado Ticket',
@@ -160,9 +173,11 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
             'Nombre Solicitante',
             'Tipo de Trabajo',
             'Hora Termino',
+            'Fecha Termino',
         ];
     }
 }
+
 
 //Apoyo Clinico Reporte EXCEL
 
@@ -424,6 +439,7 @@ class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAut
             'servicios.descripcionServicio',
             'edificios.descripcionEdificio',
             'tipo_reparacions.descripcionTipoReparacion',
+            'equipamientomedicodanios.desdanioseq',
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo1) as apoyo1"),
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo2) as apoyo2"),
@@ -450,6 +466,8 @@ class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAut
             ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets_e_m_s.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
+            ->join('detalle_solicitud_e_ms','gestion_ticket_e_m_s.id_solicitud','=', 'detalle_solicitud_e_ms.id_solicitud')
+            ->join('equipamientomedicodanios','detalle_solicitud_e_ms.id_danoEQ','=', 'equipamientomedicodanios.id')
             ->join('turnos','gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
             ->join('duracion_solicitudes','gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
             ->orderBy('solicitud_tickets_e_m_s.id')
@@ -468,6 +486,7 @@ class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAut
             'Servicio',
             'Edificio',
             'Especialidad',
+            'Tipo de Daño',
             'Responsable',
             'Apoyo 1',
             'Apoyo 2',

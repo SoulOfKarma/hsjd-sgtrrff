@@ -116,6 +116,7 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
             'servicios.descripcionServicio',
             'edificios.descripcionEdificio',
             'tipo_reparacions.descripcionTipoReparacion',
+            'equipamientomedicodanios.desdanioseq',
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo1) as apoyo1"),
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo2) as apoyo2"),
@@ -144,6 +145,8 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
             ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets_e_m_s.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
+            ->join('detalle_solicitud_e_ms','solicitud_tickets_e_m_s.id','=', 'detalle_solicitud_e_ms.id_solicitud')
+            ->join('equipamientomedicodanios','detalle_solicitud_e_ms.id_danoEQ','=', 'equipamientomedicodanios.id')
             ->leftjoin('turnos','gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
             ->leftjoin('duracion_solicitudes','gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
             ->where('solicitud_tickets_e_m_s.id_categoria',$filtro)
@@ -160,6 +163,7 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
             'Servicio',
             'Edificio',
             'Especialidad',
+            'Tipo de Daño',
             'Responsable',
             'Apoyo 1',
             'Apoyo 2',
@@ -678,6 +682,7 @@ class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAut
             'servicios.descripcionServicio',
             'edificios.descripcionEdificio',
             'tipo_reparacions.descripcionTipoReparacion',
+            'equipamientomedicodanios.desdanioseq',
             DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo1) as apoyo1"),
             DB::raw("(select CONCAT(trabajadores.tra_nombre,"."' '".",trabajadores.tra_apellido) from trabajadores where trabajadores.id = gestion_ticket_e_m_s.idApoyo2) as apoyo2"),
@@ -706,6 +711,8 @@ class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAut
             ->join('estado_solicituds', 'solicitud_tickets_e_m_s.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets_e_m_s.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
+            ->join('detalle_solicitud_e_ms','solicitud_tickets_e_m_s.id','=', 'detalle_solicitud_e_ms.id_solicitud')
+            ->join('equipamientomedicodanios','detalle_solicitud_e_ms.id_danoEQ','=', 'equipamientomedicodanios.id')
             ->leftJoin('turnos','gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
             ->leftJoin('duracion_solicitudes','gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
             ->orderBy('solicitud_tickets_e_m_s.id')
@@ -725,6 +732,7 @@ class GestionExportByFechasEM implements FromCollection, WithHeadings, ShouldAut
             'Servicio',
             'Edificio',
             'Especialidad',
+            'Tipo de Daño',
             'Responsable',
             'Apoyo 1',
             'Apoyo 2',

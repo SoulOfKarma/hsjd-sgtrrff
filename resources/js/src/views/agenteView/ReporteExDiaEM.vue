@@ -236,31 +236,8 @@ export default {
         },
         GenerarExcelTodo() {
             let newWindow = window.open();
-
-            axios
-                .get(this.localVal + "/api/Agente/generarExcelTodoEM", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    newWindow.location =
-                        "http://" +
-                        window.location.hostname +
-                        ":8001/api/Agente/generarExcelTodoEM";
-                })
-                .catch(error => {
-                    if (error.response.status === 401) {
-                        this.$vs.notify({
-                            title: "Token Invalido ",
-                            text: "Debe iniciar sesion nuevamente",
-                            color: "danger",
-                            position: "top-right",
-                            time: 3000
-                        });
-                    }
-                });
+            newWindow.location =
+                this.localVal + "/api/Agente/generarExcelTodoEM";
         },
         GenerarExcel() {
             const url =
