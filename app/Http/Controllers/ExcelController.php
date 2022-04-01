@@ -140,7 +140,7 @@ class GestionExportEM implements FromCollection, WithHeadings, ShouldAutoSize
             ->join('tipo_reparacions', 'solicitud_tickets_e_m_s.id_tipoReparacion', '=', 'tipo_reparacions.id')
             ->join('users', 'solicitud_tickets_e_m_s.id_user', '=', 'users.id')
             ->join('detalle_solicitud_e_ms','solicitud_tickets_e_m_s.id','=', 'detalle_solicitud_e_ms.id_solicitud')
-            ->join('equipamientomedicodanios','detalle_solicitud_e_ms.id_danoEQ','=', 'equipamientomedicodanios.id')
+            ->leftjoin('equipamientomedicodanios','detalle_solicitud_e_ms.id_danoEQ','=', 'equipamientomedicodanios.id')
             ->leftjoin('turnos','gestion_ticket_e_m_s.idTurno', '=', 'turnos.id')
             ->leftjoin('duracion_solicitudes','gestion_ticket_e_m_s.idDuracion', '=', 'duracion_solicitudes.id')
             ->where('solicitud_tickets_e_m_s.id_categoria',$filtro)
