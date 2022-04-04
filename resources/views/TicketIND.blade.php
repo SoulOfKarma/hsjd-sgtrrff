@@ -920,10 +920,10 @@ table.table-bordered > tbody > tr > td{
               <table class="table table-bordered ">
                <tbody>
                  <tr>
-                   <td>Anexo</td>
-                   <td colspan="1"></td>
-                   <td >Mac</td>
-                   <td colspan="1"></td>
+                   <td>Hora Programada</td>
+                   <td colspan="1">{{$horaInicio}}</td>
+                   <td >Horas Ejecucion</td>
+                   <td colspan="1">{{$horasEjecucion}}</td>
                  </tr>
                  
                  <tr>

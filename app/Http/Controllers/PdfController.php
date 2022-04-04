@@ -520,6 +520,7 @@ class PdfController extends Controller
         $fechaS = $data->nfechaS;
         $fechaI = $data->nfechaI;
         $horasEjecucion = $data->horasEjecucion;
+        $horaInicio = $data->horaInicio;
         $diasEjecucion = $data->diasEjecucion;
         $descripcionPro = $data->desFormat;
         $nombreUsuario = $data->nombre;
@@ -540,6 +541,7 @@ class PdfController extends Controller
             'fechaS' => $fechaS,
             'fechaI' => $fechaI,
             'horasEjecucion' => $horasEjecucion,
+            'horaInicio' => $horaInicio,
             'diasEjecucion' => $diasEjecucion,
             'nomApoyo1' => $nom1,
             'apeApoyo1' => $ape1,
